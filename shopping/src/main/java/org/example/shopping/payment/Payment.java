@@ -49,6 +49,13 @@ public class Payment extends BaseTimeEntity {
 
     private LocalDateTime cancelledAt;
 
+    public Payment(String productCode, String productName, Long amount, PaymentMethod method){
+        this.productCode = productCode;
+        this.productName = productName;
+        this.amount = amount;
+        this.method = method;
+    }
+
     // 결제 성공
     public void paySuccess() {
         this.status = PaymentStatus.SUCCESS;
