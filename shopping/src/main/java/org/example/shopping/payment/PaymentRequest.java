@@ -6,14 +6,21 @@ import org.example.shopping.payment.paymentEnum.PaymentMethod;
 public class PaymentRequest {
 
     @Data
-    public static class CreateDTO{
+    public static class CreateDTO {
         private String productCode;
         private String productName;
         private Long amount;
         private PaymentMethod method;
 
-        public Payment toEntity(){
+        public Payment toEntity() {
             return new Payment(productCode, productName, amount, method);
         }
+    }
+
+    @Data
+    public static class RefundDTO {
+        private Long amount;
+        private String reason;
+
     }
 }
