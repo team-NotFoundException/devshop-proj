@@ -76,6 +76,4 @@ public class Payment extends BaseTimeEntity {
         this.status = PaymentStatus.REFUNDED;
         this.cancelledAt = LocalDateTime.now();
     }
-
-
 }
