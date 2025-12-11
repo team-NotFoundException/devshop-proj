@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/review/save" method="post">
+    <!--
+    name 속성: 서버에서 받을 때 사용하는 변수명
+    name="username" → 컨트롤러에서 String username으로 받음
+    -->
+
+    <div class="mb-3">
+        <!-- textarea: 여러 줄 텍스트 입력 가능 -->
+        <textarea class="form-control" rows="5" placeholder="내용 입력" name="content"></textarea>
+    </div>
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="별점 1~5" name="rating">
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="사진 경로" name="photoUrl">
+    </div>
+    </div>
+
+    <!-- 버튼 클릭시 폼이 제출됨 -->
+    <button class="btn btn-primary form-control">리뷰 작성 완료</button>
+</form>
+</body>
+</html>

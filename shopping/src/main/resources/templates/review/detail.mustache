@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- 수정삭제버튼 -->
+<div class="d-flex justify-content-end">
+    <form action = "/review/{{review.id}}/delete" method="post">
+        <button class="btn btn-danger">삭제</button>
+    </form>
+    <a href="/review/{{review.id}}/update" class="btn btn-warning me-1"> 수정 </a>
+</div>
+<div class="d-flex justify-content-end">
+    <b>리뷰 내용</b> : {{review.content}}
+</div>
+<div class="d-flex justify-content-end">
+    <b>리뷰 별점</b> : {{review.rating}}
+</div>
+<div class="d-flex justify-content-end">
+    <b>사진 경로</b> : {{review.photoUrl}}
+</div>
+
+</body>
+</html>
