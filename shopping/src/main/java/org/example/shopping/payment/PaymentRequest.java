@@ -13,7 +13,12 @@ public class PaymentRequest {
         private PaymentMethod method;
 
         public Payment toEntity() {
-            return new Payment(productCode, productName, amount, method);
+           return Payment.builder()
+                   .productCode(this.productCode)
+                   .productName(this.productName)
+                   .amount(this.amount)
+                   .method(this.method)
+                   .build();
         }
     }
 

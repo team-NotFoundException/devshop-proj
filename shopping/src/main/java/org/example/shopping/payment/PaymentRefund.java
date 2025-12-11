@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.utils.BaseTimeEntity;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "payment_refund")
 @Getter
@@ -26,5 +28,12 @@ public class PaymentRefund extends BaseTimeEntity {
     private String reason;
 
     private RefundStatus status;
+
+    private String failureCode;
+
+    private String failureMessage;
+
+    private LocalDateTime requestedAt;
+    private LocalDateTime completedAt;
 
 }
