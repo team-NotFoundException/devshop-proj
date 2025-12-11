@@ -22,9 +22,7 @@ public class Order extends BaseTimeEntity {
 
     Long totalPrice;
 
-    @Builder
-    public Order(Long id, OrderStatus orderStatus, String paymentInfo, Long totalPrice, String user) {
-        this.id = id;
+    public Order(OrderStatus orderStatus, String paymentInfo, Long totalPrice, String user) {
         this.orderStatus = orderStatus;
         this.paymentInfo = paymentInfo;
         this.totalPrice = totalPrice;
