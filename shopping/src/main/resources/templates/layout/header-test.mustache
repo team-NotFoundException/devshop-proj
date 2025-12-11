@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevShop Header</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 8px 20px;
+            font-size: 12px;
+            gap: 15px;
+            background: #fafafa;
+        }
+
+        .top-bar a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .top-bar a:hover {
+            color: #000;
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .cart-icon, .menu-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .cart-icon:hover, .menu-icon:hover {
+            opacity: 0.7;
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+            padding: 15px 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .top-bar {
+                font-size: 11px;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="top-bar">
+        <a href="#">고객센터</a>
+        <a href="#">마이페이지</a>
+        <a href="#">로그인</a>
+    </div>
+
+    <div class="main-header">
+        <div class="logo">DEVSHOP</div>
+        <div class="header-icons">
+            <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 2L7.17 4H2v2h2l3.6 7.59L6.25 16.04C6.09 16.32 6 16.65 6 17c0 1.1.9 2 2 2h12v-2H8.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.01 6H6.21l-.94-2H9V2zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <a href="#">키보드</a>
+        <a href="#">손목받침대</a>
+        <a href="#">옷</a>
+        <a href="#">머그컵</a>
+        <a href="#">액세서리</a>
+    </nav>
+</header>
+</body>
+</html>
