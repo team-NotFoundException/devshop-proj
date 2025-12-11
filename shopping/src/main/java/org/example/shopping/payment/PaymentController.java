@@ -11,6 +11,7 @@ public class PaymentController {
 
     private final PaymentPersistRepository repository;
 
+    // 결제 생성
     @GetMapping("/payment/payment")
     public String createPayment(){
         return "payment/payment-form";
@@ -23,4 +24,5 @@ public class PaymentController {
         return "redirect:/";
     }
 
+    // 결제 승인
 }
