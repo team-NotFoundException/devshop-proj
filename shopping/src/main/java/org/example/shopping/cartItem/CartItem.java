@@ -1,24 +1,21 @@
-package org.example.shopping.orderItem;
+package org.example.shopping.cartItem;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.shopping.order.Order;
-import org.example.shopping.utils.BaseTimeEntity;
+import org.example.shopping.cart.Cart;
 
 @Data
 @NoArgsConstructor
-@Table(name = "order_item_tb")
+@Table(name = "cart_item_tb")
 @Entity
-public class OrderItem extends BaseTimeEntity {
-
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    Order order;
+    Cart cart;
 
     String product;
 
@@ -28,8 +25,8 @@ public class OrderItem extends BaseTimeEntity {
 
     Long totalPrice;
 
-    public OrderItem(Order order, Long orderPrice, String product, Integer quantity, Long totalPrice) {
-        this.order = order;
+    public CartItem(Cart cart, Long orderPrice, String product, Integer quantity, Long totalPrice) {
+        this.cart = cart;
         this.orderPrice = orderPrice;
         this.product = product;
         this.quantity = quantity;
