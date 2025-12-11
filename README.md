@@ -3,6 +3,24 @@
 ```mermaid
 erDiagram
 
+    %% ============================
+    %% SHIPPING INFO 추가
+    %% ============================
+    SHIPPING_INFO {
+        BIGINT id PK
+        BIGINT orderId FK
+        VARCHAR receiverName
+        VARCHAR receiverPhone
+        VARCHAR address
+        VARCHAR detailAddress
+        VARCHAR requestMessage
+    }
+
+    ORDER ||--|| SHIPPING_INFO : "has shipping info"
+
+    %% ============================
+    %% USER & ROLE
+    %% ============================
     USER {
         BIGINT id PK
         VARCHAR username
@@ -26,6 +44,12 @@ erDiagram
         BIGINT roleId FK
     }
 
+    USER ||--o{ USER_ROLES : "has"
+    ROLE ||--o{ USER_ROLES : "assigned"
+
+    %% ============================
+    %% CATEGORY & PRODUCT
+    %% ============================
     CATEGORY {
         BIGINT categoryId PK
         VARCHAR categoryName
@@ -49,6 +73,12 @@ erDiagram
         DATETIME updatedAt
     }
 
+    CATEGORY ||--o{ CATEGORY : "parent of"
+    CATEGORY ||--o{ PRODUCT : "categorizes"
+
+    %% ============================
+    %% FILE MANAGEMENT
+    %% ============================
     FILE_INFO {
         BIGINT fileId PK
         VARCHAR originalName
@@ -65,6 +95,21 @@ erDiagram
         BIGINT fileId FK
     }
 
+    REVIEW_FILE {
+        BIGINT id PK
+        BIGINT reviewId FK
+        BIGINT fileId FK
+    }
+
+    PRODUCT ||--o{ PRODUCT_FILE : "has image"
+    FILE_INFO ||--o{ PRODUCT_FILE : "referenced by"
+
+    REVIEW ||--o{ REVIEW_FILE : "has image"
+    FILE_INFO ||--o{ REVIEW_FILE : "referenced by"
+
+    %% ============================
+    %% REVIEW
+    %% ============================
     REVIEW {
         BIGINT reviewId PK
         BIGINT productId FK
@@ -74,12 +119,12 @@ erDiagram
         DATETIME createdAt
     }
 
-    REVIEW_FILE {
-        BIGINT id PK
-        BIGINT reviewId FK
-        BIGINT fileId FK
-    }
+    USER ||--o{ REVIEW : "writes"
+    PRODUCT ||--o{ REVIEW : "has reviews"
 
+    %% ============================
+    %% CART
+    %% ============================
     CART {
         BIGINT cartId PK
         BIGINT userId FK
@@ -92,6 +137,13 @@ erDiagram
         INT quantity
     }
 
+    USER ||--|| CART : "owns"
+    CART ||--o{ CART_ITEM : "contains"
+    PRODUCT ||--o{ CART_ITEM : "in cart"
+
+    %% ============================
+    %% ORDER
+    %% ============================
     "ORDER" {
         BIGINT orderId PK
         BIGINT userId FK
@@ -110,6 +162,13 @@ erDiagram
         DECIMAL totalPrice
     }
 
+    USER ||--o{ ORDER : "places"
+    ORDER ||--o{ ORDER_ITEM : "contains"
+    PRODUCT ||--o{ ORDER_ITEM : "purchased"
+
+    %% ============================
+    %% PAYMENT
+    %% ============================
     PAYMENT {
         BIGINT id PK
         VARCHAR username FK
@@ -127,31 +186,7 @@ erDiagram
         DATETIME cancelledAt
     }
 
-    %% RELATIONSHIPS %%
-
-    USER ||--o{ USER_ROLES : "has"
-    ROLE ||--o{ USER_ROLES : "assigned"
-
-    USER ||--|| CART : "owns"
-    CART ||--o{ CART_ITEM : "contains"
-    PRODUCT ||--o{ CART_ITEM : "in cart"
-
-    CATEGORY ||--o{ CATEGORY : "parent of"
-    CATEGORY ||--o{ PRODUCT : "categorizes"
-
-    USER ||--o{ REVIEW : "writes"
-    PRODUCT ||--o{ REVIEW : "has reviews"
-
-    REVIEW ||--o{ REVIEW_FILE : "has image"
-    FILE_INFO ||--o{ REVIEW_FILE : "referenced by"
-
-    PRODUCT ||--o{ PRODUCT_FILE : "has image"
-    FILE_INFO ||--o{ PRODUCT_FILE : "referenced by"
-
-    USER ||--o{ ORDER : "places"
-    ORDER ||--o{ ORDER_ITEM : "contains"
-    PRODUCT ||--o{ ORDER_ITEM : "purchased"
-
     USER ||--o{ PAYMENT : "makes"
     ORDER ||--|| PAYMENT : "paid by"
+
 ```
