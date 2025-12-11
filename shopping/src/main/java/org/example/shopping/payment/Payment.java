@@ -1,10 +1,7 @@
 package org.example.shopping.payment;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.utils.BaseTimeEntity;
@@ -17,6 +14,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Payment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +48,7 @@ public class Payment extends BaseTimeEntity {
 
     private LocalDateTime cancelledAt;
 
+
     // 결제 성공
     public void paySuccess() {
         this.status = PaymentStatus.SUCCESS;
@@ -69,6 +69,4 @@ public class Payment extends BaseTimeEntity {
         this.status = PaymentStatus.REFUNDED;
         this.cancelledAt = LocalDateTime.now();
     }
-
-
 }
