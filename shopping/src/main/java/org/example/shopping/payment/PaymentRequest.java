@@ -10,7 +10,7 @@ public class PaymentRequest {
         private String productCode;
         private String productName;
         private Long amount;
-        private PaymentMethod method;
+        private PaymentMethod method = PaymentMethod.MOCK;
 
         public Payment toEntity() {
            return Payment.builder()
@@ -20,6 +20,20 @@ public class PaymentRequest {
                    .method(this.method)
                    .build();
         }
+    }
+
+    @Data
+    public static class ApproveDTO{
+        private String paymentKey;
+        private String orderId;
+        private Long amount;
+        private PaymentMethod method;
+        private String productCode;
+        private String productName;
+        private String failureCode;
+        private String failureMessage;
+
+
     }
 
     @Data

@@ -31,7 +31,7 @@ public class Payment extends BaseTimeEntity {
 
     private PaymentMethod method;
 
-    private PaymentStatus status;
+    private PaymentStatus status = PaymentStatus.READY;
 
     private String productCode;
 
@@ -50,7 +50,7 @@ public class Payment extends BaseTimeEntity {
 
 
     // 결제 성공
-    public void paySuccess() {
+    public void paySuccess(PaymentRequest.ApproveDTO approveDTO) {
         this.status = PaymentStatus.SUCCESS;
         this.approvedAt = LocalDateTime.now();
         this.failureCode = null;
@@ -58,10 +58,10 @@ public class Payment extends BaseTimeEntity {
     }
 
     // 결제 실패 처리
-    public void payFailed(String code, String message) {
+    public void payFailed(PaymentRequest.ApproveDTO approveDTO) {
         this.status = PaymentStatus.FAILED;
-        this.failureCode = code;
-        this.failureMessage = message;
+        this.failureCode = approveDTO.getFailureCode();
+        this.failureMessage = approveDTO.getFailureMessage();
     }
 
     // 환불 처리
