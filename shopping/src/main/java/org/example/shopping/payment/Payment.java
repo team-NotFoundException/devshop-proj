@@ -29,8 +29,10 @@ public class Payment extends BaseTimeEntity {
 
     private Long amount;
 
+    @Enumerated(EnumType.STRING)
     private PaymentMethod method;
 
+    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
     private String productCode;
@@ -58,10 +60,10 @@ public class Payment extends BaseTimeEntity {
     }
 
     // 결제 실패 처리
-    public void payFailed(String code, String message) {
+    public void payFailed(PaymentRequest.ApproveDTO approveDTO) {
         this.status = PaymentStatus.FAILED;
-        this.failureCode = code;
-        this.failureMessage = message;
+        this.failureCode = approveDTO.getFailureCode();
+        this.failureMessage = approveDTO.getFailureMessage();
     }
 
     // 환불 처리
