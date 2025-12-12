@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.utils.BaseTimeEntity;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,17 +19,21 @@ public class Order extends BaseTimeEntity {
 
     String user;
 
+    @OneToMany(mappedBy = "order")
+    List<OrderItem> items;
+
     OrderStatus orderStatus;
 
     String paymentInfo;
 
     Long totalPrice;
 
-    public Order(OrderStatus orderStatus, String paymentInfo, Long totalPrice, String user) {
+    public Order(String user, List<OrderItem> items, OrderStatus orderStatus, String paymentInfo, Long totalPrice) {
+        this.user = user;
+        this.items = items;
         this.orderStatus = orderStatus;
         this.paymentInfo = paymentInfo;
         this.totalPrice = totalPrice;
-        this.user = user;
     }
 
     public void updateOrderStatus(OrderStatus newStatus) {
