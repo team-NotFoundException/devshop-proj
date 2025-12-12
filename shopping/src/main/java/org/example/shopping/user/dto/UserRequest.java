@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.example.shopping.user.User;
 import org.example.shopping.user.enums.Gender;
 
 import java.util.Date;
@@ -48,7 +49,22 @@ public class UserRequest {
         private String phoneNumber; // 필수
 
         private Gender gender; // 선택
+
+        @Pattern(regexp = )
         private Date birthday; // 선택
+
+        public User toEntity() {
+            return User.builder()
+                    .username(this.username)
+                    .password(this.password)
+                    .nickname(this.nickname)
+                    .email(this.email)
+                    .address(this.address)
+                    .phoneNumber(this.phoneNumber)
+                    .gender(this.gender)
+                    .birthday(this.birthday)
+                    .build();
+        }
     }
 
     @Data

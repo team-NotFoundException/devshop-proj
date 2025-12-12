@@ -65,6 +65,8 @@ public class UserController {
             throw new IllegalArgumentException("이미 존재하는 사용자 이름입낟");
         }
 
+        User user = signUpDTO.toEntity();
+
     }
 
     // ---------------------------------------- //

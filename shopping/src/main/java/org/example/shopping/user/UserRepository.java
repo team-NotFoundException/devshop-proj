@@ -1,13 +1,17 @@
 package org.example.shopping.user;
 
 import jakarta.persistence.EntityManager;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@RequiredArgsConstructor
 @Repository
-public class UserRepository {
-    private final EntityManager em;
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsernameAndPassword(@Size(min = 5, max = 10) @NotBlank(message = "id는 필수 입력 항목입니다.") String username, @Size(min = 6, max = 16) @NotBlank(message = "pw는 필수 입력 항목입니다.") String password);
+
+    User findByUsername(@Size(min = 5, max = 10) @NotBlank(message = "id는 필수 입력 항목입니다.") String username);
 
     // 로그인
 
