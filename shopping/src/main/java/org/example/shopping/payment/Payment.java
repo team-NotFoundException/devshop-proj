@@ -29,9 +29,11 @@ public class Payment extends BaseTimeEntity {
 
     private Long amount;
 
+    @Enumerated(EnumType.STRING)
     private PaymentMethod method;
 
-    private PaymentStatus status = PaymentStatus.READY;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
 
     private String productCode;
 
@@ -50,7 +52,7 @@ public class Payment extends BaseTimeEntity {
 
 
     // 결제 성공
-    public void paySuccess(PaymentRequest.ApproveDTO approveDTO) {
+    public void paySuccess() {
         this.status = PaymentStatus.SUCCESS;
         this.approvedAt = LocalDateTime.now();
         this.failureCode = null;
