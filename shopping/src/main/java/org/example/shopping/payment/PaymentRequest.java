@@ -3,6 +3,8 @@ package org.example.shopping.payment;
 import lombok.Data;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
 
+import java.time.LocalDateTime;
+
 public class PaymentRequest {
 
     @Data
@@ -10,7 +12,7 @@ public class PaymentRequest {
         private String productCode;
         private String productName;
         private Long amount;
-        private PaymentMethod method = PaymentMethod.MOCK;
+        private PaymentMethod method;
 
         public Payment toEntity() {
            return Payment.builder()

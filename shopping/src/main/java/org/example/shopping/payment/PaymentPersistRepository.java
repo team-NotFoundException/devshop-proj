@@ -16,12 +16,12 @@ public class PaymentPersistRepository {
         return payment;
     }
 
-    @Transactional
-    public Payment approveById(Long id, PaymentRequest.ApproveDTO approveDTO){
-        Payment payment = findById(id);
-        payment.paySuccess(approveDTO);
-        return payment;
-    }
+//    @Transactional
+//    public Payment approveById(Long id, PaymentRequest.ApproveDTO approveDTO){
+//        Payment payment = findById(id);
+//        payment.paySuccess(approveDTO);
+//        return payment;
+//    }
 
 
     public Payment findById(Long id){
