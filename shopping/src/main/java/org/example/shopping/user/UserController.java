@@ -30,20 +30,42 @@ public class UserController {
                     loginDTO.getUsername(),
                     loginDTO.getPassword()
             );
+            if (sessionUser == null) {
+                throw new IllegalArgumentException("사용자명 또는 비밀번호가 올바르지 않아요");
+            }
+            session.getAttribute("sessionUser");
+            return "redirect:/";
         } catch (Exception e) {
-           throw new IllegalArgumentException("id 또는 pw가 올바르지 않습니다.");
+            return "user/login-form";
         }
     }
 
     // ---------------------------------------- //
 
     // 로그아웃
+    @GetMapping("logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
 
     // ---------------------------------------- //
 
     // 회원가입 화면 요청
+    @GetMapping("/join")
+    public String JoinForm() {
+        return "user/join-form";
+    }
 
     // 회원가입 기능 요청
+    @PostMapping("/join")
+    public String joinProc(@Valid UserRequest.SignUpDTO signUpDTO) {
+        User existingUser = userRepository.findByUsername(signUpDTO.getUsername());
+        if (existingUser != null) {
+            throw new IllegalArgumentException("이미 존재하는 사용자 이름입낟");
+        }
+
+    }
 
     // ---------------------------------------- //
 

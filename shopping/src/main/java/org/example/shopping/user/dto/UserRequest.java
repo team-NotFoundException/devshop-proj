@@ -23,7 +23,7 @@ public class UserRequest {
 
     // 회원가입
     @Data
-    public static class SignUp {
+    public static class SignUpDTO {
         @Size(min = 5, max = 10)
         @NotBlank(message = "id는 필수 입력 항목입니다.")
         private String username; // 필수
