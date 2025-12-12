@@ -1,6 +1,11 @@
 package org.example.shopping.user.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.example.shopping.user.User;
 import org.example.shopping.user.enums.Gender;
 
 import java.util.Date;
@@ -8,64 +13,75 @@ import java.util.Date;
 public class UserRequest {
     @Data
     public static class LoginDTO {
+        @Size(min = 5, max = 10)
+        @NotBlank(message = "id는 필수 입력 항목입니다.")
         private String username;
-        private String password;
 
-        public void validate() {
-            if (username == null || username.trim().isEmpty()) {
-                throw new IllegalArgumentException("id는 비어있을 수 없습니다.");
-            }
-            if (password == null || password.trim().isEmpty()) {
-                throw new IllegalArgumentException("비밀번호는 비어있을 수 없습니다.");
-            }
-        }
+        @Size(min = 6, max = 16)
+        @NotBlank(message = "pw는 필수 입력 항목입니다.")
+        private String password;
     }
 
     // 회원가입
     @Data
-    public static class SignUp {
+    public static class SignUpDTO {
+        @Size(min = 5, max = 10)
+        @NotBlank(message = "id는 필수 입력 항목입니다.")
         private String username; // 필수
+
+        @Size(min = 6, max = 16)
+        @NotBlank(message = "pw는 필수 입력 항목입니다.")
         private String password; // 필수
+
+        @Size(min = 2, max = 6)
+        @NotBlank(message = "nickname은 필수 입력 항목입니다.")
         private String nickname; // 필수
 
-
+        @Email(message = "유효한 이메일 주소를 입력해주세요.")
+        @NotBlank(message = "이메일은 필수 입력 항목입니다.")
         private String email;    // 필수
+
+        @NotBlank(message = "주소는 필수 입력 항목입니다.")
         private String address;  // 필수
+
+        @NotBlank(message = "연락처는 필수 입력 항목입니다.")
+        @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
         private String phoneNumber; // 필수
+
         private Gender gender; // 선택
+
+        @Pattern(regexp = )
         private Date birthday; // 선택
 
-        public void validate() {
-            if(username == null  || username.trim().isEmpty()) {
-                throw new IllegalArgumentException("사용자명을 입력해주세요");
-            }
-            if(password == null || password.trim().isEmpty()) {
-                throw new IllegalArgumentException("비밀번호를 입력해주세요");
-            }
-            if(email == null || email.trim().isEmpty()) {
-                throw new IllegalArgumentException("이메일을 입력해주세요");
-            }
-            if(email.contains("@") == false) {
-                throw new IllegalArgumentException("올바른 이메일 형식이 아닙니다");
-            }
-            if (address == null || address.trim().isEmpty()) {
-                throw new IllegalArgumentException("주소는 비어있을 수 없습니다.");
-            }
-            if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
-                throw new IllegalArgumentException("연락처는 비어있을 수 없습니다.");
-            }
-
+        public User toEntity() {
+            return User.builder()
+                    .username(this.username)
+                    .password(this.password)
+                    .nickname(this.nickname)
+                    .email(this.email)
+                    .address(this.address)
+                    .phoneNumber(this.phoneNumber)
+                    .gender(this.gender)
+                    .birthday(this.birthday)
+                    .build();
         }
     }
 
+    @Data
     public static class UpdateDTO {
+        @Size(min = 6, max = 16)
+        @NotBlank(message = "pw는 필수 입력 항목입니다.")
         private String password; // 필수
+
+        @Size(min = 2, max = 6)
+        @NotBlank(message = "nickname은 필수 입력 항목입니다.")
         private String nickname;
+
+        @NotBlank(message = "주소는 필수 입력 항목입니다.")
         private String address;  // 필수
+
         private Gender gender; // 선택
         private Date birthday;
-
-
     }
-
 }
+
