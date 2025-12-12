@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    list-style: none;
+    align-content: center;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.container .header {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.first-top {
+    display: flex;
+    justify-content: end;
+    padding: 8px 0 0;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.first-top a {
+    color: grey;
+}
+
+.second-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.second-top .right {
+    display: flex;
+    gap: 20px;
+}
+
+.nav {
+    padding: 20px 10px 10px 0;
+}
+
+.nav a {
+    margin-right: 23px;
+}
+
+.nav a:focus {
+    font-weight: bold;
+}
+
+.bi {
+    font-size: 25px;
+    line-height: 45px;
+}
+
+.greet {
+    font-size: 15px;
+}
+
+.carousel {
+    margin-top: 20px;
+    max-width: 1200px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.carousel-item img {
+    height: 450px;
+    object-fit: cover;
+}
+
+.home-list1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 50px;
+    padding: 0 50px;
+}
+
+.home-list2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 0 50px;
+    margin-bottom: 50px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.no-border {
+    border: none;
+}
+
+.footer {
+    text-align: center;
+    padding: 40px;
+}

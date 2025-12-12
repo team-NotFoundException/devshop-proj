@@ -16,13 +16,6 @@ public class ReviewController {
 
     private final ReviewPersistRepository repository;
 
-    // 테스트 화면
-    // http://localhost:8080/test
-    @GetMapping("/test")
-    public String test() {
-        return "layout/header";
-    }
-
     // 리뷰 저장 화면 요청
     // http://localhost:8080/review/save
     @GetMapping("/review/save")
