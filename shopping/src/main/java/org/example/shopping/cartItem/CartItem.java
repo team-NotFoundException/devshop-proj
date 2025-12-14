@@ -14,22 +14,30 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    Cart cart;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
-    String product;
+    private String product;
 
-    Integer quantity;
+    private Boolean isChecked;
 
-    Long orderPrice;
+    private Integer quantity;
 
-    Long totalPrice;
-
-    public CartItem(Cart cart, Long orderPrice, String product, Integer quantity, Long totalPrice) {
-        this.cart = cart;
-        this.orderPrice = orderPrice;
+    public CartItem(String product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
-        this.totalPrice = totalPrice;
+        this.isChecked = true;
+    }
+
+    public CartItem(CartItem entity) {
+    }
+
+    public void updateItemOption(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void updateCheckItem() {
+        this.isChecked = !this.isChecked;
     }
 }
