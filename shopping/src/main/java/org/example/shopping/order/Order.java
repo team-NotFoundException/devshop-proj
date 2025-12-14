@@ -1,7 +1,6 @@
 package org.example.shopping.order;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.orderItem.OrderItem;
@@ -17,8 +16,6 @@ public class Order extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String user;
-
     @OneToMany(mappedBy = "order")
     List<OrderItem> items;
 
@@ -28,8 +25,7 @@ public class Order extends BaseTimeEntity {
 
     Long totalPrice;
 
-    public Order(String user, List<OrderItem> items, OrderStatus orderStatus, String paymentInfo, Long totalPrice) {
-        this.user = user;
+    public Order(List<OrderItem> items, OrderStatus orderStatus, String paymentInfo, Long totalPrice) {
         this.items = items;
         this.orderStatus = orderStatus;
         this.paymentInfo = paymentInfo;

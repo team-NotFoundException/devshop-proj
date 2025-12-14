@@ -19,7 +19,7 @@ public class OrderRequest {
 
 
         public Order toEntity(String user) {
-            return new Order(user, items, orderStatus, paymentInfo, totalPrice);
+            return new Order(items, orderStatus, paymentInfo, totalPrice);
         }
     }
 }

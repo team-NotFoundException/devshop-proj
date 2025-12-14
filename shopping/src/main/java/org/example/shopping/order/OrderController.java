@@ -35,6 +35,9 @@ public class OrderController {
         if (sessionUser == null) {
             throw new RuntimeException("로그인 시 이용가능합니다.");
         }
+
+        // 나중에 추가
+
         return "redirect:result-form";
     }
 
