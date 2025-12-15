@@ -1,23 +1,24 @@
 package org.example.shopping.review;
 
 import lombok.Data;
+import org.example.shopping.user.User;
 
 public class ReviewRequest {
 
     @Data
     public static class SaveDTO {
 //        private String productId;
-//        private String userId;
-        private String content;
         private int rating;
+        private String content;
+        private User user;
         private String photoUrl;
 
-        public Review toEntity() {
+        public Review toEntity(User user) {
             return new Review(
 //                    productId,
-//                    userId,
                     rating,
                     content,
+                    user,
                     photoUrl
             );
         }
