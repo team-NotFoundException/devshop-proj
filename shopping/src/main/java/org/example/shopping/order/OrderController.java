@@ -15,11 +15,12 @@ import java.util.List;
 @Controller
 public class OrderController {
 
-    private final OrderPersistRepository orderPersistRepository;
+    private final OrderRepository orderRepository;
 
     // 주문 생성 요청 화면
+    // http://localhost:8080/order/create
     @GetMapping("/order/create")
-    public String orderForm(Model model, HttpSession session) {
+    public String orderForm(HttpSession session) {
         String sessionUser = (String) session.getAttribute("sessionUser");
         if (sessionUser == null) {
             throw new RuntimeException("로그인 시 이용가능합니다.");
@@ -36,6 +37,8 @@ public class OrderController {
             throw new RuntimeException("로그인 시 이용가능합니다.");
         }
 
+
+
         // 나중에 추가
 
         return "redirect:result-form";
@@ -50,15 +53,16 @@ public class OrderController {
         }
 
         Order order = createDTO.toEntity(sessionUser);
-        orderPersistRepository.save(order);
+        orderRepository.save(order);
         return "redirect:result-form";
     }
 
 
     // 주문목록 조회
+    // http://localhost:8080/order/list
     @GetMapping("/order/list")
     public String orderList(Model model) {
-        List<Order> orderList = orderPersistRepository.findAll();
+        List<Order> orderList = orderRepository.findAll();
         model.addAttribute("orderList", orderList);
         return "order/list";
     }
@@ -66,7 +70,7 @@ public class OrderController {
     // 주문상세 조회
     @GetMapping("/order/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        Order order = orderPersistRepository.findById(id)
+        Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("해당 id의 정보를 찾을 수 없습니다."));
 
         model.addAttribute(order);

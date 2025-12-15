@@ -14,4 +14,10 @@ public class CartRequest {
             return new CartItem(productId, quantity);
         }
     }
+
+    @Data
+    public static class UpdateOptionDTO {
+//        private String size;
+        private Integer quantity;
+    }
 }
