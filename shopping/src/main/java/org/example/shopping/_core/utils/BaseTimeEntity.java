@@ -1,4 +1,4 @@
-package org.example.shopping.utils;
+package org.example.shopping._core.utils;
 
 
 import jakarta.persistence.Column;

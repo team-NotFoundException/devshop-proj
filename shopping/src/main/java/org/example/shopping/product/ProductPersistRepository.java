@@ -2,6 +2,7 @@ package org.example.shopping.product;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.springframework.stereotype.Repository;
@@ -76,7 +77,7 @@ public class ProductPersistRepository {
     public Product updateById(Long id, ProductRequest.UpdateDTO dto) {
         Product product = em.find(Product.class, id);
         if (product == null) {
-            throw new IllegalArgumentException("수정할 상품이 존재하지 않습니다.");
+            throw new Exception404("수정할 상품이 존재하지 않습니다.");
         }
 
 
@@ -95,7 +96,7 @@ public class ProductPersistRepository {
     public void deleteById(Long id) {
         Product product = em.find(Product.class, id);
         if (product == null) {
-            throw new IllegalArgumentException("삭제할 상품이 존재하지 않습니다.");
+            throw new Exception404("삭제할 상품이 존재하지 않습니다.");
         }
         em.remove(product);
     }
