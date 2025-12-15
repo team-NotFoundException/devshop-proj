@@ -71,7 +71,7 @@ public class ProductController {
     }
 
     // 상품 삭제
-    @PostMapping("/id/delte}")
+    @PostMapping("/id/delte")
     public String delet(@PathVariable Long id) {
         productRepository.deleteById(id);
         return "redirect:/products";

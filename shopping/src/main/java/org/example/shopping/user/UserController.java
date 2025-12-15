@@ -4,16 +4,22 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.user.dto.UserRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserRepository userRepository;
+    private final UserService userService;
 
     // 로그인 화면 요청
     // http://localhost:8080/login
@@ -24,20 +30,16 @@ public class UserController {
 
     // 로그인 기능 요청
     @PostMapping("/login")
-    public String loginProc(@Valid UserRequest.LoginDTO loginDTO, HttpSession session) {
-        try {
-            User sessionUser = userRepository.findByUsernameAndPassword(
-                    loginDTO.getUsername(),
-                    loginDTO.getPassword()
-            );
-            if (sessionUser == null) {
-                throw new IllegalArgumentException("사용자명 또는 비밀번호가 올바르지 않아요");
-            }
-            session.getAttribute("sessionUser");
-            return "redirect:/";
-        } catch (Exception e) {
-            return "user/login-form";
-        }
+    public String login(
+            @Valid @ModelAttribute UserRequest.LoginDTO loginDTO,
+            HttpSession session
+    ) {
+
+        User user = userService.login(loginDTO);
+
+        session.setAttribute("userSessionId", user.getId());
+
+        return "redirect:/";
     }
 
     // ---------------------------------------- //
@@ -57,23 +59,43 @@ public class UserController {
         return "user/join-form";
     }
 
-    // 회원가입 기능 요청
-    @PostMapping("/join")
-    public String joinProc(@Valid UserRequest.SignUpDTO signUpDTO) {
-        User existingUser = userRepository.findByUsername(signUpDTO.getUsername());
-        if (existingUser != null) {
-            throw new IllegalArgumentException("이미 존재하는 사용자 이름입낟");
-        }
+    @PostMapping("/signup")
+    public String signUp(
+            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
+    ) {
 
-        User user = signUpDTO.toEntity();
+        userService.signUp(signUpDTO);
 
+        return "redirect:/users/login";
     }
 
     // ---------------------------------------- //
 
     // 회원정보 수정 화면 요청
+    @GetMapping("/{id}/edit")
+    public String userUpdateView(
+            @PathVariable Long id,
+            @SessionAttribute("userSessionId") Long userSessionId,
+            Model model
+    ) {
+        User userEntity = userService.userUpdateView(userSessionId);
+
+        model.addAttribute("user", userEntity);
+
+        return "user/updateForm";
+    }
 
     // 회원정보 수정 기능 요청
+    @PostMapping("/{id}")
+    public String userUpdate(
+            @PathVariable Long id,
+            @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,
+            @SessionAttribute("userSessionId") Long userSessionId
+    ) {
+        userService.userUpdate(updateDTO, userSessionId);
+
+        return "redirect:/users/" + id;
+    }
 
     // ---------------------------------------- //
 

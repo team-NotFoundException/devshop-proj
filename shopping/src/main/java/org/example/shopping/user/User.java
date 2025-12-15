@@ -1,22 +1,26 @@
 package org.example.shopping.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.shopping.user.dto.UserRequest;
 import org.example.shopping.user.enums.Gender;
 import org.example.shopping.utils.BaseTimeEntity;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 @Table(name = "user_tb")
 @NoArgsConstructor
-
+@Data
 public class User extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,11 +50,13 @@ public class User extends BaseTimeEntity {
 
     private Gender gender;
 
-    private Date birthday;
+    @Column
+    private LocalDate birthday;
 
     @Builder
-    public User(Long id, String username, String password, String nickname, String  email, String address, String phoneNumber, Gender gender, Date birthday, Timestamp createdAt, Timestamp updatedAt) {
+    public User(Long id, String username, String password, String nickname, String  email, String address, String phoneNumber, Gender gender, LocalDate birthday) {
         this.id = id;
+        this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
@@ -58,7 +64,16 @@ public class User extends BaseTimeEntity {
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.birthday = birthday;
-        this.getCreatedAt();
-        this.getUpdatedAt();
+    }
+
+    public boolean isOwner(Long userId) {
+        return this.id.equals(userId);
+    }
+
+    public void update(@Valid UserRequest.UpdateDTO updateDTO) {
+        this.password = updateDTO.getPassword();
+        this.address = updateDTO.getAddress();
+        this.nickname = updateDTO.getNickname();
+        this.gender = updateDTO.getGender();
     }
 }

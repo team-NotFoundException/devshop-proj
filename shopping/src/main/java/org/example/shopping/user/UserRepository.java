@@ -7,11 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsernameAndPassword(@Size(min = 5, max = 10) @NotBlank(message = "id는 필수 입력 항목입니다.") String username, @Size(min = 6, max = 16) @NotBlank(message = "pw는 필수 입력 항목입니다.") String password);
 
-    User findByUsername(@Size(min = 5, max = 10) @NotBlank(message = "id는 필수 입력 항목입니다.") String username);
+    Optional<User> findByUsername(String username);
+
+    Optional<User> findByUsernameAndPassword(String username, String password);
 
     // 로그인
 

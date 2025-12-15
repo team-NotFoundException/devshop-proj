@@ -8,7 +8,7 @@ import lombok.Data;
 import org.example.shopping.user.User;
 import org.example.shopping.user.enums.Gender;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserRequest {
     @Data
@@ -50,8 +50,9 @@ public class UserRequest {
 
         private Gender gender; // 선택
 
-        @Pattern(regexp = )
-        private Date birthday; // 선택
+        @Pattern(regexp = "^(19\\d{2}|20\\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$",
+                message = "생년월일은 yyyy-MM-dd 형식이어야 합니다.")
+        private String birthday; // 선택
 
         public User toEntity() {
             return User.builder()
@@ -62,7 +63,7 @@ public class UserRequest {
                     .address(this.address)
                     .phoneNumber(this.phoneNumber)
                     .gender(this.gender)
-                    .birthday(this.birthday)
+                    .birthday(LocalDate.parse(this.birthday))
                     .build();
         }
     }
@@ -81,7 +82,6 @@ public class UserRequest {
         private String address;  // 필수
 
         private Gender gender; // 선택
-        private Date birthday;
     }
 }
 
