@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
-import org.example.shopping.utils.BaseTimeEntity;
+import org.example.shopping._core.utils.BaseTimeEntity;
 
 import java.time.LocalDateTime;
 

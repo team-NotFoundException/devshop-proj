@@ -59,4 +59,12 @@ public class Product {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void update(ProductRequest.UpdateDTO dto) {
+        this.updatedAt = LocalDateTime.now();
+        this.price = dto.getPrice();
+        this.description = dto.getDescription();
+        this.thumbnailUrl = dto.getThumbnailUrl();
+        if (this.status == null) this.status = ProductStatus.active;
+    }
 }
