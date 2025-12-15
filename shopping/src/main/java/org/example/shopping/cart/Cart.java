@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.cartItem.CartItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,12 +18,24 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String user;
+    @OneToMany(mappedBy = "cart")
+    private List<CartItem> cartItems = new ArrayList<>();
 
-    Long totalPrice;
+    private Long totalPrice;
 
-    public Cart(Long totalPrice, String user) {
+    public Cart(Long totalPrice) {
         this.totalPrice = totalPrice;
-        this.user = user;
     }
+
+    public void addItem(CartItem item) {
+        item.setCart(this);
+        this.cartItems.add(item);
+    }
+
+    public void removeItem(CartItem item) {
+        this.cartItems.remove(item);
+        item.setCart(null);
+    }
+
+
 }
