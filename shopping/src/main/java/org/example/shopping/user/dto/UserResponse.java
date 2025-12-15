@@ -1,5 +1,5 @@
 package org.example.shopping.user.dto;
 
-public class Response {
+public class UserResponse {
 
 }

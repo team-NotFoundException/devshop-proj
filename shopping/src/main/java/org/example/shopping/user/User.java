@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.user.enums.Gender;
 import org.example.shopping.utils.BaseTimeEntity;
@@ -16,7 +17,7 @@ import java.util.Date;
 @Entity
 @Table(name = "user_tb")
 @NoArgsConstructor
-
+@Data
 public class User extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,6 +52,7 @@ public class User extends BaseTimeEntity {
     @Builder
     public User(Long id, String username, String password, String nickname, String  email, String address, String phoneNumber, Gender gender, Date birthday, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
+        this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;

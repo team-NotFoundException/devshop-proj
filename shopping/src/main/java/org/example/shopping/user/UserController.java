@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.user.dto.UserRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -67,11 +68,27 @@ public class UserController {
 
         User user = signUpDTO.toEntity();
 
+        userRepository.save(user);
+
+        return "redirect:/login";
     }
 
     // ---------------------------------------- //
 
     // 회원정보 수정 화면 요청
+    @GetMapping("/user/update")
+    public String updateForm(Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) {
+            System.out.println("로그인 하지 않은 사용자");
+            return "redirect:/login";
+        }
+
+        User user =  userRepository.findById(sessionUser.getId());
+        model.addAttribute("user", user);
+
+        return "user/update-form";
+    }
 
     // 회원정보 수정 기능 요청
 
