@@ -2,9 +2,10 @@ package org.example.shopping.payment;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
-import org.example.shopping.utils.BaseTimeEntity;
+import org.example.shopping.user.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -21,7 +22,8 @@ public class Payment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     private String orderId;
 
@@ -44,7 +46,7 @@ public class Payment extends BaseTimeEntity {
     private String failureMessage;
 
     @CreationTimestamp
-    private LocalDateTime requestAt;
+    private LocalDateTime requestedAt;
 
     private LocalDateTime approvedAt;
 
@@ -60,10 +62,10 @@ public class Payment extends BaseTimeEntity {
     }
 
     // 결제 실패 처리
-    public void payFailed(PaymentRequest.ApproveDTO approveDTO) {
+    public void payFailed(String code, String message) {
         this.status = PaymentStatus.FAILED;
-        this.failureCode = approveDTO.getFailureCode();
-        this.failureMessage = approveDTO.getFailureMessage();
+        this.failureCode = code;
+        this.failureMessage = message;
     }
 
     // 환불 처리

@@ -1,9 +1,8 @@
-package org.example.shopping.payment;
+package org.example.shopping.payment.dto;
 
 import lombok.Data;
+import org.example.shopping.payment.Payment;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
-
-import java.time.LocalDateTime;
 
 public class PaymentRequest {
 
@@ -29,11 +28,12 @@ public class PaymentRequest {
         private String paymentKey;
         private String orderId;
         private Long amount;
+
         private PaymentMethod method;
         private String productCode;
         private String productName;
-        private String failureCode;
-        private String failureMessage;
+
+
 
 
     }
