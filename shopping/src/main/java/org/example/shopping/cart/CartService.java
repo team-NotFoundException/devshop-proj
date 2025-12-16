@@ -1,11 +1,15 @@
 package org.example.shopping.cart;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.cartItem.CartItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,10 +19,13 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
 
     // 장바구니 아이템 목록
-    public Cart getCartItems(Long cartId) {
+    public List<CartResponse.CartItemListDTO> getCartItems(Long cartId) {
 
-        return cartRepository.findById(cartId)
-                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+         List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
+
+         return cartItems.stream()
+                 .map(cartItem -> new CartResponse.CartItemListDTO(cartItem))
+                 .collect(Collectors.toList());
     }
 
     // 아이템 추가
@@ -28,26 +35,31 @@ public class CartService {
     // +) 추가하는 아이템이 이미 장바구니에 있으면 [상품 id와 옵션(사이즈, 색깔 등) 확인]
     // -> 오류 발생(이미 장바구니에 있는 아이템입니다.)
     @Transactional
-    public Cart addCartItem(CartRequest.AddDTO addDTO, Long cartId) {
+    public void addCartItem(Long cartItemId, CartRequest.AddDTO addDTO) {
 
-        Cart cartEntity = cartRepository.findById(cartId)
+        Cart cartEntity = cartRepository.findById(addDTO.getCart().getId())
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        cartEntity.addItem(addDTO.toEntity());
+        // 나중에 product option 까지 확인해서 찾는 로직으로 변경
+        CartItem item = cartItemRepository.findByCart_IdAndId(addDTO.getCart().getId(), cartItemId)
+                        .orElse(null);
 
-        return cartEntity;
+        if (item != null) {
+            throw new Exception400("이미 장바구니에 있습니다.");
+        } else {
+            CartItem newItem = cartEntity.addItem(addDTO.getProductId(), addDTO.getQuantity());
+            cartItemRepository.save(newItem);
+        }
     }
 
     // 아이템 삭제
     @Transactional
-    public void removeCartItem(Long cartId, Long cartItemId) {
+    public void removeCartItem(Long cartId) {
 
-        CartItem cartItemEntity = cartItemRepository.findByCart_IdAndId(cartId, cartItemId)
-                .orElseThrow(() -> new Exception404("아이템을 찾을 수 없습니다."));
+        cartRepository.findById(cartId)
+                        .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        Cart cart = cartItemEntity.getCart();
-
-        cart.removeItem(cartItemEntity);
+        cartItemRepository.deleteByCartIdAndIsChecked(cartId);
     }
 
     // 아이템 선택

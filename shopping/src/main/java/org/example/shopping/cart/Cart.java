@@ -21,25 +21,16 @@ public class Cart {
 
 //    @OneToOne
 //    private User user;
-
-    @OneToMany(mappedBy = "cart")
-    private List<CartItem> cartItems = new ArrayList<>();
-
+    
     private Long totalPrice;
 
     public Cart(Long totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public void addItem(CartItem item) {
-        item.setCart(this);
-        this.cartItems.add(item);
+    public CartItem addItem(String productId, Integer quantity) {
+        CartItem cartItem = new CartItem(this, productId, quantity);
+        return cartItem;
     }
-
-    public void removeItem(CartItem item) {
-        this.cartItems.remove(item);
-        item.setCart(null);
-    }
-
 
 }
