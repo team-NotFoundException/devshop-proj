@@ -8,7 +8,7 @@ public class TestingController {
 
     // 테스트 홈 화면
     // http://localhost:8080/home
-    @GetMapping("/home")
+    @GetMapping({"/home"})
     public String test1() {
         return "layout/index";
     }

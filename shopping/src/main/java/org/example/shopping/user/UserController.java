@@ -2,17 +2,12 @@ package org.example.shopping.user;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.errors.exception.Exception400;
-import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.user.dto.UserRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,7 +36,7 @@ public class UserController {
             session.setAttribute("userSessionId", user.getId());
 
             System.out.println("성공~");
-            return "user/join-form";
+            return "layout/index";
         } catch (Exception e) {
             System.out.println("실패지롱");
             return "user/join-form";
