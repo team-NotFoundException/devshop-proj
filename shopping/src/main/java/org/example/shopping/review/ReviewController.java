@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception401;
 import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping.product.Product;
+import org.example.shopping.product.ProductRepository;
+import org.example.shopping.product.ProductService;
 import org.example.shopping.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,110 +21,97 @@ import java.util.List;
 @Controller
 public class ReviewController {
 
-    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
+    private final ProductRepository productRepository;
 
-    // 리뷰 저장 화면 요청
-    // http://localhost:8080/review/save
-    @GetMapping("/review/save")
-    public String saveForm(HttpSession session) {
-        User sessionUser = (User)session.getAttribute("sessionUser");
-        if (sessionUser == null) {
-            throw new Exception401("로그인 먼저 해주세요");
-        }
+    // 리뷰 저장 화면 요청 (로그인 필요)
+    // http://localhost:8080/products/1/review/save
+    @GetMapping("/products/{productId}/review/save")
+    public String saveForm(
+            @PathVariable Long productId,
+            HttpSession session,
+            Model model
+    ) {
+//        User sessionUser = (User)session.getAttribute("sessionUser");
+//        if (sessionUser == null) {
+//            throw new Exception401("로그인 먼저 해주세요");
+//        }
+        model.addAttribute("productId", productId);
         return "review/save-form";
     }
 
-    // 리뷰 저장 요청 (기능 요청)
-    // http://localhost:8080/review/save
-
-    @PostMapping("/review/save")
+    // 리뷰 저장 (로그인 필요)
+    @PostMapping("/products/{productId}/review/save")
     public String saveProc(
+            @PathVariable Long productId,
             ReviewRequest.SaveDTO saveDTO,
             HttpSession session
     ) {
-        // 1. 인증 처리 확인
         User sessionUser = (User)session.getAttribute("sessionUser");
 
-        Review review = saveDTO.toEntity(sessionUser);
-        reviewRepository.save(review);
-        return "redirect:/";
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new Exception404("주문 상품을 찾을 수 없습니다."));
+
+        reviewService.create(saveDTO, sessionUser, product);
+        return "redirect:/products/{productId}/review/list";
     }
 
-    // 리뷰 조회
+    // 리뷰 목록 조회
     // http://localhost:8080/review/list
-    @GetMapping({"/review/list", "/"})
+    @GetMapping({"/products/{productId}/review/list"})
     public String findAll(Model model) {
-        List<Review> reviewList = reviewRepository.findAll();
+        List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews();
         model.addAttribute("reviewList", reviewList);
         return "review/list";
     }
 
     // 리뷰 상세 조회
     // http://localhost:8080/review/1
-    @GetMapping("/review/{id}")
-    public String findById(@PathVariable Long id, Model model) {
-        Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new Exception404("수정할 리뷰를 찾을 수 없어요"));
+    @GetMapping("/products/{productId}/review/{id}")
+    public String findById(@PathVariable Long productId, Model model, HttpSession session) {
+        ReviewResponse.DetailDTO review = reviewService.getDetailView(productId);
 
         model.addAttribute("review", review);
         return "review/detail";
     }
 
-    // 리뷰 수정 화면 요청
+    // 리뷰 수정 화면 요청 (로그인 필요)
     // http://localhost:8080/review/1/update
-    @GetMapping("/review/{id}/update")
-    public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser"); // sessionUser -> 상수
+    @GetMapping("/products/{productId}/review/{id}/update")
+    public String updateForm(@PathVariable Long productId, Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
-        Review review = reviewRepository.findById(id)
-                .orElseThrow(()-> new Exception404("수정할 리뷰를 찾을 수 없어요"));
-
-        if (!review.isOwner(sessionUser.getId())) {
-            throw new Exception403("리뷰 수정 권한이 없어요");
-        }
+        ReviewResponse.UpdateFormDTO review = reviewService.updateReviewView(productId, sessionUser.getId());
 
         model.addAttribute("review", review);
         return "review/update-form";
     }
 
-    // 리뷰 수정 기능 요청
+    // 리뷰 수정 (로그인 필요)
     // http://localhost:8080/review/1/update
-    @PostMapping("/review/{id}/update")
+    @PostMapping("/products/{productId}/review/{id}/update")
     public String updateProc(
-            @PathVariable Long id,
+            @PathVariable Long productId,
             ReviewRequest.UpdateDTO updateDTO,
             HttpSession session
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+        updateDTO.validate();
 
-        Review review = reviewRepository.findById(id)
-                .orElseThrow(()-> new Exception404("수정할 리뷰를 찾을 수 없어요."));
+        Review review = reviewService.updateReview(updateDTO, productId, sessionUser.getId());
 
-        if (!review.isOwner(sessionUser.getId())) {
-            throw new Exception403("리뷰 수정 권한이 없어요.");
-        }
-        try {
-//            reviewRepository.updateById(id, updateDTO);
-        } catch (Exception e) {
-            throw new RuntimeException("리뷰 수정 실패");
-        }
-        return "redirect:/review/list";
+        return "redirect:/products/{productId}/review/list";
     }
 
-    // 리뷰 삭제
-    @PostMapping("/review/{id}/delete")
+    // 리뷰 삭제 (로그인 필요)
+    @PostMapping("/products/{productId}/review/{id}/delete")
     public String delete(
-            @PathVariable Long id,
+            @PathVariable Long productId,
             HttpSession session
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Review review = reviewRepository.findById(id)
-                .orElseThrow(()-> new Exception404("삭제할 리뷰를 찾을 수 없어요."));
 
-        if (!review.isOwner(sessionUser.getId())) {
-            throw new Exception403("삭제할 권한이 없어요.");
-        }
-        reviewRepository.deleteById(id);
-        return "redirect:/";
+        reviewService.deleteReview(productId, sessionUser.getId());
+        return "redirect:/products/{productId}/review/list";
     }
 }

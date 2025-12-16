@@ -3,72 +3,75 @@ package org.example.shopping.review;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping.product.Product;
 import org.example.shopping.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ReviewService {
+
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public Review 리뷰작성(ReviewRequest.SaveDTO saveDTO, User sessionsUser) {
-        Review review = saveDTO.toEntity(sessionsUser);
-        return reviewRepository.save(review);
+    public Review create(ReviewRequest.SaveDTO saveDTO, User sessionsUser, Product product) {
+        Review review = saveDTO.toEntity(sessionsUser, product);
+        reviewRepository.save(review);
+        return review;
     }
 
-    public List<Review> 리뷰조회() {
-        return reviewRepository.findAll();
+    public List<ReviewResponse.ListDTO> getReviews() {
+        List<Review> reviewList = reviewRepository.findAllWithUserOrderByCreatedAtDesc();
+        return reviewList.stream()
+                .map(ReviewResponse.ListDTO::new)
+                .collect(Collectors.toList());
     }
 
-    public Review 리뷰상세조회(Long reviewId) {
-        return reviewRepository.findById(reviewId)
+    public ReviewResponse.DetailDTO getDetailView(Long reviewId) {
+        Review review = reviewRepository.findByIdWithUser(reviewId)
                 .orElseThrow(() -> new Exception404("리뷰를 찾을 수 없습니다."));
+
+        return new ReviewResponse.DetailDTO(review);
     }
 
-    /** 리뷰 수정화면 */
-    // 1. 리뷰 조회
-    // 2. 인가 처리
-    public Review 리뷰수정화면(Long reviewId, Long sessionUserId) {
-        Review reviewEntity = reviewRepository.findById(reviewId)
+    public ReviewResponse.UpdateFormDTO updateReviewView(Long reviewId, Long sessionUserId) {
+        Review reviewEntity = reviewRepository.findByIdWithUser(reviewId)
                 .orElseThrow(()-> new Exception404("리뷰를 찾을 수 없습니다"));
 
         if (!reviewEntity.isOwner(sessionUserId)) {
-            throw new Exception403("리뷰 수정 권한이 없습니다.");
+            throw new Exception403("본인이 작성한 리뷰만 수정할 수 있습니다.");
         }
 
-        return reviewEntity;
+        return new ReviewResponse.UpdateFormDTO(reviewEntity);
     }
 
     /** 리뷰 수정로직 */
-    // 1. 트랜잭션 처리
-    // 2. DB 에서 조회
-    // 3. 인가 처리
-    // 4. 조회된 review 에 상태값 변경 (더티 체킹)
     @Transactional
-    public void 리뷰수정(ReviewRequest.UpdateDTO updateDTO, Long reviewId, Long sessionUserId) {
+    public Review updateReview(ReviewRequest.UpdateDTO updateDTO, Long reviewId, Long sessionUserId) {
         Review reviewEntity = reviewRepository.findById(reviewId)
                 .orElseThrow(()-> new Exception404("리뷰를 찾을 수 없습니다."));
 
         if (!reviewEntity.isOwner(sessionUserId)) {
-            throw new Exception403("리뷰 수정 권한이 없습니다.");
+            throw new Exception403("본인이 작성한 리뷰만 수정할 수 있습니다.");
         }
 
         reviewEntity.update(updateDTO);
+        return reviewEntity;
     }
 
     /** 리뷰 삭제 */
     @Transactional
-    public void 리뷰삭제(Long reviewId, Long sessionUserId) {
+    public void deleteReview(Long reviewId, Long sessionUserId) {
         Review reviewEntity = reviewRepository.findById(reviewId)
-                .orElseThrow(()-> new Exception404("리뷰를 찾을 수 없습니다."));
+                .orElseThrow(()-> new Exception404("삭제할 리뷰를 찾을 수 없습니다."));
 
         if (!reviewEntity.isOwner(sessionUserId)) {
-            throw new Exception403("리뷰 삭제 권한이 없습니다.");
+            throw new Exception403("본인이 작성한 리뷰만 삭제할 수 있습니다.");
         }
 
         reviewRepository.deleteById(reviewId);
