@@ -21,8 +21,6 @@ public class Review {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    private String productId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -33,7 +31,7 @@ public class Review {
 
     @Lob
     @JdbcTypeCode(SqlTypes.LONGVARCHAR)
-    private String content;
+    private String review;
 
     private int rating;
 
@@ -42,11 +40,11 @@ public class Review {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    public Review(int rating, String content, User user, String photoUrl) {
-//        this.productId = productId;
-        this.rating = rating;
-        this.content = content;
+    public Review(Product product, User user, int rating, String review, String photoUrl) {
+        this.product = product;
         this.user = user;
+        this.rating = rating;
+        this.review = review;
         this.photoUrl = photoUrl;
     }
 
@@ -54,7 +52,7 @@ public class Review {
         updateDTO.validate();
 
         this.rating = updateDTO.getRating();
-        this.content = updateDTO.getContent();
+        this.review = updateDTO.getReview();
         this.photoUrl = updateDTO.getPhotoUrl();
     }
 
