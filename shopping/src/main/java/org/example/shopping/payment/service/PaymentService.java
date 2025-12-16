@@ -30,16 +30,22 @@ public class PaymentService {
     private final PaymentGatewayResolver gatewayResolver;
 
     @Transactional
-    public ResponseDto<?> createPayment(User sessionUser,PaymentRequest.CreateDTO createDTO) {
+    public ResponseDto<?> createPayment(
+//            User sessionUser,
+                                        PaymentRequest.CreateDTO createDTO) {
         return switch (createDTO.getMethod()){
-            case MOCK -> ResponseDto.success(processMockPayment(sessionUser, createDTO));
+            case MOCK -> ResponseDto.success(processMockPayment(
+//                    sessionUser,
+                    createDTO));
             case TOSS_PAY -> null;
         };
     }
 
-    private PaymentResponse processMockPayment(User sessionUser, PaymentRequest.CreateDTO createDTO) {
+    private PaymentResponse processMockPayment(
+//            User sessionUser,
+                                               PaymentRequest.CreateDTO createDTO) {
         Payment payment = Payment.builder()
-                .user(sessionUser)
+//                .user(sessionUser)
                 .orderId("ORD-"+ UUID.randomUUID())
                 .paymentKey("MOCK-"+ UUID.randomUUID())
                 .amount(createDTO.toEntity().getAmount())

@@ -22,23 +22,31 @@ public class PaymentController {
     // 결제 생성
     // http://localhost:8080/payment/payment
     @GetMapping("/payment/payment")
-    public String createPaymentForm(HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
+    public String createPaymentForm(
+//            HttpSession session
+    ) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
         return "payment/payment-form";
     }
 
     @PostMapping("/payment/payment")
-    public String createPaymentProc( HttpSession session,PaymentRequest.CreateDTO createDTO) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        paymentService.createPayment(sessionUser, createDTO);
+    public String createPaymentProc(
+//            HttpSession session,
+            PaymentRequest.CreateDTO createDTO) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
+        paymentService.createPayment(
+//                sessionUser,
+                createDTO);
         return "redirect:/";
     }
 
 
     // 결제 적용
     @GetMapping("/payment/{paymentId}/approve")
-    public String approvePaymentForm(HttpSession session, @PathVariable Long paymentId) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
+    public String approvePaymentForm(
+//            HttpSession session,
+            @PathVariable Long paymentId) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
 
         return "payment/approve-form";
     }
