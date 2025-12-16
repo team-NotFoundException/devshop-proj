@@ -7,11 +7,12 @@ public class CartRequest {
 
     @Data
     public static class AddDTO {
+        private Cart cart;
         private String productId;
         private Integer quantity;
 
-        public CartItem toEntity() {
-            return new CartItem(productId, quantity);
+        public CartItem toEntity(Cart cart) {
+            return new CartItem(cart, productId, quantity);
         }
     }
 
