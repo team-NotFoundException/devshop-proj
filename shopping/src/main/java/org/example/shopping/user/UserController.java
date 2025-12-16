@@ -22,30 +22,37 @@ public class UserController {
     private final UserService userService;
 
     // 로그인 화면 요청
-    // http://localhost:8080/login
-    @GetMapping
+    // http://localhost:8080/users/login
+    @GetMapping("/users/login")
     public String loginForm() {
         return "user/login-form";
     }
 
     // 로그인 기능 요청
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public String login(
             @Valid @ModelAttribute UserRequest.LoginDTO loginDTO,
             HttpSession session
     ) {
 
-        User user = userService.login(loginDTO);
+        try{
+            User user = userService.login(loginDTO);
 
-        session.setAttribute("userSessionId", user.getId());
+            session.setAttribute("userSessionId", user.getId());
 
-        return "redirect:/";
+            System.out.println("성공~");
+            return "user/join-form";
+        } catch (Exception e) {
+            System.out.println("실패지롱");
+            return "user/join-form";
+        }
+
     }
 
     // ---------------------------------------- //
 
     // 로그아웃
-    @GetMapping("logout")
+    @GetMapping("/users/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
@@ -54,12 +61,13 @@ public class UserController {
     // ---------------------------------------- //
 
     // 회원가입 화면 요청
-    @GetMapping("/join")
+    // http://localhost:8080/users/join
+    @GetMapping("/users/join")
     public String JoinForm() {
         return "user/join-form";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/users/join")
     public String signUp(
             @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
     ) {
@@ -82,11 +90,11 @@ public class UserController {
 
         model.addAttribute("user", userEntity);
 
-        return "user/updateForm";
+        return "user/update-form";
     }
 
     // 회원정보 수정 기능 요청
-    @PostMapping("/{id}")
+    @PostMapping("/{id}/update")
     public String userUpdate(
             @PathVariable Long id,
             @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,

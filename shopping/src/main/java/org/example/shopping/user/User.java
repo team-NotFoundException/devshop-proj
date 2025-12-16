@@ -25,7 +25,7 @@ public class User extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 5, max = 10)
+    @Size(min = 5, max = 255)
     @NotBlank(message = "id는 필수 입력 항목입니다.")
     private String username;
 

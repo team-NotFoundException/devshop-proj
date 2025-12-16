@@ -25,7 +25,7 @@ public class UserRequest {
     // 회원가입
     @Data
     public static class SignUpDTO {
-        @Size(min = 5, max = 10)
+        @Size(min = 5, max = 255)
         @NotBlank(message = "id는 필수 입력 항목입니다.")
         private String username; // 필수
 
@@ -45,14 +45,14 @@ public class UserRequest {
         private String address;  // 필수
 
         @NotBlank(message = "연락처는 필수 입력 항목입니다.")
-        @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
+//        @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
         private String phoneNumber; // 필수
 
         private Gender gender; // 선택
 
-        @Pattern(regexp = "^(19\\d{2}|20\\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$",
-                message = "생년월일은 yyyy-MM-dd 형식이어야 합니다.")
-        private String birthday; // 선택
+//        @Pattern(regexp = "^(19\\d{2}|20\\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$",
+//                message = "생년월일은 yyyy-MM-dd 형식이어야 합니다.")
+        private LocalDate birthday; // 선택
 
         public User toEntity() {
             return User.builder()
@@ -63,7 +63,7 @@ public class UserRequest {
                     .address(this.address)
                     .phoneNumber(this.phoneNumber)
                     .gender(this.gender)
-                    .birthday(LocalDate.parse(this.birthday))
+                    .birthday(this.birthday)
                     .build();
         }
     }
