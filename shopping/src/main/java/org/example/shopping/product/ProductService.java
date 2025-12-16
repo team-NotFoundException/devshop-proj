@@ -3,63 +3,88 @@ package org.example.shopping.product;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.category.Category;
+import org.example.shopping.category.CategoryRepository;
 import org.example.shopping.product.productEnum.ProductStatus;
-import org.example.shopping.user.dto.UserRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductService {
 
-    private final ProductRepository repository;
-    private final ProductPersistRepository productRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
-    public List<Product> findAll() {
-        return repository.findAll();
+
+    // 조회
+    public List<ProductResponse.ListDTO> findAll() {
+        return productRepository.findAllWithCategory()
+                .stream()
+                .map(ProductResponse.ListDTO::new)
+                .toList();
     }
 
-    public Product findById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new Exception404("상품이 없습니다"));
+    public ProductResponse.DetailDTO findById(Long id) {
+        Product product = productRepository.findByIdWithCategory(id)
+                .orElseThrow(() -> new Exception404("상품을 찾을 수 없습니다"));
 
+        return new ProductResponse.DetailDTO(product);
     }
 
-    public void save(ProductRequest.SaveDTO dto, Category category) {
+    public List<ProductResponse.ListDTO> findByStatus(ProductStatus status) {
+        return productRepository.findByStatusWithCategory(status)
+                .stream()
+                .map(ProductResponse.ListDTO::new)
+                .toList();
+    }
+
+    public List<ProductResponse.ListDTO> findByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryIdWithCategory(categoryId)
+                .stream()
+                .map(ProductResponse.ListDTO::new)
+                .toList();
+    }
+
+    // 등록
+    @Transactional
+    public void save(ProductRequest.SaveDTO dto) {
+
+        Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
+
         Product product = dto.toEntity(category);
-        repository.save(product);
+        productRepository.save(product);
     }
 
+
+    // 수정
+    @Transactional
     public void updateById(Long id, ProductRequest.UpdateDTO dto) {
-        Product product = findById(id);
-        if (product == null) {
-            throw new Exception404("상품 을 찾을 수 없습니다");
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new Exception404("상품을 찾을 수 없습니다"));
+
+        Category category = null;
+        if (dto.getCategoryId() != null) {
+            category = categoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
         }
-        product.update(dto);
+
+        product.update(dto, category);
+
     }
 
+
+    // 삭제
+    @Transactional
     public void deleteById(Long id) {
-        Product product = repository.findById(id)
-                .orElseThrow(() -> new Exception404("삭제할 상품이 존재하지 않습니다"));
-        repository.delete(product);
-    }
 
-    public List<Product> findByStatus(ProductStatus status) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new Exception404("상품을 찾을 수 없습니다"));
 
-        List<Product> products = repository.findByStatus(status);
-
-        return products;
-    }
-
-    public List<Product> findByCategory(Category category) {
-
-        List<Product> products = repository.findByCategory(category);
-
-        return products;
+        productRepository.delete(product);
     }
 }

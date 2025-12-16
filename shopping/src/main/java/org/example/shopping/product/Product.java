@@ -4,67 +4,82 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "products")
+@Table(name = "product_tb")
+@Data
+@NoArgsConstructor
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
-
-    @Column(nullable = false, length = 200)
     private String productName;
-
-    @Column(nullable = false, unique = true, length = 50)
     private String productCode;
-
-    @Column(nullable = false)
     private BigDecimal price;
-
     private int stockQuantity;
-
-    @Lob
     private String description;
-
-    @Column(name = "thumbnail_url", length = 255)
     private String thumbnailUrl;
 
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    private LocalDateTime createAt;
+    // N : 1
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    private LocalDateTime updatedAt;
+    @CreationTimestamp
+    private Timestamp createdAt;
 
-    @PrePersist
-    public void prePersist() {
-        this.createAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        if (this.status == null) this.status = ProductStatus.active;
+    @Builder
+    public Product(
+            String productName,
+            String productCode,
+            BigDecimal price,
+            int stockQuantity,
+            String description,
+            String thumbnailUrl,
+            ProductStatus status,
+            Category category
+    ) {
+        this.productName = productName;
+        this.productCode = productCode;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.description = description;
+        this.thumbnailUrl = thumbnailUrl;
+        this.status = status;
+        this.category = category;
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void update(ProductRequest.UpdateDTO dto) {
-        this.updatedAt = LocalDateTime.now();
+    // 상품 수정
+    public void update(ProductRequest.UpdateDTO dto, Category category) {
+        dto.validate();
+        this.productName = dto.getProductName();
         this.price = dto.getPrice();
+        this.stockQuantity = dto.getStockQuantity();
         this.description = dto.getDescription();
         this.thumbnailUrl = dto.getThumbnailUrl();
-        if (this.status == null) this.status = ProductStatus.active;
+        this.status = dto.getStatus();
+        this.category = this.category;
+    }
+
+    // 재고 수정
+    public void updateStock(int stockQuantity) {
+        if (stockQuantity < 0) {
+            throw new IllegalArgumentException("재고는 0 이상이어야 합니다.");
+        }
+        this.stockQuantity = stockQuantity;
+    }
+
+    // 상태 변경
+    public void updateStatus(ProductStatus status) {
+        this.status = status;
     }
 }

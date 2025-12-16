@@ -1,22 +1,22 @@
 package org.example.shopping.category;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "categories")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    private Long id;
 
     @Column(nullable = false, length = 50)
     private String categoryName;
@@ -26,14 +26,30 @@ public class Category {
     private Category parent;
 
     private int depth;
-
     private int displayOrder;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+    @CreationTimestamp
+    private Timestamp createdAt;
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    @Builder
+    public Category(String categoryName, int depth, int displayOrder, Category parent) {
+        this.categoryName = categoryName;
+        this.depth = depth;
+        this.displayOrder = displayOrder;
+        this.parent = parent;
+    }
+
+    public void setCategoryName(String categoryName) {
+        if (categoryName == null || categoryName.isBlank()) {
+            throw new IllegalArgumentException("카테고리 제목은 필수 입니다");
+        }
+        this.categoryName = categoryName;
+    }
+
+    public void setDisplayOrder(int displayOrder) {
+        if (displayOrder < 0) {
+            throw new IllegalArgumentException("정렬은 반드시 0이 필수 입니다.");
+        }
+        this.displayOrder = displayOrder;
     }
 }
