@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TestingController {
 
     // 테스트 홈 화면
-    // http://localhost:8080/home
-    @GetMapping({"/home"})
-    public String test1() {
+    // http://localhost:8080/
+    @GetMapping({"/"})
+    public String home() {
         return "layout/index";
     }
 

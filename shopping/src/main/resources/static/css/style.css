@@ -4,7 +4,6 @@
     box-sizing: border-box;
 
     list-style: none;
-    align-content: center;
 }
 
 body {
@@ -20,16 +19,30 @@ a {
     max-width: 1200px;
 }
 
-.container .header {
+.header-wrapper{
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: white;
+}
+
+.header-wrapper.has-nav {
+    border-bottom: 1px solid lightgray;
+}
+
+.header-inner {
+    max-width: 1140px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 3px;
 }
 
 .first-top {
     display: flex;
     justify-content: end;
-    padding: 8px 0 0;
+    padding: 8px 0 12px 0;
     gap: 10px;
     font-size: 12px;
 }
@@ -50,6 +63,11 @@ a {
 
 .nav {
     padding: 20px 10px 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: white;
+
 }
 
 .nav a {
@@ -109,5 +127,6 @@ a {
 
 .footer {
     text-align: center;
-    padding: 40px;
+    padding: 20px;
+    color: gray;
 }
