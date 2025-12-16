@@ -1,0 +1,220 @@
+/*
+ * style.css
+ * 경로: src/main/resources/static/css/style.css
+ * [회원가입 폼 전용 스타일]
+ */
+
+/* ====================================
+   1. 기본 레이아웃 및 리셋
+   ==================================== */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.register-box {
+    padding: 20px;
+}
+
+/* ====================================
+   2. 헤더 스타일
+   ==================================== */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+.right-menu a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.right-menu a:hover {
+    color: #000;
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+/* ====================================
+   3. 폼 제목 및 그룹 스타일
+   ==================================== */
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #222;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 15px;
+}
+
+.required {
+    color: #e74c3c; /* 빨간색으로 필수 필드 강조 */
+    margin-left: 3px;
+}
+
+/* ====================================
+   4. 입력 필드 스타일
+   ==================================== */
+.input-group input[type="text"],
+.input-group input[type="password"],
+.input-group input[type="date"],
+.input-group input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.input-group small {
+    color: #999;
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+/* ====================================
+   5. 라디오 버튼 (성별) 스타일
+   ==================================== */
+.radio-group {
+    display: flex;
+    gap: 30px;
+    padding: 10px 0;
+    font-size: 15px;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 5px;
+    /* 기본 input radio 스타일 유지 또는 커스텀 */
+}
+
+/* ====================================
+   6. 약관 동의 섹션 스타일
+   ==================================== */
+.checkbox-group {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background-color: #fcfcfc;
+}
+
+.checkbox-group > label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.checkbox-group hr {
+    border: 0;
+    border-top: 1px dashed #ddd;
+    margin: 15px 0;
+}
+
+.agreement-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+    color: #666;
+}
+
+.agreement-item label input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.agreement-item a {
+    color: #3498db;
+    text-decoration: underline;
+}
+
+/* ====================================
+   7. 버튼 스타일
+   ==================================== */
+.btn-register {
+    width: 100%;
+    padding: 15px;
+    background-color: #3498db; /* 강조 색상 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 40px;
+    font-weight: 700;
+    font-size: 17px;
+    transition: background-color 0.2s;
+}
+
+.btn-register:hover {
+    background-color: #2980b9;
+}
+
+
+/* ====================================
+   8. 푸터 스타일
+   ==================================== */
+.footer {
+    text-align: center;
+    padding: 25px 0;
+    font-size: 12px;
+    color: #95a5a6;
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+.footer-links a {
+    color: #95a5a6;
+    margin: 0 10px;
+    text-decoration: none;
+}

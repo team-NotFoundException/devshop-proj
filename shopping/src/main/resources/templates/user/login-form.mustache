@@ -4,20 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEVSHOP 로그인</title>
-    <style>
-        /* ... (이전의 구조적 스타일 유지) ... */
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f8f8; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
-        .logo { font-size: 24px; font-weight: bold; }
-        .right-menu a { margin-left: 10px; text-decoration: none; color: #333; }
-        .container { max-width: 400px; margin: 50px auto; padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .input-group { margin-bottom: 15px; }
-        .input-group input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; }
-        .btn-login { width: 100%; padding: 10px; background-color: #ccc; border: none; cursor: pointer; margin-top: 10px; font-weight: bold; }
-        .links a { margin: 0 5px; text-decoration: none; color: #666; font-size: 14px; }
-        .social-login button { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ddd; background-color: #fff; cursor: pointer; }
-        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
-    </style>
+    <link rel="stylesheet" href="/css/login-form.css">
 </head>
 <body>
 <header class="header-top">
@@ -25,35 +12,35 @@
     <div class="right-menu">
         <a href="#">고객센터</a>
         <a href="#">마이페이지</a>
-        <a href="/">로그인</a>
+        <a href="/users/login">로그인</a>
         <span class="menu-icon">☰</span>
     </div>
 </header>
 
 <div class="container">
-    <h2 class="logo" style="text-align: center;">DEVSHOP</h2>
+    <h2 class="form-logo">DEVSHOP</h2>
 
-    <form action="/users/login">
+    <form action="/users/login" method="post">
         <div class="input-group">
-            <input type="text" id="email" name="email" placeholder="이메일 주소 (예: sample@dev.com)">
+            <input type="text" id="username" name="username" placeholder="아이디 (5자 이상 10자 이하)">
         </div>
 
         <div class="input-group">
-            <input type="password" id="password" name="password" placeholder="비밀번호">
+            <input type="password" id="password" name="password" placeholder="비밀번호 (6자 이상 16자 이하)">
         </div>
 
         <button type="submit" class="btn-login">로그인</button>
     </form>
 
-    <div class="links" style="text-align: center; margin-top: 20px;">
-        <a href="/join">이메일 가입</a> |
-        <a href="/findEmail">이메일 찾기</a> |
+    <div class="links">
+        <a href="/users/join">이메일 가입</a> |
+        <a href="/findEmail">아이디 찾기</a> |
         <a href="/findPassword">비밀번호 찾기</a>
     </div>
 
-    <div class="social-login" style="margin-top: 30px;">
-        <button style="background-color: #03c75a; color: white;">N 네이버 로그인</button>
-        <button style="background-color: #fee500; color: black;">K 카카오 로그인</button>
+    <div class="social-login">
+        <button>N 네이버 로그인</button>
+        <button>K 카카오 로그인</button>
     </div>
 </div>
 

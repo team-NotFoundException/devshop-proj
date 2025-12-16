@@ -90,7 +90,7 @@ public class UserController {
 
         model.addAttribute("user", userEntity);
 
-        return "users/updateForm";
+        return "user/update-form";
     }
 
     // 회원정보 수정 기능 요청

@@ -1,0 +1,168 @@
+/*
+ * login-form.css
+ * 경로: src/main/resources/static/css/login-form.css
+ * [로그인 폼 전용 스타일]
+ */
+
+/* ====================================
+   1. 기본 레이아웃 및 리셋
+   ==================================== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+.container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ====================================
+   2. 헤더 스타일
+   ==================================== */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.right-menu a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+/* ====================================
+   3. 폼 및 입력 필드 스타일
+   ==================================== */
+.form-logo {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* ====================================
+   4. 버튼 및 링크 스타일
+   ==================================== */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #2ecc71; /* 강조 색상 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.btn-login:hover {
+    background-color: #27ae60;
+}
+
+.links {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.links a {
+    margin: 0 8px;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+}
+
+/* ====================================
+   5. 소셜 로그인 스타일
+   ==================================== */
+.social-login {
+    margin-top: 30px;
+}
+
+.social-login button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.social-login button:nth-child(1) { /* Naver */
+    background-color: #03c75a;
+    color: white;
+}
+
+.social-login button:nth-child(2) { /* Kakao */
+    background-color: #fee500;
+    color: #3c1e1e;
+}
+
+/* ====================================
+   6. 푸터 스타일
+   ==================================== */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 12px;
+    color: #95a5a6;
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+.footer-links a {
+    color: #95a5a6;
+    margin: 0 10px;
+    text-decoration: none;
+}

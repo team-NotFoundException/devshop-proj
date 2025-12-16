@@ -34,17 +34,17 @@ public class User extends BaseTimeEntity {
     private String password;
 
     @Size(min = 2, max = 6)
-//    @NotBlank(message = "nickname은 필수 입력 항목입니다.")
+    @NotBlank(message = "nickname은 필수 입력 항목입니다.")
     private String nickname;
 
     @Email(message = "유효한 이메일 주소를 입력해주세요.")
-//    @NotBlank(message = "이메일은 필수 입력 항목입니다.")
+    @NotBlank(message = "이메일은 필수 입력 항목입니다.")
     private String email;
 
-//    @NotBlank(message = "주소는 필수 입력 항목입니다.")
+    @NotBlank(message = "주소는 필수 입력 항목입니다.")
     private String address;
 
-//    @NotBlank(message = "연락처는 필수 입력 항목입니다.")
+    @NotBlank(message = "연락처는 필수 입력 항목입니다.")
     @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
     private String phoneNumber;
 
