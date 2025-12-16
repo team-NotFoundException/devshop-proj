@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.orderItem.OrderItem;
-import org.example.shopping.utils.BaseTimeEntity;
+import org.example.shopping._core.utils.BaseTimeEntity;
 
 import java.util.List;
 

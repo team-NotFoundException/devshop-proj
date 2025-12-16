@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.cartItem.CartItem;
+import org.example.shopping.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,9 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+//    @OneToOne
+//    private User user;
 
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems = new ArrayList<>();

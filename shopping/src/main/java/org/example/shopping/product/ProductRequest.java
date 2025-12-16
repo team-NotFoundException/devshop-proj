@@ -1,6 +1,8 @@
 package org.example.shopping.product;
 
 import lombok.Data;
+import org.example.shopping._core.errors.exception.Exception400;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
 
@@ -22,13 +24,13 @@ public class ProductRequest {
 
         public void validate() {
             if (productName == null || productName.isBlank()) {
-                throw new IllegalArgumentException("상품명은 필수입니다.");
+                throw new Exception400("상품명은 필수입니다.");
             }
             if (productCode == null || productCode.isBlank()) {
-                throw new IllegalArgumentException("상품 코드는 필수입니다.");
+                throw new Exception400("상품 코드는 필수입니다.");
             }
             if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new IllegalArgumentException("가격은 0보다 커야 합니다.");
+                throw new Exception400("가격은 0보다 커야 합니다.");
             }
         }
 
@@ -59,10 +61,10 @@ public class ProductRequest {
 
         public void validate() {
             if (productName == null || productName.isBlank()) {
-                throw new IllegalArgumentException("상품명은 필수입니다.");
+                throw new Exception400("상품명은 필수입니다.");
             }
             if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new IllegalArgumentException("가격은 0보다 커야 합니다.");
+                throw new Exception400("가격은 0보다 커야 합니다.");
             }
         }
     }
@@ -75,7 +77,7 @@ public class ProductRequest {
 
         public void validate() {
             if (stockQuantity < 0) {
-                throw new IllegalArgumentException("재고는 0보다 작을 수 없습니다.");
+                throw new Exception400("재고는 0보다 작을 수 없습니다.");
             }
         }
     }
@@ -88,7 +90,7 @@ public class ProductRequest {
 
         public void validate() {
             if (status == null) {
-                throw new IllegalArgumentException("상품 상태는 필수입니다.");
+                throw new Exception400("상품 상태는 필수입니다.");
             }
         }
     }

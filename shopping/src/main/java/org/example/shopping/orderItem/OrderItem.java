@@ -1,11 +1,10 @@
 package org.example.shopping.orderItem;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.order.Order;
-import org.example.shopping.utils.BaseTimeEntity;
+import org.example.shopping._core.utils.BaseTimeEntity;
 
 @Data
 @NoArgsConstructor

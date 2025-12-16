@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
-import org.example.shopping.utils.BaseTimeEntity;
+import org.example.shopping._core.utils.BaseTimeEntity;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;

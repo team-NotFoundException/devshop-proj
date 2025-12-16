@@ -30,9 +30,6 @@ public class CartItem {
         this.isChecked = true;
     }
 
-    public CartItem(CartItem entity) {
-    }
-
     public void updateItemOption(Integer quantity) {
         this.quantity = quantity;
     }

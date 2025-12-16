@@ -9,9 +9,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.user.dto.UserRequest;
 import org.example.shopping.user.enums.Gender;
-import org.example.shopping.utils.BaseTimeEntity;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;

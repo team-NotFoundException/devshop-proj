@@ -3,6 +3,7 @@ package org.example.shopping.category;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Table;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,7 @@ public class CategoryPersistRepository {
     public Category findById(Long id) {
         Category category = entityManager.find(Category.class, id);
         if (category == null) {
-            throw new RuntimeException("해당 ID의 카테고리를 찾을 수 없어요");
+            throw new Exception404("해당 ID의 카테고리를 찾을 수 없어요");
         }
         return category;
     }
