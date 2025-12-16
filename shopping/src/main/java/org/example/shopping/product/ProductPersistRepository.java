@@ -25,7 +25,7 @@ public class ProductPersistRepository {
 
     // 전체 조회
     public List<Product> findAll() {
-        return em.createQuery("SELECT p FROM Product p ORDER BY p.createAt DESC", Product.class)
+        return em.createQuery("SELECT p FROM Product p ORDER BY p.createdAt DESC", Product.class)
                 .getResultList();
     }
 
@@ -47,7 +47,7 @@ public class ProductPersistRepository {
     // 카테고리별 조회
     public List<Product> findByCategory(Category category) {
         return em.createQuery(
-                        "SELECT p FROM Product p WHERE p.category = :category ORDER BY p.createAt DESC",
+                        "SELECT p FROM Product p WHERE p.category = :category ORDER BY p.createdAt DESC",
                         Product.class)
                 .setParameter("category", category)
                 .getResultList();
@@ -56,7 +56,7 @@ public class ProductPersistRepository {
     // 상태별 조회
     public List<Product> findByStatus(ProductStatus status) {
         return em.createQuery(
-                        "SELECT p FROM Product p WHERE p.status = :status ORDER BY p.createAt DESC",
+                        "SELECT p FROM Product p WHERE p.status = :status ORDER BY p.createdAt DESC",
                         Product.class)
                 .setParameter("status", status)
                 .getResultList();
@@ -65,7 +65,7 @@ public class ProductPersistRepository {
     // 카테고리 + 상태 조회
     public List<Product> findByCategoryAndStatus(Category category, ProductStatus status) {
         return em.createQuery(
-                        "SELECT p FROM Product p WHERE p.category = :category AND p.status = :status ORDER BY p.createAt DESC",
+                        "SELECT p FROM Product p WHERE p.category = :category AND p.status = :status ORDER BY p.createdAt DESC",
                         Product.class)
                 .setParameter("category", category)
                 .setParameter("status", status)
