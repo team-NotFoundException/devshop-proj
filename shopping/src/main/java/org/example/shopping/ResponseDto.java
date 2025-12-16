@@ -44,6 +44,24 @@ public class ResponseDto<T> {
                 .build();
     }
 
+    public static <T> ResponseDto<T> success(String message) {
+        return ResponseDto.<T>builder()
+                .success(true)
+                .message(message)
+                .status(200)
+                .timestamp(Instant.now())
+                .build();
+    }
+
+    public static <T> ResponseDto<T> success(T data) {
+        return ResponseDto.<T>builder()
+                .success(true)
+                .message("success")
+                .data(data)
+                .status(200)
+                .timestamp(Instant.now())
+                .build();
+    }
     public static <T> ResponseDto<T> failure(String message, Integer httpStatus, String code) {
         return ResponseDto.<T>builder()
                 .success(false)

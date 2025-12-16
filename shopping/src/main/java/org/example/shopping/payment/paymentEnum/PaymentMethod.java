@@ -9,5 +9,5 @@ package org.example.shopping.payment.paymentEnum;
  *
  * */
 public enum PaymentMethod {
-    MOCK, TOSS_PAY, KAKAO_PAY
+    MOCK, TOSS_PAY
 }

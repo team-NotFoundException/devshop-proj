@@ -2,11 +2,10 @@ package org.example.shopping.payment;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.example.shopping.payment.paymentEnum.RefundStatus;
+import lombok.*;
 import org.example.shopping._core.utils.BaseTimeEntity;
+import org.example.shopping.payment.paymentEnum.RefundStatus;
+
 
 import java.time.LocalDateTime;
 
@@ -15,6 +14,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class PaymentRefund extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +37,16 @@ public class PaymentRefund extends BaseTimeEntity {
     private LocalDateTime requestedAt;
     private LocalDateTime completedAt;
 
+
+    public void refundCompleted(){
+        this.status = RefundStatus.COMPLETED;
+        this.completedAt = LocalDateTime.now();
+        this.failureCode = null;
+        this.failureMessage = null;
+    }
+    public void refundFailed(String code, String message){
+        this.status = RefundStatus.FAILED;
+        this.failureCode = code;
+        this.failureMessage = message;
+    }
 }
