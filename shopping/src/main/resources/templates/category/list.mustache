@@ -1,0 +1,39 @@
+{{> layout/header}}
+
+<div class="container p-5">
+    <h2 class="mb-4">카테고리 등록</h2>
+
+
+    <form action="/categories/save" method="post">
+
+        <!-- 카테고리명 -->
+        <div class="mb-3">
+            <label class="form-label">카테고리명</label>
+            <input type="text" name="categoryName" class="form-control" placeholder="예: 상의" required>
+        </div>
+
+        <!-- 부모 카테고리 (선택) -->
+        <div class="mb-3">
+            <label class="form-label">상위 카테고리</label>
+            <select name="parentId" class="form-select">
+                <option value="">없음 (최상위)</option>
+                {{#categories}}
+                    <option value="{{id}}">{{categoryName}}</option>
+                {{/categories}}
+            </select>
+        </div>
+
+        <!-- 노출 순서 -->
+        <div class="mb-3">
+            <label class="form-label">노출 순서</label>
+            <input type="number" name="displayOrder" class="form-control" value="1">
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">등록</button>
+        </div>
+    </form>
+
+</div>
+
+{{> layout/footer}}
