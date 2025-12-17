@@ -1,7 +1,7 @@
-{{>layout/header-test}}
-<div class="container">
-    <h1>결제 데모</h1>
-<form action="/payment/payment" method="post">
+{{>layout/header}}
+<div class="pay-container">
+    <h1 class="pay-h1">결제 데모</h1>
+<form action="/payment" method="post">
     <div class="form-group">
         <label for="productCode">상품 코드</label>
         <input type="text" id="productCode" name="productCode" value=""/>
@@ -22,7 +22,6 @@
         <select id="method" name="method">
             <option value="MOCK">Mock 결제</option>
             <option value="TOSS_PAY">Toss 결제</option>
-            <option value="KAKAO_PAY" >KakaoPay</option>
         </select>
     </div>
 

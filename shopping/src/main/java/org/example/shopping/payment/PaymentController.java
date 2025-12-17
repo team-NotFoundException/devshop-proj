@@ -20,8 +20,8 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     // 결제 생성
-    // http://localhost:8080/payment/payment
-    @GetMapping("/payment/payment")
+    // http://localhost:8080/payment
+    @GetMapping("/payment")
     public String createPaymentForm(
 //            HttpSession session
     ) {
@@ -29,7 +29,7 @@ public class PaymentController {
         return "payment/payment-form";
     }
 
-    @PostMapping("/payment/payment")
+    @PostMapping("/payment")
     public String createPaymentProc(
 //            HttpSession session,
             PaymentRequest.CreateDTO createDTO) {
