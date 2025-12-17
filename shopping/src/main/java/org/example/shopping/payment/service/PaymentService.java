@@ -31,21 +31,21 @@ public class PaymentService {
 
     @Transactional
     public ResponseDto<?> createPayment(
-//            User sessionUser,
+            User sessionUser,
                                         PaymentRequest.CreateDTO createDTO) {
         return switch (createDTO.getMethod()){
             case MOCK -> ResponseDto.success(processMockPayment(
-//                    sessionUser,
+                    sessionUser,
                     createDTO));
             case TOSS_PAY -> null;
         };
     }
 
     private PaymentResponse processMockPayment(
-//            User sessionUser,
+            User sessionUser,
                                                PaymentRequest.CreateDTO createDTO) {
         Payment payment = Payment.builder()
-//                .user(sessionUser)
+                .user(sessionUser)
                 .orderId("ORD-"+ UUID.randomUUID())
                 .paymentKey("MOCK-"+ UUID.randomUUID())
                 .amount(createDTO.toEntity().getAmount())
@@ -86,7 +86,7 @@ public class PaymentService {
 
 
     public PaymentResponse refundPaymentForm(Long id
-//            , Long sessionUserId
+            , Long sessionUserId
     ) {
         Payment paymentEntity = paymentRepository.findById(id)
                 .orElseThrow(() -> new Exception404("찾을 수 없음"));
@@ -95,14 +95,15 @@ public class PaymentService {
     }
 
     @Transactional
-    public void refundPayment(Long id, PaymentRequest.RefundDTO refundDTO
-//            , Long sessionUserId
+    public PaymentRefund refundPayment(Long id, PaymentRequest.RefundDTO refundDTO
+            , Long sessionUserId
     ) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new Exception404("결제 내역 찾을 수 없음"));
 
         PaymentRefund refund = PaymentRefund.builder()
                 .payment(payment)
+
                 .amount(refundDTO.getAmount())
                 .reason(refundDTO.getReason())
                 .status(RefundStatus.REQUESTED)
@@ -114,6 +115,8 @@ public class PaymentService {
 
         refundRepository.save(refund);
         paymentRepository.save(payment);
+
+return refund;
 
     }
 

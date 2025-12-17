@@ -23,19 +23,19 @@ public class PaymentController {
     // http://localhost:8080/payment
     @GetMapping("/payment")
     public String createPaymentForm(
-//            HttpSession session
+            HttpSession session
     ) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute("sessionUser");
         return "payment/payment-form";
     }
 
     @PostMapping("/payment")
     public String createPaymentProc(
-//            HttpSession session,
+            HttpSession session,
             PaymentRequest.CreateDTO createDTO) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute("sessionUser");
         paymentService.createPayment(
-//                sessionUser,
+                sessionUser,
                 createDTO);
         return "redirect:/";
     }
@@ -44,9 +44,9 @@ public class PaymentController {
     // 결제 적용
     @GetMapping("/payment/{paymentId}/approve")
     public String approvePaymentForm(
-//            HttpSession session,
+            HttpSession session,
             @PathVariable Long paymentId) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
         return "payment/approve-form";
     }
@@ -67,12 +67,12 @@ public class PaymentController {
 
     @GetMapping("/payment/{id}/refund")
     public String refundPaymentForm(@PathVariable Long id, Model model
-//            ,HttpSession session
+            ,HttpSession session
     ) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute("sessionUser");
         PaymentResponse response =
         paymentService.refundPaymentForm(id
-//                , sessionUser.getId()
+                , sessionUser.getId()
         );
         model.addAttribute("payment", response);
         return "payment/refund-form";
@@ -80,14 +80,14 @@ public class PaymentController {
 
     @PostMapping("/payment/{id}/refund")
     public String refundPaymentProc(@PathVariable Long id, PaymentRequest.RefundDTO refundDTO
-//            , HttpSession session
+            , HttpSession session
     ) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
-        paymentService.refundPayment(id, refundDTO
-//                , sessionUser.getId()
+        PaymentRefund response = paymentService.refundPayment(id, refundDTO
+                , sessionUser.getId()
         );
-//        session.setAttribute("sessionUser", response);
+        session.setAttribute("sessionUser", response);
         return "redirect:/";
     }
 
