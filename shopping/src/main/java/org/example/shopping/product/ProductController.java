@@ -50,8 +50,10 @@ public class ProductController {
 
     // - admin
     // 상품 등록 폼
+    // http://localhost:8080/products/save-form
     @GetMapping("/save-form")
-    public String saveForm() {
+    public String saveForm(Model model) {
+        model.addAttribute("category", productService.findAll());
         return "product/save-form";
     }
 
@@ -59,13 +61,15 @@ public class ProductController {
     @PostMapping("/save")
     public String save(ProductRequest.SaveDTO dto) {
         productService.save(dto);
-        return "redirect:/products";
+        return "redirect:/products/list-form";
     }
 
     // 상품 수정 폼
+    // http://localhost:8080/products/1/edit
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.findById(id));
+        model.addAttribute("category", productService.findAll());
         return "product/edit-form";
     }
 
@@ -83,6 +87,6 @@ public class ProductController {
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         productService.deleteById(id);
-        return "redirect:/products";
+        return "redirect:/products/list-form";
     }
 }
