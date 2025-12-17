@@ -1,5 +1,37 @@
 # devshop-proj
 
+```
+1. class명 container 사용 시 레이아웃에 규격 맞출 경우 사용 가능 
+	-> 레이아웃 설정 이외의 화면 구현 시 다른 class 명 사용
+	-> ex) 현재 이렇게 사용 중인 page: join-form | login-form
+
+
+2. 헤더 푸터 붙히기
+	-> nav bar 필요한 사람은 
+<div class="header-wrapper has-nav">
+    <div class="container">
+        {{> layout/header }}
+        {{> layout/nav }}
+    </div>
+</div>
+
+	-> nav bar 필요없는 사람은
+<div class="header-wrapper">
+    <div class="container">
+        {{> layout/header }}
+    </div>
+</div>
+
+3. style 파일은 static/css 폴더안에 생성
+
+4. style 파일은 mustache 파일과 1:1 매칭
+	-> product-detail.mustache = product-detail.css
+
+5. 프론트 관련 모르는건 @안미향 문의
+```
+
+
+
 ```mermaid
 erDiagram
 
