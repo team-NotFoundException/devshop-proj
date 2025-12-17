@@ -36,7 +36,7 @@ public class UserController {
             session.setAttribute("userSessionId", user.getId());
 
             System.out.println("성공~");
-            return "layout/index";
+            return "payment/payment-form";
         } catch (Exception e) {
             System.out.println("실패지롱");
             return "redirect:/";
