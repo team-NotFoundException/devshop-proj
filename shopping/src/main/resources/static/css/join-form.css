@@ -7,15 +7,17 @@
 /* ====================================
    1. 기본 레이아웃 및 리셋
    ==================================== */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f8f8;
-    color: #333;
-}
 
-.container {
+/*.container {*/
+/*    max-width: 600px;*/
+/*    margin: 40px auto;*/
+/*    padding: 40px;*/
+/*    background-color: #fff;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+.join {
     max-width: 600px;
     margin: 40px auto;
     padding: 40px;
@@ -23,45 +25,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 .register-box {
     padding: 20px;
-}
-
-/* ====================================
-   2. 헤더 스타일
-   ==================================== */
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #eee;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-}
-
-.right-menu a {
-    margin-left: 15px;
-    text-decoration: none;
-    color: #666;
-    font-size: 14px;
-    transition: color 0.2s;
-}
-
-.right-menu a:hover {
-    color: #000;
-}
-
-.menu-icon {
-    font-size: 24px;
-    cursor: pointer;
-    margin-left: 15px;
 }
 
 /* ====================================
@@ -75,11 +40,13 @@ body {
     color: #222;
 }
 
-.input-group {
+.form-group {
+    border-radius: 8px;
     margin-bottom: 20px;
+    width: 100%;
 }
 
-.input-group label {
+.form-group > label {
     display: block;
     font-weight: 600;
     margin-bottom: 8px;
@@ -87,18 +54,25 @@ body {
     font-size: 15px;
 }
 
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+}
+
 .required {
     color: #e74c3c; /* 빨간색으로 필수 필드 강조 */
-    margin-left: 3px;
 }
 
 /* ====================================
    4. 입력 필드 스타일
    ==================================== */
-.input-group input[type="text"],
-.input-group input[type="password"],
-.input-group input[type="date"],
-.input-group input[type="email"] {
+.form-group form[type="text"],
+.form-group form[type="password"],
+.form-group form[type="date"],
+.form-group form[type="email"] {
     width: 100%;
     padding: 12px;
     box-sizing: border-box;
@@ -108,15 +82,16 @@ body {
     transition: border-color 0.2s;
 }
 
-.input-group input:focus {
+.form-group input:focus {
     border-color: #3498db;
     outline: none;
 }
 
-.input-group small {
+.form-group small {
     color: #999;
     display: block;
     margin-top: 5px;
+    padding-left: 5px;
     font-size: 13px;
 }
 
@@ -126,58 +101,25 @@ body {
 .radio-group {
     display: flex;
     gap: 30px;
-    padding: 10px 0;
     font-size: 15px;
 }
 
-.radio-group input[type="radio"] {
-    margin-right: 5px;
-    /* 기본 input radio 스타일 유지 또는 커스텀 */
-}
-
-/* ====================================
-   6. 약관 동의 섹션 스타일
-   ==================================== */
-.checkbox-group {
-    margin-top: 30px;
-    padding: 20px;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    background-color: #fcfcfc;
-}
-
-.checkbox-group > label {
-    font-size: 16px;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.checkbox-group hr {
-    border: 0;
-    border-top: 1px dashed #ddd;
-    margin: 15px 0;
-}
-
-.agreement-item {
-    display: flex;
-    justify-content: space-between;
+.radio-item {
+    display: inline-flex;
     align-items: center;
-    margin-left: 10px;
-    font-size: 14px;
-    margin-top: 10px;
-    color: #666;
+    gap: 6px;
+    cursor: pointer;
+    line-height: 1;
+    font-size: 15px;
+    width: auto;
+    white-space: nowrap;
 }
 
-.agreement-item label input[type="checkbox"] {
-    margin-right: 8px;
+.radio-item input[type="radio"] {
+    margin: 0;
+    vertical-align: middle;/* 기본 form radio 스타일 유지 또는 커스텀 */
 }
 
-.agreement-item a {
-    color: #3498db;
-    text-decoration: underline;
-}
 
 /* ====================================
    7. 버튼 스타일
@@ -200,21 +142,8 @@ body {
     background-color: #2980b9;
 }
 
-
-/* ====================================
-   8. 푸터 스타일
-   ==================================== */
-.footer {
-    text-align: center;
-    padding: 25px 0;
-    font-size: 12px;
-    color: #95a5a6;
-    margin-top: 30px;
-    border-top: 1px solid #eee;
-}
-
-.footer-links a {
-    color: #95a5a6;
-    margin: 0 10px;
-    text-decoration: none;
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-text-fill-color: #000 !important;
+    transition: background-color 9999s ease-in-out 0s;
 }

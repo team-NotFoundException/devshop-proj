@@ -3,6 +3,7 @@ package org.example.shopping.user;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.shopping.user.enums.RoleType;
 
 @Entity
 @Table(name = "user_role_tb", uniqueConstraints = {
@@ -18,13 +19,13 @@ public class UserRole {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "role_name"
 //            , referencedColumnName = "role_name"
 //            , foreignKey = @ForeignKey(name = "fk_user_role_role"))
-    private Role role;
+    private RoleType role;
 
-    public UserRole(Long id, Role role) {
+    public UserRole(Long id, RoleType role) {
         this.id = id;
         this.role = role;
     }
