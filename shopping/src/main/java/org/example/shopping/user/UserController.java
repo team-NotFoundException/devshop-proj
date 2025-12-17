@@ -39,7 +39,7 @@ public class UserController {
             return "layout/index";
         } catch (Exception e) {
             System.out.println("실패지롱");
-            return "user/join-form";
+            return "redirect:/";
         }
 
     }

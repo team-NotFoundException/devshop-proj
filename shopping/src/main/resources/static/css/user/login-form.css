@@ -6,7 +6,7 @@
 
 /* ====================================
    1. 기본 레이아웃 및 리셋
-   ==================================== */
+   ====================================
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -24,9 +24,20 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+*/
+.login {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
 /* ====================================
    2. 헤더 스타일
-   ==================================== */
+   ====================================
 .header-top {
     display: flex;
     justify-content: space-between;
@@ -55,16 +66,14 @@ body {
     cursor: pointer;
     margin-left: 15px;
 }
-
+*/
 /* ====================================
    3. 폼 및 입력 필드 스타일
    ==================================== */
 .form-logo {
-    text-align: center;
-    font-size: 28px;
-    font-weight: 700;
+    display: flex;
+    justify-content: center;
     margin-bottom: 30px;
-    color: #2c3e50;
 }
 
 .input-group {
@@ -151,7 +160,7 @@ body {
 
 /* ====================================
    6. 푸터 스타일
-   ==================================== */
+   ====================================
 .footer {
     text-align: center;
     padding: 20px 0;
@@ -166,3 +175,4 @@ body {
     margin: 0 10px;
     text-decoration: none;
 }
+*/
