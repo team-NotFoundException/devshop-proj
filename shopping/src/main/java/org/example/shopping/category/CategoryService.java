@@ -59,16 +59,19 @@ public class CategoryService {
      */
     @Transactional
     public void save(CategoryRequest.SaveDTO dto) {
+
         Category parent = null;
+        int depth = 0;
 
         if (dto.getParentId() != null) {
             parent = categoryRepository.findById(dto.getParentId())
                     .orElseThrow(() -> new Exception404("부모 카테고리를 찾을 수 없습니다"));
+            depth = parent.getDepth() + 1;
         }
 
         Category category = Category.builder()
                 .categoryName(dto.getCategoryName())
-                .depth(dto.getDepth())
+                .depth(depth)
                 .displayOrder(dto.getDisplayOrder())
                 .parent(parent)
                 .build();

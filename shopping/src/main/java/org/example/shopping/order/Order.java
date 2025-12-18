@@ -16,17 +16,14 @@ public class Order extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "order")
-    List<OrderItem> items;
-
     OrderStatus orderStatus;
 
     String paymentInfo;
 
     Long totalPrice;
 
-    public Order(List<OrderItem> items, OrderStatus orderStatus, String paymentInfo, Long totalPrice) {
-        this.items = items;
+    public Order(OrderStatus orderStatus, String paymentInfo, Long totalPrice) {
+
         this.orderStatus = orderStatus;
         this.paymentInfo = paymentInfo;
         this.totalPrice = totalPrice;
