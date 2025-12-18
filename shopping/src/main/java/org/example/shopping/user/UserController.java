@@ -31,9 +31,9 @@ public class UserController {
     ) {
 
         try{
-            User user = userService.login(loginDTO);
+            User sessionUser = userService.login(loginDTO);
 
-            session.setAttribute("userSessionId", user.getId());
+            session.setAttribute("sessionUser", sessionUser);
 
             System.out.println("성공~");
             return "payment/payment-form";
