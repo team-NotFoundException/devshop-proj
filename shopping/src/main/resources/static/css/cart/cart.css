@@ -1,0 +1,488 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #222;
+    background-color: #f8f9fa;
+    line-height: 1.6;
+}
+
+/* 메인 컨테이너 */
+.main-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #000;
+}
+
+/* 테스트 폼 */
+.test-forms {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    text-align: center;
+}
+
+.btn-test {
+    padding: 10px 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-test:hover {
+    background-color: #e8e8e8;
+}
+
+/* 장바구니 레이아웃 */
+.cart-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.cart-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-right {
+    width: 380px;
+    flex-shrink: 0;
+}
+
+/* 탭 헤더 */
+.cart-header {
+    background: white;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.tab {
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    background-color: #fff;
+    border-bottom: 3px solid #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab .count {
+    background-color: #ef6253;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* 전체 선택 */
+.select-all {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-bottom: 1px solid #f4f4f4;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    gap: 10px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #d3d3d3;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    background-color: #fff;
+    transition: all 0.2s;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+    background-color: #222;
+    border-color: #222;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    content: "✓";
+    position: absolute;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.delete-btn:hover {
+    color: #ef6253;
+    background-color: #fff5f5;
+}
+
+/* 상품 아이템 */
+.cart-item {
+    display: flex;
+    padding: 24px 20px;
+    background: white;
+    border-bottom: 1px solid #f4f4f4;
+    gap: 16px;
+    transition: background-color 0.2s;
+}
+
+.cart-item:hover {
+    background-color: #fafafa;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 12px 12px;
+}
+
+.item-content {
+    display: flex;
+    flex: 1;
+    gap: 16px;
+    align-items: center;
+}
+
+.item-image-wrapper {
+    flex-shrink: 0;
+}
+
+.item-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.item-details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-brand {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #000;
+}
+
+.item-desc {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.item-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.item-quantity {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.badge-fast {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.item-price {
+    text-align: right;
+    margin-right: 20px;
+}
+
+.item-price .price {
+    font-size: 20px;
+    font-weight: 800;
+    color: #000;
+}
+
+.item-actions {
+    display: flex;
+    align-items: center;
+}
+
+.btn-delete {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background-color: #f4f4f4;
+    color: #999;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-delete:hover {
+    background-color: #fff5f5;
+    color: #ef6253;
+    transform: scale(1.1);
+}
+
+/* 빈 장바구니 */
+.empty-cart {
+    background: white;
+    padding: 80px 20px;
+    text-align: center;
+    border-radius: 0 0 12px 12px;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.empty-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.empty-subtext {
+    font-size: 14px;
+    color: #999;
+}
+
+/* 결제 박스 */
+.payment-box {
+    background: white;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.payment-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #222;
+}
+
+.price-breakdown {
+    margin-bottom: 20px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #f4f4f4;
+}
+
+.price-row:last-child {
+    border-bottom: none;
+}
+
+.price-row .label {
+    color: #888;
+}
+
+.price-row .value {
+    font-weight: 600;
+    color: #222;
+}
+
+.price-row .value.free {
+    color: #00c73c;
+    font-weight: 700;
+}
+
+.total-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 2px solid #222;
+    margin-top: 16px;
+}
+
+.total-price .label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+}
+
+.total-price .amount {
+    font-size: 26px;
+    font-weight: 800;
+    color: #222;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 18px;
+    background-color: #ef6253;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s;
+}
+
+.checkout-btn:hover {
+    background-color: #e54d3d;
+}
+
+.benefit-info {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f4f4f4;
+}
+
+.benefit-item {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 배송 안내 */
+.delivery-notice {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.notice-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.notice-text {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+    .cart-layout {
+        flex-direction: column;
+    }
+
+    .cart-right {
+        width: 100%;
+    }
+
+    .payment-box {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 20px 10px;
+    }
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .item-content {
+        flex-wrap: wrap;
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
+    }
+
+    .item-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .item-price {
+        margin-right: 0;
+    }
+
+    .cart-right {
+        width: 100%;
+    }
+}
