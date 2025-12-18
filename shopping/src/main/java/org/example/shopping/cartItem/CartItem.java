@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.cart.Cart;
+import org.example.shopping.product.Product;
 
 @Data
 @NoArgsConstructor
@@ -19,14 +20,15 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    private String product;
+    @OneToOne
+    private Product product;
 
     private Boolean isChecked;
 
     private Integer quantity;
 
     @Builder
-    public CartItem(Cart cart, String product, Integer quantity) {
+    public CartItem(Cart cart, Product product, Integer quantity) {
         this.cart = cart;
         this.product = product;
         this.quantity = quantity;

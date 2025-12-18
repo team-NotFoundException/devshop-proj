@@ -5,10 +5,14 @@ import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.cartItem.CartItemRepository;
+import org.example.shopping.product.Product;
+import org.example.shopping.product.ProductRepository;
+import org.example.shopping.product.productEnum.ProductStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +21,7 @@ import java.util.stream.Collectors;
 public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final ProductRepository productRepository;
 
     // 장바구니 아이템 목록
     public List<CartResponse.CartItemListDTO> getCartItems(Long cartId) {
@@ -35,12 +40,25 @@ public class CartService {
         Cart cartEntity = cartRepository.findById(cartId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        CartItem item = null;
+        Product productEntity = productRepository.findById(addDTO.getProduct().getId())
+                .orElseThrow(() -> new Exception404("물품을 찾을 수 없습니다."));
 
-        if (item != null) {
+        if (productEntity.getStatus().equals(ProductStatus.SOLD_OUT)) {
+            throw new Exception400("품절된 상품입니다.");
+        }
+
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
+
+        List<CartItem> items = cartItems.stream()
+                .map(cartItem -> new CartItem())
+                .filter(cartItem -> cartItem.getProduct().getId().equals(addDTO.getProduct().getId()) &&
+                        Objects.equals(cartItem.getQuantity(), addDTO.getQuantity()))
+                .toList();
+
+        if (items != null) {
             throw new Exception400("이미 장바구니에 있습니다.");
         } else {
-            CartItem newItem = cartEntity.addItem(addDTO.getProductId(), addDTO.getQuantity());
+            CartItem newItem = cartEntity.addItem(addDTO.getProduct(), addDTO.getQuantity());
             cartItemRepository.save(newItem);
         }
     }
