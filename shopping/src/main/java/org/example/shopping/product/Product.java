@@ -37,6 +37,9 @@ public class Product {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    @Column(unique = true)
+    private String profileImage;
+
     @Builder
     public Product(
             String productName,
@@ -67,7 +70,7 @@ public class Product {
         this.description = dto.getDescription();
         this.thumbnailUrl = dto.getThumbnailUrl();
         this.status = dto.getStatus();
-        this.category = this.category;
+        this.category = category;
     }
 
     // 재고 수정
@@ -82,4 +85,5 @@ public class Product {
     public void updateStatus(ProductStatus status) {
         this.status = status;
     }
+
 }

@@ -49,7 +49,7 @@ public class CategoryPersistRepository {
     // 특정 부모 카테고리의 자식 카테고리 조회
     public List<Category> findChildrenByParentId(Long parentId) {
         return entityManager.createQuery(
-                        "SELECT c FROM Category c WHERE c.parent.categoryId = :parentId ORDER BY c.displayOrder ASC",
+                        "SELECT c FROM Category c WHERE c.parent.id = :parentId ORDER BY c.displayOrder ASC",
                         Category.class
                 )
                 .setParameter("parentId", parentId)

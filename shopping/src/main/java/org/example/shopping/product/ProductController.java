@@ -1,10 +1,14 @@
 package org.example.shopping.product;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.category.CategoryResponse;
+import org.example.shopping.category.CategoryService;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
 
     // - user
@@ -51,15 +56,18 @@ public class ProductController {
     // - admin
     // 상품 등록 폼
     // http://localhost:8080/products/save-form
-    @GetMapping("/save-form")
+    @GetMapping("/save")
     public String saveForm(Model model) {
-        model.addAttribute("category", productService.findAll());
+        List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
+        model.addAttribute("category", categoryList);
+
         return "product/save-form";
     }
 
     // 상품 등록
     @PostMapping("/save")
     public String save(ProductRequest.SaveDTO dto) {
+
         productService.save(dto);
         return "redirect:/products/list-form";
     }
