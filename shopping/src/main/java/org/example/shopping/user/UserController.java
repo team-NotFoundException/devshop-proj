@@ -92,7 +92,7 @@ public class UserController {
     }
 
     // 회원정보 수정 기능 요청
-    @PostMapping("/user/update")
+    @PostMapping("/users/update")
     public String userUpdate(
             @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,
             HttpSession session
