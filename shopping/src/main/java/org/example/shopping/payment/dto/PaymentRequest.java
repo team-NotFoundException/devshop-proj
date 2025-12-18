@@ -33,6 +33,8 @@ public class PaymentRequest {
         private String productCode;
         private String productName;
 
+        private String failureCode;
+        private String failureMessage;
 
 
 
