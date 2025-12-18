@@ -9,8 +9,8 @@ public class ReviewRequest {
     @Data
     public static class SaveDTO {
         private int rating;
-        private String review;
-        private String photoUrl;
+        private String content;
+        private String reviewImage;
 
         // 검증 메서드
         public void validate() {
@@ -18,26 +18,35 @@ public class ReviewRequest {
                 throw new IllegalArgumentException("평점은 1~5점만 가능합니다.");
             }
 
-            if (review == null || review.trim().isEmpty()) {
+            if (content == null || content.trim().isEmpty()) {
                 throw new IllegalArgumentException("내용은 필수입니다.");
             }
         }
-        public Review toEntity(User user, Product product) {
+
+        public Review toEntity(User user) {
             return new Review(
-                    product,
                     user,
                     rating,
-                    review,
-                    photoUrl
+                    content,
+                    reviewImage
             );
         }
+//        public Review toEntity(User user, Product product) {
+//            return new Review(
+//                    product,
+//                    user,
+//                    rating,
+//                    review,
+//                    reviewImage
+//            );
+//        }
     }
 
     @Data
     public static class UpdateDTO {
         private int rating;
-        private String review;
-        private String photoUrl;
+        private String content;
+        private String reviewImage;
 
         // 검증 메서드
         public void validate() {
@@ -45,7 +54,7 @@ public class ReviewRequest {
                 throw new IllegalArgumentException("평점은 1~5점만 가능합니다.");
             }
 
-            if (review == null || review.trim().isEmpty()) {
+            if (content == null || content.trim().isEmpty()) {
                 throw new IllegalArgumentException("내용은 필수입니다.");
             }
         }
