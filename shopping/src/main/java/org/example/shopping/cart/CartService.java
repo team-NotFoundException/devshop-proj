@@ -30,9 +30,9 @@ public class CartService {
 
     // 아이템 추가
     @Transactional
-    public void addCartItem(Long cartItemId, CartRequest.AddDTO addDTO) {
+    public void addCartItem(Long cartId, CartRequest.AddDTO addDTO) {
 
-        Cart cartEntity = cartRepository.findById(addDTO.getCart().getId())
+        Cart cartEntity = cartRepository.findById(cartId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
         CartItem item = null;

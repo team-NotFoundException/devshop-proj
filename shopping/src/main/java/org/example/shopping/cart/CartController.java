@@ -27,7 +27,7 @@ public class CartController {
     // 장바구니 아이템 목록 화면 요청
     @GetMapping("/cart/list")
     public String cartItemList(Model model, HttpSession session) {
-        String sessionUser = (String) session.getAttribute("sessionUser");
+//        String sessionUser = (String) session.getAttribute("sessionUser");
 
         Long cartId = 1L;
         List<CartResponse.CartItemListDTO> cartItems = cartService.getCartItems(cartId);
@@ -41,7 +41,7 @@ public class CartController {
     // 아이템 추가
     @PostMapping("/cart/{id}/add")
     public String addProc(@PathVariable(name = "id") Long cartId, CartRequest.AddDTO addDTO, HttpSession session) {
-        String sessionUser = (String) session.getAttribute("sessionUser");
+//        String sessionUser = (String) session.getAttribute("sessionUser");
 
         cartService.addCartItem(cartId, addDTO);
         return "redirect:/cart/list";
