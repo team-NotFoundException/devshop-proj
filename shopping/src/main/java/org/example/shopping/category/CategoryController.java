@@ -1,10 +1,7 @@
 package org.example.shopping.category;
 
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.errors.exception.Exception401;
-import org.example.shopping.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CategoryController {
 
     private final CategoryService categoryService;
+
 
     // 카테고리 목록
     // http://localhost:8080/categories/list

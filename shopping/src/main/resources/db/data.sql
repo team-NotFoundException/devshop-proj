@@ -36,3 +36,9 @@ VALUES ('user01',
         '1999-03-03',
         now()
        );
+
+INSERT INTO categories (category_name, depth, display_order, created_at)
+VALUES
+    ('상의', 1, 1, now()),
+    ('하의', 1, 2, now()),
+    ('신발', 1, 3, now())
