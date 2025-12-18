@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.product.Product;
+import org.example.shopping.product.ProductRepository;
 import org.example.shopping.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +18,20 @@ import java.util.stream.Collectors;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final ProductRepository productRepository;
 
     @Transactional
-    public Review create(ReviewRequest.SaveDTO saveDTO, User sessionsUser, Product product) {
-        Review review = saveDTO.toEntity(sessionsUser, product);
+    public Review create(ReviewRequest.SaveDTO saveDTO, User sessionsUser) {
+        Review review = saveDTO.toEntity(sessionsUser);
         reviewRepository.save(review);
         return review;
     }
+//    @Transactional
+//    public Review create(ReviewRequest.SaveDTO saveDTO, User sessionsUser, Product product) {
+//        Review review = saveDTO.toEntity(sessionsUser, product);
+//        reviewRepository.save(review);
+//        return review;
+//    }
 
     public List<ReviewResponse.ListDTO> getReviews() {
         List<Review> reviewList = reviewRepository.findAllWithUserOrderByCreatedAtDesc();

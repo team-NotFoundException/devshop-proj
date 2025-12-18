@@ -13,7 +13,7 @@ import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reviews_tb")
+@Table(name = "review_tb")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,29 +31,36 @@ public class Review {
 
     @Lob
     @JdbcTypeCode(SqlTypes.LONGVARCHAR)
-    private String review;
+    private String content;
 
     private int rating;
 
-    private String photoUrl;
+    private String reviewImage;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    public Review(Product product, User user, int rating, String review, String photoUrl) {
-        this.product = product;
+    public Review(User user, int rating, String content, String reviewImage) {
         this.user = user;
         this.rating = rating;
-        this.review = review;
-        this.photoUrl = photoUrl;
+        this.content = content;
+        this.reviewImage = reviewImage;
     }
+    /** Product 포함*/
+//    public Review(Product product, User user, int rating, String review, String photoUrl) {
+//        this.product = product;
+//        this.user = user;
+//        this.rating = rating;
+//        this.review = review;
+//        this.photoUrl = photoUrl;
+//    }
 
     public void update(ReviewRequest.UpdateDTO updateDTO) {
         updateDTO.validate();
 
         this.rating = updateDTO.getRating();
-        this.review = updateDTO.getReview();
-        this.photoUrl = updateDTO.getPhotoUrl();
+        this.content = updateDTO.getContent();
+        this.reviewImage = updateDTO.getReviewImage();
     }
 
     // 리뷰 정보 소유자 확인 로직
