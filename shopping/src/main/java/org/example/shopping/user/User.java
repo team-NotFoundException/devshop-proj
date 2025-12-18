@@ -77,4 +77,16 @@ public class User extends BaseTimeEntity {
         this.nickname = updateDTO.getNickname();
         this.gender = updateDTO.getGender();
     }
+
+    public boolean isMale() {
+        return Gender.M.equals(this.gender);
+    }
+
+    public boolean isFemale() {
+        return Gender.F.equals(this.gender);
+    }
+
+    public boolean isNone() {
+        return Gender.N.equals(this.gender) || this.gender == null;
+    }
 }

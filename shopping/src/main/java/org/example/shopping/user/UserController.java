@@ -13,18 +13,17 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
     private final UserService userService;
 
     // 로그인 화면 요청
-    // http://localhost:8080/login
-    @GetMapping("/user/login")
+    // http://localhost:8080/users/login
+    @GetMapping("/users/login")
     public String loginForm() {
         return "user/login-form";
     }
 
     // 로그인 기능 요청
-    @PostMapping("/user/login")
+    @PostMapping("/users/login")
     public String login(
             @Valid @ModelAttribute UserRequest.LoginDTO loginDTO,
             HttpSession session
@@ -39,7 +38,7 @@ public class UserController {
             return "redirect:/";
         } catch (Exception e) {
             System.out.println("실패지롱");
-            return "redirect:/";
+            return "redirect:/users/login";
         }
 
     }
@@ -47,7 +46,7 @@ public class UserController {
     // ---------------------------------------- //
 
     // 로그아웃
-    @GetMapping("/user/logout")
+    @GetMapping("/users/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
@@ -57,12 +56,12 @@ public class UserController {
 
     // 회원가입 화면 요청
     // http://localhost:8080/users/join
-    @GetMapping("/user/join")
+    @GetMapping("/users/join")
     public String JoinForm() {
         return "user/join-form";
     }
 
-    @PostMapping("/join")
+    @PostMapping("/users/join")
     public String signUp(
             @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
     ) {
@@ -75,29 +74,34 @@ public class UserController {
     // ---------------------------------------- //
 
     // 회원정보 수정 화면 요청
-    // http://localhost:8080/users/edit
-    @GetMapping("/user/edit")
+    @GetMapping("/user/update")
     public String userUpdateView(
-            @PathVariable Long id,
-            @SessionAttribute("userSessionId") Long userSessionId,
+            HttpSession session,
             Model model
     ) {
-        User userEntity = userService.userUpdateView(userSessionId);
 
-        model.addAttribute("user", userEntity);
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
-        return "layout/mypage-sidebar";
+        if (sessionUser == null) {
+            return "redirect:/users/login";
+        }
+        User user = userService.userUpdateView(sessionUser.getId());
+        model.addAttribute("user", user);
+
+        return "user/mypage-update";
     }
 
     // 회원정보 수정 기능 요청
-    @PostMapping("/user/edit")
+    @PostMapping("/user/update")
     public String userUpdate(
             @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,
-            @SessionAttribute("userSessionId") Long userSessionId
+            HttpSession session
     ) {
-        userService.userUpdate(updateDTO, userSessionId);
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        User updateUser = userService.userUpdate(updateDTO, sessionUser.getId());
 
-        return "user/update-form";
+        session.setAttribute("sessionUser", updateUser);
+        return "redirect:/";
     }
 
     // ---------------------------------------- //

@@ -82,6 +82,8 @@ public class UserRequest {
         private String address;  // 필수
 
         private Gender gender; // 선택
+
+
     }
 }
 
