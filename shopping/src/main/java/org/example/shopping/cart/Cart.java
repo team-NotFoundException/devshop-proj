@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.cartItem.CartItem;
+import org.example.shopping.product.Product;
 import org.example.shopping.user.User;
 
 import java.util.ArrayList;
@@ -19,8 +20,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne
-//    private User user;
+    @OneToOne
+    private User user;
     
     private Long totalPrice;
 
@@ -28,9 +29,8 @@ public class Cart {
         this.totalPrice = totalPrice;
     }
 
-    public CartItem addItem(String productId, Integer quantity) {
-        CartItem cartItem = new CartItem(this, productId, quantity);
+    public CartItem addItem(Product product, Integer quantity) {
+        CartItem cartItem = new CartItem(this, product, quantity);
         return cartItem;
     }
-
 }

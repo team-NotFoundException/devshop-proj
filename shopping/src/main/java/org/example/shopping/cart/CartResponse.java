@@ -2,6 +2,7 @@ package org.example.shopping.cart;
 
 import lombok.Data;
 import org.example.shopping.cartItem.CartItem;
+import org.example.shopping.product.Product;
 
 public class CartResponse {
 
@@ -9,7 +10,7 @@ public class CartResponse {
     public static class CartItemListDTO {
         private Long id;
         private Long cartId;
-        private String product;
+        private Product product;
         private Integer quantity;
         private boolean isChecked;
 
