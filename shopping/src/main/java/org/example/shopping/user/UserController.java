@@ -74,7 +74,7 @@ public class UserController {
     // ---------------------------------------- //
 
     // 회원정보 수정 화면 요청
-    @GetMapping("/user/update")
+    @GetMapping("/users/update")
     public String userUpdateView(
             HttpSession session,
             Model model
