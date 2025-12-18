@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
     list-style: none;
 }
 
@@ -62,7 +61,7 @@ a {
 }
 
 .nav {
-    padding: 20px 10px 10px 0;
+    padding: 30px 10px 10px 0;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -85,6 +84,7 @@ a {
 
 .greet {
     font-size: 15px;
+    text-align: center;
 }
 
 .carousel {
@@ -97,6 +97,10 @@ a {
 .carousel-item img {
     height: 450px;
     object-fit: cover;
+}
+
+.banner:hover{
+    background: none;
 }
 
 .home-list1 {
@@ -117,6 +121,9 @@ a {
     margin-bottom: 50px;
 }
 
+.card {
+    cursor: pointer;
+}
 .card-body {
     text-align: center;
 }
@@ -125,8 +132,12 @@ a {
     border: none;
 }
 
+.footer-wrapper {
+    border-top: 1px solid lightgray;
+}
+
 .footer {
     text-align: center;
-    padding: 20px;
+    padding: 50px;
     color: gray;
 }

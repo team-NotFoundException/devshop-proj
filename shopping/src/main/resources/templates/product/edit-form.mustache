@@ -1,26 +1,71 @@
 {{> layout/header}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>상품 목록</title>
-</head>
-<body>
 
-{{#products}}
-    <div class="card mb-3">
-        <div class="card-body">
-            <h4 class="card-title mb-3">{{productName}}</h4>
-            <div>가격: {{price}}</div>
-            <div>상태: {{status}}</div>
+<div class="container p-5">
+    <h2 class="mb-4">상품 수정</h2>
 
-            <a href="/products/{{id}}/edit" class="btn btn-primary">
-                상세보기
-            </a>
+    ```
+    <form action="/products/{{product.id}}/edit" method="post">
+
+        <!-- 카테고리 -->
+        <div class="mb-3">
+            <label class="form-label">카테고리</label>
+            <select name="categoryId" class="form-select">
+                {{#categories}}
+                    <option value="{{id}}" {{#selected}}selected{{/selected}}>{{categoryName}}</option>
+                {{/categories}}
+            </select>
         </div>
-    </div>
-{{/products}}
 
-</body>
-</html>
+        <!-- 상품명 -->
+        <div class="mb-3">
+            <label class="form-label">상품명</label>
+            <input type="text" name="productName" class="form-control" value="{{product.productName}}" required>
+        </div>
+
+        <!-- 상품 코드 -->
+        <div class="mb-3">
+            <label class="form-label">상품 코드</label>
+            <input type="text" name="productCode" class="form-control" value="{{product.productCode}}" required>
+        </div>
+
+        <!-- 가격 -->
+        <div class="mb-3">
+            <label class="form-label">가격</label>
+            <input type="number" name="price" class="form-control" value="{{product.price}}" required>
+        </div>
+
+        <!-- 재고 -->
+        <div class="mb-3">
+            <label class="form-label">재고 수량</label>
+            <input type="number" name="stockQuantity" class="form-control" value="{{product.stockQuantity}}">
+        </div>
+
+        <!-- 설명 -->
+        <div class="mb-3">
+            <label class="form-label">상품 설명</label>
+            <textarea name="description" class="form-control" rows="4">{{product.description}}</textarea>
+        </div>
+
+        <!-- 썸네일 URL -->
+        <div class="mb-3">
+            <label class="form-label">썸네일 URL</label>
+            <input type="text" name="thumbnailUrl" class="form-control" value="{{product.thumbnailUrl}}">
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="/products/list-form" class="btn btn-secondary">목록</a>
+            <button type="submit" class="btn btn-warning">수정</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <!-- 삭제 -->
+    <form action="/products/{{product.id}}/delete" method="post" class="text-end">
+        <button type="submit" class="btn btn-danger">삭제</button>
+    </form>
+    ```
+
+</div>
+
 {{> layout/footer}}
