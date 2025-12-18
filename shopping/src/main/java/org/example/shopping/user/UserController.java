@@ -17,14 +17,14 @@ public class UserController {
     private final UserService userService;
 
     // 로그인 화면 요청
-    // http://localhost:8080/users/login
-    @GetMapping("/users/login")
+    // http://localhost:8080/login
+    @GetMapping("/user/login")
     public String loginForm() {
         return "user/login-form";
     }
 
     // 로그인 기능 요청
-    @PostMapping("/users/login")
+    @PostMapping("/user/login")
     public String login(
             @Valid @ModelAttribute UserRequest.LoginDTO loginDTO,
             HttpSession session
@@ -36,7 +36,7 @@ public class UserController {
             session.setAttribute("sessionUser", sessionUser);
 
             System.out.println("성공~");
-            return "payment/payment-form";
+            return "redirect:/";
         } catch (Exception e) {
             System.out.println("실패지롱");
             return "redirect:/";
@@ -47,7 +47,7 @@ public class UserController {
     // ---------------------------------------- //
 
     // 로그아웃
-    @GetMapping("/users/logout")
+    @GetMapping("/user/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
@@ -57,12 +57,12 @@ public class UserController {
 
     // 회원가입 화면 요청
     // http://localhost:8080/users/join
-    @GetMapping("/users/join")
+    @GetMapping("/user/join")
     public String JoinForm() {
         return "user/join-form";
     }
 
-    @PostMapping("/users/join")
+    @PostMapping("/join")
     public String signUp(
             @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
     ) {
@@ -75,7 +75,8 @@ public class UserController {
     // ---------------------------------------- //
 
     // 회원정보 수정 화면 요청
-    @GetMapping("/{id}/edit")
+    // http://localhost:8080/users/edit
+    @GetMapping("/user/edit")
     public String userUpdateView(
             @PathVariable Long id,
             @SessionAttribute("userSessionId") Long userSessionId,
@@ -85,19 +86,18 @@ public class UserController {
 
         model.addAttribute("user", userEntity);
 
-        return "user/update-form";
+        return "layout/mypage-sidebar";
     }
 
     // 회원정보 수정 기능 요청
-    @PostMapping("/{id}/update")
+    @PostMapping("/user/edit")
     public String userUpdate(
-            @PathVariable Long id,
             @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,
             @SessionAttribute("userSessionId") Long userSessionId
     ) {
         userService.userUpdate(updateDTO, userSessionId);
 
-        return "redirect:/users/" + id;
+        return "user/update-form";
     }
 
     // ---------------------------------------- //

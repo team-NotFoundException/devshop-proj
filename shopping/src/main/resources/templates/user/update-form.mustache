@@ -1,26 +1,54 @@
-{{> layout/header}}
-<div class="container p-5">
+<section class="update-content-box">
+    <h1>내정보 수정</h1>
 
-    <!-- 요청을 하면 localhost:8080/join POST로 요청됨
-    username=사용자입력값&password=사용자값&email=사용자입력값 -->
-
-    <div class="card">
-        <div class="card-header"><b>회원수정을 해주세요</b></div>
-        <div class="card-body">
-            <form action="/user/update" method="post" enctype="application/x-www-form-urlencoded">
-                <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Enter username" name="username" value="{{user.username}}" >
-                </div>
-                <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Enter password" name="password">
-                </div>
-                <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Enter email" name="email" value="{{user.email}}" >
-                </div>
-                <button type="submit" class="btn btn-primary form-control">회원가입수정</button>
-            </form>
+    <form action="/users/{{user.id}}" method="post">
+        <div class="update-form-group">
+            <label for="username">아이디 <span class="req-star">*</span></label>
+            <input type="text" id="username" value="{{user.username}}" disabled>
+            <small class="help-text">5자 이상 255자 이하의 아이디를 입력해주세요.</small>
         </div>
-    </div>
-</div>
 
-{{> layout/footer}}
+        <div class="update-form-group">
+            <label for="password">비밀번호 <span class="req-star">*</span></label>
+            <input type="password" id="password" name="password" placeholder="6자 이상 16자 이하의 비밀번호를 입력하세요" required>
+            <small class="help-text">6~16자, 영문/숫자/특수문자 중 2가지 이상 조합</small>
+        </div>
+
+        <div class="update-form-group">
+            <label for="nickname">닉네임 <span class="req-star">*</span></label>
+            <input type="text" id="nickname" name="nickname" value="{{user.nickname}}" placeholder="2자 이상 6자 이하의 닉네임을 입력해주세요." required>
+        </div>
+
+        <div class="update-form-group">
+            <label for="email">이메일 주소 <span class="req-star">*</span></label>
+            <input type="email" id="email" value="{{user.email}}" disabled>
+        </div>
+
+        <div class="update-form-group">
+            <label for="address">주소 <span class="req-star">*</span></label>
+            <input type="text" id="address" name="address" value="{{user.address}}" placeholder="주소를 입력해주세요 (우편번호 검색 기능 필요)" required>
+        </div>
+
+        <div class="update-form-group">
+            <label for="phoneNumber">연락처 <span class="req-star">*</span></label>
+            <input type="text" id="phoneNumber" value="{{user.phoneNumber}}" disabled>
+            <small class="help-text">10 ~ 11 자리의 숫자만 입력 가능합니다. (자동 하이픈 입력 등 UI 보조 필요)</small>
+        </div>
+
+        <div class="update-form-group">
+            <label>성별</label>
+            <div class="gender-radio-group">
+                <label><input type="radio" name="gender" value="M" {{#isMale}}checked{{/isMale}}> 남성</label>
+                <label><input type="radio" name="gender" value="F" {{#isFemale}}checked{{/isFemale}}> 여성</label>
+                <label><input type="radio" name="gender" value="N" {{#isNone}}checked{{/isNone}}> 선택 안 함</label>
+            </div>
+        </div>
+
+        <div class="update-form-group">
+            <label for="birthday">생년월일</label>
+            <input type="date" id="birthday" value="{{user.birthday}}" disabled>
+        </div>
+
+        <button type="submit" class="btn-submit-update">수정하기</button>
+    </form>
+</section>
