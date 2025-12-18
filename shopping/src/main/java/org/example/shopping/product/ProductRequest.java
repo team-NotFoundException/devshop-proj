@@ -43,7 +43,7 @@ public class ProductRequest {
                     .stockQuantity(stockQuantity)
                     .description(description)
                     .thumbnailUrl(thumbnailUrl)
-                    .status(ProductStatus.active)
+                    .status(ProductStatus.ACTIVE)
                     .build();
         }
     }
