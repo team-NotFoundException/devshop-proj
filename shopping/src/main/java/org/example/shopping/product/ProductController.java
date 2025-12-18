@@ -46,6 +46,7 @@ public class ProductController {
     }
 
     // 카테고리별 조회
+    // http://localhost:8080/products/category/1
     @GetMapping("/category/{categoryId}")
     public String listByCategory(@PathVariable Long categoryId, Model model) {
         model.addAttribute("products", productService.findByCategoryId(categoryId));

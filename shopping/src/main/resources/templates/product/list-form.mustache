@@ -1,26 +1,30 @@
-{{> layout/header}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>상품 목록</title>
-</head>
-<body>
+<div class="header-wrapper">
+    <div class="container">
+        {{> layout/header }}
+        {{> layout/nav }}
 
-{{#products}}
-    <div class="card mb-3">
-        <div class="card-body">
-            <h4 class="card-title mb-3">{{productName}}</h4>
-            <div>가격: {{price}}</div>
-            <div>상태: {{status}}</div>
-
-            <a href="/products/{{id}}/edit" class="btn btn-primary">
-                상세보기
-            </a>
-        </div>
     </div>
-{{/products}}
+</div>
 
-</body>
-</html>
+
+<div class="mb-4">
+<div class="product-section">
+    <div class="product-grid">
+        {{#products}}
+            <div class="product-card">
+                <a href="/products/{{id}}">
+                    <img src="" alt="">
+                    <div class="card-body">
+                        <h3 class="product-name"></h3>
+                        <p class="product-price">원</p>
+                    </div>
+                </a>
+            </div>
+        {{/products}}
+    </div>
+</div>
+
+
+</div>
+
 {{> layout/footer}}
