@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
     private final UserService userService;
 
     // 로그인 화면 요청
@@ -36,10 +35,10 @@ public class UserController {
             session.setAttribute("sessionUser", sessionUser);
 
             System.out.println("성공~");
-            return "payment/payment-form";
+            return "redirect:/";
         } catch (Exception e) {
             System.out.println("실패지롱");
-            return "redirect:/";
+            return "redirect:/users/login";
         }
 
     }
@@ -75,29 +74,34 @@ public class UserController {
     // ---------------------------------------- //
 
     // 회원정보 수정 화면 요청
-    @GetMapping("/{id}/edit")
+    @GetMapping("/user/update")
     public String userUpdateView(
-            @PathVariable Long id,
-            @SessionAttribute("userSessionId") Long userSessionId,
+            HttpSession session,
             Model model
     ) {
-        User userEntity = userService.userUpdateView(userSessionId);
 
-        model.addAttribute("user", userEntity);
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
-        return "user/update-form";
+        if (sessionUser == null) {
+            return "redirect:/users/login";
+        }
+        User user = userService.userUpdateView(sessionUser.getId());
+        model.addAttribute("user", user);
+
+        return "user/mypage-update";
     }
 
     // 회원정보 수정 기능 요청
-    @PostMapping("/{id}/update")
+    @PostMapping("/user/update")
     public String userUpdate(
-            @PathVariable Long id,
             @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,
-            @SessionAttribute("userSessionId") Long userSessionId
+            HttpSession session
     ) {
-        userService.userUpdate(updateDTO, userSessionId);
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        User updateUser = userService.userUpdate(updateDTO, sessionUser.getId());
 
-        return "redirect:/users/" + id;
+        session.setAttribute("sessionUser", updateUser);
+        return "redirect:/";
     }
 
     // ---------------------------------------- //

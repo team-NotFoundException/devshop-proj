@@ -40,24 +40,14 @@ public class UserService {
     }
 
     public User userUpdateView(Long userSessionId) {
-        User userEntity = userRepository.findById(userSessionId)
+        return userRepository.findById(userSessionId)
                 .orElseThrow(() -> new Exception404("사용자를 못찾아요"));
-
-        if (!userEntity.isOwner(userSessionId)) {
-            throw new Exception403("당신의 회원정보가 아니에요...");
-        }
-
-        return userEntity;
     }
 
     @Transactional
     public User userUpdate(@Valid UserRequest.UpdateDTO updateDTO, Long userId) {
         User userEntity = userRepository
                 .findById(userId).orElseThrow(() -> new Exception404("사용자를 찾지 못하겠어요"));
-
-        if (!userEntity.isOwner(userId)) {
-            throw new Exception403("회원정보 수정 권한이 없어요");
-        }
 
         userEntity.update(updateDTO);
 
