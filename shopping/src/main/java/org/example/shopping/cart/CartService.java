@@ -35,9 +35,7 @@ public class CartService {
         Cart cartEntity = cartRepository.findById(addDTO.getCart().getId())
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        // 나중에 product option 까지 확인해서 찾는 로직으로 변경
-        CartItem item = cartItemRepository.findByCart_IdAndId(addDTO.getCart().getId(), cartItemId)
-                        .orElse(null);
+        CartItem item = null;
 
         if (item != null) {
             throw new Exception400("이미 장바구니에 있습니다.");
@@ -57,6 +55,7 @@ public class CartService {
         cartItemRepository.deleteByCartIdAndIsChecked(cartId);
     }
 
+    // 아이템 개별 삭제
     @Transactional
     public void removeCartItem(Long cartId, Long cartItemId) {
         CartItem cartItemEntity = cartItemRepository.findById(cartItemId)

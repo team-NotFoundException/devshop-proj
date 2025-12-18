@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -14,22 +15,32 @@ import java.util.List;
 @Controller
 public class CartController {
     private final CartService cartService;
+    private final CartRepository cartRepository;
+
+    // 장바구니 만들기 (임시 기능)
+    @PostMapping("/cart/create")
+    public String createCart() {
+        cartRepository.save(new Cart());
+        return "redirect:/cart/list";
+    }
 
     // 장바구니 아이템 목록 화면 요청
     @GetMapping("/cart/list")
-    public String cartItemList(Long cartId, Model model, HttpSession session) {
+    public String cartItemList(Model model, HttpSession session) {
         String sessionUser = (String) session.getAttribute("sessionUser");
 
+        Long cartId = 1L;
         List<CartResponse.CartItemListDTO> cartItems = cartService.getCartItems(cartId);
 
         model.addAttribute("cartItems", cartItems);
+        model.addAttribute("cartId", cartId);
 
         return "cart/list";
     }
 
     // 아이템 추가
     @PostMapping("/cart/{id}/add")
-    public String addProc(Long cartId, CartRequest.AddDTO addDTO, HttpSession session) {
+    public String addProc(@PathVariable(name = "id") Long cartId, CartRequest.AddDTO addDTO, HttpSession session) {
         String sessionUser = (String) session.getAttribute("sessionUser");
 
         cartService.addCartItem(cartId, addDTO);
@@ -37,7 +48,7 @@ public class CartController {
     }
 
     // 선택된 아이템 제거
-    @PostMapping("/cart/{cartId}/delete")
+    @PostMapping("/cart/{cartId}/delete-checked")
     public String deleteCheckedItem(@PathVariable Long cartId, HttpSession session) {
         String sessionUser = (String) session.getAttribute("sessionUser");
 
@@ -55,11 +66,13 @@ public class CartController {
 
     // 아이템 선택
     @PostMapping("/cart/{cartId}/{cartItemId}/update-check")
+    @ResponseBody
     public String updateCheck(@PathVariable Long cartId, @PathVariable Long cartItemId, HttpSession session) {
         String sessionUser = (String) session.getAttribute("sessionUser");
 
         cartService.checkItem(cartId, cartItemId);
-        return "redirect:/cart/list";
+
+        return "success";
     }
 
     // 아이템 개수/옵션 변경
@@ -68,6 +81,7 @@ public class CartController {
         String sessionUser = (String) session.getAttribute("sessionUser");
 
         cartService.updateOption(updateOptionDTO, cartId, cartItemId);
+
         return "redirect:/cart/list";
     }
 }
