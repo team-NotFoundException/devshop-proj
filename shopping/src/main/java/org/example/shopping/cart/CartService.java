@@ -50,7 +50,7 @@ public class CartService {
     public void removeCheckedCartItem(Long cartId) {
 
         cartRepository.findById(cartId)
-                        .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
         cartItemRepository.deleteByCartIdAndIsChecked(cartId);
     }
@@ -71,8 +71,11 @@ public class CartService {
     @Transactional
     public void checkItem(Long cartId ,Long cartItemId) {
 
-        CartItem cartItemEntity = cartItemRepository.findByCart_IdAndId(cartId, cartItemId)
+        CartItem cartItemEntity = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new Exception404("아이템을 찾을 수 없습니다."));
+
+        if (!cartItemEntity.getCart().getId().equals(cartId))
+            throw new Exception400("잘못된 요청입니다.");
 
         cartItemEntity.updateCheckItem();
     }
@@ -81,8 +84,11 @@ public class CartService {
     @Transactional
     public void updateOption(CartRequest.UpdateOptionDTO updateOptionDTO, Long cartId ,Long cartItemId) {
 
-        CartItem cartItemEntity = cartItemRepository.findByCart_IdAndId(cartId, cartItemId)
+        CartItem cartItemEntity = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new Exception404("아이템을 찾을 수 없습니다."));
+
+        if (!cartItemEntity.getCart().getId().equals(cartId))
+            throw new Exception400("잘못된 요청입니다.");
 
         cartItemEntity.updateItemOption(updateOptionDTO.getQuantity());
     }

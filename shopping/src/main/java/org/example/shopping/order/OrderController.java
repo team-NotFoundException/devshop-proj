@@ -17,11 +17,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // 주문 생성 요청 화면
-    // http://localhost:8080/order/create
-    @GetMapping("/order-create")
+    // 주문 완료 화면
+    // http://localhost:8080/order-complete
+    @GetMapping("/order-complete")
     public String orderForm(HttpSession session) {
-        String sessionUser = (String) session.getAttribute("sessionUser");
+//        String sessionUser = (String) session.getAttribute("sessionUser");
 
         return "order/create-form";
     }
@@ -29,7 +29,7 @@ public class OrderController {
     // 장바구니 주문 생성 요청 기능
     @PostMapping("/order-create-inCart")
     public String orderCartProc(HttpSession session) {
-        String sessionUser = (String) session.getAttribute("sessionUser");
+//        String sessionUser = (String) session.getAttribute("sessionUser");
 
 
         // 나중에 추가
