@@ -11,9 +11,7 @@ import org.example.shopping.product.productEnum.ProductStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,6 +103,7 @@ public class CartService {
             throw new Exception400("잘못된 요청입니다.");
 
         cartItemEntity.updateCheckItem();
+        updateTotalPrice(cartId);
     }
 
     // 아이템 개수/옵션 변경
@@ -126,27 +125,13 @@ public class CartService {
 
         List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
 
-//        List<CartItem> itemsPrice = cartItems.stream()
-//                .map(cartItem -> cartItem.getCart().getTotalPrice()
-////                    Long price = cartItem.getProduct().getPrice();
-////                    Integer quantity = cartItem.getQuantity();
-////                    Long totalPrice = (Long) price * quantity;
-////
-////                    return totalPrice;
-//                )
-//                .toList();
 
         // 총액 계산
         Long totalPrice = cartItems.stream()
-                .filter(item -> item.isItemChecked(true))
+                .filter(CartItem::isItemChecked)
                         .mapToLong(CartItem::getTotalPrice)
                                 .sum();
 
-//        Long totalPrice = itemsPrice.stream()
-//                .filter(item -> item.isItemChecked(true))
-//                .mapToLong(CartItem::getTotalPrice)
-//                .sum();
-
-        cartEntity.setTotalPrice(totalPrice);
+        cartEntity.setCartPrice(totalPrice);
     }
 }
