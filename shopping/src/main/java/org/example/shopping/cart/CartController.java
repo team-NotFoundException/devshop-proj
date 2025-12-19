@@ -41,10 +41,10 @@ public class CartController {
 
     // 아이템 추가
     @PostMapping("/cart/{id}/add")
-    public String addProc(@PathVariable(name = "id") Long cartId, CartRequest.AddDTO addDTO, HttpSession session) {
+    public String addProc(@PathVariable(name = "id") Long cartId,Model model, Long productId, CartRequest.AddDTO addDTO, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        cartService.addCartItem(cartId, addDTO);
+        cartService.addCartItem(cartId, productId, addDTO);
         return "redirect:/cart/list";
     }
 

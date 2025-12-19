@@ -15,7 +15,7 @@
         </form>
 
         <form action="/cart/1/add" method="post" style="display:inline-block;">
-            <input type="number" name="productId" placeholder="상품ID" style="width: 80px; padding: 8px;" required>
+            <input type="number" name="productId" placeholder="상품ID" style="width: 80px; padding: 8px;" value="" required>
             <input type="number" name="quantity" placeholder="수량" value="1" style="width: 60px; padding: 8px;" required>
             <button type="submit" class="btn-test">아이템 추가</button>
         </form>
@@ -60,9 +60,9 @@
 
                         <div class="item-details">
                             <div class="item-info">
-                                <h3 class="item-brand">{{product}}</h3>
+                                <h3 class="item-brand">{{product.productName}}</h3>
 
-                                <p class="item-desc">상품 ID: {{product}}</p>
+                                <p class="item-desc">상품 ID: {{product.id}}</p>
                                 <div class="item-meta">
                                     <span class="item-quantity">수량: {{quantity}}개</span>
                                     <span class="badge-fast">빠른배송</span>
@@ -70,7 +70,7 @@
                             </div>
 
                             <div class="item-price">
-                                <p class="price">260,000원</p>
+                                <p class="price">{{product.price}}</p>
                             </div>
                         </div>
 

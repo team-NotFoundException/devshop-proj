@@ -22,7 +22,7 @@ public class Cart {
 
     @OneToOne
     private User user;
-    
+
     private Long totalPrice;
 
     public Cart(Long totalPrice) {
@@ -30,7 +30,7 @@ public class Cart {
     }
 
     public CartItem addItem(Product product, Integer quantity) {
-        CartItem cartItem = new CartItem(this, product, quantity);
+        CartItem cartItem = new CartItem(this, product, quantity, product.getPrice() * quantity);
         return cartItem;
     }
 }

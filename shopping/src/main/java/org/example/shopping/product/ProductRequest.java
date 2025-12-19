@@ -17,7 +17,7 @@ public class ProductRequest {
         private Long categoryId;
         private String productName;
         private String productCode;
-        private BigDecimal price;
+        private Long price;
         private int stockQuantity;
         private String description;
         private String thumbnailUrl;
@@ -29,7 +29,7 @@ public class ProductRequest {
             if (productCode == null || productCode.isBlank()) {
                 throw new Exception400("상품 코드는 필수입니다.");
             }
-            if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
+            if (price == null || price <= 0) {
                 throw new Exception400("가격은 0보다 커야 합니다.");
             }
         }
@@ -53,7 +53,7 @@ public class ProductRequest {
     public static class UpdateDTO {
         private Long categoryId;     // 수정 시 카테고리도 선택 가능
         private String productName;
-        private BigDecimal price;
+        private Long price;
         private int stockQuantity;
         private String description;
         private String thumbnailUrl;
@@ -63,7 +63,7 @@ public class ProductRequest {
             if (productName == null || productName.isBlank()) {
                 throw new Exception400("상품명은 필수입니다.");
             }
-            if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
+            if (price == null || price <= 0) {
                 throw new Exception400("가격은 0보다 커야 합니다.");
             }
         }

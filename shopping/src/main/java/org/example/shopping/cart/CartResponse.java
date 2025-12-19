@@ -12,6 +12,7 @@ public class CartResponse {
         private Long cartId;
         private Product product;
         private Integer quantity;
+        private Long totalPrice;
         private boolean isChecked;
 
         public CartItemListDTO(CartItem cartItem) {
@@ -19,6 +20,7 @@ public class CartResponse {
             this.cartId = cartItem.getCart().getId();
             this.product = cartItem.getProduct();
             this.quantity = cartItem.getQuantity();
+            this.totalPrice = cartItem.getTotalPrice();
             this.isChecked = cartItem.getIsChecked();
         }
     }

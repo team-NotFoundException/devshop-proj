@@ -11,6 +11,7 @@ import org.example.shopping.product.productEnum.ProductStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,32 +36,40 @@ public class CartService {
 
     // 아이템 추가
     @Transactional
-    public void addCartItem(Long cartId, CartRequest.AddDTO addDTO) {
+    public void addCartItem(Long cartId, Long productId, CartRequest.AddDTO addDTO) {
 
         Cart cartEntity = cartRepository.findById(cartId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        Product productEntity = productRepository.findById(addDTO.getProduct().getId())
+        Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new Exception404("물품을 찾을 수 없습니다."));
 
-        if (productEntity.getStatus().equals(ProductStatus.SOLD_OUT)) {
-            throw new Exception400("품절된 상품입니다.");
-        }
+        if (productEntity.getStatus().equals(ProductStatus.SOLD_OUT) ||
+                productEntity.getStatus().equals(ProductStatus.INACTIVE))
+            throw new Exception400("구매할 수 없는 상품입니다.");
 
         List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
 
-        List<CartItem> items = cartItems.stream()
-                .map(cartItem -> new CartItem())
-                .filter(cartItem -> cartItem.getProduct().getId().equals(addDTO.getProduct().getId()) &&
-                        Objects.equals(cartItem.getQuantity(), addDTO.getQuantity()))
-                .toList();
+//        List<CartItem> items = cartItems.stream()
+//                .map(cartItem -> new CartItem())
+//                .filter(cartItem -> cartItem.getProduct().getId().equals(productId) &&
+//                        Objects.equals(cartItem.getQuantity(), addDTO.getQuantity()))
+//                .toList();
+
+        List<CartItem> items = null;
 
         if (items != null) {
             throw new Exception400("이미 장바구니에 있습니다.");
         } else {
-            CartItem newItem = cartEntity.addItem(addDTO.getProduct(), addDTO.getQuantity());
+            CartItem newItem = CartItem.builder()
+                    .cart(cartEntity)
+                    .product(productEntity)
+                    .quantity(addDTO.getQuantity())
+                    .build();
             cartItemRepository.save(newItem);
         }
+
+        updateTotalPrice(cartId);
     }
 
     // 선택된 아이템 삭제
@@ -109,5 +118,35 @@ public class CartService {
             throw new Exception400("잘못된 요청입니다.");
 
         cartItemEntity.updateItemOption(updateOptionDTO.getQuantity());
+    }
+
+    public void updateTotalPrice(Long cartId) {
+        Cart cartEntity = cartRepository.findById(cartId)
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
+
+//        List<CartItem> itemsPrice = cartItems.stream()
+//                .map(cartItem -> cartItem.getCart().getTotalPrice()
+////                    Long price = cartItem.getProduct().getPrice();
+////                    Integer quantity = cartItem.getQuantity();
+////                    Long totalPrice = (Long) price * quantity;
+////
+////                    return totalPrice;
+//                )
+//                .toList();
+
+        // 총액 계산
+        Long totalPrice = cartItems.stream()
+                .filter(item -> item.isItemChecked(true))
+                        .mapToLong(CartItem::getTotalPrice)
+                                .sum();
+
+//        Long totalPrice = itemsPrice.stream()
+//                .filter(item -> item.isItemChecked(true))
+//                .mapToLong(CartItem::getTotalPrice)
+//                .sum();
+
+        cartEntity.setTotalPrice(totalPrice);
     }
 }

@@ -27,11 +27,14 @@ public class CartItem {
 
     private Integer quantity;
 
+    private Long totalPrice;
+
     @Builder
-    public CartItem(Cart cart, Product product, Integer quantity) {
+    public CartItem(Cart cart ,Product product, Integer quantity, Long totalPrice) {
         this.cart = cart;
         this.product = product;
         this.quantity = quantity;
+        this.totalPrice = product.getPrice() * quantity;
         this.isChecked = true;
     }
 

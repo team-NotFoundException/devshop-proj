@@ -21,7 +21,7 @@ public class Product {
 
     private String productName;
     private String productCode;
-    private BigDecimal price;
+    private Long price;
     private int stockQuantity;
     private String description;
     private String thumbnailUrl;
@@ -44,7 +44,7 @@ public class Product {
     public Product(
             String productName,
             String productCode,
-            BigDecimal price,
+            Long price,
             int stockQuantity,
             String description,
             String thumbnailUrl,
