@@ -38,7 +38,7 @@ public class CartItem {
         this.isChecked = true;
     }
 
-    public boolean isItemChecked(boolean isChecked) {
+    public boolean isItemChecked() {
         return isChecked;
     }
 

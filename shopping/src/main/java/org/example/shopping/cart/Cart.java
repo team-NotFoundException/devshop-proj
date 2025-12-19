@@ -9,6 +9,7 @@ import org.example.shopping.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -23,14 +24,5 @@ public class Cart {
     @OneToOne
     private User user;
 
-    private Long totalPrice;
-
-    public Cart(Long totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public CartItem addItem(Product product, Integer quantity) {
-        CartItem cartItem = new CartItem(this, product, quantity, product.getPrice() * quantity);
-        return cartItem;
-    }
+    private Long cartPrice;
 }

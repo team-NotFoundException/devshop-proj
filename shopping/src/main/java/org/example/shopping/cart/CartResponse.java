@@ -9,7 +9,7 @@ public class CartResponse {
     @Data
     public static class CartItemListDTO {
         private Long id;
-        private Long cartId;
+        private Cart cart;
         private Product product;
         private Integer quantity;
         private Long totalPrice;
@@ -17,7 +17,7 @@ public class CartResponse {
 
         public CartItemListDTO(CartItem cartItem) {
             this.id = cartItem.getId();
-            this.cartId = cartItem.getCart().getId();
+            this.cart = cartItem.getCart();
             this.product = cartItem.getProduct();
             this.quantity = cartItem.getQuantity();
             this.totalPrice = cartItem.getTotalPrice();
