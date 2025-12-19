@@ -93,39 +93,6 @@ VALUES
         '2025-12-12 14:15:00',
         'monitor_profile.jpg'
     );
-INSERT INTO review_tb (
-    user_id,
-    product_id,
-    content,
-    rating,
-    review_image,
-    created_at
-)
-VALUES
-    (
-        1,
-        1,
-        '키감이 정말 좋고 배터리도 오래가요.',
-        5,
-        'review_keyboard.jpg',
-        '2025-12-15 10:10:00'
-    ),
-    (
-        2,
-        2,
-        '가볍고 사용하기 편해서 만족합니다.',
-        4,
-        NULL,
-        '2025-12-16 09:40:00'
-    ),
-    (
-        3,
-        3,
-        '화면이 크고 선명해서 작업하기 좋아요.',
-        5,
-        'review_monitor.jpg',
-        '2025-12-17 18:05:00'
-    );    
 
     INSERT INTO product_tb
 (product_name, product_code, price, stock_quantity, description, thumbnail_url, status, category_id, created_at, profile_image)

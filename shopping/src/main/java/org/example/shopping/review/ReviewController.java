@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,33 +25,27 @@ public class ReviewController {
 
     private final ReviewService reviewService;
     private final ProductService productService;
+
     // 리뷰 저장 화면 요청 (로그인 필요)
     // http://localhost:8080/review/save
     @GetMapping("/review/save")
     public String saveForm(
-//            @PathVariable Long productId,
-            HttpSession session,
-            Model model
+            HttpSession session
     ) {
-        User sessionUser = (User)session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) {
             throw new Exception401("로그인 먼저 해주세요");
         }
-        //       model.addAttribute("productId", productId);
         return "review/save-form";
     }
 
     // 리뷰 저장 (로그인 필요)
     @PostMapping("/review/save")
     public String saveProc(
-//            @PathVariable Long productId,
             ReviewRequest.SaveDTO saveDTO,
             HttpSession session
     ) {
-        User sessionUser = (User)session.getAttribute("sessionUser");
-
-        //       Product product = productRepository.findById(productId)
-        //               .orElseThrow(()-> new Exception404("주문 상품을 찾을 수 없습니다."));
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
         reviewService.create(saveDTO, sessionUser);
         return "redirect:/review/list";
@@ -69,8 +64,17 @@ public class ReviewController {
     // http://localhost:8080/review/1
     @GetMapping("/review/{id}")
     public String findById(@PathVariable Long id, Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
         ReviewResponse.DetailDTO review = reviewService.getDetailView(id);
 
+        boolean isOwner = false;
+        if (sessionUser != null && review.getUserId() != null) {
+            isOwner = review.getUserId().equals(sessionUser.getId());
+        }
+
+        model.addAttribute("isOwner", isOwner);
+        model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("review", review);
         return "review/detail";
     }
@@ -113,5 +117,18 @@ public class ReviewController {
 
         reviewService.deleteReview(id, sessionUser.getId());
         return "redirect:/review/list";
+    }
+
+    // 리뷰 이미지 삭제
+    @PostMapping("/review/{id}/review-image/delete")
+    public String deleteReviewImage(
+            @PathVariable Long id,
+            HttpSession session,
+            Model model
+    ) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        Review updateReview = reviewService.deleteReviewImage(id, sessionUser.getId());
+        model.addAttribute("review", updateReview);
+        return "redirect:/review/{id}";
     }
 }

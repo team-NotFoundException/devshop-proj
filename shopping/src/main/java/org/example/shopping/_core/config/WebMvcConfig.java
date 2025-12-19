@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -19,5 +20,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "login", "join", "logout", "/detail", "/", "/css/**",
                         "/js/**", "/images/**", "/favicon.io", "/h2-console/**"
                 );
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:///D:shopImages/");
     }
 }

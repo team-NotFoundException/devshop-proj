@@ -1,27 +1,66 @@
-<div class="header-wrapper has-nav">
+<div class="header-wrapper">
     <div class="container">
         {{> layout/header }}
-        {{> layout/nav }}
     </div>
 </div>
 
-<form action="/review/{{id}}/update" method="post">
-    <!--
-    name 속성: 서버에서 받을 때 사용하는 변수명
-    name="username" → 컨트롤러에서 String username으로 받음
-    -->
+<link rel="stylesheet" href="/css/user/update-section.css">
 
-    <div class="mb-3">
-        <!-- textarea: 여러 줄 텍스트 입력 가능 -->
-        <textarea class="form-control" rows="5" placeholder="내용 입력" name="content">{{review.content}}</textarea>
-    </div>
-    <div class="mb-3">
-        <input type="text" class="form-control" placeholder="별점 1~5" name="rating" value="{{review.rating}}">
-        <div class="mb-3">
-            <input type="text" class="form-control" placeholder="사진 경로" name="reviewImage" value="{{review.reviewImage}}">
+<main class="mypage-main-wrapper">
+    {{> layout/mypage-sidebar}}
+
+    <div class="container p-5">
+        <div class="card">
+            <div class="card-header"><b>상품 리뷰 수정</b></div>
+            <div class="card-body">
+            <div class="text-center mb-4">
+                {{#review.reviewImage}}
+                {{!어 src 경로가 /images/ 이네... 스프링에 등록한 리소드 핸들러가 동작 함 }}
+                    <img src="/images/{{review.reviewImage}}" alt="리뷰 이미지" class="rounded-circle border"
+                         style="width: 200px;height: 200px; object-fit: cover">
+                    <div class="mt-2">
+                        <form action="/review/{{id}}/review-image/delete" method="post" style="display: inline">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('리뷰 이미지 사진을 삭제하시겠습니까?')">리뷰 이미지 삭제
+                            </button>
+                        </form>
+                    </div>
+                {{/review.reviewImage}}
+                {{^review.reviewImage}}
+                    <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center border"
+                         style="width: 200px; height: 200px;">
+                        <span class="text-white fs-5">리뷰 사진 없음</span>
+                    </div>
+                </div>
+                {{/review.reviewImage}}
+            </div>
+
+            <div class="card">
+                <div class="card-header"><b>상품 리뷰 수정</b></div>
+                <form action="/review/{{id}}/update" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                <textarea class="form-control" rows="5" placeholder="내용 입력" name="content"
+                          required>{{review.content}}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input type="range" min="1" max="5" placeholder="1~5 평점" name="rating" value="{{review.rating}}"
+                               required>
+                    </div>
+                    {{#review.reviewImage}}
+                        <input type="hidden" name="reviewImageFilename" value="{{review.reviewImage}}">
+                    {{/review.reviewImage}}
+                    <div class="mb-3">
+                        <label for="reviewImage">리뷰 사진(선택사항)</label>
+                        <input type="file" class="form-control" id="reviewImage" name="reviewImage" accept="image/*">
+                        <small class="form-text text-muted mt-1">이미지 파일만 업로드 가능합니다(JPG, PNG, GIF)</small>
+                    </div>
+
+                    <!-- 버튼 클릭시 폼이 제출됨 -->
+                    <button class="btn btn-primary form-control">리뷰 수정 완료</button>
+                </form>
+            </div>
         </div>
     </div>
+</main>
 
-    <!-- 버튼 클릭시 폼이 제출됨 -->
-    <button class="btn btn-primary form-control">리뷰 작성 완료</button>
-</form>
+{{> layout/footer }}

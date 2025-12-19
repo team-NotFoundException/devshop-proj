@@ -15,20 +15,26 @@ logging:
     com.example: DEBUG   # 내 프로젝트는 DEBUG 이상 모두 출력
 
 spring:
+  servlet:
+    multipart:
+      enabled: true             # 파일 업로드 활성화
+      max-file-size: 10MB       # 개별 파일 최대 크기
+      max-request-size: 10MB    # 전체 요청 최대 크기
+
   # Mustache 템플릿 엔진 설정
-  mustache:
-    servlet:
-      # 세션과 요청 속성을 템플릿에서 사용 가능하게 함
-      expose-session-attributes: true
-      expose-request-attributes: true
+#  mustache:
+#    servlet:
+#      # 세션과 요청 속성을 템플릿에서 사용 가능하게 함
+#      expose-session-attributes: true
+#      expose-request-attributes: true
 
   # 데이터베이스 연결 설정 (H2 인메모리 데이터베이스)
   datasource:
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     # MODE=MySQL: H2를 MySQL 호환 모드로 실행
-    url: jdbc:h2:mem:test;MODE=MySQL
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/devshop?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: root
 
   # H2 데이터베이스 웹 콘솔 활성화 (개발용)
   # localhost:8080/h2-console로 접속 가능
