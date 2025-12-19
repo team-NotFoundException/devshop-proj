@@ -31,6 +31,7 @@ public class ReviewResponse {
     @Data
     public static class DetailDTO {
         private String content;
+        private Long userId;
         private String username;
         private int rating;
         private String reviewImage;
@@ -40,6 +41,7 @@ public class ReviewResponse {
             this.content = review.getContent();
 
             if (review.getUser() != null) {
+                this.userId = review.getUser().getId();
                 this.username = review.getUser().getUsername();
             }
 
