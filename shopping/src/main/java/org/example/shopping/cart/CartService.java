@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +38,9 @@ public class CartService {
     @Transactional
     public void addCartItem(Long cartId, Long productId, CartRequest.AddDTO addDTO) {
 
+        if (addDTO.getQuantity() <= 0)
+            throw new Exception400("상품은 1개 이상이어야 합니다.");
+
         Cart cartEntity = cartRepository.findById(cartId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
@@ -48,16 +53,15 @@ public class CartService {
 
         List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
 
-//        List<CartItem> items = cartItems.stream()
-//                .map(cartItem -> new CartItem())
-//                .filter(cartItem -> cartItem.getProduct().getId().equals(productId) &&
-//                        Objects.equals(cartItem.getQuantity(), addDTO.getQuantity()))
-//                .toList();
+        Optional<CartItem> existingItem = cartItems.stream()
+                .filter(cartItem -> cartItem.getProduct().getId().equals(productId))
+                .findFirst();
 
-        List<CartItem> items = null;
+        if (existingItem.isPresent()) {
+            CartItem item = existingItem.get();
+            item.updateQuantity(item.getQuantity() + addDTO.getQuantity());
+            item.updateTotalPrice();
 
-        if (items != null) {
-            throw new Exception400("이미 장바구니에 있습니다.");
         } else {
             CartItem newItem = CartItem.builder()
                     .cart(cartEntity)
@@ -78,6 +82,8 @@ public class CartService {
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
         cartItemRepository.deleteByCartIdAndIsChecked(cartId);
+
+        updateTotalPrice(cartId);
     }
 
     // 아이템 개별 삭제
@@ -90,6 +96,8 @@ public class CartService {
             throw new Exception400("잘못된 요청입니다.");
 
         cartItemRepository.delete(cartItemEntity);
+
+        updateTotalPrice(cartId);
     }
 
     // 아이템 선택
@@ -119,12 +127,12 @@ public class CartService {
         cartItemEntity.updateItemOption(updateOptionDTO.getQuantity());
     }
 
+    // 카트 총액 업데이트
     public void updateTotalPrice(Long cartId) {
         Cart cartEntity = cartRepository.findById(cartId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
         List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
-
 
         // 총액 계산
         Long totalPrice = cartItems.stream()
