@@ -16,14 +16,6 @@ public class CategoryController {
     private final CategoryService categoryService;
 
 
-    // 카테고리 목록
-    // http://localhost:8080/categories/list
-    @GetMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("categories", categoryService.findAll());
-        return "categories/list";
-    }
-
     // 카테고리 등록 폼
     // http://localhost:8080/categories/save-form
     @GetMapping("/save-form")

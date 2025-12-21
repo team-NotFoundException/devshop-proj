@@ -3,16 +3,16 @@
 <div class="container p-5">
     <h2 class="mb-4">상품 수정</h2>
 
-    ```
     <form action="/products/{{product.id}}/edit" method="post">
 
         <!-- 카테고리 -->
         <div class="mb-3">
             <label class="form-label">카테고리</label>
-            <select name="categoryId" class="form-select">
-                {{#categories}}
-                    <option value="{{id}}" {{#selected}}selected{{/selected}}>{{categoryName}}</option>
-                {{/categories}}
+            <select name="categoryId" class="form-select" required>
+                <option value="">카테고리 선택</option>
+                {{#category}}
+                    <option value="{{id}}">{{categoryName}}</option>
+                {{/category}}
             </select>
         </div>
 
@@ -64,7 +64,7 @@
     <form action="/products/{{product.id}}/delete" method="post" class="text-end">
         <button type="submit" class="btn btn-danger">삭제</button>
     </form>
-    ```
+
 
 </div>
 

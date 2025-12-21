@@ -66,6 +66,7 @@ public class ProductController {
     }
 
     // 상품 등록
+    //http://localhost:8080/products/save
     @PostMapping("/save")
     public String save(ProductRequest.SaveDTO dto) {
 
@@ -97,5 +98,13 @@ public class ProductController {
     public String delete(@PathVariable Long id) {
         productService.deleteById(id);
         return "redirect:/products/list-form";
+    }
+
+    // 리스트 폼
+    @GetMapping("/product/list-form")
+    // http://localhost:8080/products/product/list-form
+   public String listForm(Model model) {
+        model.addAttribute("products", productService.findAll());
+        return "product/list-form";
     }
 }
