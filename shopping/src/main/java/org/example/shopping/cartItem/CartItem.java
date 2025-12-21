@@ -49,4 +49,12 @@ public class CartItem {
     public void updateCheckItem() {
         this.isChecked = !this.isChecked;
     }
+
+    public void updateQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void updateTotalPrice() {
+        this.totalPrice = this.quantity * this.product.getPrice();
+    }
 }

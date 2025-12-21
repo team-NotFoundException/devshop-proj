@@ -10,10 +10,6 @@
 
     <!-- 테스트 폼들 (나중에 제거 가능) -->
     <div class="test-forms">
-        <form action="/cart/create" method="post" style="display:inline-block; margin-right: 10px;">
-            <button class="btn-test">장바구니 추가</button>
-        </form>
-
         <form action="/cart/1/add" method="post" style="display:inline-block;">
             <input type="number" name="productId" placeholder="상품ID" style="width: 80px; padding: 8px;" value="" required>
             <input type="number" name="quantity" placeholder="수량" value="1" style="width: 60px; padding: 8px;" required>
@@ -26,7 +22,7 @@
         <div class="cart-left">
             <div class="cart-header">
                 <div class="tab active">
-                    <span>KREAM 배송</span>
+                    <span>DEV SHOP 배송</span>
                     <span class="count">{{cartItems.size}}</span>
                 </div>
             </div>
@@ -102,7 +98,7 @@
                 <div class="price-breakdown">
                     <div class="price-row">
                         <span class="label">총 상품금액</span>
-                        <span class="value">260,000원</span>
+                        <span class="value" id="totalProductPrice">{{cartPrice}}원</span>
                     </div>
                     <div class="price-row">
                         <span class="label">배송비</span>
@@ -116,7 +112,7 @@
 
                 <div class="total-price">
                     <span class="label">총 결제금액</span>
-                    <span class="amount">260,000원</span>
+                    <span class="amount" id="finalPrice">{{cartPrice}}원</span>
                 </div>
 
 
@@ -138,9 +134,18 @@
         fetch(`/cart/${cartId}/${itemId}/update-check`, {
             method: 'POST'
         })
-                .then(response => {
-                    if (response.ok) {
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
                         console.log('체크 상태 변경 완료');
+                        // 서버에서 계산된 가격으로 업데이트
+                        const cartPrice = data.cartPrice;
+                        const totalPrice = cartPrice
+
+                        document.getElementById('totalProductPrice').textContent =
+                                cartPrice.toLocaleString() + '원';
+                        document.getElementById('finalPrice').textContent =
+                                totalPrice.toLocaleString() + '원';
                     } else {
                         alert('오류가 발생했습니다.');
                         event.target.checked = !event.target.checked;

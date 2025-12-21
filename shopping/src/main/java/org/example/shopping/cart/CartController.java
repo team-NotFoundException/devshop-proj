@@ -2,6 +2,7 @@ package org.example.shopping.cart;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -33,8 +36,12 @@ public class CartController {
         Long cartId = 1L;
         List<CartResponse.CartItemListDTO> cartItems = cartService.getCartItems(cartId);
 
+        Cart cart = cartRepository.findById(cartId)
+                        .orElseGet(() -> cartRepository.save(new Cart()));
+
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("cartId", cartId);
+        model.addAttribute("cartPrice", cart.getCartPrice() != null ? cart.getCartPrice() : 0);
 
         return "cart/list";
     }
@@ -68,12 +75,19 @@ public class CartController {
     // 아이템 선택
     @PostMapping("/cart/{cartId}/{cartItemId}/update-check")
     @ResponseBody
-    public String updateCheck(@PathVariable Long cartId, @PathVariable Long cartItemId, HttpSession session) {
+    public Map<String, Object> updateCheck(@PathVariable Long cartId, @PathVariable Long cartItemId, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         cartService.checkItem(cartId, cartItemId);
 
-        return "success";
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("cartPrice", cart.getCartPrice() != null ? cart.getCartPrice() : 0);
+
+        return result;
     }
 
     // 아이템 개수/옵션 변경
