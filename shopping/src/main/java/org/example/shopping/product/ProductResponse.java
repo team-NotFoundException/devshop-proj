@@ -17,12 +17,14 @@ public class ProductResponse {
         private int price;
         private String status;
         private String createdAt;
+        private String thumbnailUrl;
 
         public ListDTO(Product product) {
             this.id = product.getId();
             this.productName = product.getProductName();
             this.price = product.getPrice().intValue();
             this.status = product.getStatus().name();
+            this.thumbnailUrl = product.getThumbnailUrl();
 
             if (product.getCategory() != null) {
                 this.categoryName = product.getCategory().getCategoryName();

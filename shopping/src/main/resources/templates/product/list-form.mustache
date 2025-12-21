@@ -2,29 +2,23 @@
     <div class="container">
         {{> layout/header }}
         {{> layout/nav }}
-
     </div>
 </div>
 
-
-<div class="mb-4">
 <div class="product-section">
     <div class="product-grid">
         {{#products}}
             <div class="product-card">
                 <a href="/products/{{id}}">
-                    <img src="" alt="">
+                    <img src="{{thumbnailUrl}}" alt="{{productName}}">
                     <div class="card-body">
-                        <h3 class="product-name"></h3>
-                        <p class="product-price">원</p>
+                        <h3 class="product-name">{{productName}}</h3>
+                        <p class="product-price">{{price}}원</p>
                     </div>
                 </a>
             </div>
         {{/products}}
     </div>
-</div>
-
-
 </div>
 
 {{> layout/footer}}
