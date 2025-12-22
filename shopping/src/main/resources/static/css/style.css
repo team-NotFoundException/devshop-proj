@@ -128,8 +128,10 @@ a {
     text-align: center;
 }
 
+
 .no-border {
     border: none;
+    max-width:230px;
 }
 
 .footer-wrapper {

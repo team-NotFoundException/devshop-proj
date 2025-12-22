@@ -1,0 +1,42 @@
+{{> layout/header }}
+{{> layout/nav }}
+
+<div class="container">
+    <h2>카테고리 목록</h2>
+
+    <a href="/categories/save-form">카테고리 등록</a>
+
+    <table border="1" width="100%">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>카테고리명</th>
+            <th>상단 카테고리</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {{#categories}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{categoryName}}</td>
+                <td>
+                    {{#parent}}
+                        {{categoryName}}
+                    {{/parent}}
+                    {{^parent}}
+                        최상위
+                    {{/parent}}
+                </td>
+            </tr>
+        {{/categories}}
+
+        {{^categories}}
+            <tr>
+                <td colspan="3">카테고리가 없습니다.</td>
+            </tr>
+        {{/categories}}
+        </tbody>
+    </table>
+</div>
+{{> layout/footer }}
