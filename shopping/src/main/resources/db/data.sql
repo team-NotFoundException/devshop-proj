@@ -37,6 +37,8 @@ VALUES ('user01',
         now()
        );
 
+INSERT INTO user_role_tb (role, user_id) VALUES ('ADMIN', 1), ('OWNER', 2), ('USER', 3);
+
 INSERT INTO categories (category_name, depth, display_order, created_at)
 VALUES
     ('상의', 1, 1, now()),

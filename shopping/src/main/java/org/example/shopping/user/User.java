@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.user.dto.UserRequest;
 import org.example.shopping.user.enums.Gender;
+import org.example.shopping.user.enums.RoleType;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "user_tb")
@@ -54,6 +53,10 @@ public class User extends BaseTimeEntity {
     @Column
     private LocalDate birthday;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "user")
+    @JoinColumn(name = "user_id")
+    private UserRole role;
+
     @Builder
     public User(Long id, String username, String password, String nickname, String  email, String address, String phoneNumber, Gender gender, LocalDate birthday) {
         this.id = id;
@@ -67,7 +70,7 @@ public class User extends BaseTimeEntity {
         this.birthday = birthday;
     }
 
-    public boolean isOwner(Long userId) {
+    public boolean isWriter(Long userId) {
         return this.id.equals(userId);
     }
 
@@ -89,4 +92,35 @@ public class User extends BaseTimeEntity {
     public boolean isNone() {
         return Gender.N.equals(this.gender) || this.gender == null;
     }
+
+    public boolean hasRole(RoleType role) {
+        return this.role != null;
+    }
+
+    public boolean isAdmin() {
+        return hasRole(RoleType.ADMIN);
+    }
+
+    public boolean isOwner() {
+        return hasRole(RoleType.OWNER);
+    }
+
+    public boolean isUser() {
+        return hasRole(RoleType.USER);
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin();
+    }
+
+    public boolean getIsOwner() {
+        return isOwner();
+    }
+
+    public boolean getIsUser() {
+        return isUser();
+    }
+
+
+
 }
