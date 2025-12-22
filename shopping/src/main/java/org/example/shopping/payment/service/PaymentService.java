@@ -5,6 +5,7 @@ import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.cart.Cart;
 import org.example.shopping.cart.CartRepository;
+import org.example.shopping.cart.CartService;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.cartItem.CartItemRepository;
 import org.example.shopping.payment.Payment;
@@ -34,6 +35,7 @@ public class PaymentService {
     private final PaymentGatewayResolver gatewayResolver;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final CartService cartService;
 
 
     // ================== 카트 정보 가져오기 ================
@@ -102,6 +104,7 @@ public class PaymentService {
             paymentRepository.save(payment);
         }
         cartItemRepository.deleteAll(checkItem);
+        cartService.updateTotalPrice(cartId);
     }
 
     @Transactional
