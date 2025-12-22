@@ -23,8 +23,11 @@ public class CartController {
 
     // 장바구니 만들기 (임시 기능)
     @PostMapping("/cart/create")
-    public String createCart() {
-        cartRepository.save(new Cart());
+    public String createCart(HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        cartService.createCart(sessionUser);
+
         return "redirect:/cart/list";
     }
 
@@ -33,11 +36,12 @@ public class CartController {
     public String cartItemList(Model model, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        Long cartId = 1L;
-        List<CartResponse.CartItemListDTO> cartItems = cartService.getCartItems(cartId);
+        Cart cart = cartRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        Cart cart = cartRepository.findById(cartId)
-                        .orElseGet(() -> cartRepository.save(new Cart()));
+        Long cartId = cart.getId();
+
+        List<CartResponse.CartItemListDTO> cartItems = cartService.getCartItems(cartId);
 
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("cartId", cartId);
@@ -47,41 +51,59 @@ public class CartController {
     }
 
     // 아이템 추가
-    @PostMapping("/cart/{id}/add")
-    public String addProc(@PathVariable(name = "id") Long cartId,Model model, Long productId, CartRequest.AddDTO addDTO, HttpSession session) {
+    @PostMapping("/cart/add")
+    public String addProc(Long productId, CartRequest.AddDTO addDTO, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+
+        Cart cart = cartRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        Long cartId = cart.getId();
 
         cartService.addCartItem(cartId, productId, addDTO);
         return "redirect:/cart/list";
     }
 
     // 선택된 아이템 제거
-    @PostMapping("/cart/{cartId}/delete-checked")
-    public String deleteCheckedItem(@PathVariable Long cartId, HttpSession session) {
+    @PostMapping("/cart/delete-checked")
+    public String deleteCheckedItem(HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+
+        Cart cart = cartRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        Long cartId = cart.getId();
 
         cartService.removeCheckedCartItem(cartId);
         return "redirect:/cart/list";
     }
 
     // 아이템 단건 삭제
-    @PostMapping("/cart/{cartId}/{cartItemId}/delete")
-    public String deleteItem(@PathVariable Long cartId, @PathVariable Long cartItemId) {
+    @PostMapping("/cart/{cartItemId}/delete")
+    public String deleteItem(@PathVariable Long cartItemId, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        Cart cart = cartRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        Long cartId = cart.getId();
 
         cartService.removeCartItem(cartId, cartItemId);
         return "redirect:/cart/list";
     }
 
     // 아이템 선택
-    @PostMapping("/cart/{cartId}/{cartItemId}/update-check")
+    @PostMapping("/cart/{cartItemId}/update-check")
     @ResponseBody
-    public Map<String, Object> updateCheck(@PathVariable Long cartId, @PathVariable Long cartItemId, HttpSession session) {
+    public Map<String, Object> updateCheck(@PathVariable Long cartItemId, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        cartService.checkItem(cartId, cartItemId);
-
-        Cart cart = cartRepository.findById(cartId)
+        Cart cart = cartRepository.findByUserId(sessionUser.getId())
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        Long cartId = cart.getId();
+
+        cartService.checkItem(cartId, cartItemId);
 
         Map<String, Object> result = new HashMap<>();
         result.put("success", true);
@@ -91,9 +113,14 @@ public class CartController {
     }
 
     // 아이템 개수/옵션 변경
-    @PostMapping("/cart/{cartId}/{cartItemId}/update-option")
-    public String updateOption(CartRequest.UpdateOptionDTO updateOptionDTO,@PathVariable Long cartId, @PathVariable Long cartItemId, HttpSession session) {
+    @PostMapping("/cart/{cartItemId}/update-option")
+    public String updateOption(CartRequest.UpdateOptionDTO updateOptionDTO, @PathVariable Long cartItemId, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+
+        Cart cart = cartRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        Long cartId = cart.getId();
 
         cartService.updateOption(updateOptionDTO, cartId, cartItemId);
 

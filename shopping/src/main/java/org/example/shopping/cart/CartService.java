@@ -8,6 +8,7 @@ import org.example.shopping.cartItem.CartItemRepository;
 import org.example.shopping.product.Product;
 import org.example.shopping.product.ProductRepository;
 import org.example.shopping.product.productEnum.ProductStatus;
+import org.example.shopping.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,11 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
+
+    // 장바구니 생성
+    public void createCart(User user) {
+        cartRepository.save(new Cart(user));
+    }
 
     // 장바구니 아이템 목록
     public List<CartResponse.CartItemListDTO> getCartItems(Long cartId) {
