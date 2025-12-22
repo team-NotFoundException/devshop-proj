@@ -1,14 +1,18 @@
 package org.example.shopping.payment.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.ResponseDto;
+import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping.cart.Cart;
+import org.example.shopping.cart.CartRepository;
+import org.example.shopping.cartItem.CartItem;
+import org.example.shopping.cartItem.CartItemRepository;
 import org.example.shopping.payment.Payment;
 import org.example.shopping.payment.PaymentRefund;
+import org.example.shopping.payment.PaymentRefundRepository;
 import org.example.shopping.payment.PaymentRepository;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
-import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.payment.service.gateway.PaymentGateway;
@@ -19,48 +23,89 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
-
     private final PaymentRefundRepository refundRepository;
     private final PaymentRepository paymentRepository;
     private final PaymentGatewayResolver gatewayResolver;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
-    @Transactional
-    public ResponseDto<?> createPayment(
-            User sessionUser,
-                                        PaymentRequest.CreateDTO createDTO) {
-        return switch (createDTO.getMethod()){
-            case MOCK -> ResponseDto.success(processMockPayment(
-                    sessionUser,
-                    createDTO));
-            case TOSS_PAY -> null;
-        };
+
+    // ================== 카트 정보 가져오기 ================
+    @Transactional(readOnly = true)
+    public PaymentResponse.CartPaymentDTO getCartInfo(Long cartId) {
+        List<CartItem> checkItem = getChecked(cartId);
+        List<PaymentResponse.CartItemPaymentDTO> itemsInfo = checkItem.stream()
+                .map(item -> new PaymentResponse.CartItemPaymentDTO(
+                        item.getId(),
+                        item.getProduct().getId(),
+                        item.getProduct().getProductCode(),
+                        item.getProduct().getProductName(),
+                        item.getQuantity(),
+                        item.getProduct().getPrice(),
+                        item.getTotalPrice()
+                ))
+                .toList();
+
+        Long totalAmount = checkItem.stream()
+                .mapToLong(CartItem::getTotalPrice)
+                .sum();
+        return new PaymentResponse.CartPaymentDTO(cartId, itemsInfo, totalAmount);
     }
 
-    private PaymentResponse processMockPayment(
-            User sessionUser,
-                                               PaymentRequest.CreateDTO createDTO) {
-        Payment payment = Payment.builder()
-                .user(sessionUser)
-                .orderId("ORD-"+ UUID.randomUUID())
-                .paymentKey("MOCK-"+ UUID.randomUUID())
-                .amount(createDTO.toEntity().getAmount())
-                .method(PaymentMethod.MOCK)
-                .status(PaymentStatus.SUCCESS)
-                .productCode(createDTO.toEntity().getProductCode())
-                .productName(createDTO.toEntity().getProductName())
-                .build();
-        payment.paySuccess();
-        paymentRepository.save(payment);
-        return toDto(payment);
+    // cartCheck 검증 편의
+    private List<CartItem> getChecked(Long cartId){
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
+        List<CartItem> checkItem = cartItems.stream()
+                .filter(CartItem::isItemChecked)
+                .toList();
+        if (checkItem.isEmpty()) {
+            throw new Exception400("결제할 상품을 선택해 주세요");
+        }
+        return checkItem;
+    }
+
+
+    // ===================== 결제 =====================
+    @Transactional
+    public void createPayment(
+            User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
+        switch (createDTO.getMethod()) {
+            case MOCK -> processMockPayment(sessionUser, cartId, createDTO);
+            case TOSS_PAY -> {
+                return;
+            }
+        }
+    }
+
+    private void processMockPayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
+        List<CartItem> checkItem = getChecked(cartId);
+        for (CartItem item : checkItem) {
+            Payment payment = Payment.builder()
+                    .user(sessionUser)
+                    .orderId("ORD-" + UUID.randomUUID())
+                    .paymentKey("MOCK-" + UUID.randomUUID())
+                    .amount(item.getTotalPrice())
+                    .method(createDTO.getMethod())
+                    .status(PaymentStatus.SUCCESS)
+                    .productCode(item.getProduct().getProductCode())
+                    .productName(item.getProduct().getProductName() + "(수량: " + item.getQuantity() + "개")
+                    .build();
+            payment.paySuccess();
+            paymentRepository.save(payment);
+        }
+        cartItemRepository.deleteAll(checkItem);
     }
 
     @Transactional
-    public PaymentResponse approvePayment(PaymentRequest.ApproveDTO approveDTO) {
+    public void approvePayment(PaymentRequest.ApproveDTO approveDTO) {
         PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
         PaymentResult result = gateway.approve(approveDTO);
 
@@ -80,7 +125,6 @@ public class PaymentService {
             payment.paySuccess();
         }
         paymentRepository.save(payment);
-        return toDto(payment);
     }
 
 
@@ -119,22 +163,4 @@ public class PaymentService {
 return refund;
 
     }
-
-
-    private PaymentResponse toDto(Payment p) {
-        return new PaymentResponse(
-                p.getId(),
-                p.getOrderId(),
-                p.getPaymentKey(),
-                p.getAmount(),
-                p.getMethod(),
-                p.getStatus(),
-                p.getProductCode(),
-                p.getProductName(),
-                p.getRequestedAt(),
-                p.getApprovedAt()
-        );
-    }
-
-
 }
