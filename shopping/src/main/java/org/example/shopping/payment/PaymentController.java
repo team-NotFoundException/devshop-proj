@@ -20,25 +20,31 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     // 결제 생성
-    // http://localhost:8080/payment
     @GetMapping("/payment")
     public String createPaymentForm(
-            HttpSession session
+            HttpSession session,
+            Long cartId,
+            Model model
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+        if(cartId!=null){
+            PaymentResponse.CartPaymentDTO cartPayment = paymentService.getCartInfo(cartId);
+            model.addAttribute("cartPayment", cartPayment);
+            model.addAttribute("cartId", cartId);
+        }
         return "payment/payment-form";
     }
 
-    @PostMapping("/payment")
+    @PostMapping("/payment/cart/{cartId}")
     public String createPaymentProc(
             HttpSession session,
+            @PathVariable Long cartId,
             PaymentRequest.CreateDTO createDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        paymentService.createPayment(
-                sessionUser,
-                createDTO);
+        paymentService.createPayment(sessionUser, cartId, createDTO);
         return "redirect:/";
     }
+
 
 
     // 결제 적용

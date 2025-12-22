@@ -1,35 +1,63 @@
-
-<div class="pay-container">
-    <h1 class="pay-h1">결제 데모</h1>
-<form action="/payment" method="post">
-    <div class="form-group">
-        <label for="productCode">상품 코드</label>
-        <input type="text" id="productCode" name="productCode" value=""/>
+<div class="header-wrapper has-nav">
+    <div class="container">
+        {{> layout/header }}
+        {{> layout/nav }}
     </div>
-
-    <div class="form-group">
-        <label for="productName">상품명</label>
-        <input type="text" id="productName" name="productName" value=""/>
-    </div>
-
-    <div class="form-group">
-        <label for="amount">금액</label>
-        <input type="number" id="amount" name="amount" value=""/>
-    </div>
-
-    <div class="form-group">
-        <label for="method">결제 수단</label>
-        <select id="method" name="method">
-            <option value="MOCK">Mock 결제</option>
-            <option value="TOSS_PAY">Toss 결제</option>
-        </select>
-    </div>
-
-    <div class="button-group">
-        <button type="submit">결제하기</button>
-
-        <button class="button-secondary" onclick="viewPaymentHistory()">내 결제 내역 보기</button>
-    </div>
-</form>
 </div>
 
+<main class="main-container">
+    <div class="pay-container">
+        <h1 class="pay-h1">결제하기</h1>
+
+        {{#cartPayment}}
+            <div class="cart-payment-section">
+                <h2>주문 상품 정보</h2>
+
+                <div class="payment-items">
+                    {{#items}}
+                        <div class="payment-item">
+                            <div class="item-info">
+                                <h3>{{productName}}</h3>
+                                <p>상품코드: {{productCode}}</p>
+                                <p>수량: {{quantity}}개</p>
+                            </div>
+                            <div class="item-price">
+                                <p>단가: {{amount}}원</p>
+                                <p class="total">합계: {{totalPrice}}원</p>
+                            </div>
+                        </div>
+                    {{/items}}
+                </div>
+
+                <div class="payment-summary">
+                    <div class="summary-row">
+                        <span>총 상품금액</span>
+                        <span class="amount">{{totalAmount}}원</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>최종 결제금액</span>
+                        <span class="amount">{{totalAmount}}원</span>
+                    </div>
+                </div>
+
+                <form action="/payment/cart/{{cartId}}" method="post">
+                    <div class="form-group">
+                        <label for="method">결제 수단 선택</label>
+                        <select id="method" name="method" required>
+                            <option value="">결제 수단을 선택하세요</option>
+                            <option value="MOCK">Mock 결제 (테스트)</option>
+                            <option value="TOSS_PAY">Toss 결제</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-primary">{{totalAmount}}원 결제하기</button>
+                        <a href="/cart/list" class="btn-secondary">장바구니로 돌아가기</a>
+                    </div>
+                </form>
+            </div>
+        {{/cartPayment}}
+
+    </div>
+</main>
+{{>layout/footer}}

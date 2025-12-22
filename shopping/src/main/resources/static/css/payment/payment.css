@@ -1,72 +1,199 @@
-
+/* ================== Layout ================== */
 .pay-container {
-    max-width: 480px;
+    max-width: 800px;
     margin: 40px auto;
     background: white;
     padding: 24px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-
 }
 
+.pay-h1,
 h1 {
     margin-top: 0;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* ================== Cart Payment Section ================== */
+.cart-payment-section h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+}
+
+.payment-items {
+    margin-bottom: 30px;
+}
+
+.payment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.payment-item .item-info h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.payment-item .item-info p {
+    font-size: 14px;
+    color: #666;
+    margin: 4px 0;
+}
+
+.payment-item .item-price {
+    text-align: right;
+}
+
+.payment-item .item-price p {
+    font-size: 14px;
+    margin: 4px 0;
+}
+
+.payment-item .item-price .total {
+    font-size: 18px;
+    font-weight: bold;
     color: #333;
 }
 
+/* ================== Payment Summary ================== */
+.payment-summary {
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.summary-row.total {
+    border-top: 2px solid #333;
+    margin-top: 10px;
+    padding-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.summary-row .amount {
+    font-weight: bold;
+    color: #333;
+}
+
+/* ================== Form ================== */
 .form-group {
     margin-bottom: 16px;
 }
 
+.form-group label,
 label {
     display: block;
+    font-weight: bold;
     margin-bottom: 8px;
+    font-size: 14px;
     color: #555;
-    font-weight: 500;
 }
 
-input, select {
+input,
+select {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
     box-sizing: border-box;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #333;
 }
 
+/* ================== Buttons ================== */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.btn-primary,
+button[type="submit"],
 button {
-    padding: 12px 24px;
-    background-color: #4CAF50;
+    flex: 1;
+    padding: 16px;
+    background-color: #333;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.1s;
 }
 
+.btn-primary:hover,
+button[type="submit"]:hover,
 button:hover {
-    background-color: #45a049;
+    background-color: #555;
 }
 
 button:active {
     transform: scale(0.98);
 }
 
+.btn-secondary,
 .button-secondary {
-    background-color: #2196F3;
-    margin-left: 8px;
+    flex: 1;
+    padding: 16px;
+    background-color: white;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
 }
 
+.btn-secondary:hover,
 .button-secondary:hover {
-    background-color: #0b7dda;
+    background-color: #f8f9fa;
 }
 
-.button-group {
-    margin-top: 16px;
+/* ================== Responsive ================== */
+@media (max-width: 768px) {
+    .pay-container {
+        max-width: 480px;
+        padding: 20px;
+    }
+
+    .payment-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .payment-item .item-price {
+        text-align: left;
+    }
 }
