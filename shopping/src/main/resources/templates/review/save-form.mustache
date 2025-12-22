@@ -1,38 +1,24 @@
-<div class="header-wrapper">
-    <div class="container">
-        {{> layout/header }}
+<div class="mypage-content-box">
+    <div class="card">
+        <div class="card-header"><b>상품 리뷰 작성</b></div>
+
+        <form action="/review/save" method="post" enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <textarea class="form-control" rows="5" placeholder="내용 입력" name="content" required></textarea>
+            </div>
+            <div class="mb-3">
+                <input type="range" min="1" max="5" placeholder="1~5 평점" name="rating" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="reviewImage">리뷰 사진(선택사항)</label>
+                <input type="file" class="form-control" id="reviewImage" name="reviewImage" accept="image/*">
+                <small class="form-text text-muted mt-1">이미지 파일만 업로드 가능합니다(JPG, PNG, GIF)</small>
+            </div>
+
+            <!-- 버튼 클릭시 폼이 제출됨 -->
+            <button class="btn btn-primary form-control">리뷰 작성 완료</button>
+        </form>
     </div>
 </div>
-
-<link rel="stylesheet" href="/css/user/update-section.css">
-
-<main class="mypage-main-wrapper">
-    {{> layout/mypage-sidebar}}
-
-    <div class="container p-5">
-        <div class="card">
-            <div class="card-header"><b>상품 리뷰 작성</b></div>
-
-            <form action="/review/save" method="post" enctype="multipart/form-data">
-
-                <div class="mb-3">
-                    <textarea class="form-control" rows="5" placeholder="내용 입력" name="content" required></textarea>
-                </div>
-                <div class="mb-3">
-                    <input type="range" min="1" max="5" placeholder="1~5 평점" name="rating" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="reviewImage">리뷰 사진(선택사항)</label>
-                    <input type="file" class="form-control" id="reviewImage" name="reviewImage" accept="image/*">
-                    <small class="form-text text-muted mt-1">이미지 파일만 업로드 가능합니다(JPG, PNG, GIF)</small>
-                </div>
-
-                <!-- 버튼 클릭시 폼이 제출됨 -->
-                <button class="btn btn-primary form-control">리뷰 작성 완료</button>
-            </form>
-        </div>
-    </div>
-</main>
-
-{{> layout/footer }}
