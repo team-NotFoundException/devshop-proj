@@ -2,6 +2,7 @@ package org.example.shopping.order;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,7 @@ public class OrderService {
     // 장바구니 주문 생성 기능
 
     // 주문 생성 기능
-    public Order CreateOrder(OrderRequest.CreateDTO createDTO, String user) {
+    public Order CreateOrder(OrderRequest.CreateDTO createDTO, User user) {
         Order order = createDTO.toEntity(user);
 
         return orderRepository.save(order);
@@ -24,7 +25,7 @@ public class OrderService {
 
     // 주문 목록 조회
     public List<Order> getOrderList() {
-        return orderRepository.findAll();
+        return orderRepository.findAllOrderByCreatedAt();
     }
 
     // 주문 상세 조회

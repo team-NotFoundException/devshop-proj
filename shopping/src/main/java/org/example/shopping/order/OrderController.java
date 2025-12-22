@@ -2,6 +2,7 @@ package org.example.shopping.order;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,25 +22,15 @@ public class OrderController {
     // http://localhost:8080/order-complete
     @GetMapping("/order-complete")
     public String orderForm(HttpSession session) {
-//        String sessionUser = (String) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
         return "order/create-form";
-    }
-
-    // 장바구니 주문 생성 요청 기능
-    @PostMapping("/order-create-inCart")
-    public String orderCartProc(HttpSession session) {
-//        String sessionUser = (String) session.getAttribute("sessionUser");
-
-
-        // 나중에 추가
-        return "redirect:result-form";
     }
 
     // 주문 생성 요청 기능
     @PostMapping("/order-create")
     public String orderProc(OrderRequest.CreateDTO createDTO, HttpSession session) {
-        String sessionUser = (String) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
         orderService.CreateOrder(createDTO, sessionUser);
 
@@ -52,7 +43,6 @@ public class OrderController {
     public String orderList(Model model) {
 
         orderService.getOrderList();
-
         return "order/list";
     }
 

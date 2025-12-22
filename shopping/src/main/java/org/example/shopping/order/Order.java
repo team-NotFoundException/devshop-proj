@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping._core.utils.BaseTimeEntity;
+import org.example.shopping.payment.Payment;
+import org.example.shopping.user.User;
 
 import java.util.List;
 
@@ -16,17 +18,21 @@ public class Order extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    OrderStatus orderStatus;
+    private OrderStatus orderStatus;
 
-    String paymentInfo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
-    Long totalPrice;
+    @OneToOne
+    private Payment payment;
 
-    public Order(OrderStatus orderStatus, String paymentInfo, Long totalPrice) {
+    private Long totalPrice;
 
+    public Order(OrderStatus orderStatus, User user, Payment payment, Long totalPrice) {
         this.orderStatus = orderStatus;
-        this.paymentInfo = paymentInfo;
-        this.totalPrice = totalPrice;
+        this.user = user;
+        this.payment = payment;
+        this.totalPrice = payment.getAmount();
     }
 
     public void updateOrderStatus(OrderStatus newStatus) {

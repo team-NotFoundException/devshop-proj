@@ -37,6 +37,12 @@ VALUES ('user01',
         now()
        );
 
+INSERT INTO cart_tb (cart_price, user_id) VALUES
+                                               (0, 1),
+                                               (0, 2),
+                                               (0, 3);
+
+
 INSERT INTO user_role_tb (role, user_id) VALUES ('ADMIN', 1), ('OWNER', 2), ('USER', 3);
 
 INSERT INTO categories (category_name, depth, display_order, created_at)
