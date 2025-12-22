@@ -2,7 +2,7 @@ package org.example.shopping.admin;
 
 public class AdminController {
 
-    // 회원가입
+
 
     // 로그인
 

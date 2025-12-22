@@ -87,10 +87,10 @@ public class UserController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null) {
-            return "redirect:/users/login";
+            return "redirect:/login";
         }
         User user = userService.userUpdateView(sessionUser.getId());
-        model.addAttribute("user", user);
+        model.addAttribute("sessionUser", user);
 
         return "user/mypage-update";
     }
