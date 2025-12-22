@@ -10,7 +10,7 @@
 
     <!-- 테스트 폼들 (나중에 제거 가능) -->
     <div class="test-forms">
-        <form action="/cart/1/add" method="post" style="display:inline-block;">
+        <form action="/cart/add" method="post" style="display:inline-block;">
             <input type="number" name="productId" placeholder="상품ID" style="width: 80px; padding: 8px;" value="" required>
             <input type="number" name="quantity" placeholder="수량" value="1" style="width: 60px; padding: 8px;" required>
             <button type="submit" class="btn-test">아이템 추가</button>
@@ -33,7 +33,7 @@
                     <span class="checkmark"></span>
                     <span>전체 선택</span>
                 </label>
-                <form action="/cart/{{cartId}}/delete-checked" method="post" style="display:inline;">
+                <form action="/cart/delete-checked" method="post" style="display:inline;">
                     <button type="submit" class="delete-btn" onclick="return confirm('선택한 상품을 삭제하시겠습니까?')">선택 삭제</button>
                 </form>
             </div>
@@ -43,7 +43,7 @@
                 <div class="cart-item">
                     <label class="checkbox-label">
                         <input type="checkbox" class="item-checkbox" {{#isChecked}}checked{{/isChecked}}
-                               onchange="toggleCheck({{cartId}}, {{id}})">
+                               onchange="toggleCheck({{id}})">
                         <span class="checkmark"></span>
                     </label>
 
@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="item-actions">
-                            <form action="/cart/{{cartId}}/{{id}}/delete" method="post">
+                            <form action="/cart/{{id}}/delete" method="post">
                                 <button type="submit" class="btn-delete" onclick="return confirm('이 상품을 삭제하시겠습니까?')">
                                     <span>✕</span>
                                 </button>
@@ -131,8 +131,8 @@
 </main>
 
 <script>
-    function toggleCheck(cartId, itemId) {
-        fetch(`/cart/${cartId}/${itemId}/update-check`, {
+    function toggleCheck(itemId) {
+        fetch(`/cart/${itemId}/update-check`, {
             method: 'POST'
         })
                 .then(response => response.json())

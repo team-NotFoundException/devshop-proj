@@ -3,6 +3,7 @@ package org.example.shopping.user;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.cart.CartService;
 import org.example.shopping.user.dto.UserRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final CartService cartService;
 
     // 로그인 화면 요청
     // http://localhost:8080/users/login
@@ -66,7 +68,9 @@ public class UserController {
             @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
     ) {
 
-        userService.signUp(signUpDTO);
+        User user = userService.signUp(signUpDTO);
+
+        cartService.createCart(user);
 
         return "redirect:/users/login";
     }

@@ -25,4 +25,8 @@ public class Cart {
     private User user;
 
     private Long cartPrice;
+
+    public Cart(User user) {
+        this.user = user;
+    }
 }
