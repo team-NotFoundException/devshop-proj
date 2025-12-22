@@ -36,7 +36,7 @@ public class ReviewController {
         if (sessionUser == null) {
             throw new Exception401("로그인 먼저 해주세요");
         }
-        return "review/save-form";
+        return "user/mypage-reviewSave";
     }
 
     // 리뷰 저장 (로그인 필요)
@@ -57,7 +57,7 @@ public class ReviewController {
     public String findAll(Model model) {
         List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews();
         model.addAttribute("reviewList", reviewList);
-        return "review/list";
+        return "user/mypage-reviewList";
     }
 
     // 리뷰 상세 조회
@@ -76,7 +76,7 @@ public class ReviewController {
         model.addAttribute("isOwner", isOwner);
         model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("review", review);
-        return "review/detail";
+        return "user/mypage-reviewDetail";
     }
 
     // 리뷰 수정 화면 요청 (로그인 필요)
@@ -88,7 +88,7 @@ public class ReviewController {
         ReviewResponse.UpdateFormDTO review = reviewService.updateReviewView(id, sessionUser.getId());
 
         model.addAttribute("review", review);
-        return "review/update-form";
+        return "user/mypage-reviewUpdate";
     }
 
     // 리뷰 수정 (로그인 필요)
