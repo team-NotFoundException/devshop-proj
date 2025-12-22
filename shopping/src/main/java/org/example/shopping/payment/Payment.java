@@ -3,6 +3,7 @@ package org.example.shopping.payment;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.shopping._core.utils.BaseTimeEntity;
+import org.example.shopping.cart.Cart;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.user.User;
@@ -26,6 +27,8 @@ public class Payment extends BaseTimeEntity {
     private User user;
 
     private String orderId;
+
+    private Long cart;
 
     private String paymentKey;
 

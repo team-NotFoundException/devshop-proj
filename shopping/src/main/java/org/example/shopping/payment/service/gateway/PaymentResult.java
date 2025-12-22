@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Builder
-@Data
+//@Data
 public class PaymentResult {
     private boolean success;
     private String paymentKey;
