@@ -19,13 +19,13 @@ public class UserController {
 
     // 로그인 화면 요청
     // http://localhost:8080/users/login
-    @GetMapping("/users/login")
+    @GetMapping("/login")
     public String loginForm() {
         return "user/login-form";
     }
 
     // 로그인 기능 요청
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public String login(
             @Valid @ModelAttribute UserRequest.LoginDTO loginDTO,
             HttpSession session
@@ -40,7 +40,7 @@ public class UserController {
             return "redirect:/";
         } catch (Exception e) {
             System.out.println("실패지롱");
-            return "redirect:/users/login";
+            return "redirect:/login";
         }
 
     }
@@ -48,7 +48,7 @@ public class UserController {
     // ---------------------------------------- //
 
     // 로그아웃
-    @GetMapping("/users/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
@@ -57,13 +57,13 @@ public class UserController {
     // ---------------------------------------- //
 
     // 회원가입 화면 요청
-    // http://localhost:8080/users/join
-    @GetMapping("/users/join")
+    // http://localhost:8080/join
+    @GetMapping("/join")
     public String JoinForm() {
         return "user/join-form";
     }
 
-    @PostMapping("/users/join")
+    @PostMapping("/join")
     public String signUp(
             @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
     ) {
@@ -72,7 +72,7 @@ public class UserController {
 
         cartService.createCart(user);
 
-        return "redirect:/users/login";
+        return "redirect:/login";
     }
 
     // ---------------------------------------- //
