@@ -56,7 +56,7 @@ public class ProductController {
 
     // - admin
     // 상품 등록 폼
-    // http://localhost:8080/products/save-form
+    // http://localhost:8080/products/save
     @GetMapping("/save")
     public String saveForm(Model model) {
         List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
@@ -69,7 +69,6 @@ public class ProductController {
     //http://localhost:8080/products/save
     @PostMapping("/save")
     public String save(ProductRequest.SaveDTO dto) {
-
         productService.save(dto);
         return "redirect:/products/list-form";
     }
@@ -101,8 +100,8 @@ public class ProductController {
     }
 
     // 리스트 폼
-    @GetMapping("/product/list-form")
-    // http://localhost:8080/products/product/list-form
+    @GetMapping("/product/list")
+    // http://localhost:8080/products/product/list
    public String listForm(Model model) {
         model.addAttribute("products", productService.findAll());
         return "product/list-form";

@@ -2,11 +2,8 @@ package org.example.shopping.product;
 
 import lombok.Data;
 import org.example.shopping._core.errors.exception.Exception400;
-import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
-
-import java.math.BigDecimal;
 
 public class ProductRequest {
 
