@@ -92,6 +92,7 @@ public class PaymentService {
         for (CartItem item : checkItem) {
             Payment payment = Payment.builder()
                     .user(sessionUser)
+                    .cart(item.getCart().getId())
                     .orderId("ORD-" + UUID.randomUUID())
                     .paymentKey("MOCK-" + UUID.randomUUID())
                     .amount(item.getTotalPrice())
@@ -109,25 +110,25 @@ public class PaymentService {
 
     @Transactional
     public void approvePayment(PaymentRequest.ApproveDTO approveDTO) {
-        PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
-        PaymentResult result = gateway.approve(approveDTO);
-
-        Payment payment = Payment.builder()
-//                .username(username)
-                .orderId(approveDTO.getOrderId())
-                .paymentKey(result.getPaymentKey())
-                .amount(approveDTO.getAmount())
-                .method(approveDTO.getMethod())
-                .status(result.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)
-                .productCode(approveDTO.getProductCode())
-                .productName(approveDTO.getProductName())
-                .failureCode(result.getFailureCode())
-                .failureMessage(result.getFailureMessage())
-                .build();
-        if (result.isSuccess()) {
-            payment.paySuccess();
-        }
-        paymentRepository.save(payment);
+//        PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
+//        PaymentResult result = gateway.approve(approveDTO);
+//
+//        Payment payment = Payment.builder()
+////                .username(username)
+//                .orderId(approveDTO.getOrderId())
+//                .paymentKey(approveDTO.getPaymentKey())
+//                .amount(approveDTO.getAmount())
+//                .method(approveDTO.getMethod())
+//                .status(result.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)
+//                .productCode(approveDTO.getProductCode())
+//                .productName(approveDTO.getProductName())
+//                .failureCode(result.getFailureCode())
+//                .failureMessage(result.getFailureMessage())
+//                .build();
+//        if (result.isSuccess()) {
+//            payment.paySuccess();
+//        }
+//        paymentRepository.save(payment);
     }
 
 
