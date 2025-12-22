@@ -30,4 +30,10 @@ public class CategoryController {
         categoryService.save(dto);
         return "redirect:/categories/list";
     }
+
+    @GetMapping("list")
+    public String list(Model model) {
+        model.addAttribute("categories", categoryService.findAll());
+        return "category/list";
+    }
 }

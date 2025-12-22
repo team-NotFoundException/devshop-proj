@@ -1,24 +1,50 @@
-<div class="header-wrapper">
-    <div class="container">
-        {{> layout/header }}
-        {{> layout/nav }}
+{{> layout/header }}
+{{> layout/nav }}
+
+<div class="container p-5">
+    <h2 class="mb-4">상품 목록</h2>
+
+    <div class="mb-3 text-end">
+        <a href="/products/save-form" class="btn btn-primary">+ 상품 등록</a>
     </div>
+
+    {{#products}}
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>상품명</th>
+                <th>썸네일</th>
+                <th>가격</th>
+                <th>재고</th>
+                <th>상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#products}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{productName}}</td>
+                    <td>
+                        {{#thumbnailUrl}}
+                            <img src="{{thumbnailUrl}}" alt="{{productName}}" width="100">
+                        {{/thumbnailUrl}}
+                        {{^thumbnailUrl}}
+                            없음
+                        {{/thumbnailUrl}}
+                    </td>
+                    <td>{{price}}</td>
+                    <td>{{stockQuantity}}</td>
+                    <td>{{status}}</td>
+                </tr>
+            {{/products}}
+            </tbody>
+        </table>
+    {{/products}}
+
+    {{^products}}
+        <p class="text-center text-muted">등록된 상품이 없습니다.</p>
+    {{/products}}
 </div>
 
-<div class="product-section">
-    <div class="product-grid">
-        {{#products}}
-            <div class="product-card">
-                <a href="/products/{{id}}">
-                    <img src="{{thumbnailUrl}}" alt="{{productName}}">
-                    <div class="card-body">
-                        <h3 class="product-name">{{productName}}</h3>
-                        <p class="product-price">{{price}}원</p>
-                    </div>
-                </a>
-            </div>
-        {{/products}}
-    </div>
-</div>
-
-{{> layout/footer}}
+{{> layout/footer }}
