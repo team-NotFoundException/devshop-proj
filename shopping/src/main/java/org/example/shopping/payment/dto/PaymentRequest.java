@@ -18,6 +18,7 @@ public class PaymentRequest {
         private Long amount;
 
         private PaymentMethod method;
+
         private String productCode;
         private String productName;
 
