@@ -30,6 +30,7 @@ public class ReviewController {
         if (sessionUser == null) {
             throw new Exception401("로그인 먼저 해주세요");
         }
+
         return "user/mypage-reviewSave";
     }
 
@@ -48,8 +49,11 @@ public class ReviewController {
     // 리뷰 목록 조회
     // http://localhost:8080/review/list
     @GetMapping({"/review/list"})
-    public String findAll(Model model) {
+    public String findAll(Model model, HttpSession session) {
+
+        User sessionUser = (User) session.getAttribute("sessionUser");
         List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews();
+
         model.addAttribute("reviewList", reviewList);
         return "user/mypage-reviewList";
     }
@@ -58,6 +62,7 @@ public class ReviewController {
     // http://localhost:8080/review/1
     @GetMapping("/review/{id}")
     public String findById(@PathVariable Long id, Model model, HttpSession session) {
+
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         ReviewResponse.DetailDTO review = reviewService.getDetailView(id);
@@ -68,7 +73,6 @@ public class ReviewController {
         }
 
         model.addAttribute("isOwner", isOwner);
-        model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("review", review);
         return "user/mypage-reviewDetail";
     }
