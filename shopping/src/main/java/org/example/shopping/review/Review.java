@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.product.Product;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
