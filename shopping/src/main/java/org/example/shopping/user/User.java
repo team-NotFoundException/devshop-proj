@@ -54,7 +54,6 @@ public class User extends BaseTimeEntity {
     private LocalDate birthday;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "user")
-    @JoinColumn(name = "user_id")
     private UserRole role;
 
     @Builder

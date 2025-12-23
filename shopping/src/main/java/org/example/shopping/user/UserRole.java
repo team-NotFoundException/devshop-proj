@@ -15,9 +15,10 @@ public class UserRole {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_role_user"))
+    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+
     @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true, optional = false)
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_user_role_user"))
     private User user;
 
     @Enumerated(EnumType.STRING)
