@@ -16,7 +16,9 @@ import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
+import org.example.shopping.payment.service.gateway.PaymentGateway;
 import org.example.shopping.payment.service.gateway.PaymentGatewayResolver;
+import org.example.shopping.payment.service.gateway.PaymentResult;
 import org.example.shopping.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,9 +81,7 @@ public class PaymentService {
             User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
         switch (createDTO.getMethod()) {
             case MOCK -> processMockPayment(sessionUser, cartId, createDTO);
-            case TOSS_PAY -> {
-                return;
-            }
+            case TOSS_PAY -> throw new IllegalArgumentException("toss");
         }
     }
 
@@ -106,28 +106,28 @@ public class PaymentService {
         cartService.updateTotalPrice(cartId);
     }
 
-    @Transactional
-    public void approvePayment(PaymentRequest.ApproveDTO approveDTO) {
-//        PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
-//        PaymentResult result = gateway.approve(approveDTO);
-//
-//        Payment payment = Payment.builder()
-////                .username(username)
-//                .orderId(approveDTO.getOrderId())
-//                .paymentKey(approveDTO.getPaymentKey())
-//                .amount(approveDTO.getAmount())
-//                .method(approveDTO.getMethod())
-//                .status(result.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)
-//                .productCode(approveDTO.getProductCode())
-//                .productName(approveDTO.getProductName())
-//                .failureCode(result.getFailureCode())
-//                .failureMessage(result.getFailureMessage())
-//                .build();
-//        if (result.isSuccess()) {
-//            payment.paySuccess();
-//        }
-//        paymentRepository.save(payment);
+    public void approvePayment(User sessionUser, Long cartId, PaymentRequest.ApproveDTO approveDTO) {
+        PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
+        PaymentResult result = gateway.approve(approveDTO);
+
+        Payment payment = Payment.builder()
+                .user(sessionUser)
+                .orderId(approveDTO.getOrderId())
+                .paymentKey(approveDTO.getPaymentKey())
+                .amount(approveDTO.getAmount())
+                .method(approveDTO.getMethod())
+                .status(result.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)
+                .productCode(approveDTO.getProductCode())
+                .productName(approveDTO.getProductName())
+                .failureCode(result.getFailureCode())
+                .failureMessage(result.getFailureMessage())
+                .build();
+        if(result.isSuccess()){
+            payment.paySuccess();
+        }
+        paymentRepository.save(payment);
     }
+
 
 
 
@@ -162,7 +162,9 @@ public class PaymentService {
         refundRepository.save(refund);
         paymentRepository.save(payment);
 
-return refund;
+        return refund;
 
     }
+
+
 }
