@@ -2,6 +2,7 @@ package org.example.shopping.users;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.infra.client.KakaoOAuthClient;
+import org.example.shopping.users.dto.UserResponse;
 import org.example.shopping.users.user.UserService;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class OAuthService {
     public User loginWithKakao(String code) {
         String accessToken = kakaoOAuthClient.getAccessToken(code);
 
-        KakaoProfile kakaoProfile = kakaoOAuthClient.getUserProfile(accessToken);
+        UserResponse.KakaoProfile kakaoProfile = kakaoOAuthClient.getUserProfile(accessToken);
 
         String username = kakaoProfile.getProperties().getNickname() + "_" + kakaoProfile.getId();
 

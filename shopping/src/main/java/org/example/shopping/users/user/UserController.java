@@ -20,7 +20,7 @@ public class UserController {
     private final CartService cartService;
     private final OAuthService oAuthService;
 
-    @GetMapping("/user/kakao")
+    @GetMapping("/kakao")
     public String kakaoCallback(@RequestParam("code") String code, HttpSession session) {
         User loginUser = oAuthService.loginWithKakao(code);
         session.setAttribute("sessionUser", loginUser);

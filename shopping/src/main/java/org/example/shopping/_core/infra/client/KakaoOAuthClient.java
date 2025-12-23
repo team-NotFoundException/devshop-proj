@@ -41,4 +41,23 @@ public class KakaoOAuthClient {
         return response.getBody().getAccessToken();
     }
 
+    public UserResponse.KakaoProfile getUserProfile(String accessToken) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<?> request = new HttpEntity<>(headers);
+
+        ResponseEntity<UserResponse.KakaoProfile> response =
+                restTemplate.exchange(
+                        "https://kapi.kakao.com/v2/user/me",
+                        HttpMethod.POST,
+                        request,
+                        UserResponse.KakaoProfile.class
+                );
+
+        return response.getBody();
+    }
 }
+

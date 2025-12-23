@@ -6,7 +6,10 @@ import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
+import org.example.shopping.users.dto.UserResponse;
+import org.example.shopping.users.enums.OAuthProvider;
 import org.example.shopping.users.enums.RoleType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,9 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+
+    @Value("${tenco.key}")
+    private String tencoKey;
 
     @Transactional
     public User signUp(@Valid UserRequest.SignUpDTO signUpDTO) {
@@ -56,6 +62,26 @@ public class UserService {
 
         return userEntity;
     }
+
+    public User findOrCreateKakaoUser(String username, UserResponse.KakaoProfile profile) {
+
+        User userOrigin = userRepository.findByUsername(username).orElse(null);
+
+        if (userOrigin != null) {
+            return userOrigin;
+        }
+
+        User newUser = User.builder()
+                .username(username)
+                .password(tencoKey) // 또는 랜덤값
+                .email(username + "@kakao.com")
+                .provider(OAuthProvider.KAKAO)
+                .build();
+
+
+        return userRepository.save(newUser);
+    }
+
 
     // 회원정보 조회
 

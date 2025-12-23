@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.enums.Gender;
+import org.example.shopping.users.enums.OAuthProvider;
 import org.example.shopping.users.enums.RoleType;
 import org.example.shopping.users.user.UserRole;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
@@ -57,8 +59,12 @@ public class User extends BaseTimeEntity {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "user")
     private UserRole role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false) @ColumnDefault("'LOCAL'")
+    private OAuthProvider provider;
+
     @Builder
-    public User(Long id, String username, String password, String nickname, String  email, String address, String phoneNumber, Gender gender, LocalDate birthday) {
+    public User(Long id, String username, String password, String nickname, String  email, String address, String phoneNumber, Gender gender, LocalDate birthday, OAuthProvider provider) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -68,6 +74,7 @@ public class User extends BaseTimeEntity {
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.birthday = birthday;
+        this.provider = (provider == null) ? OAuthProvider.LOCAL : provider;
     }
 
     public boolean isWriter(Long userId) {
