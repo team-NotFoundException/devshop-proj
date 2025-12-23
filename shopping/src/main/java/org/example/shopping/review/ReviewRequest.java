@@ -1,7 +1,7 @@
 package org.example.shopping.review;
 
 import lombok.Data;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ReviewRequest {

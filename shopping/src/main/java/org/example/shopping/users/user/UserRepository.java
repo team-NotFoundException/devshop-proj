@@ -1,11 +1,7 @@
-package org.example.shopping.user;
+package org.example.shopping.users.user;
 
-import jakarta.persistence.EntityManager;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.RequiredArgsConstructor;
+import org.example.shopping.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

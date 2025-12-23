@@ -1,12 +1,11 @@
-package org.example.shopping.user.dto;
+package org.example.shopping.users.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.example.shopping.user.User;
-import org.example.shopping.user.enums.Gender;
+import org.example.shopping.users.User;
+import org.example.shopping.users.enums.Gender;
 
 import java.time.LocalDate;
 

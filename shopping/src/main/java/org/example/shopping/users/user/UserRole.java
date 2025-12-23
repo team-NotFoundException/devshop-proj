@@ -1,9 +1,10 @@
-package org.example.shopping.user;
+package org.example.shopping.users.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.shopping.user.enums.RoleType;
+import org.example.shopping.users.User;
+import org.example.shopping.users.enums.RoleType;
 
 @Entity
 @Table(name = "user_role_tb", uniqueConstraints = {
@@ -24,8 +25,8 @@ public class UserRole {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    public UserRole(Long id, RoleType role) {
-        this.id = id;
+    public UserRole(User user, RoleType role) {
+        this.user = user;
         this.role = role;
     }
 }

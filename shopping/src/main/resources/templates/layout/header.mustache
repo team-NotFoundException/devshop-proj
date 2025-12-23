@@ -50,11 +50,11 @@
     <div class="first-top">
         <a href="#">고객센터</a>
     {{#sessionUser}}
-        <a href="/logout">로그아웃</a>
+        <a href="/user/logout">로그아웃</a>
         <a href="/products/save">상품추가</a>
     {{/sessionUser}}
     {{^sessionUser}}
-        <a href="/login">로그인</a>
+        <a href="/user/login">로그인</a>
     {{/sessionUser}}
     </div>
     <div class="second-top">
@@ -72,7 +72,7 @@
             </div>
 
         {{#sessionUser}}
-            <a href="/users/update">
+            <a href="/user/update">
                 <i class="bi bi-person-fill"></i>
             </a>
             <a href="/cart/list">

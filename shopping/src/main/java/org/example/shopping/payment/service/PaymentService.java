@@ -16,10 +16,8 @@ import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
-import org.example.shopping.payment.service.gateway.PaymentGateway;
 import org.example.shopping.payment.service.gateway.PaymentGatewayResolver;
-import org.example.shopping.payment.service.gateway.PaymentResult;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

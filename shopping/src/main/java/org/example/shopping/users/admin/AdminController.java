@@ -1,4 +1,4 @@
-package org.example.shopping.admin;
+package org.example.shopping.users.admin;
 
 public class AdminController {
 

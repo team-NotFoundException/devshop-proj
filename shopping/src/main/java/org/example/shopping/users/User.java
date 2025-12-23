@@ -1,4 +1,4 @@
-package org.example.shopping.user;
+package org.example.shopping.users;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -10,9 +10,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping._core.utils.BaseTimeEntity;
-import org.example.shopping.user.dto.UserRequest;
-import org.example.shopping.user.enums.Gender;
-import org.example.shopping.user.enums.RoleType;
+import org.example.shopping.users.dto.UserRequest;
+import org.example.shopping.users.enums.Gender;
+import org.example.shopping.users.enums.RoleType;
+import org.example.shopping.users.user.UserRole;
 
 import java.time.LocalDate;
 
@@ -119,6 +120,8 @@ public class User extends BaseTimeEntity {
     public boolean getIsUser() {
         return isUser();
     }
+
+
 
 
 

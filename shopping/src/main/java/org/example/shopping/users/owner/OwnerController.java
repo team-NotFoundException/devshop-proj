@@ -1,4 +1,4 @@
-package org.example.shopping.owner;
+package org.example.shopping.users.owner;
 
 public class OwnerController {
 

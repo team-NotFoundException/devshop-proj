@@ -8,12 +8,11 @@ import org.example.shopping.cartItem.CartItemRepository;
 import org.example.shopping.product.Product;
 import org.example.shopping.product.ProductRepository;
 import org.example.shopping.product.productEnum.ProductStatus;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

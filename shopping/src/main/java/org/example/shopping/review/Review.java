@@ -1,15 +1,13 @@
 package org.example.shopping.review;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.product.Product;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;

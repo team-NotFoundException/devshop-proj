@@ -1,12 +1,12 @@
-package org.example.shopping.user;
+package org.example.shopping.users.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception400;
-import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping._core.errors.exception.Exception404;
-import org.example.shopping.user.dto.UserRequest;
-import org.example.shopping.user.dto.UserResponse;
+import org.example.shopping.users.User;
+import org.example.shopping.users.dto.UserRequest;
+import org.example.shopping.users.enums.RoleType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +17,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Transactional
     public User signUp(@Valid UserRequest.SignUpDTO signUpDTO) {
@@ -24,7 +25,9 @@ public class UserService {
             throw new Exception400("이미 있는 이름입니다.");
         }
         User user = signUpDTO.toEntity();
-        return userRepository.save(user);
+        userRepository.save(user);
+        UserRole userRole = new UserRole(user, RoleType.USER);
+        return userRoleRepository.save(userRole).getUser();
     }
 
     public User login(@Valid UserRequest.LoginDTO loginDTO) {
