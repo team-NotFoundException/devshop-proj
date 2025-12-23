@@ -52,7 +52,7 @@ public class ReviewController {
     public String findAll(Model model, HttpSession session) {
 
         User sessionUser = (User) session.getAttribute("sessionUser");
-        List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews();
+        List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews(sessionUser.getId());
 
         model.addAttribute("reviewList", reviewList);
         return "user/mypage-reviewList";

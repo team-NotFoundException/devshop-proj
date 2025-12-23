@@ -49,10 +49,11 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    public List<ReviewResponse.ListDTO> getReviews() {
-        List<Review> reviewList = reviewRepository.findAllWithUserOrderByCreatedAtDesc();
+    public List<ReviewResponse.ListDTO> getReviews(Long sessionUserId) {
+        List<Review> reviewList = reviewRepository.findMyReviewsWithProductOrderByCreatedAtDesc(sessionUserId);
         return reviewList.stream()
-                .map(ReviewResponse.ListDTO::new)
+//                .map(ReviewResponse.ListDTO::new) -> Review 정보만
+                .map(r -> new ReviewResponse.ListDTO(r, r.getOrderItem()))
                 .collect(Collectors.toList());
     }
 

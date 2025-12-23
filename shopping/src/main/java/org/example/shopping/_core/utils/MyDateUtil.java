@@ -2,15 +2,27 @@ package org.example.shopping._core.utils;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MyDateUtil {
 
+    private static final ZoneId ZONE_KST = ZoneId.of("Asia/Seoul");
+
     // 시간 포맷터
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     public static String timestampFormat(Timestamp createdAt) {
 
         return null;
+    }
+
+    public static String toDateString(LocalDateTime createdAtKst) {
+        if (createdAtKst == null) return null;
+        return createdAtKst.format(DATE_FORMATTER);
     }
 }

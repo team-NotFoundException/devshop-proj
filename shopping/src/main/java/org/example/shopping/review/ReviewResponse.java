@@ -1,9 +1,8 @@
 package org.example.shopping.review;
 
 import lombok.Data;
-import org.example.shopping.product.Product;
-
-import java.time.LocalDateTime;
+import org.example.shopping._core.utils.MyDateUtil;
+import org.example.shopping.orderItem.OrderItem;
 
 public class ReviewResponse {
 
@@ -12,9 +11,14 @@ public class ReviewResponse {
         private Long id;
         private String content;
         private String username;
-        private LocalDateTime createdAt;
+        private String createdAt;
 
-        public ListDTO(Review review) {
+        private Long productId;
+        private String productName;
+
+        public ListDTO(Review review, OrderItem orderItem) {
+//            this.productId = orderItem.getProduct().getId();
+//            this.productName = orderItem.getProduct().getProductName();
             this.id = review.getId();
             this.content = review.getContent();
 
@@ -23,7 +27,7 @@ public class ReviewResponse {
             }
 
             if (review.getCreatedAt() != null) {
-                this.createdAt = review.getCreatedAt();
+                this.createdAt = MyDateUtil.toDateString(review.getCreatedAt());
             }
         }
     } // end of static inner class
@@ -35,7 +39,7 @@ public class ReviewResponse {
         private String username;
         private int rating;
         private String reviewImage;
-        private LocalDateTime createdAt;
+        private String createdAt;
 
         public DetailDTO(Review review) {
             this.content = review.getContent();
@@ -49,7 +53,7 @@ public class ReviewResponse {
             this.reviewImage = review.getReviewImage();
 
             if (review.getCreatedAt() != null) {
-                this.createdAt = review.getCreatedAt();
+                this.createdAt = MyDateUtil.toDateString(review.getCreatedAt());
             }
         }
     } // end of static inner class

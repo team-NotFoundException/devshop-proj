@@ -1,9 +1,11 @@
 <div class="mypage-content-box">
     <div class="card">
-        <div class="card-header"><b>내가 쓴 리뷰목록</b></div>
+<!--        <div class="card-header"><b>내가 쓴 리뷰목록</b></div>-->
         {{#reviewList}}
+            <div class="card-header"><b>상품 번호: {{productId}} | 상품 이름: {{productName}}</b></div>
             <div class="card mb-3 ">
                 <div class="card-body">
+
                     <h4 class="card-title mb-3">내용: {{content}}</h4>
                     <h4 class="card-title mb-3">작성자: {{username}}</h4>
                     <h4 class="card-title mb-3">작성일 {{createdAt}}</h4>
