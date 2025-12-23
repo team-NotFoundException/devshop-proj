@@ -1,14 +1,11 @@
 package org.example.shopping.review;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping._core.utils.FileUtil;
-import org.example.shopping.product.Product;
 import org.example.shopping.product.ProductRepository;
-import org.example.shopping.user.User;
-import org.example.shopping.user.UserRepository;
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

@@ -39,3 +39,6 @@ out/
 ### secret properties ###
 application-secret.yml
 **/application-secret.yml
+
+### env ###
+.env
