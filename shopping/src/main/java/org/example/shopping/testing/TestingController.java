@@ -1,7 +1,7 @@
 package org.example.shopping.testing;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

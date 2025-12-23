@@ -3,13 +3,7 @@ package org.example.shopping.cart;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.shopping.cartItem.CartItem;
-import org.example.shopping.product.Product;
-import org.example.shopping.user.User;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import org.example.shopping.users.User;
 
 
 @Data

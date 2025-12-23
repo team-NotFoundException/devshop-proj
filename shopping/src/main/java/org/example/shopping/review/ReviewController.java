@@ -3,20 +3,14 @@ package org.example.shopping.review;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception401;
-import org.example.shopping._core.errors.exception.Exception403;
-import org.example.shopping._core.errors.exception.Exception404;
-import org.example.shopping.product.Product;
-import org.example.shopping.product.ProductRepository;
-import org.example.shopping.product.ProductResponse;
 import org.example.shopping.product.ProductService;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor

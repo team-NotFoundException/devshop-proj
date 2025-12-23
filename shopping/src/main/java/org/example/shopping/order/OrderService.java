@@ -2,7 +2,7 @@ package org.example.shopping.order;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception404;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

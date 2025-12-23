@@ -2,11 +2,8 @@ package org.example.shopping.order;
 
 
 import lombok.Data;
-import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.payment.Payment;
-import org.example.shopping.user.User;
-
-import java.util.List;
+import org.example.shopping.users.User;
 
 public class OrderRequest {
 
