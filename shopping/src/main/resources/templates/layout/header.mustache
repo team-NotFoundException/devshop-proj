@@ -16,46 +16,20 @@
     <link rel="stylesheet" href="/css/payment/payment.css">
     <link rel="stylesheet" href="/css/cart/cart.css">
 
-<!-- 여기에 css 파일 만든것 붙일 것임! (각 도메인 폴더안에 생성하기!) -->
+    <!-- 여기에 css 파일 만든것 붙일 것임! (각 도메인 폴더안에 생성하기!) -->
 </head>
 <body>
-
-<!--<header class="header">-->
-<!--    <div class="first-top">-->
-<!--        <a href="#">고객센터</a>-->
-<!--        <a href="/users/login">로그인</a>-->
-<!--        <a href="/products/save">상품추가</a>-->
-<!--    </div>-->
-<!--    <div class="second-top">-->
-<!--        <a href="/">-->
-<!--            <img src="/img/logo.png" width="180px" alt="logo"/>-->
-<!--        </a>-->
-<!--        <div class="right">-->
-<!--            <div class="greet">-->
-<!--                Not Found 님, 안녕하세요!-->
-<!--            </div>-->
-<!--            <a href="/users/update">-->
-<!--                <i class="bi bi-person-fill"></i>-->
-<!--            </a>-->
-<!--            <a href="/cart/list">-->
-<!--                <i class="bi bi-cart"></i>-->
-<!--            </a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</header>-->
-
-
 
 <header class="header">
     <div class="first-top">
         <a href="#">고객센터</a>
-    {{#sessionUser}}
-        <a href="/logout">로그아웃</a>
-        <a href="/products/save">상품추가</a>
-    {{/sessionUser}}
-    {{^sessionUser}}
-        <a href="/login">로그인</a>
-    {{/sessionUser}}
+        {{#sessionUser}}
+            <a href="/logout">로그아웃</a>
+            <a href="/products/save">상품추가</a>
+        {{/sessionUser}}
+        {{^sessionUser}}
+            <a href="/login">로그인</a>
+        {{/sessionUser}}
     </div>
     <div class="second-top">
         <a href="/">
@@ -66,19 +40,19 @@
                 {{#sessionUser}}
                     <strong>{{sessionUser.nickname}}</strong>님, 안녕하세요!
                 {{/sessionUser}}
-    {{^sessionUser}}
+                {{^sessionUser}}
                     DEV SHOP 입니다
                 {{/sessionUser}}
             </div>
 
-        {{#sessionUser}}
-            <a href="/users/update">
-                <i class="bi bi-person-fill"></i>
-            </a>
-            <a href="/cart/list">
-                <i class="bi bi-cart"></i>
-            </a>
-        {{/sessionUser}}
+            {{#sessionUser}}
+                <a href="/users/update">
+                    <i class="bi bi-person-fill"></i>
+                </a>
+                <a href="/cart/list">
+                    <i class="bi bi-cart"></i>
+                </a>
+            {{/sessionUser}}
         </div>
     </div>
 </header>

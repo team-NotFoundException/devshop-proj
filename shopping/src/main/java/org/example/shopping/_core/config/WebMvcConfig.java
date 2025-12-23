@@ -2,6 +2,7 @@ package org.example.shopping._core.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.interceptor.LoginInterceptor;
+import org.example.shopping._core.interceptor.SessionInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
     private final LoginInterceptor loginInterceptor;
+    private final SessionInterceptor sessionInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -20,6 +22,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/login", "/join", "/logout", "/detail", "/", "/css/**",
                         "/js/**", "/images/**", "/favicon.io", "/h2-console/**"
                 );
+
+        registry.addInterceptor(sessionInterceptor)
+                .addPathPatterns("/**");
     }
 
     @Override
