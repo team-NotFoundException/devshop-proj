@@ -16,18 +16,18 @@ public class OrderService {
 
     // 장바구니 주문 생성 기능
 
-    // 주문 생성 기능
-    public Order CreateOrder(OrderRequest.CreateDTO createDTO, User user) {
-        Order order = createDTO.toEntity(user);
-
-        return orderRepository.save(order);
-    }
-
-    // 주문 목록 조회
-    public List<Order> getOrderList() {
-        return orderRepository.findAllOrderByCreatedAt();
-    }
-
+//    // 주문 생성 기능
+//    public Order CreateOrder(OrderRequest.CreateDTO createDTO, User user) {
+//        Order order = createDTO.toEntity(user);
+//
+//        return orderRepository.save(order);
+//    }
+//
+//    // 주문 목록 조회
+//    public List<Order> getOrderList() {
+//        return orderRepository.findAllOrderByCreatedAt();
+//    }
+//
     // 주문 상세 조회
     public Order getOrderDetail(Long orderId) {
         return orderRepository.findById(orderId)

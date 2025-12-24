@@ -5,6 +5,8 @@ import lombok.Data;
 import org.example.shopping.payment.Payment;
 import org.example.shopping.users.User;
 
+import java.util.List;
+
 public class OrderRequest {
 
     @Data
@@ -15,7 +17,8 @@ public class OrderRequest {
         private Long totalPrice;
 
         public Order toEntity(User user) {
-            return new Order(orderStatus, user, payment, totalPrice);
+            return new Order(user, totalPrice);
+
         }
     }
 
