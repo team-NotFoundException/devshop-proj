@@ -25,8 +25,6 @@ public class PaymentRequest {
         private String failureCode;
         private String failureMessage;
 
-
-
     }
 
     @Data

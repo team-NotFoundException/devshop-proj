@@ -5,7 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.service.PaymentService;
-import org.example.shopping.user.User;
+
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,23 +46,11 @@ public class PaymentController {
         return "redirect:/";
     }
 
-
-
-    // 결제 적용
-    @GetMapping("/payment/{paymentId}/approve")
-    public String approvePaymentForm(
-            HttpSession session,
-            @PathVariable Long paymentId) {
+    @PostMapping("/payment/cart/{cartId}/approve")
+    public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.ApproveDTO approveDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-
-        return "payment/approve-form";
-    }
-
-    @PostMapping("/payment/{paymentId}/approve")
-    public String approvePaymentProc(@PathVariable Long paymentId, PaymentRequest.ApproveDTO approveDTO) {
         try {
-//            repository.approveById(paymentId, approveDTO);
-
+            paymentService.approvePayment(sessionUser, cartId, approveDTO);
         } catch (Exception e) {
             throw new RuntimeException("결제 승인 실패");
         }
@@ -77,9 +66,9 @@ public class PaymentController {
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         PaymentResponse response =
-        paymentService.refundPaymentForm(id
-                , sessionUser.getId()
-        );
+                paymentService.refundPaymentForm(id
+                        , sessionUser.getId()
+                );
         model.addAttribute("payment", response);
         return "payment/refund-form";
     }

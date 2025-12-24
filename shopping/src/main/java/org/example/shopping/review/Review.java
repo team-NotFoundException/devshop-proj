@@ -1,41 +1,33 @@
 package org.example.shopping.review;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.product.Product;
-import org.example.shopping.user.User;
-import org.hibernate.annotations.CreationTimestamp;
+import org.example.shopping.users.User;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review_tb")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Review {
+public class Review extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 작성자
-     */
+    /** 작성자 */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    /**
-     * 조회 편의용 (상품상세에서 필요)
-     */
+    /** 조회 편의용 (상품상세에서 필요) */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
@@ -51,9 +43,6 @@ public class Review {
     private int rating;
 
     private String reviewImage;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @Builder
     public Review(User user, int rating, String content, String reviewImage) {

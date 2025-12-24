@@ -3,20 +3,14 @@ package org.example.shopping.review;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception401;
-import org.example.shopping._core.errors.exception.Exception403;
-import org.example.shopping._core.errors.exception.Exception404;
-import org.example.shopping.product.Product;
-import org.example.shopping.product.ProductRepository;
-import org.example.shopping.product.ProductResponse;
 import org.example.shopping.product.ProductService;
-import org.example.shopping.user.User;
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -36,6 +30,7 @@ public class ReviewController {
         if (sessionUser == null) {
             throw new Exception401("로그인 먼저 해주세요");
         }
+
         return "user/mypage-reviewSave";
     }
 
@@ -54,8 +49,11 @@ public class ReviewController {
     // 리뷰 목록 조회
     // http://localhost:8080/review/list
     @GetMapping({"/review/list"})
-    public String findAll(Model model) {
-        List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews();
+    public String findAll(Model model, HttpSession session) {
+
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews(sessionUser.getId());
+
         model.addAttribute("reviewList", reviewList);
         return "user/mypage-reviewList";
     }
@@ -64,6 +62,7 @@ public class ReviewController {
     // http://localhost:8080/review/1
     @GetMapping("/review/{id}")
     public String findById(@PathVariable Long id, Model model, HttpSession session) {
+
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         ReviewResponse.DetailDTO review = reviewService.getDetailView(id);
@@ -74,7 +73,6 @@ public class ReviewController {
         }
 
         model.addAttribute("isOwner", isOwner);
-        model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("review", review);
         return "user/mypage-reviewDetail";
     }

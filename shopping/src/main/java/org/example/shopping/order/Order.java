@@ -3,12 +3,9 @@ package org.example.shopping.order;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.payment.Payment;
-import org.example.shopping.user.User;
-
-import java.util.List;
+import org.example.shopping.users.User;
 
 @Data
 @NoArgsConstructor
