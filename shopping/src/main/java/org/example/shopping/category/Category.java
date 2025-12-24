@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.shopping._core.utils.BaseTimeEntity;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
@@ -12,7 +13,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "categories")
-public class Category {
+public class Category  extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,9 +27,6 @@ public class Category {
 
     private int depth;
     private int displayOrder;
-
-    @CreationTimestamp
-    private Timestamp createdAt;
 
     @Builder
     public Category(String categoryName, int depth, int displayOrder, Category parent) {

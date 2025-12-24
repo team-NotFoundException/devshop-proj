@@ -4,9 +4,9 @@ import lombok.Data;
 
 public class CategoryRequest {
 
-    /**
-     * 카테고리 등록 DTO
-     */
+
+    // 카테고리 등록 DTO
+
     @Data
     public static class SaveDTO {
         private String categoryName;
@@ -24,9 +24,8 @@ public class CategoryRequest {
         }
     }
 
-    /**
-     * 카테고리 수정 DTO
-     */
+
+    // 카테고리 수정 DTO
     @Data
     public static class UpdateDTO {
         private String categoryName;   // 필수

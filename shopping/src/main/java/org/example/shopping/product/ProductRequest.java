@@ -48,7 +48,7 @@ public class ProductRequest {
     // 상품 수정
     @Data
     public static class UpdateDTO {
-        private Long categoryId;     // 수정 시 카테고리도 선택 가능
+        private Long categoryId;
         private String productName;
         private Long price;
         private int stockQuantity;

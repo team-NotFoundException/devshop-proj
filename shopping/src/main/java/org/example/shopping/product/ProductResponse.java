@@ -15,6 +15,7 @@ public class ProductResponse {
         private String productName;
         private String categoryName;
         private int price;
+        private int stockQuantity;
         private String status;
         private String createdAt;
         private String thumbnailUrl;
@@ -25,6 +26,7 @@ public class ProductResponse {
             this.price = product.getPrice().intValue();
             this.status = product.getStatus().name();
             this.thumbnailUrl = product.getThumbnailUrl();
+            this.stockQuantity = product.getStockQuantity();
 
             if (product.getCategory() != null) {
                 this.categoryName = product.getCategory().getCategoryName();

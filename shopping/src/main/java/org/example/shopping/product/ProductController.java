@@ -29,11 +29,11 @@ public class ProductController {
     }
 
     // 상품 상세 조회
-    // http://localhost:8080/products/status/READY
-
+    // http://localhost:8080/products/1/detail
     @GetMapping("/{id}/detail")
     public String detail(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.findById(id));
+        ProductResponse.DetailDTO product = productService.findById(id);
+        model.addAttribute("product",product);
         return "product/detail";
     }
 
@@ -101,8 +101,8 @@ public class ProductController {
 
     // 리스트 폼
     @GetMapping("/product/list")
-    // http://localhost:8080/products/product/list
-   public String listForm(Model model) {
+    // http://localhost:8080/products/list
+    public String listForm(Model model) {
         model.addAttribute("products", productService.findAll());
         return "product/list-form";
     }

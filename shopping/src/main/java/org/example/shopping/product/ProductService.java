@@ -5,6 +5,7 @@ import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.category.Category;
 import org.example.shopping.category.CategoryRepository;
 import org.example.shopping.product.productEnum.ProductStatus;
+import org.example.shopping.review.ReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ReviewRepository  reviewRepository;
 
 
     // 조회
