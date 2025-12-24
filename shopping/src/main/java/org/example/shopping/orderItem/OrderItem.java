@@ -1,10 +1,14 @@
 package org.example.shopping.orderItem;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping.order.Order;
 import org.example.shopping._core.utils.BaseTimeEntity;
+import org.example.shopping.order.OrderStatus;
+import org.example.shopping.payment.Payment;
+import org.example.shopping.product.Product;
 
 @Data
 @NoArgsConstructor
@@ -16,22 +20,33 @@ public class OrderItem extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    Order order;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Order order;
 
-    String product;
+    @OneToOne
+    private Payment payment; // 가격, 수량,
 
-    Integer quantity;
+    private Integer quantity;
 
-    Long orderPrice;
+    @OneToOne
+    private Product product;
 
-    Long totalPrice;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
-    public OrderItem(Order order, Long orderPrice, String product, Integer quantity, Long totalPrice) {
+    private Long totalPrice;
+
+    @Builder
+    public OrderItem(Order order, Payment payment) {
         this.order = order;
-        this.orderPrice = orderPrice;
-        this.product = product;
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
+        this.orderStatus = OrderStatus.PREPARING;
+        this.payment = payment;
+        this.totalPrice = payment.getAmount();
+    }
+
+    public void updateOrderStatus(OrderStatus newStatus) {
+        if (this.orderStatus == OrderStatus.COMPLETE)
+            throw new IllegalArgumentException("구매확정은 변경할 수 없습니다.");
+        this.orderStatus = newStatus;
     }
 }

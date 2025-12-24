@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query(value = "SELECT DISTINCT o FROM Order o JOIN FETCH o.payment ORDER BY o.createdAt DESC ",
-           countQuery = "SELECT COUNT(DISTINCT O) FROM Order o")
-    List<Order> findAllOrderByCreatedAt();
+//    @Query(value = "SELECT DISTINCT o FROM Order o JOIN FETCH o.payment ORDER BY o.createdAt DESC ",
+//           countQuery = "SELECT COUNT(DISTINCT O) FROM Order o")
+//    List<Order> findAllOrderByCreatedAt();
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -29,10 +28,10 @@ public class OrderController {
 
     // 주문 생성 요청 기능
     @PostMapping("/order-create")
-    public String orderProc(OrderRequest.CreateDTO createDTO, HttpSession session) {
+    public String orderProc(HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        orderService.CreateOrder(createDTO, sessionUser);
+//        orderService.CreateOrder(sessionUser);
 
         return "redirect:result-form";
     }
@@ -42,7 +41,7 @@ public class OrderController {
     @GetMapping("/order-list")
     public String orderList(Model model) {
 
-        orderService.getOrderList();
+//        orderService.getOrderList();
         return "order/list";
     }
 
