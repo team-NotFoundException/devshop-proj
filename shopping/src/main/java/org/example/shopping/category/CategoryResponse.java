@@ -22,16 +22,11 @@ public class CategoryResponse {
             if (category.getParent() != null) {
                 this.parentName = category.getParent().getCategoryName();
             }
-
-            if (category.getCreatedAt() != null) {
-                this.createdAt = MyDateUtil.timestampFormat(category.getCreatedAt());
-            }
         }
     }
 
-    /**
-     * 카테고리 상세 DTO
-     */
+
+    // 카테고리 상세 DTO
     @Data
     public static class DetailDTO {
         private Long id;
@@ -53,15 +48,10 @@ public class CategoryResponse {
                 this.parentName = category.getParent().getCategoryName();
             }
 
-            if (category.getCreatedAt() != null) {
-                this.createdAt = MyDateUtil.timestampFormat(category.getCreatedAt());
-            }
         }
     }
 
-    /**
-     * 카테고리 수정 폼 DTO
-     */
+    // 카테고리 수정 폼 DTO
     @Data
     public static class UpdateFormDTO {
         private Long id;

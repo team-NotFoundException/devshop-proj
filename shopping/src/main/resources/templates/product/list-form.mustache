@@ -5,11 +5,12 @@
     <h2 class="mb-4">상품 목록</h2>
 
     <div class="mb-3 text-end">
-        <a href="/products/save-form" class="btn btn-primary">+ 상품 등록</a>
+        <a href="/products/save" class="btn btn-primary">+ 상품 등록</a>
     </div>
 
-    {{#products}}
-        <table class="table table-bordered table-striped">
+
+    <table class="table table-bordered table-striped">
+        {{#products}}
             <thead>
             <tr>
                 <th>ID</th>
@@ -21,30 +22,30 @@
             </tr>
             </thead>
             <tbody>
-            {{#products}}
-                <tr>
-                    <td>{{id}}</td>
-                    <td>{{productName}}</td>
-                    <td>
-                        {{#thumbnailUrl}}
-                            <img src="{{thumbnailUrl}}" alt="{{productName}}" width="100">
-                        {{/thumbnailUrl}}
-                        {{^thumbnailUrl}}
-                            없음
-                        {{/thumbnailUrl}}
-                    </td>
-                    <td>{{price}}</td>
-                    <td>{{stockQuantity}}</td>
-                    <td>{{status}}</td>
-                </tr>
-            {{/products}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{productName}}</td>
+                <td>
+                    {{#thumbnailUrl}}
+                        <img src="{{thumbnailUrl}}" alt="{{productName}}" width="100">
+                    {{/thumbnailUrl}}
+                    {{^thumbnailUrl}}
+                        없음
+                    {{/thumbnailUrl}}
+                </td>
+                <td>{{price}}</td>
+                <td>{{stockQuantity}}</td>
+                <td>{{status}}</td>
+            </tr>
             </tbody>
-        </table>
-    {{/products}}
+        {{/products}}
+    </table>
+
 
     {{^products}}
         <p class="text-center text-muted">등록된 상품이 없습니다.</p>
     {{/products}}
+
 </div>
 
 {{> layout/footer }}
