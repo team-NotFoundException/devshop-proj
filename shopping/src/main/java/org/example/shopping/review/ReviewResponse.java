@@ -16,9 +16,24 @@ public class ReviewResponse {
         private Long productId;
         private String productName;
 
+        /** 상품 상세페이지 리뷰용 */
         public ListDTO(Review review, OrderItem orderItem) {
 //            this.productId = orderItem.getProduct().getId();
 //            this.productName = orderItem.getProduct().getProductName();
+            this.id = review.getId();
+            this.content = review.getContent();
+
+            if (review.getUser() != null) {
+                this.username = review.getUser().getUsername();
+            }
+
+            if (review.getCreatedAt() != null) {
+                this.createdAt = MyDateUtil.toDateString(review.getCreatedAt());
+            }
+        }
+
+        /** 상품 상세페이지 리뷰용 */
+        public ListDTO(Review review) {
             this.id = review.getId();
             this.content = review.getContent();
 
