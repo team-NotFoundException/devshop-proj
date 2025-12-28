@@ -36,15 +36,15 @@ public class PaymentController {
         return "payment/payment-form";
     }
 
-    @PostMapping("/payment/cart/{cartId}")
-    public String createPaymentProc(
-            HttpSession session,
-            @PathVariable Long cartId,
-            PaymentRequest.CreateDTO createDTO) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        paymentService.createPayment(sessionUser, cartId, createDTO);
-        return "redirect:/";
-    }
+//    @PostMapping("/payment/cart/{cartId}")
+//    public String createPaymentProc(
+//            HttpSession session,
+//            @PathVariable Long cartId,
+//            PaymentRequest.CreateDTO createDTO) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
+//        paymentService.createPayment(sessionUser, cartId, createDTO);
+//        return "redirect:/";
+//    }
 
     @PostMapping("/payment/cart/{cartId}/approve")
     public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.ApproveDTO approveDTO) {

@@ -1,0 +1,28 @@
+<section class="mypage-content-box">
+    <div class="card">
+        <div class="order-card">
+            <div class="order-header">배송 정보</div>
+        </div>
+
+        <div class="order-card">
+            <div class="order-header">주문상품 {{orderItems.size}}개</div>
+            {{#orderItems}}
+                <div class="order-item">
+                    <img src="" alt="{{productName}}" class="product-image">
+                    <div class="order-item-info">
+                        <h4>{{productName}}</h4>
+                        <p>가격: {{productPrice}}원</p>
+                        <p>수량: {{quantity}}개</p>
+                        <p>총액: {{totalPrice}}</p>
+                        <span class="status">{{orderStatus}}</span>
+                    </div>
+                </div>
+            {{/orderItems}}
+        </div>
+
+
+        <div class="order-card">
+            <div class="order-header">결제 정보</div>
+        </div>
+    </div>
+</section>
