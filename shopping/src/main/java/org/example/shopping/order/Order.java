@@ -1,11 +1,16 @@
 package org.example.shopping.order;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.shopping._core.utils.BaseTimeEntity;
+import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.payment.Payment;
 import org.example.shopping.users.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,10 +23,22 @@ public class Order extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    private String orderNumber;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
     private Long totalPrice;
 
-    public Order(User user, Long totalPrice) {
+    @Builder
+    public Order(User user, String orderNumber) {
         this.user = user;
-        this.totalPrice = totalPrice;
+        this.orderNumber = orderNumber;
     }
+
+    public void addItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+    }
+
 }

@@ -16,10 +16,6 @@ public class OrderRequest {
         private Payment payment;
         private Long totalPrice;
 
-        public Order toEntity(User user) {
-            return new Order(user, totalPrice);
-
-        }
     }
 
 }

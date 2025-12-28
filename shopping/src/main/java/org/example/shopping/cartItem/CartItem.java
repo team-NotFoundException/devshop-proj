@@ -39,7 +39,7 @@ public class CartItem {
     }
 
     public boolean isItemChecked() {
-        return isChecked;
+        return this.isChecked;
     }
 
     public void updateItemOption(Integer quantity) {

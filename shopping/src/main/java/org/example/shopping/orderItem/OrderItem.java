@@ -21,16 +21,14 @@ public class OrderItem extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Order order;
-
-    @OneToOne
-    private Payment payment; // 가격, 수량,
-
-    private Integer quantity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    private String productName;
+
+    private Long productPrice;
+
+    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
@@ -38,12 +36,13 @@ public class OrderItem extends BaseTimeEntity {
     private Long totalPrice;
 
     @Builder
-    public OrderItem(Order order, Product product, Payment payment) {
-        this.order = order;
+    public OrderItem(Product product, String productName, Long productPrice, Integer quantity, Long totalPrice) {
         this.product = product;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.quantity = quantity;
         this.orderStatus = OrderStatus.PREPARING;
-        this.payment = payment;
-        this.totalPrice = payment.getAmount();
+        this.totalPrice = totalPrice;
     }
 
     public void updateOrderStatus(OrderStatus newStatus) {

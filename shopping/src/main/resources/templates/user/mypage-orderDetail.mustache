@@ -1,0 +1,17 @@
+<div class="header-wrapper">
+    <div class="container">
+        {{> layout/header }}
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/order/order.css">
+
+<div class="container">
+    <main class="mypage-main-wrapper">
+        {{> layout/mypage-sidebar}}
+
+        {{> order/detail}}
+    </main>
+</div>
+
+{{> layout/footer}}

@@ -1,0 +1,302 @@
+/* mypage-sidebar.css */
+
+/* 메인 래퍼 */
+.mypage-main-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+    padding: 40px 20px;
+}
+
+/* 사이드바 */
+.mypage-sidebar {
+    width: 180px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.mypage-sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #000;
+    font-weight: 700;
+}
+
+.mypage-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mypage-sidebar li {
+    margin: 0;
+}
+
+.mypage-sidebar a {
+    display: block;
+    padding: 12px 0;
+    color: #888;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s;
+    font-weight: 400;
+}
+
+.mypage-sidebar a:hover {
+    color: #000;
+}
+
+.mypage-sidebar a.active {
+    color: #000;
+    font-weight: 700;
+}
+
+/* 메인 콘텐츠 */
+.mypage-content-box {
+    flex: 1;
+    max-width: 900px;
+}
+
+.mypage-content-box .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 주문 카드 */
+.order-card {
+    background: white;
+    border: 1px solid #ebebeb;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* 주문 헤더 */
+.order-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #ebebeb;
+    background: #fafafa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    flex: 1;
+}
+
+.order-header span {
+    font-size: 13px;
+    color: #888;
+    font-weight: 400;
+}
+
+.order-header a {
+    padding: 6px 16px;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    color: #222;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.order-header a:hover {
+    background: #f5f5f5;
+}
+
+/* 주문 아이템 */
+.order-item {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f4f4f4;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ebebeb;
+    flex-shrink: 0;
+}
+
+.order-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.order-item h4 {
+    margin: 0;
+    font-size: 15px;
+    color: #000;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.order-item p {
+    margin: 0;
+    font-size: 13px;
+    color: #888;
+    line-height: 1.4;
+}
+
+.order-item p:first-of-type {
+    font-weight: 600;
+    color: #000;
+    font-size: 14px;
+}
+
+/* 주문 상태 뱃지 */
+.order-item .status {
+    display: inline-block;
+    padding: 5px 10px;
+    background: #000;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    width: fit-content;
+    letter-spacing: -0.3px;
+}
+
+/* 버튼 그룹 */
+.order-item-buttons {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.order-item-buttons button {
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    color: #222;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    flex: 1;
+}
+
+.order-item-buttons button:hover {
+    background: #f5f5f5;
+    border-color: #222;
+}
+
+.order-item-buttons button.primary {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.order-item-buttons button.primary:hover {
+    background: #222;
+}
+
+/* 빈 상태 */
+.order-card:has(h3:only-child) {
+    padding: 100px 30px;
+    text-align: center;
+    background: white;
+}
+
+.order-card h3:only-child {
+    font-size: 16px;
+    color: #888;
+    font-weight: 500;
+}
+
+.order-card h3:only-child::before {
+    content: '📦';
+    display: block;
+    font-size: 56px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .mypage-main-wrapper {
+        flex-direction: column;
+        padding: 20px 16px;
+        gap: 30px;
+    }
+
+    .mypage-sidebar {
+        width: 100%;
+        position: static;
+    }
+
+    .mypage-sidebar h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .mypage-sidebar ul {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+
+    .mypage-sidebar li {
+        flex-shrink: 0;
+    }
+
+    .mypage-sidebar a {
+        padding: 8px 0;
+        white-space: nowrap;
+    }
+
+    .order-header {
+        padding: 16px 20px;
+    }
+
+    .order-item {
+        padding: 16px 20px;
+        gap: 12px;
+    }
+
+    .product-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .order-item-buttons {
+        width: 100%;
+    }
+
+    .order-item-buttons button {
+        width: 100%;
+    }
+
+    .order-item h4 {
+        font-size: 14px;
+    }
+
+    .order-item p {
+        font-size: 13px;
+    }
+}

@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<section class="mypage-content-box">
+    <div class="card">
+        {{#orderList}}
+            <div class="order-card">
+                <div class="order-header">
+                    <h3>주문번호: {{orderId}}</h3>
+                    <span>주문일: {{createdAt}}</span>
+                    <form action="/order/detail">
+                        <input type="hidden" name="id" value="{{orderId}}">
+                        <button>상세보기</button>
+                    </form>
+                </div>
 
-</body>
-</html>
+                {{#orderItemList}}
+                    <div class="order-item">
+                        <img src="" alt="{{productName}}" class="product-image">
+                        <div class="order-item-info">
+                            <h4>{{productName}}</h4>
+                            <p>가격: {{productPrice}}원</p>
+                            <p>수량: {{quantity}}개</p>
+                            <span class="status">{{orderStatus}}</span>
+                        </div>
+                        
+                    </div>
+                    <div class="order-item-buttons">
+                        <button class="primary">구매확정</button>
+                        <button>반품/교환신청</button>
+                        <button>리뷰작성</button>
+                    </div>
+                {{/orderItemList}}
+            </div>
+        {{/orderList}}
+        {{^orderList}}
+            <div class="order-card">
+                <h3>주문이 없습니다.</h3>
+            </div>
+        {{/orderList}}
+    </div>
+</section>

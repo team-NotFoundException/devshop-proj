@@ -78,7 +78,12 @@ public class PaymentService {
     // ===================== 결제 =====================
     @Transactional
     public void createPayment(
-            User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
+            User sessionUser, PaymentRequest.CreateDTO createDTO) {
+        Cart cartEntity = cartRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        Long cartId = cartEntity.getId();
+
         switch (createDTO.getMethod()) {
             case MOCK -> processMockPayment(sessionUser, cartId, createDTO);
             case TOSS_PAY -> throw new IllegalArgumentException("toss");
