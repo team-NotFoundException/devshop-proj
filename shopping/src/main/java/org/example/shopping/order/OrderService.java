@@ -8,6 +8,7 @@ import org.example.shopping.cart.CartRepository;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.cartItem.CartItemRepository;
 import org.example.shopping.orderItem.OrderItem;
+import org.example.shopping.orderItem.OrderItemRepository;
 import org.example.shopping.product.Product;
 import org.example.shopping.users.User;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 
@@ -101,4 +103,15 @@ public class OrderService {
 
         return order.getOrderItems();
     }
+
+    // 구매 확정
+    public OrderItem confirmPurchase(Long orderItemId) {
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new Exception404("물건을 찾을 수 없습니다."));
+        orderItem.confirmStatus();
+
+        return orderItemRepository.save(orderItem);
+    }
+
+
 }

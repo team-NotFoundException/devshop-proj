@@ -18,12 +18,12 @@
                             <h4>{{productName}}</h4>
                             <p>가격: {{productPrice}}원</p>
                             <p>수량: {{quantity}}개</p>
-                            <span class="status">{{orderStatus}}</span>
+                            <span class="status" id="status">{{orderStatus}}</span>
                         </div>
                         
                     </div>
                     <div class="order-item-buttons">
-                        <button class="primary">구매확정</button>
+                        <button class="primary" onclick="confirmPurchase({{id}})">구매확정</button>
                         <button>반품/교환신청</button>
                         <button>리뷰작성</button>
                     </div>
@@ -37,3 +37,18 @@
         {{/orderList}}
     </div>
 </section>
+
+<script>
+    function confirmPurchase(orderItemId) {
+        fetch(`/order/${orderItemId}/confirm`, {method:"POST"})
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success()) {
+                        const orderStatus = data.status;
+                        document.getElementById(`status`).textContent = orderStatus.toLocaleString();
+                    } else {
+                        return;
+                    }
+                });
+    }
+</script>
