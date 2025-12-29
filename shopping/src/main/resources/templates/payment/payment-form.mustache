@@ -71,7 +71,7 @@
                 const orderId = "ORD-" + new Date().getTime();
 
                 const successUrl = `${baseUrl}/payment/cart/${cartId}/approve?method=TOSS_PAY`;
-                const failUrl = `${baseUrl}/payment/cart/${cartId}/fail`;
+                const failUrl = `${baseUrl}/payment/cart/${cartId}/fail?method=TOSS_PAY`;
 
                 try {
                     tossPayments.requestPayment("카드", {

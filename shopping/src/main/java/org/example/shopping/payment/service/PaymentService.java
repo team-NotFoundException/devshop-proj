@@ -31,6 +31,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PaymentService {
     private final PaymentRefundRepository refundRepository;
     private final PaymentRepository paymentRepository;
@@ -41,7 +42,7 @@ public class PaymentService {
 
 
     // ================== 카트 정보 가져오기 ================
-    @Transactional(readOnly = true)
+
     public PaymentResponse.CartPaymentDTO getCartInfo(Long cartId) {
         List<CartItem> checkItem = getChecked(cartId);
         List<PaymentResponse.CartItemPaymentDTO> itemsInfo = checkItem.stream()
@@ -112,6 +113,7 @@ public class PaymentService {
         cartService.updateTotalPrice(cartId);
     }
 
+    @Transactional
     public PaymentResponse.PaymentResultDTO approvePayment(User sessionUser, Long cartId, PaymentRequest.ApproveDTO approveDTO) {
         List<CartItem> checkItem = getChecked(cartId);
         PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
@@ -139,8 +141,7 @@ public class PaymentService {
             paymentRepository.save(payment);
         }
 
-        cartItemRepository.deleteAll(checkItem);
-        cartService.updateTotalPrice(cartId);
+
 
         List<PaymentResponse.PaymentResultDTO.PaymentItemDTO> items = checkItem.stream()
                 .map(item -> {
@@ -155,9 +156,8 @@ public class PaymentService {
 
         PaymentResponse.PaymentResultDTO result = new PaymentResponse.PaymentResultDTO();
         result.setItems(items);
-
+        cartService.updateTotalPrice(cartId);
         return result;
-
     }
 
     public PaymentResponse refundPaymentForm(Long id

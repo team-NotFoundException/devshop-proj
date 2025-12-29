@@ -2,6 +2,7 @@ package org.example.shopping.payment;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.order.OrderService;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.service.PaymentService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class PaymentController {
 
-
+    private final OrderService orderService;
     private final PaymentService paymentService;
     private final Environment env;
 
@@ -48,6 +49,7 @@ public class PaymentController {
     public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.ApproveDTO approveDTO, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         try {
+            orderService.CreateOrder(sessionUser);
             PaymentResponse.PaymentResultDTO result = paymentService.approvePayment(sessionUser, cartId, approveDTO);
             model.addAttribute("orderId", approveDTO.getOrderId());
             model.addAttribute("amount", approveDTO.getAmount());
@@ -55,6 +57,7 @@ public class PaymentController {
             model.addAttribute("paymentKey", approveDTO.getPaymentKey());
             model.addAttribute("items", result.getItems());
             return "payment/payment-success";
+
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
             return "payment/payment-fail";
