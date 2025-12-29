@@ -50,4 +50,8 @@ public class OrderItem extends BaseTimeEntity {
             throw new IllegalArgumentException("구매확정은 변경할 수 없습니다.");
         this.orderStatus = newStatus;
     }
+
+    public void confirmStatus() {
+        this.orderStatus = OrderStatus.COMPLETE;
+    }
 }
