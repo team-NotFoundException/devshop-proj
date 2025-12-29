@@ -160,6 +160,29 @@ button:active {
     transform: scale(0.98);
 }
 
+/* Toss 결제 버튼 전용 */
+.btn-toss {
+    flex: 1;
+    padding: 16px;
+    background-color: #27ae60; /* 초록색으로 구분 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-toss:hover {
+    background-color: #2ecc71;
+}
+
+.btn-toss:active {
+    transform: scale(0.98);
+}
+
+
 .btn-secondary,
 .button-secondary {
     flex: 1;
