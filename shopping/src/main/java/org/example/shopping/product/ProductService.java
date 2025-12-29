@@ -2,6 +2,7 @@ package org.example.shopping.product;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping._core.utils.FileUtil;
 import org.example.shopping.category.Category;
 import org.example.shopping.category.CategoryRepository;
 import org.example.shopping.product.productEnum.ProductStatus;
@@ -54,11 +55,20 @@ public class ProductService {
     // 등록
     @Transactional
     public void save(ProductRequest.SaveDTO dto) {
+        String productImageFileName = null;
+
+        if (dto.getThumbnailUrl() != null) {
+            try {
+               productImageFileName = FileUtil.saveFile(dto.getThumbnailUrl());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
 
-        Product product = dto.toEntity(category);
+        Product product = dto.toEntity(category, productImageFileName);
         productRepository.save(product);
     }
 
