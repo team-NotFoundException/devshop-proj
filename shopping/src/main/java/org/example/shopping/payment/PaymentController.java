@@ -7,6 +7,7 @@ import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.service.PaymentService;
 
 import org.example.shopping.users.User;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ public class PaymentController {
 
 
     private final PaymentService paymentService;
+    private final Environment env;
 
     // 결제 생성
     @GetMapping("/payment")
@@ -33,32 +35,42 @@ public class PaymentController {
             model.addAttribute("cartPayment", cartPayment);
             model.addAttribute("cartId", cartId);
         }
+        String clientKey = env.getProperty("payment.toss.client-key");
+        String baseUrl = "http://localhost:8080";
+        model.addAttribute("tossClientKey", clientKey);
+        model.addAttribute("baseUrl", baseUrl);
         return "payment/payment-form";
     }
 
-//    @PostMapping("/payment/cart/{cartId}")
-//    public String createPaymentProc(
-//            HttpSession session,
-//            @PathVariable Long cartId,
-//            PaymentRequest.CreateDTO createDTO) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
-//        paymentService.createPayment(sessionUser, cartId, createDTO);
-//        return "redirect:/";
-//    }
+    // ============================================================================================================
 
-    @PostMapping("/payment/cart/{cartId}/approve")
-    public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.ApproveDTO approveDTO) {
+    @GetMapping("/payment/cart/{cartId}/approve")
+    public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.ApproveDTO approveDTO, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         try {
-            paymentService.approvePayment(sessionUser, cartId, approveDTO);
+            PaymentResponse.PaymentResultDTO result = paymentService.approvePayment(sessionUser, cartId, approveDTO);
+            model.addAttribute("orderId", approveDTO.getOrderId());
+            model.addAttribute("amount", approveDTO.getAmount());
+            model.addAttribute("method", approveDTO.getMethod());
+            model.addAttribute("paymentKey", approveDTO.getPaymentKey());
+            model.addAttribute("items", result.getItems());
+            return "payment/payment-success";
         } catch (Exception e) {
-            throw new RuntimeException("결제 승인 실패");
+            model.addAttribute("message", e.getMessage());
+            return "payment/payment-fail";
         }
-
-        return "redirect:/";
     }
 
+    @GetMapping("/payment/cart/{cartId}/fail")
+    public String failPaymentForm(@PathVariable Long cartId, String code, String message, Model model){
+        model.addAttribute("message", message);
+        model.addAttribute("code", code);
+        model.addAttribute("cartId", cartId);
+        return "payment/payment-fail";
 
+    }
+
+//==============================================================================================================================
 
     @GetMapping("/payment/{id}/refund")
     public String refundPaymentForm(@PathVariable Long id, Model model

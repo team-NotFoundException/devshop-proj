@@ -61,6 +61,20 @@ public class PaymentResponse {
     }
 
     @Data
+    public static class PaymentResultDTO{
+        private List<PaymentItemDTO> items;
+
+        @Data
+        public static class PaymentItemDTO{
+            private String productName;
+            private String productCode;
+            private Long totalPrice;
+        }
+    }
+
+
+
+    @Data
     public static class PaymentRefund {
         private Long id;
         //        private String username;
@@ -74,8 +88,6 @@ public class PaymentResponse {
         // private Long userPointBalance;
         LocalDateTime requestedAt;
         LocalDateTime approvedAt;
-
-
     }
 
 

@@ -1,0 +1,64 @@
+<div class="header-wrapper has-nav">
+    <div class="container">
+        {{> layout/header }}
+        {{> layout/nav }}
+    </div>
+</div>
+
+<main class="main-container">
+    <div class="pay-container">
+        <div class="fail-container">
+            <div class="fail-icon">
+                <i class="bi bi-x-circle-fill"></i>
+            </div>
+
+            <h1 class="fail-title">결제에 실패했습니다</h1>
+            <p class="fail-message">결제 처리 중 문제가 발생했습니다.</p>
+
+            <div class="error-info-box">
+                <h2>오류 정보</h2>
+                {{#code}}
+                    <div class="info-row">
+                        <span class="label">오류 코드</span>
+                        <span class="value error-code">{{code}}</span>
+                    </div>
+                {{/code}}
+                {{#message}}
+                    <div class="info-row">
+                        <span class="label">오류 내용</span>
+                        <span class="value">{{message}}</span>
+                    </div>
+                {{/message}}
+                {{^message}}
+                    <div class="info-row">
+                        <span class="label">오류 내용</span>
+                        <span class="value">알 수 없는 오류가 발생했습니다.</span>
+                    </div>
+                {{/message}}
+            </div>
+
+            <div class="help-box">
+                <h3><i class="bi bi-info-circle"></i> 다시 시도해주세요</h3>
+                <ul>
+                    <li>카드 정보가 정확한지 확인해주세요</li>
+                    <li>카드 한도가 충분한지 확인해주세요</li>
+                    <li>인터넷 연결 상태를 확인해주세요</li>
+                    <li>문제가 계속되면 고객센터로 문의해주세요</li>
+                </ul>
+            </div>
+
+            <div class="button-group">
+                {{#cartId}}
+                    <a href="/payment?cartId={{cartId}}" class="btn-primary">다시 결제하기</a>
+                    <a href="/cart/list" class="btn-secondary">장바구니로 돌아가기</a>
+                {{/cartId}}
+                {{^cartId}}
+                    <a href="/cart/list" class="btn-primary">장바구니로 가기</a>
+                    <a href="/" class="btn-secondary">홈으로 가기</a>
+                {{/cartId}}
+            </div>
+        </div>
+    </div>
+</main>
+
+{{> layout/footer }}

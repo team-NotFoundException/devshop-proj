@@ -1,0 +1,64 @@
+<div class="header-wrapper has-nav">
+    <div class="container">
+        {{>layout/header}}
+        {{>layout/nav}}
+    </div>
+</div>
+
+<main class="main-container">
+    <div class="pay-container">
+        <div class="success-container">
+            <div class="success-ico">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <h1 class="success-title">결제가 완료되었습니다.</h1>
+            <p class="success-message">주문하신 상품을 확인해 주세요.</p>
+
+            <div class="payment-info-box">
+                <h2>결제 정보</h2>
+                <div class="info-row">
+                    <span class="label">주문번호</span>
+                    <span class="value">{{orderId}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">결제금액</span>
+                    <span class="value highlight">{{amount}}원</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">결제수단</span>
+                    <span class="value">{{method}}</span>
+                </div>
+                {{#paymentKey}}
+                    <div class="info-row">
+                        <span class="label">결제키</span>
+                        <span class="value small">{{paymentKey}}</span>
+                    </div>
+                {{/paymentKey}}
+            </div>
+            {{#items}}
+                <div class="order-items-box">
+                    <h2>주문 상품</h2>
+                    {{#items}}
+                        <div class="order-item">
+                            <div class="item-info">
+                                <h3>{{productName}}</h3>
+                                <p>상품코드: {{productCode}}</p>
+                            </div>
+                            <div class="item-price">
+                                <p>{{totalPrice}}원</p>
+                            </div>
+                        </div>
+                    {{/items}}
+                </div>
+            {{/items}}
+
+            <div class="button-group">
+                <a href="/" class="btn-primary">홈으로 가기</a>
+                <a href="/order/list" class="btn-secondary">주문내역 보기</a>
+            </div>
+        </div>
+    </div>
+
+</main>
+
