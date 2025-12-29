@@ -2,15 +2,19 @@ package org.example.shopping.order;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.orderItem.OrderItem;
+import org.example.shopping.orderItem.OrderItemRepository;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.service.PaymentService;
 import org.example.shopping.users.User;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -21,6 +25,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final PaymentService paymentService;
+
 
     // 주문 완료 화면
     // http://localhost:8080/order-complete
@@ -64,5 +69,15 @@ public class OrderController {
         model.addAttribute("orderItems", orderItems);
 
         return "user/mypage-orderDetail";
+    }
+
+    // 구매확정
+    @PostMapping("/order/{orderItemId}/confirm")
+    @ResponseBody
+    public OrderStatus confirmPurchase(@PathVariable Long orderItemId) {
+
+        OrderItem orderItem = orderService.confirmPurchase(orderItemId);
+
+        return orderItem.getOrderStatus();
     }
 }

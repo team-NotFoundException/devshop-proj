@@ -41,17 +41,11 @@
                 </div>
 
                 <form action="/order-create" method="post">
-                    <div class="form-group">
-                        <label for="method">결제 수단 선택</label>
-                        <select id="method" name="method" required>
-                            <option value="">결제 수단을 선택하세요</option>
-                            <option value="MOCK">Mock 결제 (테스트)</option>
-                            <option value="TOSS_PAY">Toss 결제</option>
-                        </select>
-                    </div>
-
                     <div class="button-group">
-                        <button type="submit" class="btn-primary">{{totalAmount}}원 결제하기</button>
+                        <button type="submit" name="method" value="MOCK" class="btn-primary">{{totalAmount}}원 결제하기</button>
+                        <button type="button" id="tossPayButton" class="btn-toss">
+                            TossPay 결제하기
+                        </button>
                         <a href="/cart/list" class="btn-secondary">장바구니로 돌아가기</a>
                     </div>
                 </form>
@@ -61,3 +55,36 @@
     </div>
 </main>
 {{>layout/footer}}
+
+<script src="https://js.tosspayments.com/v1"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tossClientKey = "{{tossClientKey}}";
+        const tossPayments = new TossPayments(tossClientKey);
+
+        const button = document.getElementById("tossPayButton");
+        if (button) {
+            button.addEventListener("click", function () {
+                const baseUrl = "{{baseUrl}}"
+                const cartId = "{{cartPayment.cartId}}"
+                const amount = parseInt("{{cartPayment.totalAmount}}", 10);
+                const orderId = "ORD-" + new Date().getTime();
+
+                const successUrl = `${baseUrl}/payment/cart/${cartId}/approve?method=TOSS_PAY`;
+                const failUrl = `${baseUrl}/payment/cart/${cartId}/fail?method=TOSS_PAY`;
+
+                try {
+                    tossPayments.requestPayment("카드", {
+                        amount: amount,
+                        orderId: orderId,
+                        orderName: "장바구니 상품 결제",
+                        successUrl: successUrl,
+                        failUrl: failUrl
+                    })
+                } catch (Error) {
+                    console.error("결제 실패", Error);
+                }
+            });
+        }
+    });
+</script>

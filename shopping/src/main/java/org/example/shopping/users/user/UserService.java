@@ -4,12 +4,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping._core.utils.SocialUtils;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.dto.UserResponse;
 import org.example.shopping.users.enums.OAuthProvider;
 import org.example.shopping.users.enums.RoleType;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${tenco.key}")
     private String tencoKey;
@@ -31,6 +34,7 @@ public class UserService {
             throw new Exception400("이미 있는 이름입니다.");
         }
         User user = signUpDTO.toEntity();
+        user.setPassword(passwordEncoder.encode(signUpDTO.getPassword()));
         userRepository.save(user);
         UserRole userRole = new UserRole(user, RoleType.USER);
         return userRoleRepository.save(userRole).getUser();
@@ -38,11 +42,16 @@ public class UserService {
 
     public User login(@Valid UserRequest.LoginDTO loginDTO) {
         User userEntity = userRepository
-                .findByUsernameAndPassword(loginDTO.getUsername(), loginDTO.getPassword())
+                .findByUsername(loginDTO.getUsername())
                 .orElse(null);
 
         if (userEntity == null) {
-            throw new Exception400("아이디 또는 비밀번호가 일치하지 않슷빈다.");
+            throw new Exception400("아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
+
+        // 비밀번호 검증
+        if (!passwordEncoder.matches(loginDTO.getPassword(), userEntity.getPassword())) {
+            throw new Exception400("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
 
         return userEntity;
@@ -74,12 +83,18 @@ public class UserService {
         User newUser = User.builder()
                 .username(username)
                 .password(tencoKey) // 또는 랜덤값
+                .nickname(profile.getKakaoAccount().getName())
                 .email(username + "@kakao.com")
+                .address("")
+                .phoneNumber(profile.getKakaoAccount().getPhoneNumber().replace("+82 ", "0").replace("-",""))
+                .gender(SocialUtils.convertGender(profile.getKakaoAccount().getGender()))
+                .birthday(SocialUtils.convertBirthday(profile.getKakaoAccount().getBirthyear(), profile.getKakaoAccount().getBirthday()))
                 .provider(OAuthProvider.KAKAO)
                 .build();
 
-
-        return userRepository.save(newUser);
+        UserRole userRole = new UserRole(newUser, RoleType.USER);
+        userRepository.save(newUser);
+        return userRoleRepository.save(userRole).getUser();
     }
 
 

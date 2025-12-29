@@ -14,6 +14,8 @@ import org.example.shopping.payment.PaymentRefundRepository;
 import org.example.shopping.payment.PaymentRepository;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
+import org.example.shopping.payment.error.BusinessException;
+import org.example.shopping.payment.error.ErrorCode;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.payment.service.gateway.PaymentGateway;
@@ -29,6 +31,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PaymentService {
     private final PaymentRefundRepository refundRepository;
     private final PaymentRepository paymentRepository;
@@ -39,7 +42,7 @@ public class PaymentService {
 
 
     // ================== 카트 정보 가져오기 ================
-    @Transactional(readOnly = true)
+
     public PaymentResponse.CartPaymentDTO getCartInfo(Long cartId) {
         List<CartItem> checkItem = getChecked(cartId);
         List<PaymentResponse.CartItemPaymentDTO> itemsInfo = checkItem.stream()
@@ -61,7 +64,7 @@ public class PaymentService {
     }
 
     // cartCheck 검증 편의
-    private List<CartItem> getChecked(Long cartId){
+    private List<CartItem> getChecked(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
         List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
@@ -86,7 +89,7 @@ public class PaymentService {
 
         switch (createDTO.getMethod()) {
             case MOCK -> processMockPayment(sessionUser, cartId, createDTO);
-            case TOSS_PAY -> throw new IllegalArgumentException("toss");
+            case TOSS_PAY -> throw new BusinessException(ErrorCode.INVALID_INPUT, "TOSS_PAY");
         }
     }
 
@@ -95,7 +98,6 @@ public class PaymentService {
         for (CartItem item : checkItem) {
             Payment payment = Payment.builder()
                     .user(sessionUser)
-                    .cart(item.getCart().getId())
                     .orderId("ORD-" + UUID.randomUUID())
                     .paymentKey("MOCK-" + UUID.randomUUID())
                     .amount(item.getTotalPrice())
@@ -111,30 +113,52 @@ public class PaymentService {
         cartService.updateTotalPrice(cartId);
     }
 
-    public void approvePayment(User sessionUser, Long cartId, PaymentRequest.ApproveDTO approveDTO) {
+    @Transactional
+    public PaymentResponse.PaymentResultDTO approvePayment(User sessionUser, Long cartId, PaymentRequest.ApproveDTO approveDTO) {
+        List<CartItem> checkItem = getChecked(cartId);
         PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
-        PaymentResult result = gateway.approve(approveDTO);
+        PaymentResult paymentResult = gateway.approve(approveDTO);
 
-        Payment payment = Payment.builder()
-                .user(sessionUser)
-                .orderId(approveDTO.getOrderId())
-                .paymentKey(approveDTO.getPaymentKey())
-                .amount(approveDTO.getAmount())
-                .method(approveDTO.getMethod())
-                .status(result.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)
-                .productCode(approveDTO.getProductCode())
-                .productName(approveDTO.getProductName())
-                .failureCode(result.getFailureCode())
-                .failureMessage(result.getFailureMessage())
-                .build();
-        if(result.isSuccess()){
-            payment.paySuccess();
+        for (CartItem item : checkItem) {
+            Payment payment = Payment.builder()
+                    .user(sessionUser)
+                    .orderId(approveDTO.getOrderId() + "-" + item.getId())
+                    .paymentKey(approveDTO.getPaymentKey())
+                    .amount(item.getTotalPrice())
+                    .method(approveDTO.getMethod())
+                    .status(paymentResult.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)
+                    .productCode(item.getProduct().getProductCode())
+                    .productName(item.getProduct().getProductName())
+                    .failureCode(paymentResult.getFailureCode())
+                    .failureMessage(paymentResult.getFailureMessage())
+                    .build();
+            if (paymentResult.isSuccess()) {
+                payment.paySuccess();
+                if (cartId != null) {
+                    cartService.removeCheckedCartItem(cartId);
+                }
+            }
+            paymentRepository.save(payment);
         }
-        paymentRepository.save(payment);
+
+
+
+        List<PaymentResponse.PaymentResultDTO.PaymentItemDTO> items = checkItem.stream()
+                .map(item -> {
+                    PaymentResponse.PaymentResultDTO.PaymentItemDTO dto =
+                            new PaymentResponse.PaymentResultDTO.PaymentItemDTO();
+                    dto.setProductName(item.getProduct().getProductName());
+                    dto.setProductCode(item.getProduct().getProductCode());
+                    dto.setTotalPrice(item.getTotalPrice());
+                    return dto;
+                })
+                .toList();
+
+        PaymentResponse.PaymentResultDTO result = new PaymentResponse.PaymentResultDTO();
+        result.setItems(items);
+        cartService.updateTotalPrice(cartId);
+        return result;
     }
-
-
-
 
     public PaymentResponse refundPaymentForm(Long id
             , Long sessionUserId

@@ -27,8 +27,6 @@ public class Payment extends BaseTimeEntity {
 
     private String orderId;
 
-    private Long cart;
-
     private String paymentKey;
 
     private Long amount;
