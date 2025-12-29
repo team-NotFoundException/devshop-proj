@@ -4,6 +4,7 @@ import lombok.Data;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ProductRequest {
 
@@ -17,7 +18,7 @@ public class ProductRequest {
         private Long price;
         private int stockQuantity;
         private String description;
-        private String thumbnailUrl;
+        private MultipartFile thumbnailUrl;
 
         public void validate() {
             if (productName == null || productName.isBlank()) {
@@ -31,7 +32,7 @@ public class ProductRequest {
             }
         }
 
-        public Product toEntity(Category category) {
+        public Product toEntity(Category category, String thumbnailUrl) {
             return Product.builder()
                     .category(category)
                     .productName(productName)

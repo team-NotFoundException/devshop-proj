@@ -1,5 +1,9 @@
-{{> layout/header }}
-{{> layout/nav }}
+<div class="header-wrapper has-nav">
+    <div class="container">
+        {{> layout/header }}
+        {{> layout/nav }}
+    </div>
+</div>
 
 <div class="container p-5">
     <h2 class="mb-4">상품 목록</h2>
@@ -8,23 +12,22 @@
         <a href="/products/save" class="btn btn-primary">+ 상품 등록</a>
     </div>
 
-
     <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>상품명</th>
+            <th>썸네일</th>
+            <th>가격</th>
+            <th>재고</th>
+            <th>상태</th>
+        </tr>
+        </thead>
+
         {{#products}}
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>상품명</th>
-                <th>썸네일</th>
-                <th>가격</th>
-                <th>재고</th>
-                <th>상태</th>
-            </tr>
-            </thead>
-            <tbody>
             <tr>
                 <td>{{id}}</td>
-                <td>{{productName}}</td>
+                <td><a href="/products/{{id}}/detail">{{productName}}</a></td>
                 <td>
                     {{#thumbnailUrl}}
                         <img src="{{thumbnailUrl}}" alt="{{productName}}" width="100">
@@ -37,15 +40,11 @@
                 <td>{{stockQuantity}}</td>
                 <td>{{status}}</td>
             </tr>
-            </tbody>
         {{/products}}
     </table>
-
-
     {{^products}}
         <p class="text-center text-muted">등록된 상품이 없습니다.</p>
     {{/products}}
-
 </div>
 
 {{> layout/footer }}

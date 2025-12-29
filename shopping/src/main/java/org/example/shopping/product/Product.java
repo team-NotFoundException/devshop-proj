@@ -37,8 +37,6 @@ public class Product {
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @Column(unique = true)
-    private String profileImage;
 
     @Builder
     public Product(
