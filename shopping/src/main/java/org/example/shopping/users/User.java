@@ -43,11 +43,10 @@ public class User extends BaseTimeEntity {
     @NotBlank(message = "이메일은 필수 입력 항목입니다.")
     private String email;
 
-    @NotBlank(message = "주소는 필수 입력 항목입니다.")
+
     private String address;
 
     @NotBlank(message = "연락처는 필수 입력 항목입니다.")
-    @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)

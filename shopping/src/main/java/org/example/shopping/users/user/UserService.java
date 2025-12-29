@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping._core.utils.SocialUtils;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.dto.UserResponse;
@@ -74,7 +75,12 @@ public class UserService {
         User newUser = User.builder()
                 .username(username)
                 .password(tencoKey) // 또는 랜덤값
+                .nickname(profile.getKakaoAccount().getName())
                 .email(username + "@kakao.com")
+                .address("")
+                .phoneNumber(profile.getKakaoAccount().getPhoneNumber().replace("+82 ", "0").replace("-",""))
+                .gender(SocialUtils.convertGender(profile.getKakaoAccount().getGender()))
+                .birthday(SocialUtils.convertBirthday(profile.getKakaoAccount().getBirthyear(), profile.getKakaoAccount().getBirthday()))
                 .provider(OAuthProvider.KAKAO)
                 .build();
 
