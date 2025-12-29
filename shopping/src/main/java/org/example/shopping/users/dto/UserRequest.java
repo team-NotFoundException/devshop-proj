@@ -28,7 +28,7 @@ public class UserRequest {
         @NotBlank(message = "id는 필수 입력 항목입니다.")
         private String username; // 필수
 
-        @Size(min = 6, max = 16)
+//        @Size(min = 6, max = 16)
         @NotBlank(message = "pw는 필수 입력 항목입니다.")
         private String password; // 필수
 
