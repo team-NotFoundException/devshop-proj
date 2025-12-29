@@ -55,6 +55,7 @@ public class PaymentController {
             model.addAttribute("paymentKey", approveDTO.getPaymentKey());
             model.addAttribute("items", result.getItems());
             return "payment/payment-success";
+
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
             return "payment/payment-fail";

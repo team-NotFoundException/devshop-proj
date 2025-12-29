@@ -37,7 +37,7 @@ public class TossPayGateway implements PaymentGateway {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", "Basic" + auth);
+            headers.set("Authorization", "Basic " + auth);
 
             Map<String, Object> body = Map.of(
                     "paymentKey", approveDTO.getPaymentKey(),
