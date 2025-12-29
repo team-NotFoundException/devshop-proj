@@ -100,4 +100,11 @@ public class ProductService {
 
         productRepository.delete(product);
     }
+
+    public ProductResponse.UpdateFormDTO findByIdForUpdate(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new Exception404("상품을 찾을수 없습니다."));
+
+        return new ProductResponse.UpdateFormDTO(product);
+    }
 }

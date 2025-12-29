@@ -83,6 +83,7 @@ public class ProductResponse {
     public static class UpdateFormDTO {
         private Long id;
         private String productName;
+        private String productCode;
         private int price;
         private int stockQuantity;
         private String description;
@@ -93,6 +94,7 @@ public class ProductResponse {
         public UpdateFormDTO(Product product) {
             this.id = product.getId();
             this.productName = product.getProductName();
+            this.productCode = product.getProductCode();
             this.price = product.getPrice().intValue();
             this.stockQuantity = product.getStockQuantity();
             this.description = product.getDescription();

@@ -27,6 +27,7 @@ public class Product {
     private String thumbnailUrl;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ProductStatus status;
 
     // N : 1
@@ -55,7 +56,7 @@ public class Product {
         this.stockQuantity = stockQuantity;
         this.description = description;
         this.thumbnailUrl = thumbnailUrl;
-        this.status = status;
+        this.status = ProductStatus.ACTIVE;
         this.category = category;
     }
 
@@ -67,7 +68,6 @@ public class Product {
         this.stockQuantity = dto.getStockQuantity();
         this.description = dto.getDescription();
         this.thumbnailUrl = dto.getThumbnailUrl();
-        this.status = dto.getStatus();
         this.category = category;
     }
 
