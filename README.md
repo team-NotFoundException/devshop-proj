@@ -151,10 +151,10 @@
   <td align="center">
     <a href="https://github.com/jihoonjeong56" target="_blank">
       <img src="https://avatars.githubusercontent.com/u/220152328?v=4" width="100" border-radius="50%"/><br/>
-      AnyEveryDays
+      jihoonjeong56
     </a>
   </td>
-  <td><img src="https://github-readme-stats.vercel.app/api?username=jihoonjeong56&custom_title=AnyEveryDays's%20Github%20Stat&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+  <td><img src="https://github-readme-stats.vercel.app/api?username=jihoonjeong56&custom_title=jihoonjeong56's%20Github%20Stat&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
   <td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=jihoonjeong56&layout=compact&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
 </tr>
 </table>
