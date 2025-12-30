@@ -10,7 +10,7 @@
         {{/review.reviewImage}}
 
         {{^review.reviewImage}}
-            <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center border"
+            <div class="bg-secondary d-inline-flex align-items-center justify-content-center border"
                  style="width: 200px; height: 200px;">
                 <span class="text-white fs-5">리뷰 사진 없음</span>
             </div>
@@ -19,13 +19,20 @@
     </div>
 
     <div class="mb-3">
-        <div class="form-control">내용: {{review.content}}</div>
+        <div class="form-control-plaintext">내용: {{review.content}}</div>
     </div>
     <div class="mb-3">
-        <div class="form-control">별점: {{review.rating}}</div>
+        <div class="form-control-plaintext">별점:
+            {{#review.stars}}
+                <span class="star filled">★</span>
+            {{/review.stars}}
+            {{#review.emptyStars}}
+                <span class="star">★</span>
+            {{/review.emptyStars}}
+        </div>
     </div>
     <div class="mb-3">
-        <div class="form-control">작성자: {{review.username}}</div>
+        <div class="form-control-plaintext">작성자: {{review.username}}</div>
     </div>
     <!-- 수정삭제버튼 -->
     {{#isOwner}}
