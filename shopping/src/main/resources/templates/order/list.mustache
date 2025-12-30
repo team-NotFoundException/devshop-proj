@@ -40,6 +40,7 @@
 
 <script>
     function confirmPurchase(orderItemId) {
+        alert("구매확정 하시겠습니까?")
         fetch(`/order/${orderItemId}/confirm`, {method:"POST"})
                 .then(response => response.json())
                 .then(data => {
