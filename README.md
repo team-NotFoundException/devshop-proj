@@ -150,7 +150,7 @@
 <tr>
   <td align="center">
     <a href="https://github.com/jihoonjeong56" target="_blank">
-      <img src="https://avatars.githubusercontent.com/u/220152328?v=4" width="100" border-radius="50%"/><br/>
+      <img src="https://avatars.githubusercontent.com/u/100738560?v=4" width="100" border-radius="50%"/><br/>
       jihoonjeong56
     </a>
   </td>
