@@ -50,10 +50,10 @@ public class ReviewService {
     }
 
     public List<ReviewResponse.ListDTO> getReviews(Long sessionUserId) {
-        List<Review> reviewList = reviewRepository.findMyReviewsWithProductOrderByCreatedAtDesc(sessionUserId);
+        List<Review> reviewList = reviewRepository.findAllWithUserOrderByCreatedAtDesc();
         return reviewList.stream()
-//                .map(ReviewResponse.ListDTO::new) -> Review 정보만
-                .map(r -> new ReviewResponse.ListDTO(r, r.getOrderItem()))
+                .map(ReviewResponse.ListDTO::new) // -> Review 정보만
+//                .map(r -> new ReviewResponse.ListDTO(r, r.getOrderItem()))
                 .collect(Collectors.toList());
     }
 
