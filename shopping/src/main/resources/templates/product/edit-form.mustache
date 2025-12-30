@@ -47,10 +47,15 @@
         </div>
 
         <div class="mb-3">
-        <select name="status" class="form-select">
-            <option value="ACTIVE">판매중</option>
-            <option value="SOLD_OUT">품절</option>
-        </select>
+            <label class="form-label">판매 상태</label>
+            <select name="status" class="form-select" required>
+                <option value="ACTIVE" {{#active}}selected{{/active}}>
+                    판매중
+                </option>
+                <option value="SOLD_OUT" {{#soldOut}}selected{{/soldOut}}>
+                    품절
+                </option>
+            </select>
         </div>
 
         <div class="d-flex justify-content-between">

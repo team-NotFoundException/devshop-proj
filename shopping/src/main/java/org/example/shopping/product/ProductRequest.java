@@ -51,6 +51,7 @@ public class ProductRequest {
     public static class UpdateDTO {
         private Long categoryId;
         private String productName;
+        private String productCode;
         private Long price;
         private int stockQuantity;
         private String description;
@@ -65,6 +66,7 @@ public class ProductRequest {
                 throw new Exception400("가격은 0보다 커야 합니다.");
             }
         }
+
     }
 
 

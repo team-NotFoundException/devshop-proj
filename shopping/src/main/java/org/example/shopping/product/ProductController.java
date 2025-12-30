@@ -1,6 +1,9 @@
 package org.example.shopping.product;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
+import org.example.shopping._core.errors.exception.Exception401;
 import org.example.shopping.category.CategoryResponse;
 import org.example.shopping.category.CategoryService;
 import org.example.shopping.product.productEnum.ProductStatus;
@@ -23,7 +26,12 @@ public class ProductController {
     // 상품 목록 조회
     // http://localhost:8080/products/list-form
     @GetMapping("/list-form")
-    public String list(Model model) {
+    public String list(Model model, HttpSession session) {
+
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        List<ProductResponse.ListDTO> list = productService.findAll();
+
         model.addAttribute("products", productService.findAll());
         return "product/list-form";
     }
