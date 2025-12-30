@@ -77,7 +77,10 @@ public class ProductController {
     // http://localhost:8080/products/1/edit
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.findById(id));
+        ProductResponse.UpdateFormDTO dto =
+                productService.findByIdForUpdate(id);
+
+        model.addAttribute("product", dto);
         model.addAttribute("category", categoryService.findAll());
         return "product/edit-form";
     }
@@ -89,7 +92,7 @@ public class ProductController {
             ProductRequest.UpdateDTO dto
     ) {
         productService.updateById(id, dto);
-        return "redirect:/products/" + id;
+        return "redirect:/products/" + id + "/detail";
     }
 
     // 상품 삭제

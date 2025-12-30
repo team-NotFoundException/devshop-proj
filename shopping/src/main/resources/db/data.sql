@@ -47,10 +47,13 @@ INSERT INTO user_role_tb (role, user_id) VALUES ('ADMIN', 1), ('OWNER', 2), ('US
 
 INSERT INTO categories (category_name, depth, display_order, created_at)
 VALUES
+
+
     ('상의', 1, 1, now()),
     ('하의', 1, 2, now()),
     ('신발', 1, 3, now()),
     ('모자', 1, 4, now());
+
 
 INSERT INTO product_tb (
     product_name,
