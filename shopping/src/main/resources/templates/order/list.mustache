@@ -20,12 +20,18 @@
                             <p>수량: {{quantity}}개</p>
                             <span class="status" id="status">{{orderStatus}}</span>
                         </div>
-                        
-                    </div>
-                    <div class="order-item-buttons">
-                        <button class="primary" onclick="confirmPurchase({{id}})">구매확정</button>
-                        <button>반품/교환신청</button>
-                        <button>리뷰작성</button>
+                        {{#isComplete}}
+                            <div class="order-item-buttons">
+                                <button>리뷰작성</button>
+                            </div>
+                        {{/isComplete}}
+                        {{^isComplete}}
+                            <div class="order-item-buttons">
+                                <button class="primary" id="confirmBtn" onclick="confirmPurchase({{id}})">구매확정</button>
+                                <button>반품/교환신청</button>
+                                <button>리뷰작성</button>
+                            </div>
+                        {{/isComplete}}
                     </div>
                 {{/orderItemList}}
             </div>
@@ -39,17 +45,25 @@
 </section>
 
 <script>
-    function confirmPurchase(orderItemId) {
-        alert("구매확정 하시겠습니까?")
-        fetch(`/order/${orderItemId}/confirm`, {method:"POST"})
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success()) {
-                        const orderStatus = data.status;
-                        document.getElementById(`status`).textContent = orderStatus.toLocaleString();
-                    } else {
-                        return;
-                    }
-                });
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        let orderStatus;
+
+        const $confirmBtn = document.getElementById('confirmBtn');
+        const $displayStatus = document.getElementById('status');
+
+        function updateStatus(status) {
+            orderStatus = status;
+            $displayStatus.textContent = status.toLocaleString();
+        }
+
+        $confirmBtn.addEventListener('click', function () {
+            fetch('/order/{orderItemId}/confirm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({status: orderStatus})
+            })
+        })
+    })
 </script>

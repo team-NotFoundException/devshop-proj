@@ -73,10 +73,8 @@ public class OrderController {
 
     // 구매확정
     @PostMapping("/order/{orderItemId}/confirm")
-    public String confirmPurchase(@PathVariable Long orderItemId) {
+    public void confirmPurchase(@PathVariable Long orderItemId) {
 
         orderService.confirmPurchase(orderItemId);
-
-        return "redirect:/order/list";
     }
 }
