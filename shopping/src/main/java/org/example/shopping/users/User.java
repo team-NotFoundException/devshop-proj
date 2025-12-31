@@ -83,7 +83,7 @@ public class User extends BaseTimeEntity {
 
     public void update(@Valid UserRequest.UpdateDTO updateDTO) {
         this.password = updateDTO.getPassword();
-//        this.address = updateDTO.getAddress();
+        this.address = updateDTO.getAddress();
         this.nickname = updateDTO.getNickname();
         this.gender = updateDTO.getGender();
     }

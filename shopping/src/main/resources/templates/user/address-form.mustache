@@ -7,39 +7,22 @@
     <tr>
         <th>우편번호</th>
         <td>
-            <input type="text"
-                   id="zipNo"
-                   name="zipNo"
-                   readonly
-                   style="width:120px">
-
-            <button type="button"
-                    class="btn btn-sm btn-outline-secondary"
-                    onclick="goPopup()">
-                주소검색
-            </button>
+            <input type="text" id="zipNo" name="zipNo" readonly>
+            <button type="button" onclick="goPopup()">주소검색</button>
         </td>
     </tr>
 
     <tr>
         <th>도로명주소</th>
         <td>
-            <input type="text"
-                   id="roadAddr"
-                   name="roadAddr"
-                   readonly
-                   style="width:90%">
+            <input type="text" id="roadAddr" name="roadAddr" readonly>
         </td>
     </tr>
 
     <tr>
         <th>상세주소</th>
         <td>
-            <input type="text"
-                   id="addrDetail"
-                   name="addrDetail"
-                   placeholder="상세 주소를 입력하세요"
-                   style="width:90%">
+            <input type="text" id="addrDetail" name="addrDetail">
         </td>
     </tr>
     </tbody>
@@ -54,17 +37,10 @@
         );
     }
 
-    function jusoCallBack(
-            roadFullAddr,
-            roadAddrPart1,
-            addrDetail,
-            roadAddrPart2,
-            engAddr,
-            jibunAddr,
-            zipNo
-    ) {
-        document.getElementById("zipNo").value = zipNo;
-        document.getElementById("roadAddr").value = roadAddrPart1;
-        document.getElementById("addrDetail").value = addrDetail;
+    function jusoCallBack(data) {
+        document.getElementById("zipNo").value = data.zipNo;
+        document.getElementById("roadAddr").value = data.roadAddr;
+        document.getElementById("addrDetail").value = data.addrDetail || "";
+
     }
 </script>

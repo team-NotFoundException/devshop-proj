@@ -79,12 +79,19 @@ public class UserController {
     public String signUp(
             @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
     ) {
+        System.out.println("DTO: " + signUpDTO);
+        System.out.println("Address: " + signUpDTO.getAddress());
 
         User user = userService.signUp(signUpDTO);
 
         cartService.createCart(user);
 
         return "redirect:/user/login";
+    }
+
+    @GetMapping("/popup/juso")
+    public String jusoPopup() {
+        return "popup/juso-popup";
     }
 
     // ---------------------------------------- //

@@ -1,11 +1,13 @@
 package org.example.shopping.users.dto;
 
+import jakarta.persistence.Embedded;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.example.shopping.users.User;
 import org.example.shopping.users.enums.Gender;
+import org.example.shopping.users.user.Address;
 
 import java.time.LocalDate;
 
@@ -40,8 +42,8 @@ public class UserRequest {
         @NotBlank(message = "이메일은 필수 입력 항목입니다.")
         private String email;    // 필수
 
-        @NotBlank(message = "주소는 필수 입력 항목입니다.")
-        private String address;  // 필수
+        @Embedded
+        private Address address;  // 필수
 
         @NotBlank(message = "연락처는 필수 입력 항목입니다.")
 //        @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
@@ -59,7 +61,7 @@ public class UserRequest {
                     .password(this.password)
                     .nickname(this.nickname)
                     .email(this.email)
-//                    .address(this.address)
+                    .address(new Address())
                     .phoneNumber(this.phoneNumber)
                     .gender(this.gender)
                     .birthday(this.birthday)
@@ -78,7 +80,7 @@ public class UserRequest {
         private String nickname;
 
         @NotBlank(message = "주소는 필수 입력 항목입니다.")
-        private String address;  // 필수
+        private Address address;  // 필수
 
         private Gender gender; // 선택
 

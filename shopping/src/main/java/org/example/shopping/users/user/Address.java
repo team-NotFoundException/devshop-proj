@@ -9,20 +9,13 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Address {
 
-    private String roadAddr;
-    private String detailAddr;
     private String zipNo;
+    private String roadAddr;
+    private String addrDetail;
 
-    private String siNm;
-    private String sggNm;
-    private String emdNm;
-
-    public Address(String roadAddr, String detailAddr, String zipNo, String siNm, String sggNm, String emdNm) {
-        this.roadAddr = roadAddr;
-        this.detailAddr = detailAddr;
+    public Address(String zipNo, String roadAddr, String addrDetail) {
         this.zipNo = zipNo;
-        this.siNm = siNm;
-        this.sggNm = sggNm;
-        this.emdNm = emdNm;
+        this.roadAddr = roadAddr;
+        this.addrDetail = addrDetail;
     }
 }
