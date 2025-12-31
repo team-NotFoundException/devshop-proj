@@ -76,4 +76,14 @@ public class OrderController {
         orderService.confirmPurchase(orderItemId);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/payment/{id}/refund")
+    public String singleRefundProc(@PathVariable(name = "id") Long orderItemId,
+                                   HttpSession session,
+                                   PaymentRequest.RefundDTO req
+    ) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        paymentService.singleRefund(orderItemId, sessionUser.getId(), req);
+        return "redirect:/order/list";
+    }
+
 }
