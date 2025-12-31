@@ -66,7 +66,8 @@ public class ProductController {
     // 상품 등록 폼
     // http://localhost:8080/products/save
     @GetMapping("/save")
-    public String saveForm(Model model) {
+    public String saveForm(@PathVariable Long id, Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
         List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
         model.addAttribute("category", categoryList);
 

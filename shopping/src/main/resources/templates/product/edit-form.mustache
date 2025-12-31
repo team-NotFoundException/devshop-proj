@@ -19,42 +19,55 @@
         <!-- 상품명 -->
         <div class="mb-3">
             <label class="form-label">상품명</label>
-            <input type="text" name="productName" class="form-control" value="{{product.productName}}" required>
+            <input type="text"
+                   name="productName"
+                   class="form-control"
+                   value="{{product.productName}}"
+                   required>
         </div>
 
         <!-- 상품 코드 -->
         <div class="mb-3">
             <label class="form-label">상품 코드</label>
-            <input type="text" name="productCode" class="form-control" value="{{product.productCode}}" required>
+            <input type="text"
+                   name="productCode"
+                   class="form-control"
+                   value="{{product.productCode}}"
+                   required>
         </div>
 
         <!-- 가격 -->
         <div class="mb-3">
             <label class="form-label">가격</label>
-            <input type="number" name="price" class="form-control" value="{{product.price}}" required>
+            <input type="number"
+                   name="price"
+                   class="form-control"
+                   value="{{product.price}}"
+                   required>
         </div>
 
         <!-- 재고 -->
         <div class="mb-3">
             <label class="form-label">재고 수량</label>
-            <input type="number" name="stockQuantity" class="form-control" value="{{product.stockQuantity}}">
+            <input type="number"
+                   name="stockQuantity"
+                   class="form-control"
+                   value="{{product.stockQuantity}}">
         </div>
 
-        <!-- 설명 -->
+        <!-- 상품 설명 (Toast UI Editor) -->
         <div class="mb-3">
             <label class="form-label">상품 설명</label>
-            <textarea name="description" class="form-control" rows="4">{{product.description}}</textarea>
+            <div id="editor"></div>
+            <input type="hidden" name="description" id="description">
         </div>
 
+        <!-- 판매 상태 -->
         <div class="mb-3">
             <label class="form-label">판매 상태</label>
             <select name="status" class="form-select" required>
-                <option value="ACTIVE" {{#active}}selected{{/active}}>
-                    판매중
-                </option>
-                <option value="SOLD_OUT" {{#soldOut}}selected{{/soldOut}}>
-                    품절
-                </option>
+                <option value="ACTIVE" {{#active}}selected{{/active}}>판매중</option>
+                <option value="SOLD_OUT" {{#soldOut}}selected{{/soldOut}}>품절</option>
             </select>
         </div>
 
@@ -70,8 +83,27 @@
     <form action="/products/{{product.id}}/delete" method="post" class="text-end">
         <button type="submit" class="btn btn-danger">삭제</button>
     </form>
-
-
 </div>
+
+<!-- Toast UI Editor CSS -->
+<link rel="stylesheet"
+      href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
+<!-- Toast UI Editor JS -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<script>
+    const editor = new toastui.Editor({
+        el: document.querySelector('#editor'),
+        height: '400px',
+        initialEditType: 'wysiwyg',
+        previewStyle: 'vertical',
+        initialValue: `{{{product.description}}}`
+    });
+
+    document.querySelector('form').addEventListener('submit', function () {
+        document.querySelector('#description').value = editor.getHTML();
+    });
+</script>
 
 {{> layout/footer}}
