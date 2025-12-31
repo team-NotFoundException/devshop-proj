@@ -26,6 +26,7 @@ public class Product {
     private String description;
     private String thumbnailUrl;
 
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductStatus status;
