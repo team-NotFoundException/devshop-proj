@@ -30,7 +30,5 @@ public class PaymentRequest {
     @Data
     public static class RefundDTO {
         private Long amount;
-        private String reason;
-
     }
 }
