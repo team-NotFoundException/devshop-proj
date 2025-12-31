@@ -31,7 +31,7 @@ public class PaymentController {
             Model model
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if(cartId!=null){
+        if (cartId != null) {
             PaymentResponse.CartPaymentDTO cartPayment = paymentService.getCartInfo(cartId);
             model.addAttribute("cartPayment", cartPayment);
             model.addAttribute("cartId", cartId);
@@ -65,7 +65,7 @@ public class PaymentController {
     }
 
     @GetMapping("/payment/cart/{cartId}/fail")
-    public String failPaymentForm(@PathVariable Long cartId, String code, String message, Model model){
+    public String failPaymentForm(@PathVariable Long cartId, String code, String message, Model model) {
         model.addAttribute("message", message);
         model.addAttribute("code", code);
         model.addAttribute("cartId", cartId);
@@ -75,7 +75,7 @@ public class PaymentController {
 
 //==============================================================================================================================
 
-//    @GetMapping("/payment/{id}/refund")
+    //    @GetMapping("/payment/{id}/refund")
 //    public String refundPaymentForm(@PathVariable Long id, Model model
 //            ,HttpSession session
 //    ) {

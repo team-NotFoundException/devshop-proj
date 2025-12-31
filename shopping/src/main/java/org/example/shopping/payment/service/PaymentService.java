@@ -8,6 +8,8 @@ import org.example.shopping.cart.CartRepository;
 import org.example.shopping.cart.CartService;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.cartItem.CartItemRepository;
+import org.example.shopping.orderItem.OrderItem;
+import org.example.shopping.orderItem.OrderItemRepository;
 import org.example.shopping.payment.Payment;
 import org.example.shopping.payment.PaymentRefund;
 import org.example.shopping.payment.PaymentRefundRepository;
@@ -22,6 +24,7 @@ import org.example.shopping.payment.service.gateway.PaymentGateway;
 import org.example.shopping.payment.service.gateway.PaymentGatewayResolver;
 import org.example.shopping.payment.service.gateway.PaymentResult;
 import org.example.shopping.users.User;
+import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +42,8 @@ public class PaymentService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final CartService cartService;
+    private final UserRepository userRepository;
+    private final OrderItemRepository orderItemRepository;
 
 
     // ================== 카트 정보 가져오기 ================
@@ -142,7 +147,6 @@ public class PaymentService {
         }
 
 
-
         List<PaymentResponse.PaymentResultDTO.PaymentItemDTO> items = checkItem.stream()
                 .map(item -> {
                     PaymentResponse.PaymentResultDTO.PaymentItemDTO dto =
@@ -160,40 +164,33 @@ public class PaymentService {
         return result;
     }
 
-//    public PaymentResponse refundPaymentForm(Long id
-//            , Long sessionUserId
-//    ) {
-//        Payment paymentEntity = paymentRepository.findById(id)
-//                .orElseThrow(() -> new Exception404("찾을 수 없음"));
-//
-//        return new PaymentResponse(paymentEntity);
-//    }
-//
-//    @Transactional
-//    public PaymentRefund refundPayment(Long id, PaymentRequest.RefundDTO refundDTO
-//            , Long sessionUserId
-//    ) {
-//        Payment payment = paymentRepository.findById(id)
-//                .orElseThrow(() -> new Exception404("결제 내역 찾을 수 없음"));
-//
-//        PaymentRefund refund = PaymentRefund.builder()
-//                .payment(payment)
-//
-//                .amount(refundDTO.getAmount())
-//                .reason(refundDTO.getReason())
-//                .status(RefundStatus.REQUESTED)
-//                .requestedAt(LocalDateTime.now())
-//                .build();
-//
-//        refund.refundCompleted();
-//        payment.payRefund();
-//
-//        refundRepository.save(refund);
-//        paymentRepository.save(payment);
-//
-//        return refund;
-//
-//    }
+    @Transactional
+    public PaymentResponse.SingleRefundDTO singleRefund(
+            Long orderItemId, Long userId, PaymentRequest.RefundDTO req) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception404("사용자 찾을수 없음"));
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new Exception404("아이템 찾을수 없음"));
+        Payment payment = paymentRepository.findByUserId(userId)
+                .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
+
+        PaymentRefund refund = PaymentRefund.builder()
+                .user(user)
+                .payment(payment)
+                .orderItem(orderItem)
+                .amount(orderItem.getTotalPrice())
+                .status(RefundStatus.REQUESTED)
+                .requestedAt(LocalDateTime.now())
+                .build();
+
+        refund.refundCompleted();
+        payment.payRefund();
+        refundRepository.save(refund);
+        paymentRepository.save(payment);
+
+        return new PaymentResponse.SingleRefundDTO(refund);
+    }
 
 
 }
