@@ -75,31 +75,31 @@ public class PaymentController {
 
 //==============================================================================================================================
 
-    @GetMapping("/payment/{id}/refund")
-    public String refundPaymentForm(@PathVariable Long id, Model model
-            ,HttpSession session
-    ) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        PaymentResponse response =
-                paymentService.refundPaymentForm(id
-                        , sessionUser.getId()
-                );
-        model.addAttribute("payment", response);
-        return "payment/refund-form";
-    }
-
-    @PostMapping("/payment/{id}/refund")
-    public String refundPaymentProc(@PathVariable Long id, PaymentRequest.RefundDTO refundDTO
-            , HttpSession session
-    ) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        PaymentRefund response = paymentService.refundPayment(id, refundDTO
-                , sessionUser.getId()
-        );
-        session.setAttribute("sessionUser", response);
-        return "redirect:/";
-    }
+//    @GetMapping("/payment/{id}/refund")
+//    public String refundPaymentForm(@PathVariable Long id, Model model
+//            ,HttpSession session
+//    ) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
+//        PaymentResponse response =
+//                paymentService.refundPaymentForm(id
+//                        , sessionUser.getId()
+//                );
+//        model.addAttribute("payment", response);
+//        return "payment/refund-form";
+//    }
+//
+//    @PostMapping("/payment/{id}/refund")
+//    public String refundPaymentProc(@PathVariable Long id, PaymentRequest.RefundDTO refundDTO
+//            , HttpSession session
+//    ) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
+//
+//        PaymentRefund response = paymentService.refundPayment(id, refundDTO
+//                , sessionUser.getId()
+//        );
+//        session.setAttribute("sessionUser", response);
+//        return "redirect:/";
+//    }
 
 
 }
