@@ -85,7 +85,7 @@ public class UserService {
                 .password(tencoKey) // 또는 랜덤값
                 .nickname(profile.getKakaoAccount().getName())
                 .email(username + "@kakao.com")
-                .address("")
+                .address(new Address())
                 .phoneNumber(profile.getKakaoAccount().getPhoneNumber().replace("+82 ", "0").replace("-",""))
                 .gender(SocialUtils.convertGender(profile.getKakaoAccount().getGender()))
                 .birthday(SocialUtils.convertBirthday(profile.getKakaoAccount().getBirthyear(), profile.getKakaoAccount().getBirthday()))

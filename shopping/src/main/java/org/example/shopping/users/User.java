@@ -14,6 +14,7 @@ import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.enums.Gender;
 import org.example.shopping.users.enums.OAuthProvider;
 import org.example.shopping.users.enums.RoleType;
+import org.example.shopping.users.user.Address;
 import org.example.shopping.users.user.UserRole;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -43,8 +44,8 @@ public class User extends BaseTimeEntity {
     @NotBlank(message = "이메일은 필수 입력 항목입니다.")
     private String email;
 
-
-    private String address;
+    @Embedded
+    private Address address;
 
     @NotBlank(message = "연락처는 필수 입력 항목입니다.")
     private String phoneNumber;
@@ -63,7 +64,7 @@ public class User extends BaseTimeEntity {
     private OAuthProvider provider;
 
     @Builder
-    public User(Long id, String username, String password, String nickname, String  email, String address, String phoneNumber, Gender gender, LocalDate birthday, OAuthProvider provider) {
+    public User(Long id, String username, String password, String nickname, String  email, Address address, String phoneNumber, Gender gender, LocalDate birthday, OAuthProvider provider) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -82,7 +83,7 @@ public class User extends BaseTimeEntity {
 
     public void update(@Valid UserRequest.UpdateDTO updateDTO) {
         this.password = updateDTO.getPassword();
-        this.address = updateDTO.getAddress();
+//        this.address = updateDTO.getAddress();
         this.nickname = updateDTO.getNickname();
         this.gender = updateDTO.getGender();
     }

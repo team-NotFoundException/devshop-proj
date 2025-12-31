@@ -59,7 +59,7 @@ public class UserRequest {
                     .password(this.password)
                     .nickname(this.nickname)
                     .email(this.email)
-                    .address(this.address)
+//                    .address(this.address)
                     .phoneNumber(this.phoneNumber)
                     .gender(this.gender)
                     .birthday(this.birthday)
