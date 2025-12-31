@@ -89,7 +89,8 @@ public class OrderService {
                                         orderItem.getProductPrice(),
                                         orderItem.getQuantity(),
                                         orderItem.getOrderStatus(),
-                                        orderItem.getTotalPrice())
+                                        orderItem.getTotalPrice(),
+                                        orderItem.getIsComplete())
                                 )).toList()
                 ))
                 .toList();
@@ -105,13 +106,12 @@ public class OrderService {
     }
 
     // 구매 확정
-    public OrderItem confirmPurchase(Long orderItemId) {
+    @Transactional
+    public void confirmPurchase(Long orderItemId) {
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new Exception404("물건을 찾을 수 없습니다."));
         orderItem.confirmStatus();
 
-        return orderItemRepository.save(orderItem);
+        orderItemRepository.save(orderItem);
     }
-
-
 }
