@@ -4,6 +4,9 @@ import lombok.Data;
 import org.example.shopping._core.utils.MyDateUtil;
 import org.example.shopping.orderItem.OrderItem;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 public class ReviewResponse {
 
     @Data
@@ -12,6 +15,9 @@ public class ReviewResponse {
         private String content;
         private String username;
         private String createdAt;
+        private int rating;
+        private List<Integer> stars;
+        private List<Integer> emptyStars;
 
         private Long productId;
         private String productName;
@@ -32,10 +38,11 @@ public class ReviewResponse {
             }
         }
 
-        /** 상품 상세페이지 리뷰용 */
+        /** 마이페이지 리뷰용 */
         public ListDTO(Review review) {
             this.id = review.getId();
             this.content = review.getContent();
+            this.rating = review.getRating();
 
             if (review.getUser() != null) {
                 this.username = review.getUser().getUsername();
@@ -44,6 +51,10 @@ public class ReviewResponse {
             if (review.getCreatedAt() != null) {
                 this.createdAt = MyDateUtil.toDateString(review.getCreatedAt());
             }
+
+            this.stars = IntStream.range(0, rating).boxed().toList(); // 0부터 rating (3) 0부터 3까지 반복해줘~
+            this.emptyStars = IntStream.range(0, 5 - rating).boxed().toList();
+
         }
     } // end of static inner class
 
@@ -52,9 +63,12 @@ public class ReviewResponse {
         private String content;
         private Long userId;
         private String username;
-        private int rating;
         private String reviewImage;
         private String createdAt;
+
+        private int rating;
+        private List<Integer> stars;
+        private List<Integer> emptyStars;
 
         public DetailDTO(Review review) {
             this.content = review.getContent();
@@ -70,6 +84,9 @@ public class ReviewResponse {
             if (review.getCreatedAt() != null) {
                 this.createdAt = MyDateUtil.toDateString(review.getCreatedAt());
             }
+
+            this.stars = IntStream.range(0, rating).boxed().toList(); // 0부터 rating (3) 0부터 3까지 반복해줘~
+            this.emptyStars = IntStream.range(0, 5 - rating).boxed().toList();
         }
     } // end of static inner class
 
@@ -79,10 +96,24 @@ public class ReviewResponse {
         private int rating;
         private String reviewImage;
 
+        private boolean checked1;
+        private boolean checked2;
+        private boolean checked3;
+        private boolean checked4;
+        private boolean checked5;
+
         public UpdateFormDTO(Review review) {
             this.content = review.getContent();
             this.rating = review.getRating();
             this.reviewImage = review.getReviewImage();
+
+            this.checked1 = getRating() == 1;
+            this.checked2 = getRating() == 2;
+            this.checked3 = getRating() == 3;
+            this.checked4 = getRating() == 4;
+            this.checked5 = getRating() == 5;
         }
+
+
     }
 }
