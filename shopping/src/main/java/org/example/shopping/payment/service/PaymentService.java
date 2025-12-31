@@ -160,40 +160,40 @@ public class PaymentService {
         return result;
     }
 
-    public PaymentResponse refundPaymentForm(Long id
-            , Long sessionUserId
-    ) {
-        Payment paymentEntity = paymentRepository.findById(id)
-                .orElseThrow(() -> new Exception404("찾을 수 없음"));
-
-        return new PaymentResponse(paymentEntity);
-    }
-
-    @Transactional
-    public PaymentRefund refundPayment(Long id, PaymentRequest.RefundDTO refundDTO
-            , Long sessionUserId
-    ) {
-        Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new Exception404("결제 내역 찾을 수 없음"));
-
-        PaymentRefund refund = PaymentRefund.builder()
-                .payment(payment)
-
-                .amount(refundDTO.getAmount())
-                .reason(refundDTO.getReason())
-                .status(RefundStatus.REQUESTED)
-                .requestedAt(LocalDateTime.now())
-                .build();
-
-        refund.refundCompleted();
-        payment.payRefund();
-
-        refundRepository.save(refund);
-        paymentRepository.save(payment);
-
-        return refund;
-
-    }
+//    public PaymentResponse refundPaymentForm(Long id
+//            , Long sessionUserId
+//    ) {
+//        Payment paymentEntity = paymentRepository.findById(id)
+//                .orElseThrow(() -> new Exception404("찾을 수 없음"));
+//
+//        return new PaymentResponse(paymentEntity);
+//    }
+//
+//    @Transactional
+//    public PaymentRefund refundPayment(Long id, PaymentRequest.RefundDTO refundDTO
+//            , Long sessionUserId
+//    ) {
+//        Payment payment = paymentRepository.findById(id)
+//                .orElseThrow(() -> new Exception404("결제 내역 찾을 수 없음"));
+//
+//        PaymentRefund refund = PaymentRefund.builder()
+//                .payment(payment)
+//
+//                .amount(refundDTO.getAmount())
+//                .reason(refundDTO.getReason())
+//                .status(RefundStatus.REQUESTED)
+//                .requestedAt(LocalDateTime.now())
+//                .build();
+//
+//        refund.refundCompleted();
+//        payment.payRefund();
+//
+//        refundRepository.save(refund);
+//        paymentRepository.save(payment);
+//
+//        return refund;
+//
+//    }
 
 
 }

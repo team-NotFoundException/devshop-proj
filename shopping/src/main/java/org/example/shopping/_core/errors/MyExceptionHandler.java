@@ -34,7 +34,7 @@ public class MyExceptionHandler {
     public ResponseEntity<String> ex401(Exception401 e) {
         String script = "<script>" +
                 "alert('" + e.getMessage() +"');" +
-                "location.href = '/login';" +
+                "location.href = '/user/login';" +
                 "</script>";
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
