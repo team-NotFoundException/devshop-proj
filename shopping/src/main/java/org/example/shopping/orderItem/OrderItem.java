@@ -35,6 +35,8 @@ public class OrderItem extends BaseTimeEntity {
 
     private Long totalPrice;
 
+    private Boolean isComplete;
+
     @Builder
     public OrderItem(Product product, String productName, Long productPrice, Integer quantity, Long totalPrice) {
         this.product = product;
@@ -53,5 +55,6 @@ public class OrderItem extends BaseTimeEntity {
 
     public void confirmStatus() {
         this.orderStatus = OrderStatus.COMPLETE;
+        this.isComplete = true;
     }
 }

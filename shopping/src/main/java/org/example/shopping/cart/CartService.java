@@ -25,6 +25,7 @@ public class CartService {
     private final ProductRepository productRepository;
 
     // 장바구니 생성
+    @Transactional
     public void createCart(User user) {
         cartRepository.save(new Cart(user));
     }

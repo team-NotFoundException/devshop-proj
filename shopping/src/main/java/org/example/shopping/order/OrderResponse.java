@@ -31,17 +31,19 @@ public class OrderResponse {
         private String productName;
         private Long productPrice;
         private Integer quantity;
-        private OrderStatus orderStatus;
+        private String orderStatus;
         private Long totalPrice;
+        private Boolean isComplete;
 
-        public OrderItemListDTO(Long id, Product product, String productName, Long productPrice, Integer quantity, OrderStatus orderStatus, Long totalPrice) {
+        public OrderItemListDTO(Long id, Product product, String productName, Long productPrice, Integer quantity, OrderStatus orderStatus, Long totalPrice, Boolean isComplete) {
             this.id = id;
             this.product = product;
             this.productName = productName;
             this.productPrice = productPrice;
             this.quantity = quantity;
-            this.orderStatus = orderStatus;
+            this.orderStatus = orderStatus.getLabel();
             this.totalPrice = totalPrice;
+            this.isComplete = isComplete;
         }
     }
 }
