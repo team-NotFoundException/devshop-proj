@@ -1,7 +1,9 @@
 package org.example.shopping.product;
 
 import lombok.Data;
+import org.apache.catalina.User;
 import org.example.shopping._core.utils.MyDateUtil;
+import org.example.shopping.product.productEnum.ProductStatus;
 
 
 public class ProductResponse {
@@ -37,6 +39,7 @@ public class ProductResponse {
             }
 
         }
+
     }
 
     /**
@@ -91,6 +94,9 @@ public class ProductResponse {
         private Long categoryId;
         private String status;
 
+        private boolean active;
+        private boolean soldOut;
+
         public UpdateFormDTO(Product product) {
             this.id = product.getId();
             this.productName = product.getProductName();
@@ -100,6 +106,13 @@ public class ProductResponse {
             this.description = product.getDescription();
             this.thumbnailUrl = product.getThumbnailUrl();
             this.status = product.getStatus().name();
+
+            if (product.getStatus() == ProductStatus.ACTIVE) {
+                this.active = true;
+            }
+            if (product.getStatus() == ProductStatus.SOLD_OUT) {
+                this.soldOut = true;
+            }
 
             if (product.getCategory() != null) {
                 this.categoryId = product.getCategory().getId();

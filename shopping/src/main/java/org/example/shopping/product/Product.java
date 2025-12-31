@@ -63,20 +63,20 @@ public class Product {
     // 상품 수정
     public void update(ProductRequest.UpdateDTO dto, Category category) {
         dto.validate();
+
         this.productName = dto.getProductName();
+        this.productCode = dto.getProductCode();
         this.price = dto.getPrice();
         this.stockQuantity = dto.getStockQuantity();
         this.description = dto.getDescription();
         this.thumbnailUrl = dto.getThumbnailUrl();
         this.category = category;
-    }
 
-    // 재고 수정
-    public void updateStock(int stockQuantity) {
-        if (stockQuantity < 0) {
-            throw new IllegalArgumentException("재고는 0 이상이어야 합니다.");
+        if (dto.getStockQuantity() == 0) {
+            this.status = ProductStatus.SOLD_OUT;
+        } else {
+            this.status = dto.getStatus();
         }
-        this.stockQuantity = stockQuantity;
     }
 
     // 상태 변경
@@ -84,4 +84,8 @@ public class Product {
         this.status = status;
     }
 
+
+    public boolean isOwner(Long sessionUserId) {
+        return this.id == sessionUserId;
+    }
 }

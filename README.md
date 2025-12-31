@@ -94,6 +94,73 @@
 
 ---
 
+<h3 align="center">🏅 Stats</h3>
+
+<table width="100%" align = "center">
+<tr>
+  <th>팀원</th>
+  <th>GitHub Stats</th>
+  <th>Top Languages</th>
+</tr>
+
+<tr>
+  <td align="center">
+    <a href="https://github.com/Kitbomin" target="_blank" >
+      <img src="https://avatars.githubusercontent.com/u/127817110?v=4" width="100" border-radius="50%"/><br/>
+      Kitbomin
+    </a>
+  </td>
+  <td><img src="https://github-readme-stats.vercel.app/api?username=Kitbomin&custom_title=Kitbomin's%20Github%20Stat&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+  <td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Kitbomin&layout=compact&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+</tr>
+
+<tr>
+  <td align="center">
+    <a href="https://github.com/untilthe-end" target="_blank">
+      <img src="https://avatars.githubusercontent.com/u/156649739?v=4" width="100" border-radius="50%"/><br/>
+      untilthe-end
+    </a>
+  </td>
+  <td><img src="https://github-readme-stats.vercel.app/api?username=untilthe-end&custom_title=untilthe-end's%20Github%20Stat&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+  <td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=untilthe-end&layout=compact&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+</tr>
+
+<tr>
+  <td align="center">
+    <a href="https://github.com/ehdgn" target="_blank">
+      <img src="https://avatars.githubusercontent.com/u/181971909?v=4" width="100" border-radius="50%"/><br/>
+      ehdgn
+    </a>
+  </td>
+  <td><img src="https://github-readme-stats.vercel.app/api?username=ehdgn&custom_title=ehdgn's%20Github%20Stat&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+  <td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ehdgn&layout=compact&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+</tr>
+
+<tr>
+  <td align="center">
+    <a href="https://github.com/kim-se-hoon" target="_blank">
+      <img src="https://avatars.githubusercontent.com/u/219491357?v=4" width="100" border-radius="50%"><br/>
+      kim-se-hoon
+    </a>
+  </td>
+  <td><img src="https://github-readme-stats.vercel.app/api?username=kim-se-hoon&custom_title=kim-se-hoon's%20Github%20Stat&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+  <td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kim-se-hoon&layout=compact&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+</tr>
+
+<tr>
+  <td align="center">
+    <a href="https://github.com/jihoonjeong56" target="_blank">
+      <img src="https://avatars.githubusercontent.com/u/100738560?v=4" width="100" border-radius="50%"/><br/>
+      jihoonjeong56
+    </a>
+  </td>
+  <td><img src="https://github-readme-stats.vercel.app/api?username=jihoonjeong56&custom_title=jihoonjeong56's%20Github%20Stat&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+  <td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=jihoonjeong56&layout=compact&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
+</tr>
+</table>
+
+---
+
 ## ✨ 주요 기능
 
 | 기능         | 설명                       |
