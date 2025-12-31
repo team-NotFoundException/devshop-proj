@@ -1,5 +1,70 @@
-<script>
-    async function callJuso() {
+<table class="address-table">
+    <colgroup>
+        <col style="width:20%">
+        <col>
+    </colgroup>
+    <tbody>
+    <tr>
+        <th>우편번호</th>
+        <td>
+            <input type="text"
+                   id="zipNo"
+                   name="zipNo"
+                   readonly
+                   style="width:120px">
 
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    onclick="goPopup()">
+                주소검색
+            </button>
+        </td>
+    </tr>
+
+    <tr>
+        <th>도로명주소</th>
+        <td>
+            <input type="text"
+                   id="roadAddr"
+                   name="roadAddr"
+                   readonly
+                   style="width:90%">
+        </td>
+    </tr>
+
+    <tr>
+        <th>상세주소</th>
+        <td>
+            <input type="text"
+                   id="addrDetail"
+                   name="addrDetail"
+                   placeholder="상세 주소를 입력하세요"
+                   style="width:90%">
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function goPopup() {
+        window.open(
+                "popup/jusoPopup.jsp",
+                "jusoPopup",
+                "width=570,height=420,scrollbars=yes,resizable=yes"
+        );
+    }
+
+    function jusoCallBack(
+            roadFullAddr,
+            roadAddrPart1,
+            addrDetail,
+            roadAddrPart2,
+            engAddr,
+            jibunAddr,
+            zipNo
+    ) {
+        document.getElementById("zipNo").value = zipNo;
+        document.getElementById("roadAddr").value = roadAddrPart1;
+        document.getElementById("addrDetail").value = addrDetail;
     }
 </script>
