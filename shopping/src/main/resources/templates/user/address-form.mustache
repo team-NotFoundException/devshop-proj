@@ -31,16 +31,16 @@
 <script>
     function goPopup() {
         window.open(
-                "popup/jusoPopup.jsp",
+                "popup/juso-popup.mustache",
                 "jusoPopup",
                 "width=570,height=420,scrollbars=yes,resizable=yes"
         );
     }
 
     function jusoCallBack(data) {
-        document.getElementById("zipNo").value = data.zipNo;
-        document.getElementById("roadAddr").value = data.roadAddr;
-        document.getElementById("addrDetail").value = data.addrDetail || "";
+        document.getElementById("#zipNo").value = data.zipNo;
+        document.getElementById("#roadAddr").value = data.roadAddr;
+        document.getElementById("#addrDetail").value = data.addrDetail || "";
 
     }
 </script>

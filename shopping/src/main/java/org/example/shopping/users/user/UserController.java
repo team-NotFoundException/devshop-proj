@@ -1,5 +1,6 @@
 package org.example.shopping.users.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.example.shopping.cart.CartService;
 import org.example.shopping.users.OAuthService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,9 @@ public class UserController {
     private final UserService userService;
     private final CartService cartService;
     private final OAuthService oAuthService;
+
+    @Value("${address.juso.key}")
+    private static String jusoKey;
 
     @GetMapping("/kakao")
     public String kakaoCallback(@RequestParam("code") String code, HttpSession session) {
@@ -90,7 +95,9 @@ public class UserController {
     }
 
     @GetMapping("/popup/juso")
-    public String jusoPopup() {
+    public String jusoPopup(Model model, HttpServletRequest request) {
+        model.addAttribute("confmkey", jusoKey);
+        model.addAttribute("returnUrl", request.getRequestURL());
         return "popup/juso-popup";
     }
 
