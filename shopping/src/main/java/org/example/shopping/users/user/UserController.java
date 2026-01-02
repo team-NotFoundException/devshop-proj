@@ -1,5 +1,6 @@
 package org.example.shopping.users.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,9 +8,15 @@ import org.example.shopping.cart.CartService;
 import org.example.shopping.users.OAuthService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
+import org.example.shopping.users.dto.UserResponse;
+import org.example.shopping.users.enums.Gender;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 @Controller
@@ -19,6 +26,9 @@ public class UserController {
     private final UserService userService;
     private final CartService cartService;
     private final OAuthService oAuthService;
+
+    @Value("${address.juso.key}")
+    private String jusoKey;
 
     @GetMapping("/kakao")
     public String kakaoCallback(@RequestParam("code") String code, HttpSession session) {
@@ -79,12 +89,36 @@ public class UserController {
     public String signUp(
             @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
     ) {
+        System.out.println("DTO: " + signUpDTO);
+        System.out.println("Address: " + signUpDTO.getAddress());
 
         User user = userService.signUp(signUpDTO);
 
         cartService.createCart(user);
 
         return "redirect:/user/login";
+    }
+
+    @GetMapping("/popup/juso")
+    public String jusoPopupGet(Model model, HttpServletRequest request) {
+        model.addAttribute("confmKey", jusoKey);
+        model.addAttribute("returnUrl", request.getRequestURL());
+        return "user/popup/juso-popup";
+    }
+
+
+    // POST: 주소 API에서 데이터를 받아서 GET으로 리다이렉트
+    @PostMapping("/popup/juso")
+    public String jusoPopupPost(UserResponse.JusoResponseDTO jusoResponse)
+            throws UnsupportedEncodingException {
+
+        System.out.println("=== POST 받은 데이터 ===");
+        System.out.println("zipNo: " + jusoResponse.getZipNo());
+        System.out.println("roadAddrPart1: " + jusoResponse.getRoadAddrPart1());
+        System.out.println("addrDetail: " + jusoResponse.getAddrDetail());
+
+        // DTO 내부 메서드로 URL 생성
+        return jusoResponse.buildRedirectUrl();
     }
 
     // ---------------------------------------- //
@@ -103,6 +137,12 @@ public class UserController {
         }
         User user = userService.userUpdateView(sessionUser.getId());
         model.addAttribute("sessionUser", user);
+
+        if (user.getGender() != null) {
+            model.addAttribute("isMale", user.getGender() == Gender.M);
+            model.addAttribute("isFeMale", user.getGender() == Gender.F);
+        }
+        model.addAttribute("isNone", user.getGender() == null);
 
         return "user/mypage-update";
     }

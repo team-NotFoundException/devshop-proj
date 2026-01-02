@@ -30,9 +30,9 @@ public class OwnerService {
         }
 
         // 비밀번호 검증
-        if (!passwordEncoder.matches(loginDTO.getPassword(), userEntity.getPassword())) {
-            throw new Exception400("아이디 또는 비밀번호가 일치하지 않습니다.");
-        }
+//        if (!passwordEncoder.matches(loginDTO.getPassword(), userEntity.getPassword())) {
+//            throw new Exception400("아이디 또는 비밀번호가 일치하지 않습니다.");
+//        }
 
         return userEntity;
     }

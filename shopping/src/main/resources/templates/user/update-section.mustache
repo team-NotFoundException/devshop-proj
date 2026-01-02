@@ -1,7 +1,7 @@
 <section class="mypage-content-box">
     <h1>내정보 수정</h1>
 
-    <form action="/users/update" method="post">
+    <form action="/user/update" method="post">
 
 
         <div class="update-form-group">
@@ -16,7 +16,7 @@
 
         <div class="update-form-group">
             <label for="address">주소 <span class="req-star">*</span></label>
-            <input type="text" id="address" name="address" value="{{sessionUser.address}}" required>
+            {{> user/address-form }}
         </div>
 
         <div class="update-form-group">
@@ -31,3 +31,7 @@
         <button type="submit" class="btn-submit-update">수정하기</button>
     </form>
 </section>
+
+<script>
+
+</script>
