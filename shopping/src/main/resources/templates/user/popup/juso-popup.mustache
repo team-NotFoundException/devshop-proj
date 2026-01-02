@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>주소 검색</title>
+</head>
+<body>
+<form id="jusoForm" method="post"
+      action="https://business.juso.go.kr/addrlink/addrLinkUrl.do">
+    <input type="hidden" name="confmKey" value="{{confmKey}}">
+    <input type="hidden" name="resultType" value="4">
+    <input type="hidden" name="returnUrl" value="{{returnUrl}}">
+</form>
+
+<script>
+    (function () {
+        // URL 파라미터에서 inputYn 확인
+        const urlParams = new URLSearchParams(window.location.search);
+        const inputYn = urlParams.get("inputYn");
+
+        // console.log("현재 URL:", window.location.href);
+        // console.log("inputYn:", inputYn);
+
+        if (inputYn !== "Y") {
+            // 최초 진입 → 주소검색 페이지로 POST
+            console.log("주소 API로 이동");
+            document.getElementById("jusoForm").submit();
+            return;
+        }
+
+        // 주소 선택 후 돌아온 경우 - URL에서 모든 파라미터 읽기
+        const roadFullAddr = urlParams.get("roadFullAddr") || "";
+        const roadAddrPart1 = urlParams.get("roadAddrPart1") || "";
+        const roadAddrPart2 = urlParams.get("roadAddrPart2") || "";
+        const engAddr = urlParams.get("engAddr") || "";
+        const jibunAddr = urlParams.get("jibunAddr") || "";
+        const zipNo = urlParams.get("zipNo") || "";
+        const addrDetail = urlParams.get("addrDetail") || "";
+        const admCd = urlParams.get("admCd") || "";
+        const rnMgtSn = urlParams.get("rnMgtSn") || "";
+        const bdMgtSn = urlParams.get("bdMgtSn") || "";
+        const detBdNmList = urlParams.get("detBdNmList") || "";
+        const bdNm = urlParams.get("bdNm") || "";
+        const bdKdcd = urlParams.get("bdKdcd") || "";
+        const siNm = urlParams.get("siNm") || "";
+        const sggNm = urlParams.get("sggNm") || "";
+        const emdNm = urlParams.get("emdNm") || "";
+        const liNm = urlParams.get("liNm") || "";
+        const rn = urlParams.get("rn") || "";
+        const udrtYn = urlParams.get("udrtYn") || "";
+        const buldMnnm = urlParams.get("buldMnnm") || "";
+        const buldSlno = urlParams.get("buldSlno") || "";
+        const mtYn = urlParams.get("mtYn") || "";
+        const lnbrMnnm = urlParams.get("lnbrMnnm") || "";
+        const lnbrSlno = urlParams.get("lnbrSlno") || "";
+        const emdNo = urlParams.get("emdNo") || "";
+
+        // console.log("부모창으로 전달할 데이터:", {
+        //     roadFullAddr, roadAddrPart1, addrDetail, zipNo
+        // });
+
+        // 부모창의 콜백 함수 호출 (25개 파라미터 모두 전달)
+        if (window.opener && typeof window.opener.jusoCallBack === 'function') {
+            window.opener.jusoCallBack(
+                    roadFullAddr, roadAddrPart1, addrDetail, roadAddrPart2, engAddr,
+                    jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn, detBdNmList, bdNm, bdKdcd,
+                    siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm, buldSlno, mtYn,
+                    lnbrMnnm, lnbrSlno, emdNo
+            );
+            window.close();
+        } else {
+            alert("부모 창을 찾을 수 없습니다.");
+        }
+    })();
+</script>
+</body>
+</html>

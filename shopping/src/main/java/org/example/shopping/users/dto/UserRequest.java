@@ -1,8 +1,10 @@
 package org.example.shopping.users.dto;
 
 import jakarta.persistence.Embedded;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.example.shopping.users.User;
@@ -42,7 +44,7 @@ public class UserRequest {
         @NotBlank(message = "이메일은 필수 입력 항목입니다.")
         private String email;    // 필수
 
-        @Embedded
+        @Valid
         private Address address;  // 필수
 
         @NotBlank(message = "연락처는 필수 입력 항목입니다.")
@@ -61,7 +63,7 @@ public class UserRequest {
                     .password(this.password)
                     .nickname(this.nickname)
                     .email(this.email)
-                    .address(new Address())
+                    .address(this.address)
                     .phoneNumber(this.phoneNumber)
                     .gender(this.gender)
                     .birthday(this.birthday)
@@ -79,12 +81,16 @@ public class UserRequest {
         @NotBlank(message = "nickname은 필수 입력 항목입니다.")
         private String nickname;
 
-        @NotBlank(message = "주소는 필수 입력 항목입니다.")
+        @NotNull(message = "주소는 필수 입력 항목입니다.")
+        @Valid
         private Address address;  // 필수
 
         private Gender gender; // 선택
 
 
     }
+
+
+
 }
 
