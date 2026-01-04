@@ -90,19 +90,33 @@ public class OrderService {
                                         orderItem.getQuantity(),
                                         orderItem.getOrderStatus(),
                                         orderItem.getTotalPrice(),
-                                        orderItem.getIsComplete())
+                                        orderItem.getIsComplete(),
+                                        orderItem.getIsRefund())
                                 )).toList()
                 ))
                 .toList();
     }
 
     // 주문 상세 조회
-    public List<OrderItem> orderDetail(Long orderId) {
+    public List<OrderResponse.OrderItemListDTO> orderDetail(Long orderId) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new Exception404("주문을 찾을 수 없습니다."));
 
-        return order.getOrderItems();
+        List<OrderResponse.OrderItemListDTO> orderItems = order.getOrderItems().stream()
+                .map(orderItem -> new OrderResponse.OrderItemListDTO(
+                        orderItem.getId(),
+                        orderItem.getProduct(),
+                        orderItem.getProductName(),
+                        orderItem.getProductPrice(),
+                        orderItem.getQuantity(),
+                        orderItem.getOrderStatus(),
+                        orderItem.getTotalPrice(),
+                        orderItem.getIsComplete(),
+                        orderItem.getIsRefund())
+                ).toList();
+
+        return orderItems;
     }
 
     // 구매 확정
@@ -111,6 +125,15 @@ public class OrderService {
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new Exception404("물건을 찾을 수 없습니다."));
         orderItem.confirmStatus();
+
+        orderItemRepository.save(orderItem);
+    }
+
+    @Transactional
+    public void refundPurchase(Long orderItemId) {
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new Exception404("물건을 찾을 수 없습니다."));
+        orderItem.refundStatus();
 
         orderItemRepository.save(orderItem);
     }

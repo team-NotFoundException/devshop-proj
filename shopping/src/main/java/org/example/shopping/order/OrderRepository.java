@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -14,6 +15,4 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT DISTINCT o FROM Order o WHERE o.user.id = :userId ORDER BY o.createdAt")
     List<Order> findAllByUserIdAndOrderByCreatedAtDesc(@Param("userId") Long userId);
-
-
 }

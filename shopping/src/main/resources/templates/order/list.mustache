@@ -23,17 +23,20 @@
 
                         {{#isComplete}}
                             <div class="order-item-buttons">
-                                <button>리뷰작성</button>
+                                <button class="reviewBtn">리뷰작성</button>
                             </div>
                         {{/isComplete}}
 
                         {{^isComplete}}
                             <div class="order-item-buttons">
-                                <button class="primary confirmBtn" data-order-item-id="{{id}}">구매확정</button>
-                                <form action="/payment/{{id}}/refund" method="POST">
-                                    <button class="refundBtn" type="submit">반품/교환신청</button>
-                                </form>
-                                <button>리뷰작성</button>
+                                {{^isRefund}}
+                                    <button class="primary confirmBtn" data-order-item-id="{{id}}">구매확정</button>
+                                    <button class="refundBtn" type="button" data-order-item-id="{{id}}">반품/교환신청</button>
+                                    <button class="reviewBtn" style="display: none">리뷰작성</button>
+                                {{/isRefund}}
+
+                                {{#isRefund}}
+                                {{/isRefund}}
                             </div>
                         {{/isComplete}}
 
@@ -66,7 +69,37 @@
                 statusContainer.querySelector('.status').textContent = "구매확정";
                 const container = this.closest('.order-item-buttons');
                 container.querySelector('.refundBtn').style.display = "none";
+                container.querySelector('.reviewBtn').style.display = "block";
                 btn.style.display = "none";
+            });
+        });
+
+        document.querySelectorAll('.refundBtn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const orderItemId = this.dataset.orderItemId
+                if(!confirm("반품하시겠습니까?")) return;
+
+                try {
+                    let response = await fetch(`/payment/${orderItemId}/refund`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const statusContainer = this.closest('.order-item');
+                        statusContainer.querySelector('.status').textContent = "반품";
+                        const container = this.closest('.order-item-buttons');
+                        container.querySelector('.confirmBtn').style.display = "none";
+                        btn.style.display = "none";
+                    } else {
+                        alert("반품에 실패했습니다.");
+                    }
+
+                } catch (e) {
+                    alert("오류가 발생했습니다." + e.message);
+                }
             });
         });
     });
