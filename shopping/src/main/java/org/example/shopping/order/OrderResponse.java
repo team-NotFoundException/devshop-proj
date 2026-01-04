@@ -1,9 +1,6 @@
 package org.example.shopping.order;
 
 import lombok.Data;
-import org.example.shopping.cart.Cart;
-import org.example.shopping.cartItem.CartItem;
-import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.product.Product;
 
 import java.time.LocalDateTime;
@@ -34,8 +31,9 @@ public class OrderResponse {
         private String orderStatus;
         private Long totalPrice;
         private Boolean isComplete;
+        private Boolean isRefund;
 
-        public OrderItemListDTO(Long id, Product product, String productName, Long productPrice, Integer quantity, OrderStatus orderStatus, Long totalPrice, Boolean isComplete) {
+        public OrderItemListDTO(Long id, Product product, String productName, Long productPrice, Integer quantity, OrderStatus orderStatus, Long totalPrice, Boolean isComplete, Boolean isRefund) {
             this.id = id;
             this.product = product;
             this.productName = productName;
@@ -44,6 +42,7 @@ public class OrderResponse {
             this.orderStatus = orderStatus.getLabel();
             this.totalPrice = totalPrice;
             this.isComplete = isComplete;
+            this.isRefund = isRefund;
         }
     }
 }

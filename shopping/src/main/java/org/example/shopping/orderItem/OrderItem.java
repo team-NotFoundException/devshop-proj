@@ -1,9 +1,11 @@
 package org.example.shopping.orderItem;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping.order.Order;
 import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.order.OrderStatus;
@@ -37,6 +39,8 @@ public class OrderItem extends BaseTimeEntity {
 
     private Boolean isComplete;
 
+    private Boolean isRefund;
+
     @Builder
     public OrderItem(Product product, String productName, Long productPrice, Integer quantity, Long totalPrice) {
         this.product = product;
@@ -45,6 +49,8 @@ public class OrderItem extends BaseTimeEntity {
         this.quantity = quantity;
         this.orderStatus = OrderStatus.PREPARING;
         this.totalPrice = totalPrice;
+        this.isComplete = false;
+        this.isRefund = false;
     }
 
     public void updateOrderStatus(OrderStatus newStatus) {
@@ -54,7 +60,22 @@ public class OrderItem extends BaseTimeEntity {
     }
 
     public void confirmStatus() {
+        if (this.orderStatus == OrderStatus.REMAND) {
+            throw new Exception400("반품중인 상품입니다.");
+        }
+
         this.orderStatus = OrderStatus.COMPLETE;
         this.isComplete = true;
+        this.isRefund = false;
+    }
+
+    public void refundStatus() {
+        if (this.orderStatus == OrderStatus.COMPLETE) {
+            throw new Exception400("구매확정된 상품입니다.");
+        }
+
+        this.orderStatus = OrderStatus.REMAND;
+        this.isRefund = true;
+        this.isComplete = false;
     }
 }
