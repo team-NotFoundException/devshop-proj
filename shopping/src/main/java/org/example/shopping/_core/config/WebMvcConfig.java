@@ -1,6 +1,7 @@
 package org.example.shopping._core.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.interceptor.AdminInterceptor;
 import org.example.shopping._core.interceptor.LoginInterceptor;
 import org.example.shopping._core.interceptor.OwnerInterceptor;
 import org.example.shopping._core.interceptor.SessionInterceptor;
@@ -16,6 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final LoginInterceptor loginInterceptor;
     private final SessionInterceptor sessionInterceptor;
     private final OwnerInterceptor ownerInterceptor;
+    private final AdminInterceptor adminInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -28,12 +30,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**");
+        registry.addInterceptor(adminInterceptor)
+                .addPathPatterns("/admin/**");
 
         registry.addInterceptor(ownerInterceptor)
                 .addPathPatterns("/owner/**")
                 .excludePathPatterns("/owner/login", "/owner/join");
     }
-
 
 
     @Override

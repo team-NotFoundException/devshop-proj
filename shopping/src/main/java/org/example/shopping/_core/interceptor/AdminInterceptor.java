@@ -18,7 +18,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        if (session == null) {
+        if (sessionUser == null) {
             throw new Exception401("로그인 요망");
         }
 
