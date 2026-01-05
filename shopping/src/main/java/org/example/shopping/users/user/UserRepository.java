@@ -37,7 +37,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     // === 관리자용 === //
-    Optional<User> findAllByUsernameOrderByCreatedAt(String username, Pageable pageable);
+//    Optional<User> findAllByUsernameOrderByCreatedAt(String username, Pageable pageable);
 
 
 //    @Query("SELECT u.username, u.nickname, u.email, u.role FROM User u LEFT JOIN UserRole r ON r.user_id = :u.user_id ORDER BY u.createdAt ASC")
