@@ -17,6 +17,7 @@ import org.example.shopping.users.enums.RoleType;
 import org.example.shopping.users.user.Address;
 import org.example.shopping.users.user.UserRole;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
@@ -28,32 +29,28 @@ public class User extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 5, max = 255)
-    @NotBlank(message = "id는 필수 입력 항목입니다.")
+
     private String username;
 
-    @Size(min = 6, max = 16)
-    @NotBlank(message = "pw는 필수 입력 항목입니다.")
+
     private String password;
 
-    @Size(min = 2, max = 6)
-    @NotBlank(message = "nickname은 필수 입력 항목입니다.")
+
     private String nickname;
 
-    @Email(message = "유효한 이메일 주소를 입력해주세요.")
-    @NotBlank(message = "이메일은 필수 입력 항목입니다.")
+
     private String email;
 
     @Embedded
     private Address address;
 
-    @NotBlank(message = "연락처는 필수 입력 항목입니다.")
+
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column
+    @CreationTimestamp
     private LocalDate birthday;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "user")

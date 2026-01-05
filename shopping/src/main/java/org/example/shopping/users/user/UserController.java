@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.utils.ValidationUtils;
 import org.example.shopping.cart.CartService;
 import org.example.shopping.users.OAuthService;
@@ -29,6 +30,7 @@ public class UserController {
     private final UserService userService;
     private final CartService cartService;
     private final OAuthService oAuthService;
+    private final ValidationUtils validationUtils;
 
     @Value("${address.juso.key}")
     private String jusoKey;
@@ -90,13 +92,9 @@ public class UserController {
 
     @PostMapping("/user/join")
     public String signUp(
-            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes
+            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO, BindingResult bindingResult
     ) {
-        if (ValidationUtils.redirectIfError(
-                bindingResult, redirectAttributes, "/user/join"
-        )) {
-            return "redirect:/user/join";
-        }
+        validationUtils.validationChecker(bindingResult);
 
         User user = userService.signUp(signUpDTO);
 
@@ -115,14 +113,8 @@ public class UserController {
 
     // POST: 주소 API에서 데이터를 받아서 GET으로 리다이렉트
     @PostMapping("/popup/juso")
-    public String jusoPopupPost(UserResponse.JusoResponseDTO jusoResponse, BindingResult bindingResult, RedirectAttributes redirectAttributes)
+    public String jusoPopupPost(UserResponse.JusoResponseDTO jusoResponse)
             throws UnsupportedEncodingException {
-
-        if (ValidationUtils.redirectIfError(
-                bindingResult, redirectAttributes, "/popup/juso"
-        )) {
-            return "redirect:/popup/juso";
-        }
 
         // DTO 내부 메서드로 URL 생성
         return jusoResponse.buildRedirectUrl();
@@ -158,14 +150,8 @@ public class UserController {
     @PostMapping("/user/update")
     public String userUpdate(
             @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,
-            HttpSession session, BindingResult bindingResult, RedirectAttributes redirectAttributes
+            HttpSession session
     ) {
-        if (ValidationUtils.redirectIfError(
-                bindingResult, redirectAttributes, "/user/update"
-        )) {
-            return "redirect:/user/update";
-        }
-
         User sessionUser = (User) session.getAttribute("sessionUser");
         User updateUser = userService.userUpdate(updateDTO, sessionUser.getId());
 

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping._core.utils.SocialUtils;
+import org.example.shopping._core.utils.ValidationUtils;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.dto.UserResponse;
@@ -25,6 +26,7 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     @Value("${tenco.key}")
     private String tencoKey;
 
@@ -33,6 +35,8 @@ public class UserService {
         if (userRepository.findByUsername(signUpDTO.getUsername()).isPresent()) {
             throw new Exception400("이미 있는 이름입니다.");
         }
+
+
         User user = signUpDTO.toEntity();
         user.setPassword(passwordEncoder.encode(signUpDTO.getPassword()));
         UserRole userRole = new UserRole(user, RoleType.USER);
