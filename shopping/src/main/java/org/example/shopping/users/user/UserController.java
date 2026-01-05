@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.utils.ValidationUtils;
 import org.example.shopping.cart.CartService;
 import org.example.shopping.users.OAuthService;
 import org.example.shopping.users.User;
@@ -13,7 +14,9 @@ import org.example.shopping.users.enums.Gender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -87,10 +90,13 @@ public class UserController {
 
     @PostMapping("/user/join")
     public String signUp(
-            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
+            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes
     ) {
-        System.out.println("DTO: " + signUpDTO);
-        System.out.println("Address: " + signUpDTO.getAddress());
+        if (ValidationUtils.redirectIfError(
+                bindingResult, redirectAttributes, "/user/join"
+        )) {
+            return "redirect:/user/join";
+        }
 
         User user = userService.signUp(signUpDTO);
 
@@ -109,13 +115,14 @@ public class UserController {
 
     // POST: 주소 API에서 데이터를 받아서 GET으로 리다이렉트
     @PostMapping("/popup/juso")
-    public String jusoPopupPost(UserResponse.JusoResponseDTO jusoResponse)
+    public String jusoPopupPost(UserResponse.JusoResponseDTO jusoResponse, BindingResult bindingResult, RedirectAttributes redirectAttributes)
             throws UnsupportedEncodingException {
 
-        System.out.println("=== POST 받은 데이터 ===");
-        System.out.println("zipNo: " + jusoResponse.getZipNo());
-        System.out.println("roadAddrPart1: " + jusoResponse.getRoadAddrPart1());
-        System.out.println("addrDetail: " + jusoResponse.getAddrDetail());
+        if (ValidationUtils.redirectIfError(
+                bindingResult, redirectAttributes, "/popup/juso"
+        )) {
+            return "redirect:/popup/juso";
+        }
 
         // DTO 내부 메서드로 URL 생성
         return jusoResponse.buildRedirectUrl();
@@ -151,8 +158,14 @@ public class UserController {
     @PostMapping("/user/update")
     public String userUpdate(
             @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,
-            HttpSession session
+            HttpSession session, BindingResult bindingResult, RedirectAttributes redirectAttributes
     ) {
+        if (ValidationUtils.redirectIfError(
+                bindingResult, redirectAttributes, "/user/update"
+        )) {
+            return "redirect:/user/update";
+        }
+
         User sessionUser = (User) session.getAttribute("sessionUser");
         User updateUser = userService.userUpdate(updateDTO, sessionUser.getId());
 
