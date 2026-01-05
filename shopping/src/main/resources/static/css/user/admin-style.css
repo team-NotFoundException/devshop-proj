@@ -1,0 +1,28 @@
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* 대시보드 카드 스타일 */
+.stat-card {
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.bg-primary-dark { background-color: #4e73df; }
+.bg-success-dark { background-color: #1cc88a; }
+.bg-warning-dark { background-color: #f6c23e; }
+.bg-info-dark { background-color: #36b9cc; }
+
+.stat-card h5 { font-size: 0.8rem; text-transform: uppercase; opacity: 0.8; }
+.stat-card .value { font-size: 1.5rem; font-weight: bold; }
+
+/* 테이블 스타일 */
+.admin-table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #e3e6f0;
+}
