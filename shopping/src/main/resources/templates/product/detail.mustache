@@ -4,10 +4,15 @@
     </div>
 </div>
 
-<div class="dashboard-wrapper">
+<!-- 사이드바 + 컨텐츠 Flex 컨테이너 -->
+<div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
+
+    <!-- 사이드바 -->
     {{> layout/owner-sidebar}}
 
-    <div class="content-area">
+    <!-- 컨텐츠 영역 -->
+    <div class="content-area" style="flex: 1; padding: 20px;">
+
         {{#product}}
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
@@ -45,7 +50,8 @@
                 </div>
             </div>
         {{/product}}
+
     </div>
 </div>
 
-{{> layout/footer}}
+{{> layout/footer }}

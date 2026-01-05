@@ -4,10 +4,12 @@
     </div>
 </div>
 
-<div class="dashboard-wrapper">
+<div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
     {{> layout/owner-sidebar}}
 
-    <div class="content-area">
+
+    <div class="content-area" style="flex: 1; padding: 20px;">
+
         <div class="card shadow-sm" style="max-width: 900px; margin: auto;">
             <div class="card-body p-5">
                 <h2 class="mb-4 text-warning">상품 정보 수정</h2>
@@ -63,6 +65,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -73,7 +76,7 @@
         el: document.querySelector('#editor'),
         height: '400px',
         initialEditType: 'wysiwyg',
-        initialValue: `{{{product.description}}}` // 기존 내용 로드
+        initialValue: `{{{product.description}}}`
     });
 
     document.querySelector('#editForm').addEventListener('submit', function () {
@@ -81,4 +84,4 @@
     });
 </script>
 
-{{> layout/footer}}
+{{> layout/footer }}
