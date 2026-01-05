@@ -2,13 +2,9 @@ package org.example.shopping.order;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.errors.exception.Exception404;
-import org.example.shopping.orderItem.OrderItem;
-import org.example.shopping.orderItem.OrderItemRepository;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.service.PaymentService;
 import org.example.shopping.users.User;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,17 +67,19 @@ public class OrderController {
 
     // 구매확정
     @PostMapping("/order/{orderItemId}/confirm")
-    public void confirmPurchase(@PathVariable Long orderItemId) {
+    @ResponseBody
+    public ResponseEntity<Void> confirmPurchase(@PathVariable Long orderItemId) {
 
         orderService.confirmPurchase(orderItemId);
+        return ResponseEntity.ok().build();
     }
 
     // 반품
-    @PostMapping("/order/{orderItemId}/refund")
-    public void refundPurchase(@PathVariable Long orderItemId) {
-
-
-    }
+//    @PostMapping("/order/{orderItemId}/refund")
+//    public void refundPurchase(@PathVariable Long orderItemId) {
+//
+//
+//    }
 
     @PostMapping("/payment/{id}/refund")
     @ResponseBody
