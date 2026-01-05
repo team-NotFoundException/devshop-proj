@@ -23,7 +23,7 @@
 
                         {{#isComplete}}
                             <div class="order-item-buttons">
-                                <button class="reviewBtn">리뷰작성</button>
+                                <a href="/review/save" class="reviewBtn">리뷰 작성</a>
                             </div>
                         {{/isComplete}}
 
@@ -32,7 +32,7 @@
                                 {{^isRefund}}
                                     <button class="primary confirmBtn" data-order-item-id="{{id}}">구매확정</button>
                                     <button class="refundBtn" type="button" data-order-item-id="{{id}}">반품/교환신청</button>
-                                    <button class="reviewBtn" style="display: none">리뷰작성</button>
+                                    <a href="/review/save" class="reviewBtn" style="display: none">리뷰 작성</a>
                                 {{/isRefund}}
 
                                 {{#isRefund}}
@@ -56,27 +56,40 @@
     document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll('.confirmBtn').forEach(btn => {
-            btn.addEventListener('click', function () {
+            btn.addEventListener('click', async function () {
                 const orderItemId = this.dataset.orderItemId
-                confirm("구매확정 하시겠습니까?")
-                fetch(`/order/${orderItemId}/confirm`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
                 const statusContainer = this.closest('.order-item');
-                statusContainer.querySelector('.status').textContent = "구매확정";
                 const container = this.closest('.order-item-buttons');
-                container.querySelector('.refundBtn').style.display = "none";
-                container.querySelector('.reviewBtn').style.display = "block";
-                btn.style.display = "none";
+                if (!confirm("구매확정 하시겠습니까?")) return;
+
+                try {
+                    let response = await fetch(`/order/${orderItemId}/confirm`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        statusContainer.querySelector('.status').textContent = "구매확정";
+                        container.querySelector('.refundBtn').style.display = "none";
+                        container.querySelector('.reviewBtn').style.display = "block";
+                        btn.style.display = "none";
+                    } else {
+                        alert("구매확정에 실패했습니다.");
+                    }
+
+                } catch (e) {
+                    alert("오류가 발생했습니다. " + e.message)
+                }
             });
         });
 
         document.querySelectorAll('.refundBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
                 const orderItemId = this.dataset.orderItemId
+                const statusContainer = this.closest('.order-item');
+                const container = this.closest('.order-item-buttons');
                 if(!confirm("반품하시겠습니까?")) return;
 
                 try {
@@ -88,9 +101,7 @@
                     });
 
                     if (response.ok) {
-                        const statusContainer = this.closest('.order-item');
                         statusContainer.querySelector('.status').textContent = "반품";
-                        const container = this.closest('.order-item-buttons');
                         container.querySelector('.confirmBtn').style.display = "none";
                         btn.style.display = "none";
                     } else {

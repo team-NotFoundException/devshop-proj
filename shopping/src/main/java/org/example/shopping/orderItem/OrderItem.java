@@ -26,6 +26,10 @@ public class OrderItem extends BaseTimeEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
     private String productName;
 
     private Long productPrice;
