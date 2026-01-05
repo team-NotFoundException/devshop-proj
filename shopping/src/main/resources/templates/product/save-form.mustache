@@ -1,65 +1,67 @@
-{{> layout/header}}
-
-<div class="container p-5">
-    <h2 class="mb-4">상품 등록</h2>
-
-    <form action="/products/save" method="post">
-
-        <!-- 카테고리 -->
-        <div class="mb-3">
-            <label class="form-label">카테고리</label>
-            <select name="categoryId" class="form-select" required>
-                <option value="">카테고리 선택</option>
-                {{#category}}
-                    <option value="{{id}}">{{categoryName}}</option>
-                {{/category}}
-            </select>
-        </div>
-
-        <!-- 상품명 -->
-        <div class="mb-3">
-            <label class="form-label">상품명</label>
-            <input type="text" name="productName" class="form-control" required>
-        </div>
-
-        <!-- 상품 코드 -->
-        <div class="mb-3">
-            <label class="form-label">상품 코드</label>
-            <input type="text" name="productCode" class="form-control" required>
-        </div>
-
-        <!-- 가격 -->
-        <div class="mb-3">
-            <label class="form-label">가격</label>
-            <input type="number" name="price" class="form-control" required>
-        </div>
-
-        <!-- 재고 -->
-        <div class="mb-3">
-            <label class="form-label">재고 수량</label>
-            <input type="number" name="stockQuantity" class="form-control">
-        </div>
-
-        <!-- 상품 설명 (Toast UI Editor) -->
-        <div class="mb-3">
-            <label class="form-label">상품 설명</label>
-            <div id="editor"></div>
-            <input type="hidden" name="description" id="description">
-        </div>
-
-        <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">등록</button>
-        </div>
-    </form>
+<div class="header-wrapper">
+    <div class="container">
+        {{> layout/header }}
+    </div>
 </div>
 
-<!-- Toast UI Editor CSS -->
-<link rel="stylesheet"
-      href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+<div class="dashboard-wrapper">
+    {{> layout/owner-sidebar}}
 
-<!-- Toast UI Editor JS -->
+    <div class="content-area">
+        <div class="card shadow-sm" style="max-width: 900px; margin: auto;">
+            <div class="card-body p-5">
+                <h2 class="mb-4">신규 상품 등록</h2>
+                <form action="/products/save" method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">카테고리</label>
+                        <select name="categoryId" class="form-select" required>
+                            <option value="">카테고리 선택</option>
+                            {{#category}}
+                                <option value="{{id}}">{{categoryName}}</option>
+                            {{/category}}
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label fw-bold">상품명</label>
+                            <input type="text" name="productName" class="form-control" placeholder="상품명을 입력하세요" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">상품 코드</label>
+                            <input type="text" name="productCode" class="form-control" placeholder="P0001" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">가격</label>
+                            <input type="number" name="price" class="form-control" placeholder="0" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">재고 수량</label>
+                            <input type="number" name="stockQuantity" class="form-control" placeholder="0">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">상품 설명</label>
+                        <div id="editor"></div>
+                        <input type="hidden" name="description" id="description">
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="/products/list-form" class="btn btn-outline-secondary">취소</a>
+                        <button type="submit" class="btn btn-primary px-4">등록하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-
 <script>
     const editor = new toastui.Editor({
         el: document.querySelector('#editor'),
@@ -67,7 +69,6 @@
         initialEditType: 'wysiwyg',
         previewStyle: 'vertical'
     });
-
     document.querySelector('form').addEventListener('submit', function () {
         document.querySelector('#description').value = editor.getHTML();
     });

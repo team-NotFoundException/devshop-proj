@@ -35,9 +35,9 @@ public class UserService {
         }
         User user = signUpDTO.toEntity();
         user.setPassword(passwordEncoder.encode(signUpDTO.getPassword()));
-        userRepository.save(user);
         UserRole userRole = new UserRole(user, RoleType.USER);
-        return userRoleRepository.save(userRole).getUser();
+        user.setRole(userRole);
+        return userRepository.save(user);
     }
 
     public User login(@Valid UserRequest.LoginDTO loginDTO) {
@@ -93,8 +93,8 @@ public class UserService {
                 .build();
 
         UserRole userRole = new UserRole(newUser, RoleType.USER);
-        userRepository.save(newUser);
-        return userRoleRepository.save(userRole).getUser();
+        newUser.setRole(userRole);
+        return userRepository.save(newUser);
     }
 
 
