@@ -6,7 +6,6 @@
     <form action="/products/save" method="post">
 
         <!-- 카테고리 -->
-
         <div class="mb-3">
             <label class="form-label">카테고리</label>
             <select name="categoryId" class="form-select" required>
@@ -16,7 +15,6 @@
                 {{/category}}
             </select>
         </div>
-
 
         <!-- 상품명 -->
         <div class="mb-3">
@@ -42,21 +40,37 @@
             <input type="number" name="stockQuantity" class="form-control">
         </div>
 
-        <!-- 설명 -->
+        <!-- 상품 설명 (Toast UI Editor) -->
         <div class="mb-3">
-            <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*">
-            <small class="form-text text-muted mt-1">이미지 파일만 업로드 가능합니다(JPG, PNG, GIF)</small>
             <label class="form-label">상품 설명</label>
-            <textarea name="description" class="form-control" rows="4"></textarea>
-            <!-- 프로필 -->
+            <div id="editor"></div>
+            <input type="hidden" name="description" id="description">
         </div>
 
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">등록</button>
         </div>
     </form>
-
 </div>
 
-{{> layout/footer}}
+<!-- Toast UI Editor CSS -->
+<link rel="stylesheet"
+      href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
+<!-- Toast UI Editor JS -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<script>
+    const editor = new toastui.Editor({
+        el: document.querySelector('#editor'),
+        height: '400px',
+        initialEditType: 'wysiwyg',
+        previewStyle: 'vertical'
+    });
+
+    document.querySelector('form').addEventListener('submit', function () {
+        document.querySelector('#description').value = editor.getHTML();
+    });
+</script>
+
+{{> layout/footer}}

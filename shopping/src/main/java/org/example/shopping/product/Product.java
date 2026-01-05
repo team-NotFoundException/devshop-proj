@@ -23,8 +23,11 @@ public class Product {
     private String productCode;
     private Long price;
     private int stockQuantity;
-    private String description;
     private String thumbnailUrl;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
 
     @Enumerated(EnumType.STRING)
