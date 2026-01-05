@@ -17,7 +17,6 @@
         <tr>
             <th>ID</th>
             <th>상품명</th>
-            <th>썸네일</th>
             <th>가격</th>
             <th>재고</th>
             <th>상태</th>
@@ -27,14 +26,8 @@
         {{#products}}
             <tr>
                 <td>{{id}}</td>
-                <td><a href="/products/{{id}}/detail">{{productName}}</a></td>
                 <td>
-                    {{#thumbnailUrl}}
-                        <img src="{{thumbnailUrl}}" alt="{{productName}}" width="100">
-                    {{/thumbnailUrl}}
-                    {{^thumbnailUrl}}
-                        없음
-                    {{/thumbnailUrl}}
+                    <a href="/products/{{id}}/detail">{{productName}}</a>
                 </td>
                 <td>{{price}}</td>
                 <td>{{stockQuantity}}</td>
@@ -42,6 +35,7 @@
             </tr>
         {{/products}}
     </table>
+
     {{^products}}
         <p class="text-center text-muted">등록된 상품이 없습니다.</p>
     {{/products}}

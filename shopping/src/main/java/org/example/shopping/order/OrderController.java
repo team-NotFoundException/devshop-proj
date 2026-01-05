@@ -62,7 +62,7 @@ public class OrderController {
     @GetMapping("/order/detail")
     public String detail(Long id, Model model) {
 
-        List<OrderItem> orderItems = orderService.orderDetail(id);
+        List<OrderResponse.OrderItemListDTO> orderItems = orderService.orderDetail(id);
 
         model.addAttribute("orderItems", orderItems);
 
@@ -71,19 +71,28 @@ public class OrderController {
 
     // 구매확정
     @PostMapping("/order/{orderItemId}/confirm")
-    public ResponseEntity<Void> confirmPurchase(@PathVariable Long orderItemId) {
+    public void confirmPurchase(@PathVariable Long orderItemId) {
 
         orderService.confirmPurchase(orderItemId);
-        return ResponseEntity.ok().build();
     }
+
+    // 반품
+    @PostMapping("/order/{orderItemId}/refund")
+    public void refundPurchase(@PathVariable Long orderItemId) {
+
+
+    }
+
     @PostMapping("/payment/{id}/refund")
-    public String singleRefundProc(@PathVariable(name = "id") Long orderItemId,
+    @ResponseBody
+    public ResponseEntity<Void> singleRefundProc(@PathVariable(name = "id") Long orderItemId,
                                    HttpSession session,
                                    PaymentRequest.RefundDTO req
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         paymentService.singleRefund(orderItemId, sessionUser.getId(), req);
-        return "redirect:/order/list";
+        orderService.refundPurchase(orderItemId);
+        return ResponseEntity.ok().build();
     }
 
 }
