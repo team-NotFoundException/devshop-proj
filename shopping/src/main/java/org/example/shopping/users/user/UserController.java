@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
+import org.example.shopping._core.utils.ValidationUtils;
 import org.example.shopping.cart.CartService;
 import org.example.shopping.users.OAuthService;
 import org.example.shopping.users.User;
@@ -13,7 +15,9 @@ import org.example.shopping.users.enums.Gender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -26,6 +30,7 @@ public class UserController {
     private final UserService userService;
     private final CartService cartService;
     private final OAuthService oAuthService;
+    private final ValidationUtils validationUtils;
 
     @Value("${address.juso.key}")
     private String jusoKey;
@@ -87,10 +92,9 @@ public class UserController {
 
     @PostMapping("/user/join")
     public String signUp(
-            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
+            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO, BindingResult bindingResult
     ) {
-        System.out.println("DTO: " + signUpDTO);
-        System.out.println("Address: " + signUpDTO.getAddress());
+        validationUtils.validationChecker(bindingResult);
 
         User user = userService.signUp(signUpDTO);
 
@@ -111,11 +115,6 @@ public class UserController {
     @PostMapping("/popup/juso")
     public String jusoPopupPost(UserResponse.JusoResponseDTO jusoResponse)
             throws UnsupportedEncodingException {
-
-        System.out.println("=== POST 받은 데이터 ===");
-        System.out.println("zipNo: " + jusoResponse.getZipNo());
-        System.out.println("roadAddrPart1: " + jusoResponse.getRoadAddrPart1());
-        System.out.println("addrDetail: " + jusoResponse.getAddrDetail());
 
         // DTO 내부 메서드로 URL 생성
         return jusoResponse.buildRedirectUrl();

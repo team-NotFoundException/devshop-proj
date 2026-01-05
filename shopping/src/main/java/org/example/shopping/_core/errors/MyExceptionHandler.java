@@ -18,112 +18,55 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class MyExceptionHandler {
 
-    // 내가 지켜볼 예외를 명시를 해주면 ControllerAdvice 가 가지고와 처리 함
+    // 400 에러: 유효성 검사 실패 등
     @ExceptionHandler(Exception400.class)
-    public String ex400(Exception400 e, HttpServletRequest request) {
-        log.warn("=== 400 에러 발생  ===");
-        log.warn("요청 URL : {}", request.getRequestURL());
-        log.warn("에러 메세지 : {}", e.getMessage());
-        log.warn("예외 클래스 : {}", e.getClass().getSimpleName());
-        request.setAttribute("msg", e.getMessage());
-        return "err/400";
+    public String ex400(Exception400 e, Model model) {
+        model.addAttribute("alertMessage", e.getMessage());
+        // url을 안 보내면 mustache에서 history.back() 처리
+        return "alert";
     }
 
+    // 401 에러: 인증 실패 (로그인 페이지로 이동)
     @ExceptionHandler(Exception401.class)
-    @ResponseBody
-    public ResponseEntity<String> ex401(Exception401 e) {
-        String script = "<script>" +
-                "alert('" + e.getMessage() +"');" +
-                "location.href = '/user/login';" +
-                "</script>";
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .contentType(MediaType.TEXT_HTML)
-                .body(script);
+    public String ex401(Exception401 e, Model model) {
+        model.addAttribute("alertMessage", e.getMessage());
+        model.addAttribute("url", "/user/login"); // 로그인 폼으로 유도
+        return "alert";
     }
 
+    // 403 에러: 권한 없음
     @ExceptionHandler(Exception403.class)
-    @ResponseBody
-    public ResponseEntity<String> ex403(Exception403 e, HttpServletRequest request) {
-        String script = "<script>alert('"+e.getMessage()+"');" +
-                "history.back();" +
-                "</script>";
-
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .contentType(MediaType.TEXT_HTML)
-                .body(script);
+    public String ex403(Exception403 e, Model model) {
+        model.addAttribute("alertMessage", e.getMessage());
+        return "alert"; // history.back()
     }
 
-
-    // 404 인가 오류
-    // 템플릿 파일에서 세션 정보와 / Request 객체를 바로 접근 못하기 막았음 (기본값)
+    // 404 에러: 찾을 수 없음
     @ExceptionHandler(Exception404.class)
-    public String ex404(Exception404 e, HttpServletRequest request, Model model) {
-        log.warn("=== 404 에러 발생  ===");
-        log.warn("요청 URL : {}", request.getRequestURL());
-        log.warn("에러 메세지 : {}", e.getMessage());
-        log.warn("예외 클래스 : {}", e.getClass().getSimpleName());
-        //request.setAttribute("msg", e.getMessage());
-        model.addAttribute("msg", e.getMessage());
-        return "err/404";
+    public String ex404(Exception404 e, Model model) {
+        model.addAttribute("alertMessage", e.getMessage());
+        return "alert";
     }
 
-    // 500 서버 내부 오류
-    @ExceptionHandler(Exception500.class)
-    public String ex500(Exception500 e, HttpServletRequest request) {
-        log.warn("=== 500 에러 발생  ===");
-        log.warn("요청 URL : {}", request.getRequestURL());
-        log.warn("에러 메세지 : {}", e.getMessage());
-        log.warn("예외 클래스 : {}", e.getClass().getSimpleName());
-        request.setAttribute("msg", e.getMessage());
-        return "err/500";
-    }
-
-    // 데이터베이스 제약조건 위한 예외 처리
+    // 데이터베이스 제약조건 위반 (PK 중복, FK 위반 등)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public String handleDataViolationException(DataIntegrityViolationException e,
-                                               HttpServletRequest request,
-                                               Model model) {
-        log.warn("=== 데이터베이스 제약조건 위반 오류 발생  ===");
-        log.warn("요청 URL : {}", request.getRequestURL());
-        log.warn("에러 메세지 : {}", e.getMessage());
-        log.warn("예외 클래스 : {}", e.getClass().getSimpleName());
-
-        // 외래키 제약 조건 위반인 경우
+    public String handleDataViolationException(DataIntegrityViolationException e, Model model) {
         String errorMessage = e.getMessage();
+        String displayMsg = "데이터베이스 오류가 발생했습니다.";
+
         if(errorMessage != null && errorMessage.contains("FOREIGN KEY")) {
-            model.addAttribute("msg", "관련된 데이터가 있어 삭제할 수 없습니다.");
-        } else {
-            model.addAttribute("msg", "데이터베이스 제약 조건 위반");
+            displayMsg = "관련된 데이터가 존재하여 삭제하거나 수정할 수 없습니다.";
         }
-        return "err/500";
+
+        model.addAttribute("alertMessage", displayMsg);
+        return "alert";
     }
 
-    // 클래스 로딩 오류 처리 (NoClassDefFoundException, ClassNotFoundException 등)
-    @ExceptionHandler(Error.class)
-    public String handleError(Error e, HttpServletRequest request, Model model) {
-        log.warn("=== 예상하지 못한 에러 발생  ===");
-        log.warn("요청 URL : {}", request.getRequestURL());
-        log.warn("에러 메세지 : {}", e.getMessage());
-        log.warn("예외 클래스 : {}", e.getClass().getSimpleName());
-        model.addAttribute("msg", "심각한 오류 발생(클래스를 찾을 수 없습니다)");
-        return "err/500";
-    }
-
-
-    // 기타 모든 실행시점 오류 처리
+    // 모든 RuntimeException (예상치 못한 서버 에러)
     @ExceptionHandler(RuntimeException.class)
-    public String handleRuntimeException(RuntimeException e,
-                                         HttpServletRequest request) {
-        log.warn("=== 예상하지 못한 에러 발생  ===");
-        log.warn("요청 URL : {}", request.getRequestURL());
-        log.warn("에러 메세지 : {}", e.getMessage());
-        log.warn("예외 클래스 : {}", e.getClass().getSimpleName());
-        request.setAttribute("msg", e.getMessage());
-        return "err/500";
+    public String handleRuntimeException(RuntimeException e, Model model) {
+        log.error("예상치 못한 에러: {}", e.getMessage());
+        model.addAttribute("alertMessage", "서버 내부 오류가 발생했습니다: " + e.getMessage());
+        return "alert";
     }
-
-
-
 }
