@@ -1,0 +1,81 @@
+{{> layout/header}}
+
+<div class="d-flex">
+    {{> layout/owner-sidebar}}
+
+    <main class="flex-grow-1 p-4" style="background-color: #f8f9fa;">
+        <div class="container-fluid">
+            <h3 class="fw-bold mb-4">판매 현황</h3>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm p-3">
+                        <div class="text-muted small">이번 달 총 매출</div>
+                        <div class="h4 fw-bold text-primary">₩ {{#stats}}{{totalSales}}{{/stats}}</div>
+                        <div class="small text-success"><i class="bi bi-arrow-up"></i> 전월 대비 12%</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm p-3">
+                        <div class="text-muted small">신규 주문</div>
+                        <div class="h4 fw-bold text-danger">{{#stats}}{{newOrders}}{{/stats}} 건</div>
+                        <div class="small text-muted">결제 완료 기준</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm p-3">
+                        <div class="text-muted small">배송 준비 중</div>
+                        <div class="h4 fw-bold text-warning">{{#stats}}{{preparingItems}}{{/stats}} 건</div>
+                        <div class="small"><a href="/owner/orders" class="text-decoration-none">관리하기 ></a></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm p-3">
+                        <div class="text-muted small">품절 임박 상품</div>
+                        <div class="h4 fw-bold">{{#stats}}{{lowStockCount}}{{/stats}} 개</div>
+                        <div class="small text-danger">재고 확인 필요</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold">최근 주문 내역</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>주문일시</th>
+                            <th>주문번호</th>
+                            <th>상품명</th>
+                            <th>구매자</th>
+                            <th>금액</th>
+                            <th>상태</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#recentOrders}}
+                            <tr>
+                                <td>{{orderDate}}</td>
+                                <td><a href="/owner/orders/{{id}}" class="text-decoration-none fw-bold">{{id}}</a></td>
+                                <td>{{productName}} {{#extraCount}}외 {{extraCount}}건{{/extraCount}}</td>
+                                <td>{{customerName}}</td>
+                                <td>{{totalPrice}}원</td>
+                                <td><span class="badge bg-primary">결제완료</span></td>
+                            </tr>
+                        {{/recentOrders}}
+                        {{^recentOrders}}
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">최근 주문 내역이 없습니다.</td>
+                            </tr>
+                        {{/recentOrders}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+{{> layout/footer}}

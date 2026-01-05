@@ -1,8 +1,23 @@
-<aside class="sidebar-menu">
-    <h3>판매자 센터</h3>
-    <ul>
-        <li><a href="/owner/products" class="active">내 상품 관리</a></li>
-        <li><a href="/products/save">신규 상품 등록</a></li>
-        <li><a href="/owner/orders">주문 배송 관리</a></li>
+<nav class="bg-light border-end" style="width: 240px; min-height: 100vh;">
+    <div class="p-4">
+        <h5 class="fw-bold text-primary">판매자 센터</h5>
+        <small class="text-muted">{{sessionUser.nickname}} 파트너님</small>
+    </div>
+    <ul class="nav flex-column px-3">
+        <li class="nav-item mb-2">
+            <a class="nav-link active fw-bold" href="/owner/main"><i class="bi bi-house-door me-2"></i>홈</a>
+        </li>
+        <li class="nav-item mb-2">
+            <a class="nav-link text-dark" href="/owner/products"><i class="bi bi-box me-2"></i>상품 관리</a>
+        </li>
+        <li class="nav-item mb-2">
+            <a class="nav-link text-dark" href="/products/save"><i class="bi bi-plus-circle me-2"></i>상품 등록</a>
+        </li>
+        <li class="nav-item mb-2">
+            <a class="nav-link text-dark" href="/owner/orders"><i class="bi bi-truck me-2"></i>배송/주문 관리</a>
+        </li>
+        <li class="nav-item mb-2">
+            <a class="nav-link text-dark" href="/owner/settlement"><i class="bi bi-wallet2 me-2"></i>정산 내역</a>
+        </li>
     </ul>
-</aside>
+</nav>
