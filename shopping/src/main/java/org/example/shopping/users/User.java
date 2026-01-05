@@ -32,7 +32,7 @@ public class User extends BaseTimeEntity {
     @NotBlank(message = "id는 필수 입력 항목입니다.")
     private String username;
 
-//    @Size(min = 6, max = 16)
+    @Size(min = 6, max = 16)
     @NotBlank(message = "pw는 필수 입력 항목입니다.")
     private String password;
 
@@ -76,6 +76,8 @@ public class User extends BaseTimeEntity {
         this.birthday = birthday;
         this.provider = (provider == null) ? OAuthProvider.LOCAL : provider;
     }
+
+
 
     public boolean isWriter(Long userId) {
         return this.id.equals(userId);
