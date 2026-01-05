@@ -114,6 +114,10 @@ public class User extends BaseTimeEntity {
         return hasRole(RoleType.ADMIN);
     }
 
+    public String getRoleDisplay() {
+        return isAdmin() ? "ADMIN" : "USER";
+    }
+
     public boolean isOwner() {
         return hasRole(RoleType.OWNER);
     }
