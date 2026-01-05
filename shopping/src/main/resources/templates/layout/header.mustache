@@ -43,6 +43,7 @@
             <div class="greet">
                 {{#sessionUser}}
                     <strong>{{sessionUser.nickname}}</strong>님, 안녕하세요!
+                    <span class="badge bg-secondary me-2">{{roleDisplay}}</span>
                 {{/sessionUser}}
     {{^sessionUser}}
                     DEV SHOP 입니다

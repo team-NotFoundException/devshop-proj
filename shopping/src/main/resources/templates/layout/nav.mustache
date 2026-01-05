@@ -4,6 +4,11 @@
     <a href="#">머그컵</a>
     <a href="#">슬리퍼</a>
     <a href="#">옷</a>
+    {{#sessionUser}}
+        {{#isAdmin}}
+            <a href="/admin/main">관리자 페이지</a>
+        {{/isAdmin}}
+    {{/sessionUser}}
 </div>
 
 
