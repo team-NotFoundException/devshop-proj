@@ -2,11 +2,11 @@ package org.example.shopping.product;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.example.shopping._core.errors.exception.Exception401;
 import org.example.shopping.category.CategoryResponse;
 import org.example.shopping.category.CategoryService;
 import org.example.shopping.product.productEnum.ProductStatus;
+import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +26,7 @@ public class ProductController {
     // 상품 목록 조회
     // http://localhost:8080/products/list-form
     @GetMapping("/list-form")
-    public String list(Model model, HttpSession session) {
-
-        User sessionUser = (User) session.getAttribute("sessionUser");
+    public String list(Model model) {
 
         List<ProductResponse.ListDTO> list = productService.findAll();
 
@@ -78,7 +76,7 @@ public class ProductController {
     // 상품 등록
     //http://localhost:8080/products/save
     @PostMapping("/save")
-    public String save(ProductRequest.SaveDTO dto) {
+    public String save(ProductRequest.SaveDTO dto, HttpSession session) {
         productService.save(dto);
         return "redirect:/products/list-form";
     }
@@ -86,7 +84,7 @@ public class ProductController {
     // 상품 수정 폼
     // http://localhost:8080/products/1/edit
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(@PathVariable Long id, Model model, HttpSession session) {
         ProductResponse.UpdateFormDTO dto =
                 productService.findByIdForUpdate(id);
 
@@ -99,7 +97,7 @@ public class ProductController {
     @PostMapping("/{id}/edit")
     public String edit(
             @PathVariable Long id,
-            ProductRequest.UpdateDTO dto
+            ProductRequest.UpdateDTO dto, HttpSession session
     ) {
         productService.updateById(id, dto);
         return "redirect:/products/" + id + "/detail";
@@ -107,7 +105,7 @@ public class ProductController {
 
     // 상품 삭제
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, HttpSession session) {
         productService.deleteById(id);
         return "redirect:/products/list-form";
     }
@@ -115,7 +113,7 @@ public class ProductController {
     // 리스트 폼
     @GetMapping("/product/list")
     // http://localhost:8080/products/list
-    public String listForm(Model model) {
+    public String listForm(Model model, HttpSession session) {
         model.addAttribute("products", productService.findAll());
         return "product/list-form";
     }

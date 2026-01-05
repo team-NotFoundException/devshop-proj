@@ -102,8 +102,12 @@ public class User extends BaseTimeEntity {
         return Gender.N.equals(this.gender) || this.gender == null;
     }
 
-    public boolean hasRole(RoleType role) {
-        return this.role != null;
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public boolean hasRole(RoleType roleType) {
+        return this.role != null && this.role.getRole() == roleType;
     }
 
     public boolean isAdmin() {

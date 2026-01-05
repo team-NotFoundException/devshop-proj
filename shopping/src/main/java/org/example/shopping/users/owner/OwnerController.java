@@ -3,6 +3,9 @@ package org.example.shopping.users.owner;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.product.ProductResponse;
+import org.example.shopping.product.ProductService;
+import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.OAuthService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
@@ -14,12 +17,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequiredArgsConstructor
 public class OwnerController {
 
     private final UserService userService;
     private final OwnerService ownerService;
+    private final ProductService productService;
 
     // 로그인 화면 요청
     // http://localhost:8080/user/login
@@ -41,7 +48,7 @@ public class OwnerController {
             session.setAttribute("sessionUser", sessionUser);
 
             System.out.println("성공~");
-            return "redirect:/";
+            return "redirect:/owner/dashboard";
         } catch (Exception e) {
             System.out.println("실패지롱");
             return "redirect:/owner/login";
@@ -107,14 +114,29 @@ public class OwnerController {
         User updateUser = userService.userUpdate(updateDTO, sessionUser.getId());
 
         session.setAttribute("sessionUser", updateUser);
-        return "redirect:/";
+        return "redirect:/owner/dashboard";
     }
 
-    // 상품 전체 조회
+    @GetMapping("/owner/dashboard")
+    public String dashboard(HttpSession session, Model model) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
-    // 상품 수정
+        List<ProductResponse.ListDTO> allProducts = productService.findAll();
 
-    // 상품 삭제
+        long totalCount = allProducts.size();
 
-    //
+        long  activeCount = productService.findByStatus(ProductStatus.ACTIVE).size();
+
+        long soldOutCount = productService.findByStatus(ProductStatus.SOLD_OUT).size();
+
+        List<ProductResponse.ListDTO> recentProducts =  allProducts.stream().limit(5).collect(Collectors.toList());
+
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("activeCount", activeCount);
+        model.addAttribute("soldOutCount", soldOutCount);
+        model.addAttribute("recentProducts", recentProducts);
+        model.addAttribute("sessionUser", sessionUser);
+
+        return "user/owner/main";
+    }
 }

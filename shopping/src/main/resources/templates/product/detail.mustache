@@ -1,38 +1,51 @@
-{{> layout/header}}
+<div class="header-wrapper">
+    <div class="container">
+        {{> layout/header }}
+    </div>
+</div>
 
-<div class="container p-5">
-    {{#product}}
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
+<div class="dashboard-wrapper">
+    {{> layout/owner-sidebar}}
 
-                <h4 class="card-title mb-3">{{productName}}</h4>
-
-                <div class="mb-2">
-                    <strong>가격:</strong> {{price}}
+    <div class="content-area">
+        {{#product}}
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h4 class="mb-0 fw-bold">{{productName}} <small class="text-muted fs-6">#{{id}}</small></h4>
                 </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded text-center">
+                                <div class="text-muted small">판매 가격</div>
+                                <div class="h4 fw-bold text-primary">{{price}}원</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded text-center">
+                                <div class="text-muted small">판매 상태</div>
+                                <span class="badge bg-secondary">{{status}}</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="mb-3">
-                    <strong>상태:</strong>
-                    <span class="badge bg-secondary">{{status}}</span>
+                    <h5 class="fw-bold mb-3 border-bottom pb-2">상세 설명</h5>
+                    <div class="product-detail-content mb-5">
+                        {{{description}}}
+                    </div>
+
+                    <div class="d-flex justify-content-between border-top pt-4">
+                        <a href="/products/list-form" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> 목록으로
+                        </a>
+                        <a href="/products/{{id}}/edit" class="btn btn-warning px-4 fw-bold">
+                            정보 수정하기
+                        </a>
+                    </div>
                 </div>
-
-                <div class="product-detail-content">
-                    {{{description}}}
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    <a href="/products/list-form" class="btn btn-outline-secondary">
-                        목록으로
-                    </a>
-
-                    <a href="/products/{{id}}/edit" class="btn btn-warning">
-                        수정
-                    </a>
-                </div>
-
             </div>
-        </div>
-    {{/product}}
+        {{/product}}
+    </div>
 </div>
 
 {{> layout/footer}}
