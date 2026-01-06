@@ -8,9 +8,8 @@ import org.example.shopping.product.productEnum.ProductStatus;
 
 public class ProductResponse {
 
-    /**
-     * 상품 목록 응답 DTO
-     */
+
+     // 상품 목록 응답 DTO
     @Data
     public static class ListDTO {
         private Long id;
@@ -42,9 +41,8 @@ public class ProductResponse {
 
     }
 
-    /**
-     * 상품 상세 응답 DTO
-     */
+
+    // 상품 상세 응답 DTO
     @Data
     public static class DetailDTO {
         private Long id;
@@ -79,9 +77,8 @@ public class ProductResponse {
         }
     }
 
-    /**
-     * 상품 수정 화면 DTO
-     */
+
+    // 상품 수정 화면 DTO
     @Data
     public static class UpdateFormDTO {
         private Long id;

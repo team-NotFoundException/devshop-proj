@@ -31,12 +31,20 @@ public class OrderController {
     }
 
     // 주문 생성 요청 기능
-    @PostMapping("/order-create")
-    public String orderProc(PaymentRequest.CreateDTO createDTO, HttpSession session) {
+    @PostMapping("/order-create/mock")
+    public String orderProcByMock(PaymentRequest.CreateDTO createDTO, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        orderService.CreateOrder(sessionUser);
-        paymentService.createPayment(sessionUser, createDTO);
+        orderService.createOrderByMock(sessionUser, createDTO);
+
+        return "redirect:/order-complete";
+    }
+
+    @GetMapping("/order-create/toss")
+    public String orderProcByToss(PaymentRequest.ApproveDTO approveDTO, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        orderService.createOrderByToss(sessionUser, approveDTO);
 
         return "redirect:/order-complete";
     }
@@ -58,7 +66,7 @@ public class OrderController {
     @GetMapping("/order/detail")
     public String detail(Long id, Model model) {
 
-        List<OrderResponse.OrderItemListDTO> orderItems = orderService.orderDetail(id);
+        List<OrderResponse.OrderDetailDTO> orderItems = orderService.orderDetail(id);
 
         model.addAttribute("orderItems", orderItems);
 
@@ -72,14 +80,8 @@ public class OrderController {
 
         orderService.confirmPurchase(orderItemId);
         return ResponseEntity.ok().build();
-    }
 
-    // 반품
-//    @PostMapping("/order/{orderItemId}/refund")
-//    public void refundPurchase(@PathVariable Long orderItemId) {
-//
-//
-//    }
+    }
 
     @PostMapping("/payment/{id}/refund")
     @ResponseBody

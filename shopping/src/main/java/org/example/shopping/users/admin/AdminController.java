@@ -34,9 +34,7 @@ public class AdminController {
         return "user/admin/user-list";
     }
 
-    // 로그인
-
-    // 로그아웃
+    // 권한부여
 
     // 유저 전체 조회
 

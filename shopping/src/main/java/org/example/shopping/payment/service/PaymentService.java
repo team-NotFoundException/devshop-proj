@@ -8,6 +8,8 @@ import org.example.shopping.cart.CartRepository;
 import org.example.shopping.cart.CartService;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.cartItem.CartItemRepository;
+import org.example.shopping.order.Order;
+import org.example.shopping.order.OrderRepository;
 import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.orderItem.OrderItemRepository;
 import org.example.shopping.payment.Payment;
@@ -23,6 +25,7 @@ import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.payment.service.gateway.PaymentGateway;
 import org.example.shopping.payment.service.gateway.PaymentGatewayResolver;
 import org.example.shopping.payment.service.gateway.PaymentResult;
+import org.example.shopping.product.Product;
 import org.example.shopping.users.User;
 import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -41,9 +44,9 @@ public class PaymentService {
     private final PaymentGatewayResolver gatewayResolver;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
-    private final CartService cartService;
     private final UserRepository userRepository;
     private final OrderItemRepository orderItemRepository;
+    private final OrderRepository orderRepository;
 
 
     // ================== 카트 정보 가져오기 ================
@@ -84,21 +87,16 @@ public class PaymentService {
 
 
     // ===================== 결제 =====================
+
+    // 목 결제
     @Transactional
-    public void createPayment(
-            User sessionUser, PaymentRequest.CreateDTO createDTO) {
-        Cart cartEntity = cartRepository.findByUserId(sessionUser.getId())
-                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+    public void processMockPayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
+        // 1. 주문 생성
+        Order order = Order.builder()
+                .user(sessionUser)
+                .orderNumber(generateMerchantUid(sessionUser.getId()))
+                .build();
 
-        Long cartId = cartEntity.getId();
-
-        switch (createDTO.getMethod()) {
-            case MOCK -> processMockPayment(sessionUser, cartId, createDTO);
-            case TOSS_PAY -> throw new BusinessException(ErrorCode.INVALID_INPUT, "TOSS_PAY");
-        }
-    }
-
-    private void processMockPayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
         List<CartItem> checkItem = getChecked(cartId);
         for (CartItem item : checkItem) {
             Payment payment = Payment.builder()
@@ -113,16 +111,38 @@ public class PaymentService {
                     .build();
             payment.paySuccess();
             paymentRepository.save(payment);
+
+            OrderItem orderItem = OrderItem.builder()
+                    .payment(payment)
+                    .product(item.getProduct())
+                    .productName(item.getProduct().getProductName())
+                    .productPrice(item.getProduct().getPrice())
+                    .quantity(item.getQuantity())
+                    .totalPrice(item.getTotalPrice())
+                    .build();
+
+
+            Product product = orderItem.getProduct();
+            if (product.getStockQuantity() < item.getQuantity()) {
+                throw new Exception400("재고가 부족한 상품입니다.");
+            }
+            product.setStockQuantity(product.getStockQuantity() - orderItem.getQuantity());
+            order.addItem(orderItem);
         }
-        cartItemRepository.deleteAll(checkItem);
-        cartService.updateTotalPrice(cartId);
+        orderRepository.save(order);
     }
 
+    // toss 결제
     @Transactional
     public PaymentResponse.PaymentResultDTO approvePayment(User sessionUser, Long cartId, PaymentRequest.ApproveDTO approveDTO) {
         List<CartItem> checkItem = getChecked(cartId);
         PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
         PaymentResult paymentResult = gateway.approve(approveDTO);
+
+        Order order = Order.builder()
+                .user(sessionUser)
+                .orderNumber(generateMerchantUid(sessionUser.getId()))
+                .build();
 
         for (CartItem item : checkItem) {
             Payment payment = Payment.builder()
@@ -137,15 +157,31 @@ public class PaymentService {
                     .failureCode(paymentResult.getFailureCode())
                     .failureMessage(paymentResult.getFailureMessage())
                     .build();
+
+
             if (paymentResult.isSuccess()) {
                 payment.paySuccess();
-                if (cartId != null) {
-                    cartService.removeCheckedCartItem(cartId);
-                }
             }
-            paymentRepository.save(payment);
-        }
 
+            paymentRepository.save(payment);
+            OrderItem orderItem = OrderItem.builder()
+                    .payment(payment)
+                    .product(item.getProduct())
+                    .productName(item.getProduct().getProductName())
+                    .productPrice(item.getProduct().getPrice())
+                    .quantity(item.getQuantity())
+                    .totalPrice(item.getTotalPrice())
+                    .build();
+
+            Product product = orderItem.getProduct();
+            if (product.getStockQuantity() < item.getQuantity()) {
+                throw new Exception400("재고가 부족한 상품입니다.");
+            }
+            product.setStockQuantity(product.getStockQuantity() - orderItem.getQuantity());
+            order.addItem(orderItem);
+
+        }
+        orderRepository.save(order);
 
         List<PaymentResponse.PaymentResultDTO.PaymentItemDTO> items = checkItem.stream()
                 .map(item -> {
@@ -160,9 +196,9 @@ public class PaymentService {
 
         PaymentResponse.PaymentResultDTO result = new PaymentResponse.PaymentResultDTO();
         result.setItems(items);
-        cartService.updateTotalPrice(cartId);
         return result;
     }
+
 
     @Transactional
     public PaymentResponse.SingleRefundDTO singleRefund(
@@ -190,6 +226,10 @@ public class PaymentService {
         paymentRepository.save(payment);
 
         return new PaymentResponse.SingleRefundDTO(refund);
+    }
+
+    private String generateMerchantUid(Long userId) {
+        return "Order_" + userId + "_" + System.currentTimeMillis() + "_" + UUID.randomUUID().toString().substring(0, 8);
     }
 
 
