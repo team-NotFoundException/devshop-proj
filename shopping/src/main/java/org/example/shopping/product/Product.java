@@ -6,6 +6,7 @@ import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.awt.image.BufferedImageFilter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -23,10 +24,12 @@ public class Product {
     private String productCode;
     private Long price;
     private int stockQuantity;
+
+    @Column(length = 500)
     private String thumbnailUrl;
 
     @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
 
@@ -75,11 +78,10 @@ public class Product {
         this.description = dto.getDescription();
         this.thumbnailUrl = dto.getThumbnailUrl();
         this.category = category;
+        this.status = dto.getStatus();
 
-        if (dto.getStockQuantity() == 0) {
+        if (this.stockQuantity <= 0) {
             this.status = ProductStatus.SOLD_OUT;
-        } else {
-            this.status = dto.getStatus();
         }
     }
 

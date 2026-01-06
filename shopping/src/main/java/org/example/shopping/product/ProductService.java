@@ -86,6 +86,8 @@ public class ProductService {
                     .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
         }
 
+        System.out.println("status dto = " + dto.getStatus());
+
         product.update(dto, category);
 
     }
