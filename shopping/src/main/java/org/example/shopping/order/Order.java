@@ -26,7 +26,6 @@ public class Order extends BaseTimeEntity {
     private String orderNumber;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private Long totalPrice;
@@ -39,6 +38,8 @@ public class Order extends BaseTimeEntity {
 
     public void addItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
+
     }
 
 }
