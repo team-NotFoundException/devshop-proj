@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/css/payment/payment-success.css">
     <link rel="stylesheet" href="/css/payment/payment-fail.css">
     <link rel="stylesheet" href="/css/cart/cart.css">
+    <link rel="stylesheet" href="/css/admin-owner/style.css">
 
 <!-- 여기에 css 파일 만든것 붙일 것임! (각 도메인 폴더안에 생성하기!) -->
 </head>
@@ -57,6 +58,12 @@
             <a href="/cart/list">
                 <i class="bi bi-cart"></i>
             </a>
+
+        {{^isAdmin}}
+
+        {{/isAdmin}}
+
+
         {{/sessionUser}}
         </div>
     </div>

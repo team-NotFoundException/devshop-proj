@@ -30,31 +30,31 @@ public class OwnerController {
 
     // 로그인 화면 요청
     // http://localhost:8080/user/login
-    @GetMapping("/owner/login")
-    public String loginForm() {
-        return "user/owner/login-form";
-    }
-
-    // 로그인 기능 요청
-    @PostMapping("/owner/login")
-    public String login(
-            @Valid @ModelAttribute UserRequest.LoginDTO loginDTO,
-            HttpSession session
-    ) {
-
-        try{
-            User sessionUser = ownerService.login(loginDTO);
-
-            session.setAttribute("sessionUser", sessionUser);
-
-            System.out.println("성공~");
-            return "redirect:/owner/dashboard";
-        } catch (Exception e) {
-            System.out.println("실패지롱");
-            return "redirect:/owner/login";
-        }
-
-    }
+//    @GetMapping("/owner/login")
+//    public String loginForm() {
+//        return "user/owner/login-form";
+//    }
+//
+//    // 로그인 기능 요청
+//    @PostMapping("/owner/login")
+//    public String login(
+//            @Valid @ModelAttribute UserRequest.LoginDTO loginDTO,
+//            HttpSession session
+//    ) {
+//
+//        try{
+//            User sessionUser = ownerService.login(loginDTO);
+//
+//            session.setAttribute("sessionUser", sessionUser);
+//
+//            System.out.println("성공~");
+//            return "redirect:/owner/dashboard";
+//        } catch (Exception e) {
+//            System.out.println("실패지롱");
+//            return "redirect:/owner/login";
+//        }
+//
+//    }
 
     // ---------------------------------------- //
 
