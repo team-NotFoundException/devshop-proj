@@ -59,7 +59,7 @@ body {
 
 .cart-left {
     flex: 1;
-    min-width: 0;
+    min-width: 400px;
 }
 
 .cart-right {
@@ -448,6 +448,10 @@ body {
         width: 100%;
     }
 
+    .cart-left {
+        width: 100%;
+    }
+
     .payment-box {
         position: static;
     }
@@ -480,6 +484,10 @@ body {
 
     .item-price {
         margin-right: 0;
+    }
+
+    .cart-left {
+        width: 100%;
     }
 
     .cart-right {

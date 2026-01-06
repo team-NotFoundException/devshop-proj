@@ -76,7 +76,7 @@ a.active {
 /* 오른쪽 수정 폼 영역 */
 .mypage-content-box {
     flex: 1;
-    max-width: 600px;
+    max-width: 900px;
     border: 1px solid #eaeaea;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
