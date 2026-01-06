@@ -111,8 +111,11 @@ public class UserService {
     // 로그인용 사용자 조회
 
     // 유저 전체 조회(권한 포함)
-    public List<User> userList () {
-        return null;
+    public List<UserResponse.UserList> userList () {
+        List<User> userList = userRepository.findAll();
+
+        return userList.stream()
+                .map(UserResponse.UserList::new).toList();
     }
 
 
