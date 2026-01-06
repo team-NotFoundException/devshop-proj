@@ -72,57 +72,108 @@
 }
 
 /* ====================================
-   4. 특수 레이아웃 (아이디/주소 버튼 배치)
+   4. 특수 레이아웃 (비율 조정: 75% vs 25%)
    ==================================== */
+/* [기본] 아이디 중복확인 (7.5 : 2.5 비율) */
 .custom-input-group {
     display: flex;
-    gap: 10px; /* 입력창과 버튼 사이 간격 */
-    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
 }
 
 .custom-input-group input {
-    flex: 1; /* 입력창이 가능한 넓게 차지 */
+    flex: 7.5;
+    min-width: 0;
 }
 
-/* 중복확인, 주소검색 버튼 */
-.btn-sub-action {
-    flex-shrink: 0; /* 버튼 크기 고정 */
-    width: 110px;   /* 너무 크지 않게 조절 */
-    height: 48px;   /* input 높이와 정렬 */
-    background-color: #444; /* 기존보다 세련된 다크그레이 */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.custom-input-group .btn-sub-action {
+    flex: 2.5;
+           /* 25% 비율 차지 */
+    height: 48px;     /* input 높이와 일치 */
+        background-color: #444;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        white-space: nowrap; /* 버튼 글자 줄바꿈 방지 */
+        transition: background-color 0.2s;
+
 }
+
+/* [주소 전용] 우편번호 검색 (1 : 1 비율) */
+.address-group input {
+    flex: 1 !important; /* 50% 차지 */
+}
+
+.address-group .btn-sub-action,
+.address-group button { /* address-form 내부 버튼 대응 */
+    flex: 1 !important; /* 50% 차지 */
+    width: auto;
+}
+
+/* 주소 상세 입력창들은 한 줄씩 꽉 차게 (비율 무시) */
+.address-full-width {
+    margin-top: 10px;
+    width: 100%;
+}
+
+
 
 .btn-sub-action:hover {
     background-color: #222;
 }
 
 /* ====================================
-   5. 기타 요소 (성별 라디오 등)
+   5. 카드형 성별 선택 스타일
    ==================================== */
-.radio-group {
+.gender-group {
     display: flex;
-    gap: 30px;
-    padding: 5px 0;
+    gap: 12px;
+    width: 100%;
+    margin-top: 10px;
 }
 
-.radio-item {
+.gender-card {
+    flex: 1; /* 세 카드가 동일한 너비를 가짐 */
+    cursor: pointer;
+    position: relative;
+}
+
+/* 실제 라디오 버튼은 숨김 */
+.gender-card input[type="radio"] {
+    display: none;
+}
+
+/* 카드 기본 모양 */
+.gender-text {
     display: flex;
     align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    font-size: 15px;
+    justify-content: center;
+    height: 48px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.radio-item input[type="radio"] {
-    width: auto; /* 기본 라디오 크기 유지 */
-    margin: 0;
+/* 마우스를 올렸을 때 */
+.gender-card:hover .gender-text {
+    border-color: #3498db;
+    background-color: #f7fbff;
+}
+
+/* 선택되었을 때 (Checked State) */
+.gender-card input[type="radio"]:checked + .gender-text {
+    border-color: #3498db;
+    background-color: #3498db;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
 }
 
 /* ====================================
