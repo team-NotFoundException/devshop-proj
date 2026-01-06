@@ -29,6 +29,10 @@
                     <td><span class="badge bg-info">{{role}}</span></td>
                     <td>{{createdAt}}</td>
                     <td>
+                        <form action="/admin/user/{{id}}/delete" method="post">
+                            <button class="btn btn-danger">삭제</button>
+                        </form>
+
                         <a href="/admin/users/id/edit" class="btn-sm btn-edit">수정</a>
                         <!--id 를 머스테치로 변경 : 회원삭제로 변경-->
                     </td>

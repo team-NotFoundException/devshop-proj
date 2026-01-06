@@ -7,6 +7,7 @@ import org.example.shopping._core.errors.exception.Exception401;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping._core.utils.SocialUtils;
 import org.example.shopping._core.utils.ValidationUtils;
+import org.example.shopping.cart.CartRepository;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.dto.UserResponse;
@@ -26,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
 
 
     @Value("${tenco.key}")
@@ -117,22 +119,14 @@ public class UserService {
                 .map(UserResponse.UserList::new).toList();
     }
 
-    // 유저 권한 부여
+
     @Transactional
-    public void grantRole(Long userId, RoleType roleType) {
+    public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new Exception404("유저 찾을 수 없음"));
-
-        if(user.getRole()!= null){
-            userRoleRepository.delete(user.getRole());
-        }
-        UserRole newRole = new UserRole(user, roleType);
-        user.setRole(newRole);
-        userRoleRepository.save(newRole);
+                .orElseThrow(() -> new Exception404("사용자 없음"));
+        cartRepository.deleteByUserId(user.getId());
+        userRepository.deleteUserById(user.getId());
     }
-
-
-
 
     // 유저 권한 회수
 }
