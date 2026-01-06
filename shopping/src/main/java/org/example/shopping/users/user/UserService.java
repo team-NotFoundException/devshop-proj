@@ -117,22 +117,13 @@ public class UserService {
                 .map(UserResponse.UserList::new).toList();
     }
 
-    // 유저 권한 부여
+
     @Transactional
-    public void grantRole(Long userId, RoleType roleType) {
+    public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new Exception404("유저 찾을 수 없음"));
-
-        if(user.getRole()!= null){
-            userRoleRepository.delete(user.getRole());
-        }
-        UserRole newRole = new UserRole(user, roleType);
-        user.setRole(newRole);
-        userRoleRepository.save(newRole);
+                .orElseThrow(() -> new Exception404("사용자 없음"));
+        userRepository.deleteUserById(user.getId());
     }
-
-
-
 
     // 유저 권한 회수
 }
