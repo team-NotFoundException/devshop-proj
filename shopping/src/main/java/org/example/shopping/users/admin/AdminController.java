@@ -17,6 +17,13 @@ public class AdminController {
         return "user/admin/main";
     }
 
+    @GetMapping("/admin/list")
+    public String userList(HttpSession session, Model model){
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+
+        return "user/admin/user-list";
+    }
 
     // 로그인
 
