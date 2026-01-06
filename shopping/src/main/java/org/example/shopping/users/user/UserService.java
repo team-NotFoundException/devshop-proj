@@ -7,6 +7,7 @@ import org.example.shopping._core.errors.exception.Exception401;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping._core.utils.SocialUtils;
 import org.example.shopping._core.utils.ValidationUtils;
+import org.example.shopping.cart.CartRepository;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.dto.UserResponse;
@@ -26,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
 
 
     @Value("${tenco.key}")
@@ -122,6 +124,7 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception404("사용자 없음"));
+        cartRepository.deleteByUserId(user.getId());
         userRepository.deleteUserById(user.getId());
     }
 
