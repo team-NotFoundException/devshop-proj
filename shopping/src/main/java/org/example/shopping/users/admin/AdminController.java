@@ -42,7 +42,7 @@ public class AdminController {
     public String deleteUser(HttpSession session,@PathVariable Long userId){
         User sessionUser= (User) session.getAttribute("sessionUser");
         userService.deleteUser(userId);
-        return "redirect:user/admin/user-list";
+        return "redirect:/admin/list";
     }
 
     // 유저 전체 조회
