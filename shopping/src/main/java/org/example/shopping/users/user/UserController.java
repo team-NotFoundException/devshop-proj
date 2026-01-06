@@ -58,22 +58,14 @@ public class UserController {
     @PostMapping("/user/login")
     public String login(
             @Validated(ValidationGroups.LoginOrderGroup.class) @ModelAttribute UserRequest.LoginDTO loginDTO,
-            HttpSession session, BindingResult bindingResult
+            BindingResult bindingResult, HttpSession session
     ) {
+        validationUtils.validationChecker(bindingResult);
+        User userEntity = userService.login(loginDTO);
 
-        try{
-            validationUtils.validationChecker(bindingResult);
-            User sessionUser = userService.login(loginDTO);
+        session.setAttribute("sessionUser", userEntity);
 
-            session.setAttribute("sessionUser", sessionUser);
-
-            System.out.println("성공~");
-            return "redirect:/";
-        } catch (Exception e) {
-            System.out.println("실패지롱");
-            return "redirect:/user/login";
-        }
-
+        return "redirect:/";
     }
 
     // ---------------------------------------- //

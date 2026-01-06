@@ -7,7 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Component
-public class ValidationUtils {
+public class ValidationUtils{
 
     public void validationChecker(
             BindingResult bindingResult

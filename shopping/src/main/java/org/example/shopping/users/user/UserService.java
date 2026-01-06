@@ -3,6 +3,7 @@ package org.example.shopping.users.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception400;
+import org.example.shopping._core.errors.exception.Exception401;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping._core.utils.SocialUtils;
 import org.example.shopping._core.utils.ValidationUtils;
@@ -32,10 +33,6 @@ public class UserService {
 
     @Transactional
     public User signUp(@Valid UserRequest.SignUpDTO signUpDTO) {
-        if (userRepository.findByUsername(signUpDTO.getUsername()).isPresent()) {
-            throw new Exception400("이미 있는 이름입니다.");
-        }
-
 
         User user = signUpDTO.toEntity();
         user.setPassword(passwordEncoder.encode(signUpDTO.getPassword()));
@@ -49,19 +46,20 @@ public class UserService {
         return userRepository.findByUsername(username).isPresent();
     }
 
+    @Transactional
     public User login(@Valid UserRequest.LoginDTO loginDTO) {
         User userEntity = userRepository
                 .findByUsername(loginDTO.getUsername())
-                .orElse(null);
+                .orElseThrow(() -> new Exception401("아이디 또는 비밀번호가 일치하지 않아요"));
 
-        if (userEntity == null) {
-            throw new Exception400("아이디 또는 비밀번호가 일치하지 않습니다.");
-        }
+//        if (userEntity == null) {
+//            throw new Exception400("회원이 아닙니다.");
+//        }
 
         // 비밀번호 검증
-//        if (!passwordEncoder.matches(loginDTO.getPassword(), userEntity.getPassword())) {
-//            throw new Exception400("아이디 또는 비밀번호가 일치하지 않습니다.");
-//        }
+        if (!passwordEncoder.matches(loginDTO.getPassword(), userEntity.getPassword())) {
+            throw new Exception401("아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
 
         return userEntity;
     }
