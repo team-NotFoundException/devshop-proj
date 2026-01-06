@@ -24,15 +24,23 @@
                         </select>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
+
+                        <div class="mb-3">
                             <label class="form-label fw-bold">상품명</label>
                             <input type="text" name="productName" class="form-control" value="{{product.productName}}" required>
                         </div>
-                        <div class="col-md-6 mb-3">
+
+                        <div class="row">
+                        <div class="mb-3">
                             <label class="form-label fw-bold">판매 가격</label>
                             <input type="number" name="price" class="form-control" value="{{product.price}}" required>
                         </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">재고 수량</label>
+                        <input type="number" name="stockQuantity" class="form-control" min="0" value="{{product.stockQuantity}}" required>
                     </div>
 
                     <div class="mb-3">
