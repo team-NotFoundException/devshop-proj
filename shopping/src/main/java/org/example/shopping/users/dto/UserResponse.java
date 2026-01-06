@@ -3,19 +3,35 @@ package org.example.shopping.users.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
+import org.example.shopping._core.utils.MyDateUtil;
+import org.example.shopping.users.User;
 import org.example.shopping.users.user.UserRole;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 
 public class UserResponse {
 
     @Data
     public static class UserList {
+        private Long id;
         private String username;
         private String nickname;
         private String email;
         private UserRole role;
+        private LocalDateTime createdAt;
+
+        public UserList(User user){
+            this.id = user.getId();
+            this.username = user.getUsername();
+            this.nickname = user.getNickname();
+            this.email = user.getEmail();
+            this.role = user.getRole();
+            if(user.getCreatedAt() != null){
+                this.createdAt = user.getCreatedAt();
+            }
+        }
     }
 
 //    @Data
