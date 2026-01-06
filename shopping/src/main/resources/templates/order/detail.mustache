@@ -1,12 +1,10 @@
 <section class="mypage-content-box">
     <div class="card">
-        <div class="order-card">
-            <div class="order-header">배송 정보</div>
-        </div>
 
+        {{#orderItems}}
         <div class="order-card">
             <div class="order-header">주문상품 {{orderItems.size}}개</div>
-            {{#orderItems}}
+
                 <div class="order-item">
                     <img src="" alt="{{productName}}" class="product-image">
                     <div class="order-item-info">
@@ -17,12 +15,20 @@
                         <span class="status">{{orderStatus}}</span>
                     </div>
                 </div>
-            {{/orderItems}}
         </div>
-
 
         <div class="order-card">
             <div class="order-header">결제 정보</div>
+                <div class="order-item">
+                    <div class="order-item-info">
+                        <p>결제 방법: {{method}}</p>
+                        <p>결제 번호: {{paymentKey}}</p>
+                        <p>결제 날짜: {{approvedAt}}</p>
+                        <p>결제 금액: {{amount}}</p>
+                    </div>
+                </div>
         </div>
+        {{/orderItems}}
+
     </div>
 </section>

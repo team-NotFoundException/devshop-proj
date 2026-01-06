@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @RequiredArgsConstructor
 @Controller
@@ -49,13 +48,12 @@ public class PaymentController {
     public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.ApproveDTO approveDTO, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         try {
-            orderService.CreateOrder(sessionUser);
-            PaymentResponse.PaymentResultDTO result = paymentService.approvePayment(sessionUser, cartId, approveDTO);
+            orderService.createOrderByToss(sessionUser, approveDTO);
             model.addAttribute("orderId", approveDTO.getOrderId());
             model.addAttribute("amount", approveDTO.getAmount());
             model.addAttribute("method", approveDTO.getMethod());
             model.addAttribute("paymentKey", approveDTO.getPaymentKey());
-            model.addAttribute("items", result.getItems());
+//            model.addAttribute("items", result.getItems());
             return "payment/payment-success";
 
         } catch (Exception e) {

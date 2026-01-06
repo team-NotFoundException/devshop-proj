@@ -23,12 +23,16 @@ public class OrderItem extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @OneToOne
     @JoinColumn(name = "payment_id")
     private Payment payment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private String productName;
 
@@ -46,7 +50,8 @@ public class OrderItem extends BaseTimeEntity {
     private Boolean isRefund;
 
     @Builder
-    public OrderItem(Product product, String productName, Long productPrice, Integer quantity, Long totalPrice) {
+    public OrderItem(Payment payment, Product product, String productName, Long productPrice, Integer quantity, Long totalPrice) {
+        this.payment = payment;
         this.product = product;
         this.productName = productName;
         this.productPrice = productPrice;
