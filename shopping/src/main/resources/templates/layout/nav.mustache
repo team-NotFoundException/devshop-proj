@@ -8,6 +8,9 @@
         {{#isAdmin}}
             <a href="/admin/main">관리자 페이지</a>
         {{/isAdmin}}
+        {{#isOwner}}
+            <a href="/owner/dashboard">판매자 페이지</a>
+        {{/isOwner}}
     {{/sessionUser}}
 </div>
 
