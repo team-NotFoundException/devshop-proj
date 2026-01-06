@@ -19,7 +19,7 @@ public class UserResponse {
         private String username;
         private String nickname;
         private String email;
-        private UserRole role;
+        private String role;
         private LocalDateTime createdAt;
 
         public UserList(User user){
@@ -27,7 +27,7 @@ public class UserResponse {
             this.username = user.getUsername();
             this.nickname = user.getNickname();
             this.email = user.getEmail();
-            this.role = user.getRole();
+            this.role = user.getRoleDisplay();
             if(user.getCreatedAt() != null){
                 this.createdAt = user.getCreatedAt();
             }
