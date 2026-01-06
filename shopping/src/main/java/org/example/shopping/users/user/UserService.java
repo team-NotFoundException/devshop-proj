@@ -52,14 +52,14 @@ public class UserService {
                 .findByUsername(loginDTO.getUsername())
                 .orElseThrow(() -> new Exception401("아이디 또는 비밀번호가 일치하지 않아요"));
 
-//        if (userEntity == null) {
-//            throw new Exception400("회원이 아닙니다.");
-//        }
+        if (userEntity == null) {
+            throw new Exception400("회원이 아닙니다.");
+        }
 
         // 비밀번호 검증
-        if (!passwordEncoder.matches(loginDTO.getPassword(), userEntity.getPassword())) {
-            throw new Exception401("아이디 또는 비밀번호가 일치하지 않습니다.");
-        }
+//        if (!passwordEncoder.matches(loginDTO.getPassword(), userEntity.getPassword())) {
+//            throw new Exception401("아이디 또는 비밀번호가 일치하지 않습니다.");
+//        }
 
         return userEntity;
     }
