@@ -7,19 +7,20 @@
                     <span>주문일: {{createdAt}}</span>
                     <form action="/order/detail">
                         <input type="hidden" name="id" value="{{orderId}}">
-                        <button>상세보기</button>
+                        <button class="detailBtn">상세보기</button>
                     </form>
                 </div>
 
                 {{#orderItemList}}
                     <div class="order-item">
-                        <img src="" alt="{{productName}}" class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2025/07/28/23/42/red-fruit-9741345_640.png" alt="{{productName}}" class="product-image">
                         <div class="order-item-info">
                             <h4>{{productName}}</h4>
                             <p>가격: {{productPrice}}원</p>
                             <p>수량: {{quantity}}개</p>
                             <span class="status" id="status">{{orderStatus}}</span>
                         </div>
+                    </div>
 
                         {{#isComplete}}
                             <div class="order-item-buttons">
@@ -40,13 +41,13 @@
                             </div>
                         {{/isComplete}}
 
-                    </div>
+
                 {{/orderItemList}}
             </div>
         {{/orderList}}
         {{^orderList}}
             <div class="order-card">
-                <h3>주문이 없습니다.</h3>
+                <h3>주문내역이 없습니다.</h3>
             </div>
         {{/orderList}}
     </div>
@@ -58,7 +59,7 @@
         document.querySelectorAll('.confirmBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
                 const orderItemId = this.dataset.orderItemId
-                const statusContainer = this.closest('.order-item');
+                const statusContainer = this.closest('.order-card');
                 const container = this.closest('.order-item-buttons');
                 if (!confirm("구매확정 하시겠습니까?")) return;
 
@@ -88,7 +89,7 @@
         document.querySelectorAll('.refundBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
                 const orderItemId = this.dataset.orderItemId
-                const statusContainer = this.closest('.order-item');
+                const statusContainer = this.closest('.order-card');
                 const container = this.closest('.order-item-buttons');
                 if(!confirm("반품하시겠습니까?")) return;
 
