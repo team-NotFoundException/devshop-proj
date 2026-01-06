@@ -1,0 +1,62 @@
+{{> layout/header}}
+
+<div class="container my-5" style="max-width: 600px;">
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-4 text-warning">카테고리 등록</h4>
+
+            <form action="/categories/save" method="post">
+
+                <!-- 카테고리명 -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">카테고리명</label>
+                    <input type="text"
+                           name="categoryName"
+                           class="form-control"
+                           placeholder="예: 상의, 키보드"
+                           required>
+                </div>
+
+                <!-- 상위 카테고리 -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">상위 카테고리</label>
+                    <select name="parentId" class="form-select">
+                        <option value="">없음 (최상위 카테고리)</option>
+                        {{#categories}}
+                            <option value="{{id}}">{{categoryName}}</option>
+                        {{/categories}}
+                    </select>
+                </div>
+
+                <!-- 노출 순서 -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">노출 순서</label>
+                    <input type="number"
+                           name="displayOrder"
+                           class="form-control"
+                           value="1"
+                           min="1">
+                    <div class="form-text">
+                        숫자가 낮을수록 먼저 노출됩니다.
+                    </div>
+                </div>
+
+                <!-- 버튼 -->
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="/categories/list" class="btn btn-review px-4">
+                        취소
+                    </a>
+                    <button type="submit" class="btn btn-warning px-4 fw-bold">
+                        등록
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{{> layout/footer}}
