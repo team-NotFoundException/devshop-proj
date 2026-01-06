@@ -44,6 +44,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public boolean usernameIsExist(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
     public User login(@Valid UserRequest.LoginDTO loginDTO) {
         User userEntity = userRepository
                 .findByUsername(loginDTO.getUsername())
@@ -110,6 +114,8 @@ public class UserService {
     public List<User> userList () {
         return null;
     }
+
+
 
     // 유저 권한 부여
 

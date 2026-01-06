@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception400;
+import org.example.shopping._core.utils.ValidationGroups;
 import org.example.shopping._core.utils.ValidationUtils;
 import org.example.shopping.cart.CartService;
 import org.example.shopping.users.OAuthService;
@@ -13,9 +14,11 @@ import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.dto.UserResponse;
 import org.example.shopping.users.enums.Gender;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -54,11 +57,12 @@ public class UserController {
     // 로그인 기능 요청
     @PostMapping("/user/login")
     public String login(
-            @Valid @ModelAttribute UserRequest.LoginDTO loginDTO,
-            HttpSession session
+            @Validated(ValidationGroups.LoginOrderGroup.class) @ModelAttribute UserRequest.LoginDTO loginDTO,
+            HttpSession session, BindingResult bindingResult
     ) {
 
         try{
+            validationUtils.validationChecker(bindingResult);
             User sessionUser = userService.login(loginDTO);
 
             session.setAttribute("sessionUser", sessionUser);
@@ -92,7 +96,7 @@ public class UserController {
 
     @PostMapping("/user/join")
     public String signUp(
-            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO, BindingResult bindingResult
+            @Validated(ValidationGroups.SignUpOrderGroup.class) @ModelAttribute UserRequest.SignUpDTO signUpDTO, BindingResult bindingResult
     ) {
         validationUtils.validationChecker(bindingResult);
 
@@ -101,6 +105,18 @@ public class UserController {
         cartService.createCart(user);
 
         return "redirect:/user/login";
+    }
+
+    @GetMapping("/user/username-check")
+    @ResponseBody
+    public ResponseEntity<?> usernameCheck(@RequestParam("username") String username) {
+        boolean isExist  = userService.usernameIsExist(username);
+
+        if (isExist) {
+            return ResponseEntity.badRequest().body("이미 사용중인 아이디");
+        }
+
+        return ResponseEntity.ok("사용 가능한 아이디");
     }
 
     @GetMapping("/popup/juso")
@@ -115,6 +131,7 @@ public class UserController {
     @PostMapping("/popup/juso")
     public String jusoPopupPost(UserResponse.JusoResponseDTO jusoResponse)
             throws UnsupportedEncodingException {
+
 
         // DTO 내부 메서드로 URL 생성
         return jusoResponse.buildRedirectUrl();
@@ -149,10 +166,12 @@ public class UserController {
     // 회원정보 수정 기능 요청
     @PostMapping("/user/update")
     public String userUpdate(
-            @Valid @ModelAttribute UserRequest.UpdateDTO updateDTO,
-            HttpSession session
+            @Validated(ValidationGroups.UpdateOrderGroup.class) @ModelAttribute UserRequest.UpdateDTO updateDTO,
+            HttpSession session, BindingResult bindingResult
     ) {
+
         User sessionUser = (User) session.getAttribute("sessionUser");
+        validationUtils.validationChecker(bindingResult);
         User updateUser = userService.userUpdate(updateDTO, sessionUser.getId());
 
         session.setAttribute("sessionUser", updateUser);

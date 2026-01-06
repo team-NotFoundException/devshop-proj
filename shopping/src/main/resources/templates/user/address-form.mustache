@@ -4,27 +4,14 @@
         <col>
     </colgroup>
     <tbody>
-    <tr>
-        <th>우편번호</th>
-        <td>
-            <input type="text" id="zipNo" name="address.zipNo" readonly required>
-            <button type="button" onclick="goPopup()">주소검색</button>
-        </td>
-    </tr>
-
-    <tr>
-        <th>도로명주소</th>
-        <td>
-            <input type="text" id="roadAddr" name="address.roadAddr" readonly required>
-        </td>
-    </tr>
-
-    <tr>
-        <th>상세주소</th>
-        <td>
-            <input type="text" id="addrDetail" name="address.addrDetail" placeholder="상세주소를 입력하세요">
-        </td>
-    </tr>
+    <div class="join-form-group">
+        <div class="custom-input-group">
+            <input type="text" id="zipNo" name="address.zipNo" readonly required placeholder="우편번호">
+            <button type="button" class="btn-overlap" onclick="goPopup()">주소검색</button>
+        </div>
+        <input type="text" id="roadAddr" name="address.roadAddr" readonly required placeholder="도로명주소" style="margin-top:8px;">
+        <input type="text" id="addrDetail" name="address.addrDetail" placeholder="상세주소를 입력하세요" style="margin-top:8px;">
+    </div>
 
     <!-- 추가 정보는 hidden으로 저장 -->
     <input type="hidden" id="roadAddrPart2" name="address.roadAddrPart2">
@@ -38,22 +25,25 @@
                           siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm, buldSlno, mtYn,
                           lnbrMnnm, lnbrSlno, emdNo) {
 
-        console.log("=== 받은 주소 데이터 ===");
-        console.log("zipNo:", zipNo);
-        console.log("roadAddrPart1:", roadAddrPart1);
-        console.log("roadAddrPart2:", roadAddrPart2);
-        console.log("jibunAddr:", jibunAddr);
-
-        // 필수 필드
+        // 1. 화면 필드에 값 입력
         document.getElementById("zipNo").value = zipNo || "";
         document.getElementById("roadAddr").value = roadAddrPart1 || "";
         document.getElementById("addrDetail").value = addrDetail || "";
-
-        // 추가 필드
         document.getElementById("roadAddrPart2").value = roadAddrPart2 || "";
         document.getElementById("jibunAddr").value = jibunAddr || "";
 
+        // 2. [추가] 뒤로가기 시 유지하기 위해 localStorage에 저장
+        localStorage.setItem("tempZipNo", zipNo || "");
+        localStorage.setItem("tempRoadAddr", roadAddrPart1 || "");
+        localStorage.setItem("tempAddrDetail", addrDetail || "");
+        localStorage.setItem("tempRoadAddrPart2", roadAddrPart2 || "");
+        localStorage.setItem("tempJibunAddr", jibunAddr || "");
     }
+
+    // 상세주소를 직접 수동 입력할 때도 저장되도록 이벤트 추가 (권장)
+    document.getElementById("addrDetail").addEventListener("input", function(e) {
+        localStorage.setItem("tempAddrDetail", e.target.value);
+    });
 
     function goPopup() {
         window.open(

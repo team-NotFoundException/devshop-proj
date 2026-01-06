@@ -4,73 +4,129 @@
     </div>
 </div>
 
-<div class="join">
+<div class="join-container">
     <div class="register-box">
         <h2 class="title">회원가입</h2>
 
-        <form action="/user/join" method="post">
-
-            <div class="form-group">
-                <label for="username">아이디 <span class="required">*</span>
-                    <input type="text" id="username" name="username" placeholder="5자 이상 255자 이하의 아이디를 입력해주세요.">
-                </label>
+        <form action="/user/join" method="post" onsubmit="return handleFormSubmit()">
+            <div class="join-form-group">
+                <label for="username">아이디 <span class="required">*</span></label>
+                <div class="custom-input-group">
+                    <input type="text" id="username" name="username" placeholder="5자~12자 이내" required>
+                    <button type="button" class="btn-sub-action" onclick="usernameCheck()">중복확인</button>
+                </div>
+                <small id="usernameMsg"></small>
             </div>
 
-            <div class="form-group">
-                <label for="password">비밀번호 <span class="required">*</span>
-                    <input type="password" id="password" name="password" placeholder="6자 이상 16자 이하의 비밀번호를 입력하세요">
-                    <small>6~16자, 영문/숫자/특수문자 중 2가지 이상 조합</small>
-                </label>
+            <div class="join-form-group">
+                <label for="password">비밀번호 <span class="required">*</span></label>
+                <input type="password" id="password" name="password" placeholder="6자~16자 이내">
+                <small>6~16자, 영문/숫자/특수문자 중 2가지 이상 조합</small>
             </div>
 
-            <div class="form-group">
-                <label for="nickname">닉네임 <span class="required">*</span>
-                    <input type="text" id="nickname" name="nickname" placeholder="2자 이상 6자 이하의 닉네임을 입력해주세요.">
-                </label>
+            <div class="join-form-group">
+                <label for="nickname">닉네임 <span class="required">*</span></label>
+                <input type="text" id="nickname" name="nickname" placeholder="2자 이상 6자 이하">
             </div>
 
-            <div class="form-group">
-                <label for="email">이메일 주소 <span class="required">*</span>
-                    <input type="text" id="email" name="email" placeholder="예) sample@dev.com (유효한 이메일 형식)">
-                </label>
+            <div class="join-form-group">
+                <label for="email">이메일 주소 <span class="required">*</span></label>
+                <input type="text" id="email" name="email" placeholder="예) sample@dev.com">
             </div>
 
-            <!-- 주소 -->
-            <div class="form-group">
+            <div class="join-form-group">
                 <label>주소 <span class="required">*</span></label>
                 {{> user/address-form}}
             </div>
 
-            <div class="form-group">
-                <label for="phoneNumber">연락처 <span class="required">*</span>
-                    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="010-xxxx-xxxx 형식으로 입력">
-                    <small>10 ~ 11 자리의 숫자만 입력 가능합니다. (자동 하이픈 입력 등 UI 보조 필요)</small>
-                </label>
+            <div class="join-form-group">
+                <label for="phoneNumber">연락처 <span class="required">*</span></label>
+                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="010-xxxx-xxxx">
             </div>
 
-            <div class="form-group">
+            <div class="join-form-group">
                 <label>성별</label>
                 <div class="radio-group">
-                    <label class ="radio-item">
-                        <input type="radio" name="gender" value="M"> 남성</label>
-                    <label class ="radio-item"><input type="radio" name="gender" value="F"> 여성</label>
-                    <label class ="radio-item"><input type="radio" name="gender" value="N" checked> 선택 안 함</label>
+                    <label><input type="radio" name="gender" value="M"> 남성</label>
+                    <label><input type="radio" name="gender" value="F"> 여성</label>
+                    <label><input type="radio" name="gender" value="N" checked> 선택 안 함</label>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="birthday">생년월일
-                    <input type="date" id="birthday" name="birthday">
-                </label>
-            </div>
-
-
-            <button type="submit" class="btn-register">회원가입 하기</button>
+            <button type="submit" class="btn-register-main">회원가입 하기</button>
         </form>
     </div>
 </div>
 
 <script>
+    // 페이지 로드 시 실행
+    window.onload = function() {
+        // 저장된 데이터 불러오기
+        const zipNo = localStorage.getItem("tempZipNo");
+        const roadAddr = localStorage.getItem("tempRoadAddr");
+        const addrDetail = localStorage.getItem("tempAddrDetail");
+        const roadAddrPart2 = localStorage.getItem("tempRoadAddrPart2");
+        const jibunAddr = localStorage.getItem("tempJibunAddr");
+
+        // 필드가 존재하면 값 채우기 (ID를 address-form과 일치시킴)
+        if (zipNo) document.getElementById("zipNo").value = zipNo;
+        if (roadAddr) document.getElementById("roadAddr").value = roadAddr;
+        if (addrDetail) document.getElementById("addrDetail").value = addrDetail;
+        if (roadAddrPart2) document.getElementById("roadAddrPart2").value = roadAddrPart2;
+        if (jibunAddr) document.getElementById("jibunAddr").value = jibunAddr;
+    };
+
+    // 가입 버튼 클릭 시 호출 (form 태그에 onsubmit="clearAddressStorage()" 추가 권장)
+    function clearAddressStorage() {
+        localStorage.removeItem("tempZipNo");
+        localStorage.removeItem("tempRoadAddr");
+        localStorage.removeItem("tempAddrDetail");
+        localStorage.removeItem("tempRoadAddrPart2");
+        localStorage.removeItem("tempJibunAddr");
+    }
+
+    let isUsernameValid = false;
+
+    async function usernameCheck() {
+        const username = document.querySelector("#username").value;
+        const msgElement = document.querySelector("#usernameMsg");
+        if (username.length < 5 || username.length > 12) {
+            msgElement.innerHTML = "아이디는 5~12자 사이여야 합니다.";
+            msgElement.style.color = "red";
+            return;
+        }
+        try {
+            const response = await fetch(`/user/username-check?username=${username}`);
+            const result = await response.text();
+            if (response.ok) {
+                msgElement.innerHTML = result;
+                msgElement.style.color = "#2ecc71";
+                isUsernameValid = true;
+            } else {
+                msgElement.innerHTML = result;
+                msgElement.style.color = "#e74c3c";
+                isUsernameValid = false;
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    function handleFormSubmit() {
+        if (!isUsernameValid) {
+            alert("아이디 중복 확인을 해주세요");
+            return false;
+        }
+        // 주소 localStorage 정리
+        localStorage.removeItem("tempZipNo");
+        localStorage.removeItem("tempRoadAddr");
+        localStorage.removeItem("tempAddrDetail");
+        return true;
+    }
+
+    document.querySelector("#username").addEventListener("input", () => {
+        isUsernameValid = false;
+        document.querySelector("#usernameMsg").innerText = "다시 확인해주세요.";
+        document.querySelector("#usernameMsg").style.color = "orange";
+    });
 
 </script>
 
