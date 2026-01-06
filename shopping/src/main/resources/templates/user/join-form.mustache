@@ -36,7 +36,9 @@
 
             <div class="join-form-group">
                 <label>주소 <span class="required">*</span></label>
-                {{> user/address-form}}
+                <div class="custom-input-group address-group">
+                    {{> user/address-form}}
+                </div>
             </div>
 
             <div class="join-form-group">
@@ -46,10 +48,19 @@
 
             <div class="join-form-group">
                 <label>성별</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="gender" value="M"> 남성</label>
-                    <label><input type="radio" name="gender" value="F"> 여성</label>
-                    <label><input type="radio" name="gender" value="N" checked> 선택 안 함</label>
+                <div class="gender-group">
+                    <label class="gender-card">
+                        <input type="radio" name="gender" value="M">
+                        <span class="gender-text">남성</span>
+                    </label>
+                    <label class="gender-card">
+                        <input type="radio" name="gender" value="F">
+                        <span class="gender-text">여성</span>
+                    </label>
+                    <label class="gender-card">
+                        <input type="radio" name="gender" value="N" checked>
+                        <span class="gender-text">선택 안 함</span>
+                    </label>
                 </div>
             </div>
 
@@ -101,10 +112,12 @@
             if (response.ok) {
                 msgElement.innerHTML = result;
                 msgElement.style.color = "#2ecc71";
+                msgElement.innerHTML = "사용가능한 아이디입니다";
                 isUsernameValid = true;
             } else {
                 msgElement.innerHTML = result;
                 msgElement.style.color = "#e74c3c";
+                msgElement.innerHTML = "사용불가능한 아이디입니다.";
                 isUsernameValid = false;
             }
         } catch (e) { console.error(e); }
