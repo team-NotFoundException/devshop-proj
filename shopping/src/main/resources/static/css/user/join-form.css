@@ -1,149 +1,152 @@
-/*
- * style.css
- * 경로: src/main/resources/static/css/style.css
- * [회원가입 폼 전용 스타일]
- */
-
 /* ====================================
-   1. 기본 레이아웃 및 리셋
+   1. 전체 컨테이너 및 박스 레이아웃
    ==================================== */
-
-/*.container {*/
-/*    max-width: 600px;*/
-/*    margin: 40px auto;*/
-/*    padding: 40px;*/
-/*    background-color: #fff;*/
-/*    border-radius: 8px;*/
-/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
-/*}*/
-
-.join {
-    max-width: 600px;
-    margin: 40px auto;
+.join-container {
+    max-width: 550px;
+    margin: 60px auto;
     padding: 40px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-.register-box {
-    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* 기존보다 조금 더 부드러운 그림자 */
 }
 
-/* ====================================
-   3. 폼 제목 및 그룹 스타일
-   ==================================== */
+.register-box {
+    padding: 0 10px;
+}
+
 .title {
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
     color: #222;
 }
 
-.form-group {
-    border-radius: 8px;
-    margin-bottom: 20px;
+/* ====================================
+   2. 폼 그룹 및 라벨 스타일
+   ==================================== */
+.join-form-group {
+    margin-bottom: 25px;
     width: 100%;
 }
 
-.form-group > label {
+.join-form-group label {
     display: block;
     font-weight: 600;
-    margin-bottom: 8px;
-    color: #555;
+    margin-bottom: 10px;
+    color: #444;
     font-size: 15px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border: 1px solid #dddddd;
-    border-radius: 8px;
 }
 
 .required {
-    color: #e74c3c; /* 빨간색으로 필수 필드 강조 */
+    color: #e74c3c;
+    margin-left: 2px;
 }
 
 /* ====================================
-   4. 입력 필드 스타일
+   3. 입력 필드 (Input) 스타일
    ==================================== */
-.form-group form[type="text"],
-.form-group form[type="password"],
-.form-group form[type="date"],
-.form-group form[type="email"] {
+.join-form-group input[type="text"],
+.join-form-group input[type="password"],
+.join-form-group input[type="date"] {
     width: 100%;
-    padding: 12px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 13px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-size: 15px;
-    transition: border-color 0.2s;
+    transition: all 0.2s;
+    background-color: #fff;
 }
 
-.form-group input:focus {
+.join-form-group input:focus {
     border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
     outline: none;
 }
 
-.form-group small {
-    color: #999;
+.join-form-group small {
     display: block;
-    margin-top: 5px;
-    padding-left: 5px;
+    margin-top: 6px;
     font-size: 13px;
+    color: #888;
 }
 
 /* ====================================
-   5. 라디오 버튼 (성별) 스타일
+   4. 특수 레이아웃 (아이디/주소 버튼 배치)
+   ==================================== */
+.custom-input-group {
+    display: flex;
+    gap: 10px; /* 입력창과 버튼 사이 간격 */
+    align-items: flex-start;
+}
+
+.custom-input-group input {
+    flex: 1; /* 입력창이 가능한 넓게 차지 */
+}
+
+/* 중복확인, 주소검색 버튼 */
+.btn-sub-action {
+    flex-shrink: 0; /* 버튼 크기 고정 */
+    width: 110px;   /* 너무 크지 않게 조절 */
+    height: 48px;   /* input 높이와 정렬 */
+    background-color: #444; /* 기존보다 세련된 다크그레이 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-sub-action:hover {
+    background-color: #222;
+}
+
+/* ====================================
+   5. 기타 요소 (성별 라디오 등)
    ==================================== */
 .radio-group {
     display: flex;
     gap: 30px;
-    font-size: 15px;
+    padding: 5px 0;
 }
 
 .radio-item {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
-    line-height: 1;
     font-size: 15px;
-    width: auto;
-    white-space: nowrap;
 }
 
 .radio-item input[type="radio"] {
+    width: auto; /* 기본 라디오 크기 유지 */
     margin: 0;
-    vertical-align: middle;/* 기본 form radio 스타일 유지 또는 커스텀 */
 }
 
-
 /* ====================================
-   7. 버튼 스타일
+   6. 메인 회원가입 버튼 (Full Width)
    ==================================== */
-.btn-register {
+.btn-register-main {
     width: 100%;
-    padding: 15px;
-    background-color: #3498db; /* 강조 색상 */
+    padding: 16px;
+    background-color: #3498db;
     color: white;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 40px;
+    border-radius: 8px;
     font-weight: 700;
     font-size: 17px;
+    cursor: pointer;
+    margin-top: 30px;
     transition: background-color 0.2s;
 }
 
-.btn-register:hover {
+.btn-register-main:hover {
     background-color: #2980b9;
 }
 
+/* 크롬 자동완성 배경색 제거 */
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
-    -webkit-text-fill-color: #000 !important;
-    transition: background-color 9999s ease-in-out 0s;
 }
