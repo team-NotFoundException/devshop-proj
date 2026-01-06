@@ -16,7 +16,7 @@ public class UserRequest {
     @Data
     public static class LoginDTO {
         @NotBlank(message = "아이디를 입력해주세요.", groups = ValidationGroups.NotEmptyGroup.class)
-        @Size(min = 5, max = 10, message = "아이디는 5~10자 사이입니다.", groups = ValidationGroups.PatternCheckGroup.class)
+        @Size(min = 5, max = 16, message = "아이디는 5~16자 사이입니다.", groups = ValidationGroups.PatternCheckGroup.class)
         private String username;
 
         @NotBlank(message = "비밀번호를 입력해주세요.", groups = ValidationGroups.NotEmptyGroup.class)

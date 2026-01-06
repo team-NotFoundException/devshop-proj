@@ -1,11 +1,11 @@
 {{#alertMessage}}
     <script>
         alert("{{alertMessage}}");
-            {{#redirectUrl}}
-            location.href = "{{redirectUrl}}";
-            {{/redirectUrl}}
-            {{^redirectUrl}}
+            {{#url}}
+            location.href = "{{url}}";
+            {{/url}}
+            {{^url}}
             history.back();
-            {{/redirectUrl}}
+            {{/url}}
     </script>
 {{/alertMessage}}

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class MyExceptionHandler {
 
+
     // 400 에러: 유효성 검사 실패 등
     @ExceptionHandler(Exception400.class)
     public String ex400(Exception400 e, Model model) {
