@@ -119,6 +119,13 @@ public class UserService {
                 .map(UserResponse.UserList::new).toList();
     }
 
+    public List<UserResponse.UserList> topTenList() {
+        List<User> userList = userRepository.findAllOrderByCreatedAt();
+
+        return userList.stream()
+                .map(UserResponse.UserList::new).toList();
+    }
+
 
     @Transactional
     public void deleteUser(Long userId) {
@@ -127,6 +134,8 @@ public class UserService {
         cartRepository.deleteByUserId(user.getId());
         userRepository.deleteUserById(user.getId());
     }
+
+
 
     // 유저 권한 회수
 }
