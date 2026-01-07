@@ -20,11 +20,21 @@ public class ProductController {
     private final CategoryService categoryService;
 
 
+    @GetMapping("/")
+    public String home(Model model) {
+        List<ProductResponse.MainCardDTO> products = productService.findAllForMain();
+        model.addAttribute("products", products);
+
+        return "layout/index";
+    }
+
+
+
     // - user
     // 상품 목록 조회
     // http://localhost:8080/products/list-form
     @GetMapping("/products/list-form")
-    public String list(Model model) {
+    public String list(Model model, HttpSession session) {
 
         List<ProductResponse.ListDTO> list = productService.findAll();
         System.out.println(list.size());
@@ -36,7 +46,7 @@ public class ProductController {
     // 상품 상세 조회
     // http://localhost:8080/products/1/detail
     @GetMapping("/products/{id}/detail")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model, HttpSession session) {
         ProductResponse.DetailDTO product = productService.findById(id);
         model.addAttribute("product",product);
         return "product/detail";
@@ -45,7 +55,7 @@ public class ProductController {
     // 상태별 조회
     // http://localhost:8080/products/status/1
     @GetMapping("/products/status/{status}")
-    public String listByStatus(@PathVariable ProductStatus status, Model model) {
+    public String listByStatus(@PathVariable ProductStatus status, Model model, HttpSession session) {
         model.addAttribute("products", productService.findByStatus(status));
         return "product/list-form";
     }
@@ -53,7 +63,7 @@ public class ProductController {
     // 카테고리별 조회
     // http://localhost:8080/products/category/1
     @GetMapping("/products/category/{categoryId}")
-    public String listByCategory(@PathVariable Long categoryId, Model model) {
+    public String listByCategory(@PathVariable Long categoryId, Model model, HttpSession session) {
         model.addAttribute("products", productService.findByCategoryId(categoryId));
         return "product/list-form";
     }

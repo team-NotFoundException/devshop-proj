@@ -70,3 +70,4 @@ spring:
         format_sql: true
     # data.sql 파일을 Hibernate 초기화 이후에 실행
     defer-datasource-initialization: true
+#    spring.jpa.defer-datasource-initialization: true
