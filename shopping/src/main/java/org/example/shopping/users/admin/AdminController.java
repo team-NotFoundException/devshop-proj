@@ -24,6 +24,9 @@ public class AdminController {
     @GetMapping("/admin/main")
     public String dashboard(HttpSession session, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+        // 최근 10명 최신순 조회
+        List<UserResponse.UserList> recentList = userService.topTenList();
+        model.addAttribute("recentUsers", recentList);
         model.addAttribute("user", sessionUser);
         return "user/admin/main";
     }
@@ -36,6 +39,10 @@ public class AdminController {
 
         return "user/admin/user-list";
     }
+
+
+
+
 
     // 회원삭제
     @PostMapping("/admin/user/{userId}/delete")
