@@ -1,0 +1,11 @@
+<nav class="pagination">
+    {{^page.first}}
+        <a href="?page={{prevPage}}">이전</a>
+    {{/page.first}}
+
+    <span>{{page.page}} / {{page.totalPages}}</span>
+
+    {{^page.last}}
+        <a href="?page={{nextPage}}">다음</a>
+    {{/page.last}}
+</nav>
