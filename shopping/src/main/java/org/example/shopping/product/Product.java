@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
+import org.example.shopping.users.owner.Owner;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.awt.image.BufferedImageFilter;
@@ -19,6 +20,10 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 
     private String productName;
     private String productCode;
@@ -45,27 +50,41 @@ public class Product {
     @CreationTimestamp
     private Timestamp createdAt;
 
-
     @Builder
-    public Product(
-            String productName,
-            String productCode,
-            Long price,
-            int stockQuantity,
-            String description,
-            String thumbnailUrl,
-            ProductStatus status,
-            Category category
-    ) {
+    public Product(Long id, Owner owner, String productName, String productCode, Long price, int stockQuantity, String thumbnailUrl, String description, ProductStatus status, Category category, Timestamp createdAt) {
+        this.id = id;
+        this.owner = owner;
         this.productName = productName;
         this.productCode = productCode;
         this.price = price;
         this.stockQuantity = stockQuantity;
-        this.description = description;
         this.thumbnailUrl = thumbnailUrl;
-        this.status = ProductStatus.ACTIVE;
+        this.description = description;
+        this.status = status;
         this.category = category;
+        this.createdAt = createdAt;
     }
+
+//    @Builder
+//    public Product(
+//            String productName,
+//            String productCode,
+//            Long price,
+//            int stockQuantity,
+//            String description,
+//            String thumbnailUrl,
+//            ProductStatus status,
+//            Category category
+//    ) {
+//        this.productName = productName;
+//        this.productCode = productCode;
+//        this.price = price;
+//        this.stockQuantity = stockQuantity;
+//        this.description = description;
+//        this.thumbnailUrl = thumbnailUrl;
+//        this.status = ProductStatus.ACTIVE;
+//        this.category = category;
+//    }
 
     // 상품 수정
     public void update(ProductRequest.UpdateDTO dto, Category category) {

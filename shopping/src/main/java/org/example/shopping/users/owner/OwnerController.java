@@ -3,15 +3,18 @@ package org.example.shopping.users.owner;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.utils.ValidationGroups;
 import org.example.shopping.product.ProductResponse;
 import org.example.shopping.product.ProductService;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.OAuthService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
+import org.example.shopping.users.owner.dto.OwnerRequest;
 import org.example.shopping.users.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,10 +79,10 @@ public class OwnerController {
 
     @PostMapping("/owner/join")
     public String signUp(
-            @Valid @ModelAttribute UserRequest.SignUpDTO signUpDTO
+            @Validated(ValidationGroups.OwnerSignUpOrderGroup.class) @ModelAttribute OwnerRequest.OwnerSignUpDTO ownerSignUpDTO
     ) {
 
-        ownerService.signUp(signUpDTO);
+        ownerService.ownerSignUp(ownerSignUpDTO);
 
         return "redirect:/owner/login";
     }

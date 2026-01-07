@@ -2,6 +2,7 @@ package org.example.shopping._core.utils;
 
 import jakarta.validation.GroupSequence;
 import org.example.shopping.users.dto.UserRequest;
+import org.example.shopping.users.owner.dto.OwnerRequest;
 
 public interface ValidationGroups {
     public interface NotEmptyGroup {};
@@ -16,6 +17,13 @@ public interface ValidationGroups {
             UserRequest.SignUpDTO.class
     })
     public interface SignUpOrderGroup {}
+
+    @GroupSequence({
+            NotEmptyGroup.class,
+            PatternCheckGroup.class,
+            OwnerRequest.OwnerSignUpDTO.class
+    })
+    public interface OwnerSignUpOrderGroup {}
 
     // --- 로그인 검증 순서 ---
     @GroupSequence({

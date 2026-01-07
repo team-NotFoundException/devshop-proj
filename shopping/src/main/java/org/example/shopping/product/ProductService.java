@@ -110,4 +110,11 @@ public class ProductService {
         return new ProductResponse.UpdateFormDTO(product);
     }
 
+
+    public List<ProductResponse.MainCardDTO> findAllForMain() {
+        return productRepository.findByStatusOrderByCreatedAtDesc(ProductStatus.ACTIVE)
+                .stream()
+                .map(ProductResponse.MainCardDTO::new)
+                .toList();
+    }
 }

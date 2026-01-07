@@ -25,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // 카테고리별 조회
     @Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.category.id = :categoryId")
     List<Product> findByCategoryIdWithCategory(@Param("categoryId") Long categoryId);
+
+    List<Product> findByStatusOrderByCreatedAtDesc(ProductStatus status);
 }

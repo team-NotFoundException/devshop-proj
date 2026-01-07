@@ -11,12 +11,10 @@ public class TestingController {
 
     // 테스트 홈 화면
     // http://localhost:8080/
-    @GetMapping({"/"})
-    public String home(Model model, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        model.addAttribute("sessionUser", sessionUser);
-        return "layout/index";
-    }
+//    @GetMapping({"/"})
+//    public String home(Model model) {
+//        return "layout/index";
+//    }
 
     // http://localhost:8080/test
     @GetMapping("/test")
