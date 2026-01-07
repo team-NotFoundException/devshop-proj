@@ -94,7 +94,7 @@ public class PaymentService {
         // 1. 주문 생성
         Order order = Order.builder()
                 .user(sessionUser)
-                .orderNumber(generateMerchantUid(sessionUser.getId()))
+                .orderNumber(generateMerchantUid())
                 .build();
 
         List<CartItem> checkItem = getChecked(cartId);
@@ -141,7 +141,7 @@ public class PaymentService {
 
         Order order = Order.builder()
                 .user(sessionUser)
-                .orderNumber(generateMerchantUid(sessionUser.getId()))
+                .orderNumber(generateMerchantUid())
                 .build();
 
         for (CartItem item : checkItem) {
@@ -228,8 +228,8 @@ public class PaymentService {
         return new PaymentResponse.SingleRefundDTO(refund);
     }
 
-    private String generateMerchantUid(Long userId) {
-        return "Order_" + userId + "_" + System.currentTimeMillis() + "_" + UUID.randomUUID().toString().substring(0, 8);
+    private String generateMerchantUid() {
+        return System.currentTimeMillis() + "_" + UUID.randomUUID().toString().substring(0, 8);
     }
 
 

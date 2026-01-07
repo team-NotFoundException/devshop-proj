@@ -109,6 +109,7 @@ public class OrderService {
         return orderList.stream()
                 .map(order -> new OrderResponse.OrderListDTO(
                         order.getId(),
+                        order.getOrderNumber(),
                         order.getCreatedAt(),
                         order.getOrderItems().stream()
                                 .map((orderItem -> new OrderResponse.OrderItemListDTO(
@@ -129,7 +130,7 @@ public class OrderService {
     // 주문 상세 조회
     public List<OrderResponse.OrderDetailDTO> orderDetail(Long orderId) {
 
-        Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findByIdWithOrderItems(orderId)
                 .orElseThrow(() -> new Exception404("주문을 찾을 수 없습니다."));
 
         List<OrderResponse.OrderDetailDTO> orderItems = order.getOrderItems().stream()

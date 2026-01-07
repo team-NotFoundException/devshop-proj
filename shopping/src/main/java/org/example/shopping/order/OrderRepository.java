@@ -11,8 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Order findByUserId(Long userId);
+    Optional<Order>  findByUserId(Long userId);
 
     @Query("SELECT DISTINCT o FROM Order o WHERE o.user.id = :userId ORDER BY o.createdAt")
     List<Order> findAllByUserIdAndOrderByCreatedAtDesc(@Param("userId") Long userId);
+
+    @Query("SELECT DISTINCT o FROM Order o JOIN FETCH o.orderItems WHERE o.id = :orderId ORDER BY o.createdAt DESC ")
+    Optional<Order> findByIdWithOrderItems(@Param("orderId") Long orderId);
 }
