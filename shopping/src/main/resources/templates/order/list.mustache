@@ -3,7 +3,7 @@
         {{#orderList}}
             <div class="order-card">
                 <div class="order-header">
-                    <h3>주문번호: {{orderId}}</h3>
+                    <h3>주문번호: {{orderNumber}}</h3>
                     <span>주문일: {{createdAt}}</span>
                     <form action="/order/detail">
                         <input type="hidden" name="id" value="{{orderId}}">
@@ -40,9 +40,8 @@
                                 {{/isRefund}}
                             </div>
                         {{/isComplete}}
-
-
                 {{/orderItemList}}
+
             </div>
         {{/orderList}}
         {{^orderList}}

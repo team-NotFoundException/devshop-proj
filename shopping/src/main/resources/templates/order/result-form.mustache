@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="">
 <div class="header-wrapper has-nav">
     <div class="container">
         {{> layout/header }}
@@ -7,9 +8,21 @@
 <div class="card">
     <div class="order-card">
         <div class="order-header">
-            <h1>주문 완료</h1>
+            <h3>주문 완료</h3>
         </div>
-
+            <div class="order-item">
+            {{#OrderItemList}}
+                <img src="https://cdn.pixabay.com/photo/2018/04/13/16/13/pixel-3316924_640.png" alt="{{productName}}" class="product-image">
+                <div class="order-item-info">
+                    <h4>{{productName}}</h4>
+                    <p>가격: {{productPrice}}원</p>
+                    <p>수량: {{quantity}}개</p>
+                </div>
+            {{/OrderItemList}}
+            {{^OrderItemList}}
+                <p>오류</p>
+            {{/OrderItemList}}
+            </div>
     </div>
 </div>
 

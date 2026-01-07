@@ -2,6 +2,7 @@ package org.example.shopping.order;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.service.PaymentService;
 import org.example.shopping.users.User;
@@ -19,13 +20,23 @@ public class OrderController {
 
     private final OrderService orderService;
     private final PaymentService paymentService;
+    private final OrderRepository orderRepository;
 
 
     // 주문 완료 화면
     // http://localhost:8080/order-complete
     @GetMapping("/order-complete")
-    public String orderForm(HttpSession session) {
+    public String orderForm(HttpSession session, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+
+//        Order order = orderRepository.findByUserId(sessionUser.getId())
+//                .orElseThrow(() -> new Exception404("주문을 찾을 수 없습니다."));
+//
+//        Long orderId = order.getId();
+//
+//        List<OrderResponse.OrderDetailDTO> orderItems = orderService.orderDetail(orderId);
+//
+//        model.addAttribute("orderItems", orderItems);
 
         return "order/result-form";
     }
@@ -36,15 +47,6 @@ public class OrderController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         orderService.createOrderByMock(sessionUser, createDTO);
-
-        return "redirect:/order-complete";
-    }
-
-    @GetMapping("/order-create/toss")
-    public String orderProcByToss(PaymentRequest.ApproveDTO approveDTO, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        orderService.createOrderByToss(sessionUser, approveDTO);
 
         return "redirect:/order-complete";
     }
