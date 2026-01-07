@@ -40,7 +40,7 @@
 --                                               (0, 3);
 --
 --
--- INSERT INTO user_role_tb (role, user_id) VALUES ('ADMIN', 1), ('OWNER', 2), ('USER', 3);
+
 --
 -- INSERT INTO categories (category_name, depth, display_order, created_at)
 -- VALUES
@@ -138,6 +138,8 @@ INSERT INTO user_tb (id, username, password, nickname, email, phone_number, gend
                                                                                                                                     (2, 'user02', '12341234', '대박판매자', 'seller01@example.com', '010-2222-2222', 'M', '1985-05-20', 'LOCAL', NOW(), NOW()),
                                                                                                                                     (3, 'user03', '12341234', '쇼핑왕', 'user01@example.com', '010-3333-3333', 'F', '1995-12-25', 'LOCAL', NOW(), NOW());
 
+INSERT INTO user_role_tb (role, user_id) VALUES ('ADMIN', 1), ('OWNER', 2), ('USER', 3);
+
 -- Owner (판매자 등록)
 INSERT INTO user_owner_tb (id, user_id, name, status) VALUES
     (1, 2, '대박상사', 'APPROVED');
@@ -177,6 +179,4 @@ INSERT INTO product_tb (owner_id, category_id, product_name, product_code, price
                                                                                                                                                       (1, 1, '레더 자켓', 'JACKET-002', 95000, 12, 'ACTIVE', 'https://picsum.photos/seed/19/200', '세련된 인조 가죽 자켓', NOW()),
                                                                                                                                                       (1, 3, '비니 모자', 'BEANIE-001', 15000, 100, 'ACTIVE', 'https://picsum.photos/seed/20/200', '겨울철 필수 아이템 골지 비니', NOW());
 
--- 장바구니 생성
-INSERT INTO cart_tb (id, user_id, cart_price) VALUES (1, 3, 77000);
 
