@@ -27,4 +27,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategoryIdWithCategory(@Param("categoryId") Long categoryId);
 
     List<Product> findByStatusOrderByCreatedAtDesc(ProductStatus status);
+
+    long countByOwnerId(Long ownerId);
+
+    Optional<Product> findByOwnerId(Long ownerId);
 }
