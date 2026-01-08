@@ -2,14 +2,13 @@ package org.example.shopping.payment;
 
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.aspectj.weaver.ast.Or;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.shopping._core.utils.BaseTimeEntity;
-import org.example.shopping.order.Order;
-import org.example.shopping.orderItem.OrderItem;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.users.User;
-
 
 import java.time.LocalDateTime;
 
@@ -35,10 +34,6 @@ public class PaymentRefund extends BaseTimeEntity {
 //    @JoinColumn(name = "order_id")
 //    private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_item_id")
-    private OrderItem orderItem;
-
     private Long amount;
 
     private String reason;
@@ -53,11 +48,9 @@ public class PaymentRefund extends BaseTimeEntity {
     private LocalDateTime completedAt;
 
     @Builder
-    public PaymentRefund(User user, Payment payment, Order order, OrderItem orderItem, Long amount, String reason, RefundStatus status, String failureCode, String failureMessage, LocalDateTime requestedAt, LocalDateTime completedAt) {
+    public PaymentRefund(User user, Payment payment, Long amount, String reason, RefundStatus status, String failureCode, String failureMessage, LocalDateTime requestedAt, LocalDateTime completedAt) {
         this.user = user;
         this.payment = payment;
-//        this.order = order;
-        this.orderItem = orderItem;
         this.amount = amount;
         this.reason = reason;
         this.status = status;

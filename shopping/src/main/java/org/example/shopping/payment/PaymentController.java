@@ -2,11 +2,9 @@ package org.example.shopping.payment;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.order.OrderService;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.service.PaymentService;
-
 import org.example.shopping.users.User;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class PaymentController {
 
-    private final OrderService orderService;
+
     private final PaymentService paymentService;
     private final Environment env;
 
@@ -48,7 +46,6 @@ public class PaymentController {
     public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.ApproveDTO approveDTO, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         try {
-            orderService.createOrderByToss(sessionUser, approveDTO);
             model.addAttribute("orderId", approveDTO.getOrderId());
             model.addAttribute("amount", approveDTO.getAmount());
             model.addAttribute("method", approveDTO.getMethod());

@@ -5,27 +5,19 @@ import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.cart.Cart;
 import org.example.shopping.cart.CartRepository;
-import org.example.shopping.cart.CartService;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.cartItem.CartItemRepository;
-import org.example.shopping.order.Order;
-import org.example.shopping.order.OrderRepository;
-import org.example.shopping.orderItem.OrderItem;
-import org.example.shopping.orderItem.OrderItemRepository;
 import org.example.shopping.payment.Payment;
 import org.example.shopping.payment.PaymentRefund;
 import org.example.shopping.payment.PaymentRefundRepository;
 import org.example.shopping.payment.PaymentRepository;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
-import org.example.shopping.payment.error.BusinessException;
-import org.example.shopping.payment.error.ErrorCode;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.payment.service.gateway.PaymentGateway;
 import org.example.shopping.payment.service.gateway.PaymentGatewayResolver;
 import org.example.shopping.payment.service.gateway.PaymentResult;
-import org.example.shopping.product.Product;
 import org.example.shopping.users.User;
 import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -45,8 +37,6 @@ public class PaymentService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
-    private final OrderItemRepository orderItemRepository;
-    private final OrderRepository orderRepository;
 
 
     // ================== 카트 정보 가져오기 ================
@@ -91,11 +81,6 @@ public class PaymentService {
     // 목 결제
     @Transactional
     public void processMockPayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
-        // 1. 주문 생성
-        Order order = Order.builder()
-                .user(sessionUser)
-                .orderNumber(generateMerchantUid())
-                .build();
 
         List<CartItem> checkItem = getChecked(cartId);
         for (CartItem item : checkItem) {
@@ -112,24 +97,9 @@ public class PaymentService {
             payment.paySuccess();
             paymentRepository.save(payment);
 
-            OrderItem orderItem = OrderItem.builder()
-                    .payment(payment)
-                    .product(item.getProduct())
-                    .productName(item.getProduct().getProductName())
-                    .productPrice(item.getProduct().getPrice())
-                    .quantity(item.getQuantity())
-                    .totalPrice(item.getTotalPrice())
-                    .build();
 
-
-            Product product = orderItem.getProduct();
-            if (product.getStockQuantity() < item.getQuantity()) {
-                throw new Exception400("재고가 부족한 상품입니다.");
-            }
-            product.setStockQuantity(product.getStockQuantity() - orderItem.getQuantity());
-            order.addItem(orderItem);
         }
-        orderRepository.save(order);
+
     }
 
     // toss 결제
@@ -139,10 +109,6 @@ public class PaymentService {
         PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
         PaymentResult paymentResult = gateway.approve(approveDTO);
 
-        Order order = Order.builder()
-                .user(sessionUser)
-                .orderNumber(generateMerchantUid())
-                .build();
 
         for (CartItem item : checkItem) {
             Payment payment = Payment.builder()
@@ -163,25 +129,9 @@ public class PaymentService {
                 payment.paySuccess();
             }
 
-            paymentRepository.save(payment);
-            OrderItem orderItem = OrderItem.builder()
-                    .payment(payment)
-                    .product(item.getProduct())
-                    .productName(item.getProduct().getProductName())
-                    .productPrice(item.getProduct().getPrice())
-                    .quantity(item.getQuantity())
-                    .totalPrice(item.getTotalPrice())
-                    .build();
 
-            Product product = orderItem.getProduct();
-            if (product.getStockQuantity() < item.getQuantity()) {
-                throw new Exception400("재고가 부족한 상품입니다.");
-            }
-            product.setStockQuantity(product.getStockQuantity() - orderItem.getQuantity());
-            order.addItem(orderItem);
 
         }
-        orderRepository.save(order);
 
         List<PaymentResponse.PaymentResultDTO.PaymentItemDTO> items = checkItem.stream()
                 .map(item -> {
@@ -206,16 +156,14 @@ public class PaymentService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception404("사용자 찾을수 없음"));
-        OrderItem orderItem = orderItemRepository.findById(orderItemId)
-                .orElseThrow(() -> new Exception404("아이템 찾을수 없음"));
+
         Payment payment = paymentRepository.findByUserId(userId)
                 .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
 
         PaymentRefund refund = PaymentRefund.builder()
                 .user(user)
                 .payment(payment)
-                .orderItem(orderItem)
-                .amount(orderItem.getTotalPrice())
+
                 .status(RefundStatus.REQUESTED)
                 .requestedAt(LocalDateTime.now())
                 .build();

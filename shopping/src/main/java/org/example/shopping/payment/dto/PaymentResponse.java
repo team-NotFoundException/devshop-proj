@@ -90,10 +90,10 @@ public class PaymentResponse {
 
         public SingleRefundDTO(PaymentRefund refund){
             this.userId = refund.getUser().getId();
-            this.orderItemId = refund.getOrderItem().getId();
+//            this.orderItemId = refund.getOrderItem().getId();
 //            this.orderId = refund.getPayment().getOrderId();
             this.paymentKey = refund.getPayment().getPaymentKey();
-            this.amount = refund.getOrderItem().getTotalPrice();
+//            this.amount = refund.getOrderItem().getTotalPrice();
             this.method = refund.getPayment().getMethod();
             this.status = refund.getStatus();
             this.productCode = refund.getPayment().getProductCode();
