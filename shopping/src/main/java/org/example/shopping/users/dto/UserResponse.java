@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import org.example.shopping._core.utils.MyDateUtil;
 import org.example.shopping.users.User;
+import org.example.shopping.users.user.Address;
 import org.example.shopping.users.user.UserRole;
 
 import java.io.UnsupportedEncodingException;
@@ -34,14 +35,24 @@ public class UserResponse {
         }
     }
 
-//    @Data
-//    public static class UserDetail {
-//        private String username;
-//        private String nickname;
-//        private String email;
-//        private String address;
-//        private UserRole role;
-//    }
+    @Data
+    public static class UserDetail {
+        private String username;
+        private String nickname;
+        private String email;
+        private Address address;
+        private String phoneNumber;
+        private UserRole role;
+
+        public UserDetail(User user) {
+            this.username = user.getUsername();
+            this.nickname = user.getNickname();
+            this.email = user.getEmail();
+            this.address = user.getAddress();
+            this.phoneNumber = user.getPhoneNumber();
+            this.role = user.getRole();
+        }
+    }
 
     @Data
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)

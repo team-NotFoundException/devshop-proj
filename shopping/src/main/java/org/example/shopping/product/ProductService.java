@@ -117,4 +117,9 @@ public class ProductService {
                 .map(ProductResponse.MainCardDTO::new)
                 .toList();
     }
+
+    public long getOwnerProductCount(Long ownerId) {
+        return productRepository.countByOwnerId(ownerId);
+    }
+
 }

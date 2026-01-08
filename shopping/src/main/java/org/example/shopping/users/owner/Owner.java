@@ -21,6 +21,9 @@ public class Owner {
 
     private String name;
 
+    // 추후 추가
+//    private String BRC;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OwnerStatus status;
@@ -31,5 +34,22 @@ public class Owner {
         this.user = user;
         this.name = name;
         this.status = status;
+    }
+
+    public boolean hasStatus(OwnerStatus ownerStatus) {
+        return this.status != null && this.getStatus() == ownerStatus;
+    }
+
+
+    public boolean isWAIT() {
+        return hasStatus(OwnerStatus.WAIT);
+    }
+
+    public boolean isAPPROVED() {
+        return hasStatus(OwnerStatus.APPROVED);
+    }
+
+    public boolean isSUSPENSION () {
+        return hasStatus(OwnerStatus.SUSPENSION);
     }
 }
