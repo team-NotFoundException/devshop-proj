@@ -4,24 +4,29 @@ import lombok.Data;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.product.Product;
 
+import java.util.List;
+
 public class CartResponse {
 
     @Data
-    public static class CartItemListDTO {
+    public static class CartDTO {
         private Long id;
-        private Cart cart;
-        private Product product;
-        private Integer quantity;
-        private Long totalPrice;
-        private boolean isChecked;
+        private Long amount;
+        private List<CartItem> cartItems;
 
-        public CartItemListDTO(CartItem cartItem) {
-            this.id = cartItem.getId();
-            this.cart = cartItem.getCart();
-            this.product = cartItem.getProduct();
-            this.quantity = cartItem.getQuantity();
-            this.totalPrice = cartItem.getTotalPrice();
-            this.isChecked = cartItem.getIsChecked();
+        public CartDTO(Cart cart) {
+            this.id = cart.getId();
+            this.amount = cart.getAmount() == null ? 0 : cart.getAmount();
+            this.cartItems = cart.getCartItems();
+        }
+    }
+
+    @Data
+    public static class AmountDTO {
+        private Long amount;
+
+        public AmountDTO(Long amount) {
+            this.amount = amount;
         }
     }
 }

@@ -8,7 +8,7 @@
 <main class="main-container">
     <h1 class="page-title">장바구니</h1>
 
-    <!-- 테스트 폼들 (나중에 제거 가능) -->
+    <!-- 테스트 폼들 (나중에 제거) -->
     <div class="test-forms">
         <form action="/cart/add" method="post" style="display:inline-block;">
             <input type="number" name="productId" placeholder="상품ID" style="width: 80px; padding: 8px;" value="" required>
@@ -23,7 +23,7 @@
             <div class="cart-header">
                 <div class="tab active">
                     <span>DEV SHOP 배송</span>
-                    <span class="count">{{cartItems.size}}</span>
+                    <span class="count">{{cart.cartItems.size}}</span>
                 </div>
             </div>
 
@@ -39,11 +39,11 @@
             </div>
 
             <!-- 상품 아이템 -->
-            {{#cartItems}}
+            {{#cart.cartItems}}
                 <div class="cart-item">
                     <label class="checkbox-label">
-                        <input type="checkbox" class="item-checkbox" {{#isChecked}}checked{{/isChecked}}
-                               onchange="toggleCheck({{id}})">
+                        <input type="checkbox" class="item-checkbox" {{#isChecked}}checked{{/isChecked}}  data-item-id="{{id}}"
+                               onchange="toggleCheck({{id}}, this)">
                         <span class="checkmark"></span>
                     </label>
 
@@ -79,15 +79,15 @@
                         </div>
                     </div>
                 </div>
-            {{/cartItems}}
+            {{/cart.cartItems}}
 
-            {{^cartItems}}
+            {{^cart.cartItems}}
                 <div class="empty-cart">
                     <div class="empty-icon">🛒</div>
                     <p class="empty-text">장바구니가 비어있습니다</p>
-                    <p class="empty-subtext">원하는 상품을 담아보세요!</p>
+                    <p class="empty-subtext">원하는 상품을 담아보세요</p>
                 </div>
-            {{/cartItems}}
+            {{/cart.cartItems}}
         </div>
 
         <!-- 오른쪽: 결제 정보 -->
@@ -98,11 +98,11 @@
                 <div class="price-breakdown">
                     <div class="price-row">
                         <span class="label">총 상품금액</span>
-                        <span class="value" id="totalProductPrice">{{cartPrice}}원</span>
+                        <span class="value" id="totalProductPrice">{{cart.amount}}원</span>
                     </div>
                     <div class="price-row">
                         <span class="label">배송비</span>
-                        <span class="value">5,000원</span>
+                        <span class="value">0 원</span>
                     </div>
                     <div class="price-row">
                         <span class="label">검수비</span>
@@ -112,12 +112,12 @@
 
                 <div class="total-price">
                     <span class="label">총 결제금액</span>
-                    <span class="amount" id="finalPrice">{{cartPrice}}원</span>
+                    <span class="amount" id="finalPrice">{{cart.amount}}원</span>
                 </div>
 
 
                 <form action="/payment" method="get">
-                    <input type="hidden" name="cartId" value="{{cartId}}">
+                    <input type="hidden" name="cartId" value="{{cart.id}}">
                     <button class="checkout-btn">주문하기</button>
                 </form>
 
@@ -131,44 +131,31 @@
 </main>
 
 <script>
-    function toggleCheck(itemId) {
+    function toggleCheck(itemId, checkbox) {
         fetch(`/cart/${itemId}/update-check`, {
             method: 'POST'
         })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('체크 상태 변경 완료');
-                        // 서버에서 계산된 가격으로 업데이트
-                        const cartPrice = data.cartPrice;
-                        const totalPrice = cartPrice
-
-                        document.getElementById('totalProductPrice').textContent =
-                                cartPrice.toLocaleString() + '원';
-                        document.getElementById('finalPrice').textContent =
-                                totalPrice.toLocaleString() + '원';
-                    } else {
-                        alert('오류가 발생했습니다.');
-                        event.target.checked = !event.target.checked;
+                .then(response => {
+                    if (!response.ok) {
+                        alert('오류가 발생했습니다.')
                     }
+                    return response.json()
+                })
+                .then(data => {
+                    const cartPrice = data.amount;
+                    const totalPrice = cartPrice
+
+                    document.getElementById('totalProductPrice').textContent =
+                            cartPrice.toLocaleString() + '원';
+                    document.getElementById('finalPrice').textContent =
+                            totalPrice.toLocaleString() + '원';
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('오류가 발생했습니다.');
-                    event.target.checked = !event.target.checked;
+                    checkbox.checked =! checkbox.checked;
                 });
     }
-
-    // 전체 선택/해제
-    document.getElementById('selectAll')?.addEventListener('change', function() {
-        const checkboxes = document.querySelectorAll('.item-checkbox');
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked !== this.checked) {
-                checkbox.checked = this.checked;
-                checkbox.onchange();
-            }
-        });
-    });
 </script>
 
 {{>layout/footer}}
