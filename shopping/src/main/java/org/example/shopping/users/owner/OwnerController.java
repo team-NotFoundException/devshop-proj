@@ -84,7 +84,7 @@ public class OwnerController {
 
         ownerService.ownerSignUp(ownerSignUpDTO);
 
-        return "redirect:/owner/login";
+        return "redirect:/user/login";
     }
 
     // ---------------------------------------- //
@@ -99,7 +99,7 @@ public class OwnerController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null) {
-            return "redirect:/owner/login";
+            return "redirect:/user/login";
         }
         User user = userService.userUpdateView(sessionUser.getId());
         model.addAttribute("sessionUser", user);
