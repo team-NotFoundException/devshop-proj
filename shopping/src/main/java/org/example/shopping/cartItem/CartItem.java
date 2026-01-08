@@ -20,7 +20,7 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @OneToOne
+    @ManyToOne
     private Product product;
 
     private Boolean isChecked;
@@ -30,7 +30,7 @@ public class CartItem {
     private Long totalPrice;
 
     @Builder
-    public CartItem(Cart cart ,Product product, Integer quantity, Long totalPrice) {
+    public CartItem(Cart cart ,Product product, Integer quantity) {
         this.cart = cart;
         this.product = product;
         this.quantity = quantity;
@@ -46,7 +46,7 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public void updateCheckItem() {
+    public void toggleItem() {
         this.isChecked = !this.isChecked;
     }
 

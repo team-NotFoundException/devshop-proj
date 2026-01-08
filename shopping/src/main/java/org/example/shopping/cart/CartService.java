@@ -30,37 +30,31 @@ public class CartService {
         cartRepository.save(new Cart(user));
     }
 
-    // 장바구니 아이템 목록
-    public List<CartResponse.CartItemListDTO> getCartItems(Long cartId) {
+    // 유저 아이디로 장바구니 조회
+    public CartResponse.CartDTO getCartByUserId(Long userId) {
+        Cart cartEntity = cartRepository.findByUserId(userId).orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-         List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
-
-         return cartItems.stream()
-                 .map(CartResponse.CartItemListDTO::new)
-                 .collect(Collectors.toList());
+        return new CartResponse.CartDTO(cartEntity);
     }
 
     // 아이템 추가
     @Transactional
-    public void addCartItem(Long cartId, Long productId, CartRequest.AddDTO addDTO) {
+    public void addCartItem(Long userId, CartRequest.AddDTO addDTO) {
 
-        if (addDTO.getQuantity() <= 0)
-            throw new Exception400("상품은 1개 이상이어야 합니다.");
+        addDTO.validate();
 
-        Cart cartEntity = cartRepository.findById(cartId)
+        Cart cartEntity = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        Product productEntity = productRepository.findById(productId)
+        Product productEntity = productRepository.findById(addDTO.getProductId())
                 .orElseThrow(() -> new Exception404("물품을 찾을 수 없습니다."));
 
         if (productEntity.getStatus().equals(ProductStatus.SOLD_OUT) ||
                 productEntity.getStatus().equals(ProductStatus.INACTIVE))
             throw new Exception400("구매할 수 없는 상품입니다.");
 
-        List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
-
-        Optional<CartItem> existingItem = cartItems.stream()
-                .filter(cartItem -> cartItem.getProduct().getId().equals(productId))
+        Optional<CartItem> existingItem = cartEntity.getCartItems().stream()
+                .filter(cartItem -> cartItem.getProduct().getId().equals(addDTO.getProductId()))
                 .findFirst();
 
         if (existingItem.isPresent()) {
@@ -74,50 +68,45 @@ public class CartService {
                     .product(productEntity)
                     .quantity(addDTO.getQuantity())
                     .build();
-            cartItemRepository.save(newItem);
+            cartEntity.addItem(newItem);
         }
 
-        updateTotalPrice(cartId);
+        cartEntity.updateAmount();
     }
+
 
     // 선택된 아이템 삭제
     @Transactional
-    public void removeCheckedCartItem(Long cartId) {
+    public void removeCheckedCartItem(Long userId) {
 
-        cartRepository.findById(cartId)
+        Cart cartEntity = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        cartItemRepository.deleteByCartIdAndIsChecked(cartId);
-
-        updateTotalPrice(cartId);
+        cartEntity.removeCheckedItem();
+        cartEntity.updateAmount();
     }
 
     // 아이템 개별 삭제
     @Transactional
-    public void removeCartItem(Long cartId, Long cartItemId) {
-        CartItem cartItemEntity = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new Exception404("아이템을 찾을 수 없습니다."));
+    public void removeCartItem(Long userId, Long cartItemId) {
+        Cart cartEntity = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        if (!cartItemEntity.getCart().getId().equals(cartId))
-            throw new Exception400("잘못된 요청입니다.");
-
-        cartItemRepository.delete(cartItemEntity);
-
-        updateTotalPrice(cartId);
+        cartEntity.removeItem(cartItemId);
+        cartEntity.updateAmount();
     }
 
     // 아이템 선택
     @Transactional
-    public void checkItem(Long cartId ,Long cartItemId) {
+    public Long toggleItem(Long userId ,Long cartItemId) {
 
-        CartItem cartItemEntity = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new Exception404("아이템을 찾을 수 없습니다."));
+        Cart cartEntity = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        if (!cartItemEntity.getCart().getId().equals(cartId))
-            throw new Exception400("잘못된 요청입니다.");
+        cartEntity.toggleItem(cartItemId);
+        cartEntity.updateAmount();
 
-        cartItemEntity.updateCheckItem();
-        updateTotalPrice(cartId);
+        return cartEntity.getAmount();
     }
 
     // 아이템 개수/옵션 변경
@@ -133,19 +122,4 @@ public class CartService {
         cartItemEntity.updateItemOption(updateOptionDTO.getQuantity());
     }
 
-    // 카트 총액 업데이트
-    public void updateTotalPrice(Long cartId) {
-        Cart cartEntity = cartRepository.findById(cartId)
-                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
-
-        List<CartItem> cartItems = cartItemRepository.findByCartId(cartId);
-
-        // 총액 계산
-        Long totalPrice = cartItems.stream()
-                .filter(CartItem::isItemChecked)
-                        .mapToLong(CartItem::getTotalPrice)
-                                .sum();
-
-        cartEntity.setCartPrice(totalPrice);
-    }
 }

@@ -59,8 +59,7 @@ public class OrderService {
 
         paymentService.processMockPayment(user, cartId, createDTO);
 
-        cartItemRepository.deleteAll(cartItems);
-        cartService.updateTotalPrice(cartId);
+
     }
 
     // 주문 생성 기능 (Toss 결제)
@@ -82,8 +81,7 @@ public class OrderService {
 
         paymentService.approvePayment(user, cartId, approveDTO);
 
-        cartItemRepository.deleteAll(cartItems);
-        cartService.updateTotalPrice(cartId);
+
     }
 
 
