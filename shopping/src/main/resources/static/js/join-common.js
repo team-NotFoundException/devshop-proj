@@ -13,7 +13,7 @@ async function usernameCheck() {
     }
 
     try {
-        const response = await fetch(`/user/username-check?username=${username}`);
+        const response = await fetch(`/username-check?username=${username}`);
         if (response.ok) {
             msgElement.innerText = "사용 가능한 아이디입니다.";
             msgElement.style.color = "#2ecc71";

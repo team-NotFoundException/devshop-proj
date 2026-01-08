@@ -99,7 +99,7 @@ public class UserController {
         return "redirect:/user/login";
     }
 
-    @GetMapping("/user/username-check")
+    @GetMapping("/username-check")
     @ResponseBody
     public ResponseEntity<?> usernameCheck(@RequestParam("username") String username) {
         boolean isExist  = userService.usernameIsExist(username);
