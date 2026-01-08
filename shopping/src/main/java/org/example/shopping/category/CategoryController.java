@@ -23,12 +23,22 @@ public class CategoryController {
         return "category/save-form";
     }
 
-    // 카테고리 등록
-    @PostMapping("/admin/categories/save")
-    public String save(CategoryRequest.SaveDTO dto) {
-        categoryService.save(dto);
+    // 하위 카테고리 등록
+    @PostMapping("/admin/categories/child-save")
+    public String childSave(CategoryRequest.SaveChildDTO childDTO) {
+        categoryService.childSave(childDTO);
         return "redirect:/categories/list";
     }
+
+
+    // 상위 카테고리 등록
+    @PostMapping("/admin/categories/parent-save")
+    public String parentSave(CategoryRequest.SaveParentDTO parentDTO) {
+        categoryService.parentSave(parentDTO);
+        return "redirect:/categories/list";
+    }
+
+
 
     @GetMapping("/categories/list")
     public String list(Model model) {

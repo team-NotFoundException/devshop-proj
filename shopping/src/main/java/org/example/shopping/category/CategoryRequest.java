@@ -1,5 +1,7 @@
 package org.example.shopping.category;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 public class CategoryRequest {
@@ -8,36 +10,54 @@ public class CategoryRequest {
     // 카테고리 등록 DTO
 
     @Data
-    public static class SaveDTO {
+    public static class SaveChildDTO {
+        @NotBlank(message = "카테고리명은 필수입니다.")
         private String categoryName;
+
+        @Min(value = 0, message = "0보다 커야합니다.")
         private Integer displayOrder;
+
         private Long parentId;
 
-        public void validate() {
-            if (categoryName == null || categoryName.trim().isEmpty()) {
-                throw new IllegalArgumentException("카테고리명은 필수입니다");
-            }
+        public Category toEntity(Category parentEntity) {
+            return Category.builder()
+                    .categoryName(this.categoryName)
+                    .depth(parentEntity.getDepth() + 1)
+                    .displayOrder(this.displayOrder)
+                    .parent(parentEntity)
+                    .build();
+        }
 
-            if (displayOrder == null || displayOrder < 0) {
-                throw new IllegalArgumentException("displayOrder 값이 올바르지 않습니다");
-            }
+    }
+
+    @Data
+    public static class SaveParentDTO{
+        @NotBlank(message = "카테고리명은 필수입니다.")
+        private String categoryName;
+
+        private int depth;
+
+        @Min(value = 0, message = "0보다 커야합니다.")
+        private Integer displayOrder;
+
+        public Category toEntity() {
+            return Category.builder()
+                    .categoryName(this.categoryName)
+                    .depth(this.depth = 1)
+                    .displayOrder(this.displayOrder)
+                    .build();
         }
     }
+
 
 
     // 카테고리 수정 DTO
     @Data
     public static class UpdateDTO {
+        @NotBlank(message = "카테고리명은 필수입니다.")
         private String categoryName;   // 필수
-        private Integer displayOrder;  // 필수
 
-        public void validate() {
-            if (categoryName == null || categoryName.trim().isEmpty()) {
-                throw new IllegalArgumentException("카테고리명은 필수입니다");
-            }
-            if (displayOrder == null || displayOrder < 0) {
-                throw new IllegalArgumentException("displayOrder 값이 올바르지 않습니다");
-            }
-        }
+        @Min(value = 0, message = "0보다 커야합니다.")
+        private Integer displayOrder;  // 필수
     }
 }
