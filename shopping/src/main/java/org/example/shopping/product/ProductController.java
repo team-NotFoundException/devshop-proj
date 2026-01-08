@@ -44,6 +44,16 @@ public class ProductController {
         return "category/main";
     }
 
+    @GetMapping("/products/{productId}")
+    public String userProductDetail(@PathVariable Long productId, Model model) {
+
+        ProductResponse.UserDetailDTO product =
+                productService.findByIdForUser(productId);
+
+        model.addAttribute("product", product);
+        return "product/user-detail";
+    }
+
 
 
 

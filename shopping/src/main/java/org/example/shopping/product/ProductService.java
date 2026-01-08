@@ -128,4 +128,12 @@ public class ProductService {
                 .map(ProductResponse.MainCardDTO::new)
                 .toList();
     }
+
+    public ProductResponse.UserDetailDTO findByIdForUser(Long id) {
+
+        Product product = productRepository.findByIdWithCategory(id)
+                .orElseThrow(() -> new Exception404("상품을 찾을 수 없습니다"));
+
+        return new ProductResponse.UserDetailDTO(product);
+    }
 }
