@@ -29,7 +29,7 @@ public class TossPayGateway implements PaymentGateway {
     private String baseUrl;
 
     @Override
-    public PaymentResult approve(PaymentRequest.ApproveDTO approveDTO) {
+    public PaymentResult approve(PaymentRequest.CreateDTO createDTO) {
         try{
             String url = baseUrl + "/v1/payments/confirm";
             String auth = Base64.getEncoder()
@@ -40,16 +40,16 @@ public class TossPayGateway implements PaymentGateway {
             headers.set("Authorization", "Basic " + auth);
 
             Map<String, Object> body = Map.of(
-                    "paymentKey", approveDTO.getPaymentKey(),
-                    "orderId", approveDTO.getOrderId(),
-                    "amount", approveDTO.getAmount()
+                    "paymentKey", createDTO.getPaymentKey(),
+                    "orderId", createDTO.getOrderId(),
+                    "amount", createDTO.getAmount()
             );
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
             String response = restTemplate.postForObject(url, entity, String.class);
             log.info("[TossPay] confirm response={}", response);
 
-            return PaymentResult.ok(approveDTO.getPaymentKey());
+            return PaymentResult.ok(createDTO.getPaymentKey());
 
         } catch (Exception e){
             log.error("[TossPay] ERROR", e);

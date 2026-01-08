@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RequiredArgsConstructor
 @Controller
@@ -39,18 +40,31 @@ public class PaymentController {
         model.addAttribute("baseUrl", baseUrl);
         return "payment/payment-form";
     }
+    // ============================================================================================================
+
+    // MOCK 결제
+    @PostMapping("/payment/cart/{cartId}")
+    public String createPayment(PaymentRequest.CreateDTO createDTO, HttpSession session, @PathVariable Long cartId, Model model) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        PaymentResponse response = paymentService.createPayment(createDTO, sessionUser, cartId);
+        model.addAttribute("payment", response);
+        return "redirect:/";
+
+    }
 
     // ============================================================================================================
 
+    // TOSS 결제
     @GetMapping("/payment/cart/{cartId}/approve")
-    public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.ApproveDTO approveDTO, Model model) {
+    public String approvePaymentProc(HttpSession session, @PathVariable Long cartId, PaymentRequest.CreateDTO createDTO, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         try {
-            model.addAttribute("orderId", approveDTO.getOrderId());
-            model.addAttribute("amount", approveDTO.getAmount());
-            model.addAttribute("method", approveDTO.getMethod());
-            model.addAttribute("paymentKey", approveDTO.getPaymentKey());
-//            model.addAttribute("items", result.getItems());
+            PaymentResponse.PaymentResultDTO result = paymentService.approvePayment(sessionUser, cartId, createDTO);
+            model.addAttribute("orderId", createDTO.getOrderId());
+            model.addAttribute("amount", createDTO.getAmount());
+            model.addAttribute("method", createDTO.getMethod());
+            model.addAttribute("paymentKey", createDTO.getPaymentKey());
+            model.addAttribute("items", result.getItems());
             return "payment/payment-success";
 
         } catch (Exception e) {
@@ -68,7 +82,7 @@ public class PaymentController {
 
     }
 
-//==============================================================================================================================
+    //==============================================================================================================================
 
     //    @GetMapping("/payment/{id}/refund")
 //    public String refundPaymentForm(@PathVariable Long id, Model model

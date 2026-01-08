@@ -13,6 +13,9 @@ import org.example.shopping.payment.PaymentRefundRepository;
 import org.example.shopping.payment.PaymentRepository;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
+import org.example.shopping.payment.error.BusinessException;
+import org.example.shopping.payment.error.ErrorCode;
+import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.payment.service.gateway.PaymentGateway;
@@ -77,10 +80,18 @@ public class PaymentService {
 
 
     // ===================== 결제 =====================
+    @Transactional
+    public PaymentResponse createPayment(PaymentRequest.CreateDTO createDTO, User user, Long cartId) {
+        switch (createDTO.getMethod()){
+            case MOCK -> new PaymentResponse(processMockPayment(user,cartId ,createDTO));
+            case TOSS_PAY -> throw new BusinessException(ErrorCode.INVALID_INPUT);
+        }
+        return new PaymentResponse();
+    }
 
     // 목 결제
-    @Transactional
-    public void processMockPayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
+
+    public Payment processMockPayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
 
         List<CartItem> checkItem = getChecked(cartId);
         for (CartItem item : checkItem) {
@@ -97,26 +108,24 @@ public class PaymentService {
             payment.paySuccess();
             paymentRepository.save(payment);
 
-
         }
-
+        return new Payment();
     }
 
     // toss 결제
     @Transactional
-    public PaymentResponse.PaymentResultDTO approvePayment(User sessionUser, Long cartId, PaymentRequest.ApproveDTO approveDTO) {
+    public PaymentResponse.PaymentResultDTO approvePayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
         List<CartItem> checkItem = getChecked(cartId);
-        PaymentGateway gateway = gatewayResolver.resolve(approveDTO.getMethod());
-        PaymentResult paymentResult = gateway.approve(approveDTO);
-
+        PaymentGateway gateway = gatewayResolver.resolve(createDTO.getMethod());
+        PaymentResult paymentResult = gateway.approve(createDTO);
 
         for (CartItem item : checkItem) {
             Payment payment = Payment.builder()
                     .user(sessionUser)
-                    .orderId(approveDTO.getOrderId() + "-" + item.getId())
-                    .paymentKey(approveDTO.getPaymentKey())
+                    .orderId(createDTO.getOrderId() + "-" + item.getId())
+                    .paymentKey(createDTO.getPaymentKey())
                     .amount(item.getTotalPrice())
-                    .method(approveDTO.getMethod())
+                    .method(createDTO.getMethod())
                     .status(paymentResult.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)
                     .productCode(item.getProduct().getProductCode())
                     .productName(item.getProduct().getProductName())
@@ -124,13 +133,10 @@ public class PaymentService {
                     .failureMessage(paymentResult.getFailureMessage())
                     .build();
 
-
             if (paymentResult.isSuccess()) {
                 payment.paySuccess();
             }
-
-
-
+            paymentRepository.save(payment);
         }
 
         List<PaymentResponse.PaymentResultDTO.PaymentItemDTO> items = checkItem.stream()
