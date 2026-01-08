@@ -1,18 +1,14 @@
 package org.example.shopping.payment.dto;
 
 import lombok.Data;
-import org.example.shopping.payment.Payment;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
 
 public class PaymentRequest {
 
-    @Data
-    public static class CreateDTO {
-        private PaymentMethod method;
-    }
+
 
     @Data
-    public static class ApproveDTO{
+    public static class CreateDTO {
         private String paymentKey;
         private String orderId;
         private Long amount;

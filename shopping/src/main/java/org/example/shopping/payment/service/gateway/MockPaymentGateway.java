@@ -7,7 +7,7 @@ import java.util.UUID;
 @Component
 public class MockPaymentGateway implements PaymentGateway {
     @Override
-    public PaymentResult approve(PaymentRequest.ApproveDTO approveDTO) {
+    public PaymentResult approve(PaymentRequest.CreateDTO createDTO) {
         String paymentKey = "MOCK-" + UUID.randomUUID();
 
         return PaymentResult.ok(paymentKey);

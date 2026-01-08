@@ -4,6 +4,6 @@ import org.example.shopping.payment.dto.PaymentRequest;
 
 public interface PaymentGateway {
 
-    PaymentResult approve(PaymentRequest.ApproveDTO approveDTO);
+    PaymentResult approve(PaymentRequest.CreateDTO createDTO);
 
 }
