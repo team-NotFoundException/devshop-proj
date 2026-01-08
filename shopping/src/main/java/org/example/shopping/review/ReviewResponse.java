@@ -2,7 +2,6 @@ package org.example.shopping.review;
 
 import lombok.Data;
 import org.example.shopping._core.utils.MyDateUtil;
-import org.example.shopping.orderItem.OrderItem;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -23,20 +22,20 @@ public class ReviewResponse {
         private String productName;
 
         /** 상품 상세페이지 리뷰용 */
-        public ListDTO(Review review, OrderItem orderItem) {
-//            this.productId = orderItem.getProduct().getId();
-//            this.productName = orderItem.getProduct().getProductName();
-            this.id = review.getId();
-            this.content = review.getContent();
-
-            if (review.getUser() != null) {
-                this.username = review.getUser().getUsername();
-            }
-
-            if (review.getCreatedAt() != null) {
-                this.createdAt = MyDateUtil.toDateString(review.getCreatedAt());
-            }
-        }
+//        public ListDTO(Review review, OrderItem orderItem) {
+////            this.productId = orderItem.getProduct().getId();
+////            this.productName = orderItem.getProduct().getProductName();
+//            this.id = review.getId();
+//            this.content = review.getContent();
+//
+//            if (review.getUser() != null) {
+//                this.username = review.getUser().getUsername();
+//            }
+//
+//            if (review.getCreatedAt() != null) {
+//                this.createdAt = MyDateUtil.toDateString(review.getCreatedAt());
+//            }
+//        }
 
         /** 마이페이지 리뷰용 */
         public ListDTO(Review review) {

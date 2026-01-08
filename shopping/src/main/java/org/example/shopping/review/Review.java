@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.shopping._core.utils.BaseTimeEntity;
-import org.example.shopping.orderItem.OrderItem;
+
 import org.example.shopping.product.Product;
 import org.example.shopping.users.User;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -32,9 +32,9 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_item_id")
-    private OrderItem orderItem;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "order_item_id")
+//    private OrderItem orderItem;
 
     @Lob
     @JdbcTypeCode(SqlTypes.LONGVARCHAR)
