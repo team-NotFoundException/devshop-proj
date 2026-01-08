@@ -30,7 +30,6 @@ public class PaymentResponse {
 
     public PaymentResponse(Payment payment) {
         this.id = payment.getId();
-//            this.username = payment.getUsername();
         this.orderId = payment.getOrderId();
         this.paymentKey = payment.getPaymentKey();
         this.amount = payment.getAmount();
@@ -40,6 +39,8 @@ public class PaymentResponse {
         this.productName = payment.getProductName();
         this.requestedAt = LocalDateTime.now();
         this.approvedAt = LocalDateTime.now();
+    }
+    public PaymentResponse() {
     }
 
     @Data
