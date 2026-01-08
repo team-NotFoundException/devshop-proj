@@ -122,4 +122,10 @@ public class ProductService {
         return productRepository.countByOwnerId(ownerId);
     }
 
+    public List<ProductResponse.MainCardDTO> findByCategoryIdForMain(Long categoryId) {
+        return productRepository.findByStatusAndCategoryIdOrderByCreatedAtDesc(ProductStatus.ACTIVE, categoryId)
+                .stream()
+                .map(ProductResponse.MainCardDTO::new)
+                .toList();
+    }
 }
