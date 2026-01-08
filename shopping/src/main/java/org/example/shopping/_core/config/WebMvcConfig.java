@@ -25,7 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/order/**", "/payment/**", "/review/**", "/user/**", "/cart/**", "/product/**")
                 .excludePathPatterns(
                         "/user/login", "/user/join", "/user/join/**", "/user/logout", "/user/username-check", "/detail", "/", "/css/**",
-                        "/js/**", "/images/**", "/favicon.io", "/user/popup/**", "/h2-console/**"
+                        "/static/js/**", "/images/**", "/favicon.io", "/user/popup/**", "/h2-console/**"
                 );
 
         registry.addInterceptor(sessionInterceptor)

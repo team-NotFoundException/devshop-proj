@@ -19,14 +19,8 @@
             <div class="join-form-group">
                 <label for="username">아이디 <span class="required">*</span></label>
                 <div class="custom-input-group">
-                    <input type="text"
-                           id="username"
-                           name="username"
-                           placeholder="5자~12자 이내"
-                           required>
-                    <button type="button"
-                            class="btn-sub-action"
-                            onclick="usernameCheck()">중복확인</button>
+                    <input type="text" id="username" name="username" placeholder="5자~12자 이내" required>
+                    <button type="button" class="btn-sub-action" onclick="usernameCheck()">중복확인</button>
                 </div>
                 <small id="usernameMsg"></small>
             </div>
@@ -116,4 +110,4 @@
 
 {{> layout/footer }}
 
-<script src="/static/js/join-common.js"></script>
+<script src="/js/join-common.js"></script>
