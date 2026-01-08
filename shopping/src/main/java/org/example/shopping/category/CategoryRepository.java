@@ -15,7 +15,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT c " +
             "FROM Category c " +
             "LEFT JOIN FETCH c.parent " +
-            "ORDER BY c.displayOrder ASC, c.displayOrder ASC")
+            "ORDER BY c.depth ASC, c.displayOrder ASC")
     List<Category> findAllWithParent();
 
 
@@ -39,8 +39,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     // 최상위 카테고리 조회
     @Query("SELECT c " +
             "FROM Category c" +
-            " WHERE c.depth = 0 " +
+            " WHERE c.depth = 1 " +
             "ORDER BY c.displayOrder ASC ")
     List<Category> findRootCategories();
+
+    List<Category> findByDepth(int depth);
 
 }

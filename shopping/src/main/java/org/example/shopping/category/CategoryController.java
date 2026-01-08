@@ -10,28 +10,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
 
     // 카테고리 등록 폼
-    // http://localhost:8080/categories/save-form
-    @GetMapping("/save-form")
+    // http://localhost:8080/categories/save
+    @GetMapping("/admin/categories/save")
     public String saveForm(Model model) {
         model.addAttribute("categories", categoryService.findAll());
         return "category/save-form";
     }
 
-    // 카테고리 등록
-    @PostMapping("/save")
-    public String save(CategoryRequest.SaveDTO dto) {
-        categoryService.save(dto);
+    // 하위 카테고리 등록
+    @PostMapping("/admin/categories/child-save")
+    public String childSave(CategoryRequest.SaveChildDTO childDTO) {
+        categoryService.childSave(childDTO);
         return "redirect:/categories/list";
     }
 
-    @GetMapping("list")
+
+    // 상위 카테고리 등록
+    @PostMapping("/admin/categories/parent-save")
+    public String parentSave(CategoryRequest.SaveParentDTO parentDTO) {
+        categoryService.parentSave(parentDTO);
+        return "redirect:/categories/list";
+    }
+
+
+
+    @GetMapping("/categories/list")
     public String list(Model model) {
         model.addAttribute("categories", categoryService.findAll());
         return "category/list";

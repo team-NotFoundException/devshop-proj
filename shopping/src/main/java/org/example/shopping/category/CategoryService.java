@@ -1,6 +1,7 @@
 package org.example.shopping.category;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,25 +59,23 @@ public class CategoryService {
      * 카테고리 등록
      */
     @Transactional
-    public void save(CategoryRequest.SaveDTO dto) {
+    public void parentSave(CategoryRequest.SaveParentDTO parentDTO) {
+        Category parent = parentDTO.toEntity();
+        categoryRepository.save(parent);
+    }
 
-        Category parent = null;
-        int depth = 0;
+    @Transactional
+    public void childSave(CategoryRequest.SaveChildDTO childDTO) {
+        Category parents = categoryRepository.findById(childDTO.getParentId())
+                .orElseThrow(() -> new Exception404("부모 카테고리를 찾을 수 없어요"));
 
-        if (dto.getParentId() != null) {
-            parent = categoryRepository.findById(dto.getParentId())
-                    .orElseThrow(() -> new Exception404("부모 카테고리를 찾을 수 없습니다"));
-            depth = parent.getDepth() + 1;
+        if (parents.getDepth() != 1) {
+            throw new Exception400("대분류 카테고리 안에만 하위카테고리를 추가 가능함");
         }
 
-        Category category = Category.builder()
-                .categoryName(dto.getCategoryName())
-                .depth(depth)
-                .displayOrder(dto.getDisplayOrder())
-                .parent(parent)
-                .build();
+        Category child = childDTO.toEntity(parents);
+        categoryRepository.save(child);
 
-        categoryRepository.save(category);
     }
 
     /**
@@ -101,4 +100,7 @@ public class CategoryService {
 
         categoryRepository.delete(category);
     }
+
+
+
 }

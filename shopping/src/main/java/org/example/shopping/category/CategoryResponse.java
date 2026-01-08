@@ -4,6 +4,7 @@ import lombok.Data;
 import org.example.shopping._core.utils.MyDateUtil;
 
 public class CategoryResponse {
+
     @Data
     public static class ListDTO {
         private Long id;
@@ -22,6 +23,10 @@ public class CategoryResponse {
             if (category.getParent() != null) {
                 this.parentName = category.getParent().getCategoryName();
             }
+        }
+
+        public boolean isRoot() {
+            return this.depth == 1;
         }
     }
 
