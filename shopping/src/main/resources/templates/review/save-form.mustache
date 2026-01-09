@@ -1,16 +1,14 @@
-<div class="mypage-content-box">
-    <div class="card">
-        <div class="card-header"><b>상품 리뷰 작성</b></div>
 
-        <form action="/review/save" method="post" enctype="multipart/form-data">
 
-            <div class="mb-3">
-                <textarea class="form-control" rows="5" placeholder="내용 입력" name="content" required></textarea>
-            </div>
+<section class="mypage-content-box">
+    <div class="review-header">
+        <h1>상품 리뷰 작성</h1>
+        <p class="text-muted">구매하신 상품에 대한 솔직한 후기를 남겨주세요.</p>
+    </div>
 
-            <div class="mb-3">
-                <label>평점 (1~5)</label>
-            </div>
+    <form action="/review/save" method="post" enctype="multipart/form-data" class="review-form">
+        <div class="review-section text-center">
+            <label class="section-label">상품은 만족스러우셨나요?</label>
             <div class="star-rating">
                 <input type="radio" id="5-stars" name="rating" value="5"/>
                 <label for="5-stars" class="star">&#9733;</label>
@@ -20,18 +18,33 @@
                 <label for="3-stars" class="star">&#9733;</label>
                 <input type="radio" id="2-stars" name="rating" value="2"/>
                 <label for="2-stars" class="star">&#9733;</label>
-                <input type="radio" id="1-star" name="rating" value="1" checked hidden/>
+                <input type="radio" id="1-star" name="rating" value="1" checked/>
                 <label for="1-star" class="star">&#9733;</label>
             </div>
+            <p class="rating-guide text-muted">별점을 클릭하여 평가해주세요.</p>
+        </div>
 
-            <div class="mb-3">
-                <label for="reviewImage">리뷰 사진(선택사항)</label>
+        <div class="review-section">
+            <label for="content" class="section-label">상세 리뷰</label>
+            <textarea class="form-control review-textarea" rows="6"
+                      placeholder="상품의 품질, 배송, 디자인 등 다른 구매자에게 도움이 될 내용을 적어주세요."
+                      name="content" id="content" required></textarea>
+        </div>
+
+        <div class="review-section">
+            <label class="section-label">사진 첨부 <span class="optional">(선택)</span></label>
+            <div class="image-upload-wrapper">
                 <input type="file" class="form-control" id="reviewImage" name="reviewImage" accept="image/*">
-                <small class="form-text text-muted mt-1">이미지 파일만 업로드 가능합니다(JPG, PNG, GIF)</small>
+                <div class="upload-guide">
+                    <i class="fa-solid fa-camera"></i>
+                    <span>이미지 파일 업로드 (JPG, PNG)</span>
+                </div>
             </div>
+        </div>
 
-            <!-- 버튼 클릭시 폼이 제출됨 -->
-            <button class="btn btn-primary form-control">리뷰 작성 완료</button>
-        </form>
-    </div>
-</div>
+        <div class="form-actions">
+            <button type="submit" class="btn-review-submit">리뷰 작성 완료</button>
+            <button type="button" class="btn-review-cancel" onclick="history.back();">취소</button>
+        </div>
+    </form>
+</section>
