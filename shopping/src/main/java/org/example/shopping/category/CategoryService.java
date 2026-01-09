@@ -19,11 +19,20 @@ public class CategoryService {
      * 카테고리 전체 조회 (부모 카테고리 포함)
      */
     public List<CategoryResponse.ListDTO> findAll() {
-        List<Category> categories = categoryRepository.findAllWithParent();
+        List<Category> categories = categoryRepository.findAll();
+
         return categories.stream()
                 .map(CategoryResponse.ListDTO::new)
                 .toList();
     }
+    public List<CategoryResponse.ListDTO> findAllByDepth() {
+        List<Category> categories = categoryRepository.findByDepth(2);
+        return categories.stream()
+                .map(CategoryResponse.ListDTO::new)
+                .toList();
+    }
+
+
 
     /**
      * 카테고리 단건 조회
@@ -116,4 +125,6 @@ public class CategoryService {
                 })
                 .toList();
     }
+
+
 }

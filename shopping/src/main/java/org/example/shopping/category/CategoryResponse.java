@@ -14,7 +14,7 @@ public class CategoryResponse {
         private Long id;
         private String categoryName;
         private int depth;
-        private Integer displayOrder;
+        private Long displayOrder;
         private String parentName;
         private String createdAt;
 
@@ -29,6 +29,17 @@ public class CategoryResponse {
             }
         }
 
+//        public ListDTO(Category category, int depth){
+//            this.id = category.getParent().getId();
+//            this.categoryName = category.getParent().getCategoryName();
+//            this.depth = category.getParent().getDepth();
+//            this.displayOrder = (category.getDisplayOrder() != null) ? category.getDisplayOrder() : 0;
+//
+//            if (category.getParent() != null) {
+//                this.parentName = category.getParent().getCategoryName();
+//            }
+//        }
+
         public boolean isRoot() {
             return this.depth == 1;
         }
@@ -41,7 +52,7 @@ public class CategoryResponse {
         private Long id;
         private String categoryName;
         private int depth;
-        private int displayOrder;
+        private Long displayOrder;
         private Long parentId;
         private String parentName;
         private String createdAt;
@@ -65,7 +76,7 @@ public class CategoryResponse {
     public static class UpdateFormDTO {
         private Long id;
         private String categoryName;
-        private int displayOrder;
+        private Long displayOrder;
 
         public UpdateFormDTO(Category category) {
             this.id = category.getId();

@@ -44,6 +44,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             "ORDER BY c.displayOrder ASC ")
     List<Category> findRootCategories();
 
-    List<Category> findByDepth(int depth);
+    @Query("SELECT c FROM Category  c WHERE  c.depth = :depth")
+    List<Category> findByDepth(@Param("depth") int depth);
 
 }
