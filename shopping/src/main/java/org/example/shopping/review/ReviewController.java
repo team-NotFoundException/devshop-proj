@@ -27,9 +27,6 @@ public class ReviewController {
             HttpSession session
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) {
-            throw new Exception401("로그인 먼저 해주세요");
-        }
 
         return "user/mypage-reviewSave";
     }

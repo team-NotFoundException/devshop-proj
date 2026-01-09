@@ -1,194 +1,159 @@
-/* mypage-sidebar.css */
-
-/* 메인 래퍼 */
-.mypage-main-wrapper {
-    display: flex;
-    max-width: 1200px;
+/* 컨테이너 및 헤더 */
+.mypage-content-box {
+    max-width: 700px; /* 너무 넓지 않게 조정 */
     margin: 0 auto;
-    gap: 40px;
-    padding: 40px 20px;
+    background: #fff;
+    padding: 40px;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* 사이드바 */
-.mypage-sidebar {
-    width: 180px;
-    height: fit-content;
-    position: sticky;
-    top: 20px;
-}
-
-.mypage-sidebar h2 {
-    font-size: 24px;
-    margin-bottom: 30px;
-    color: #000;
-    font-weight: 700;
-}
-
-.mypage-sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.mypage-sidebar li {
-    margin: 0;
-}
-
-.mypage-sidebar a {
-    display: block;
-    padding: 12px 0;
-    color: #888;
-    text-decoration: none;
-    font-size: 15px;
-    transition: color 0.2s;
-    font-weight: 400;
-}
-
-.mypage-sidebar a:hover {
-    color: #000;
-}
-
-.mypage-sidebar a.active {
-    color: #000;
-    font-weight: 700;
-}
-
-
-h2{
+.review-header {
+    text-align: center;
     margin-bottom: 40px;
 }
 
-ul {
-    padding:0;
-}
-
-li {
-    font-size: 1.3rem;
-}
-
-a.active {
-    font-weight: bold;
-}
-
-.mypage-content-box {
-    flex-grow: 1; /* 남은 공간 모두 사용 */
-}
-
-/* 오른쪽 수정 폼 영역 */
-.mypage-content-box {
-    flex: 1;
-    max-width: 900px;
-    border: 1px solid #eaeaea;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    padding: 40px;
-}
-
-.mypage-content-box h1 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 35px;
-}
-
-/* 폼 그룹 스타일 */
-.update-form-group {
-    margin-bottom: 25px;
-}
-
-.update-form-group label {
-    display: block;
-    font-size: 14px;
-    font-weight: bold;
+.review-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111;
     margin-bottom: 8px;
 }
 
-.update-form-group label .req-star {
-    color: #ff4d4d;
-    margin-left: 3px;
+/* 섹션 공통 */
+.review-section {
+    margin-bottom: 30px;
 }
 
-/* 수정하기 버튼 */
-.btn-review {
-    width: 100%;
-    padding: 15px;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: bold;
+.section-label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.optional {
+    color: #aaa;
+    font-weight: 400;
+    font-size: 13px;
+}
+
+/* 별점 스타일 고도화 */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.star-rating input { display: none; }
+
+.star-rating label {
+    font-size: 40px; /* 별 크기 키움 */
+    color: #e9ecef;
     cursor: pointer;
-    margin-top: 20px;
-}
-
-.btn-submit-update:hover {
-    background-color: #2980b9;
-}
-
-.star-rating {
-    /*border:solid 1px #ccc;*/
-    display:flex;
-    flex-direction: row-reverse;
-    font-size:1.5em;
-    justify-content: space-between;
-    padding:0 .2em;
-    text-align:center;
-    width: 250px;
-}
-
-.star-rating input {
-    display:none;
-}
-
-.star-rating label {
-    color:#ccc;
-    cursor:pointer;
-    user-select: none;
-}
-
-.star-rating :checked ~ label {
-    color:#f90;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .star-rating label:hover,
-.star-rating label:hover ~ label {
-    color:#fc0;
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: #ffc107; /* 황금색 별 */
 }
 
-.star {
-    font-size: 1.3em;
-    color: #ccc;
+.star-rating label:hover {
+    transform: scale(1.15);
 }
 
-.star.filled {
-    color: #f90;
+.rating-guide {
+    font-size: 13px;
 }
 
-.star-rating {
-    /*border:solid 1px #ccc;*/
-    display:flex;
-    flex-direction: row-reverse;
-    font-size:1.5em;
-    justify-content: space-between;
-    padding:0 .2em;
-    text-align:center;
-    width: 250px;
+/* 텍스트 영역 */
+.review-textarea {
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 15px;
+    resize: none;
+    font-size: 14px;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
 }
 
-.star-rating input {
-    display:none;
+.review-textarea:focus {
+    background-color: #fff;
+    border-color: #333;
+    box-shadow: none;
 }
 
-.star-rating label {
-    color:#ccc;
-    cursor:pointer;
-    user-select: none;
+/* 이미지 업로드 스타일링 */
+.image-upload-wrapper {
+    position: relative;
+    border: 2px dashed #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: border-color 0.2s;
 }
 
-.star-rating :checked ~ label {
-    color:#f90;
+.image-upload-wrapper:hover {
+    border-color: #adb5bd;
 }
 
-.star-rating label:hover,
-.star-rating label:hover ~ label {
-    color:#fc0;
+.upload-guide {
+    color: #6c757d;
+    pointer-events: none;
+}
+
+.upload-guide i {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#reviewImage {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* 버튼 영역 */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 40px;
+}
+
+.btn-review-submit {
+    flex: 2;
+    padding: 16px;
+    background-color: #111;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-review-submit:hover {
+    background-color: #333;
+}
+
+.btn-review-cancel {
+    flex: 1;
+    padding: 16px;
+    background-color: #f1f3f5;
+    color: #495057;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
 }
