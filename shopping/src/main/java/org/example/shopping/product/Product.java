@@ -1,14 +1,14 @@
 package org.example.shopping.product;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.owner.Owner;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.awt.image.BufferedImageFilter;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
