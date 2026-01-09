@@ -20,11 +20,13 @@ public class PaymentResponse {
     private String orderId;
     private String paymentKey;
     private Long amount;
+
     PaymentMethod method;
     PaymentStatus status;
     private String productCode;
     private String productName;
     // private Long userPointBalance;
+    private String createdAt;
     LocalDateTime requestedAt;
     LocalDateTime approvedAt;
 
@@ -37,6 +39,7 @@ public class PaymentResponse {
         this.status = payment.getStatus();
         this.productCode = payment.getProductCode();
         this.productName = payment.getProductName();
+        this.createdAt = String.valueOf(payment.getCreatedAt());
         this.requestedAt = LocalDateTime.now();
         this.approvedAt = LocalDateTime.now();
     }
