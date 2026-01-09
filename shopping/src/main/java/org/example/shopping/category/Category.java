@@ -26,10 +26,10 @@ public class Category  extends BaseTimeEntity {
     private Category parent;
 
     private int depth;
-    private int displayOrder;
+    private Integer displayOrder;
 
     @Builder
-    public Category(String categoryName, int depth, int displayOrder, Category parent) {
+    public Category(String categoryName, int depth, Integer displayOrder, Category parent) {
         this.categoryName = categoryName;
         this.depth = depth;
         this.displayOrder = displayOrder;

@@ -1,0 +1,85 @@
+/* 네비게이션 바 전체 컨테이너 */
+.navbar-container {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+}
+
+.nav-root {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: center; /* 가운데 정렬 */
+}
+
+/* 부모 아이템 */
+.nav-parent {
+    position: relative; /* 자식 리스트 배치의 기준 */
+}
+
+.nav-parent-link {
+    display: block;
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.nav-parent-link:hover {
+    color: #007bff;
+}
+
+/* 자식 리스트 (기본 숨김) */
+.nav-child-list {
+    position: absolute;
+    top: 100%; /* 부모 바로 아래 */
+    left: 0;
+    min-width: 180px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+
+    /* 애니메이션 준비 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+/* ⭐ 핵심: 부모 아이템에 마우스 올릴 때 자식 리스트 표시 */
+.nav-parent:hover .nav-child-list {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* 자식 아이템 스타일 */
+.nav-child-item a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+}
+
+.nav-child-item a:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+/* 화살표 아이콘 (CSS로 구현) */
+.arrow-down {
+    display: inline-block;
+    width: 0; height: 0;
+    margin-left: 5px;
+    vertical-align: middle;
+    border-top: 4px solid #333;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
