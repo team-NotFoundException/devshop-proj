@@ -109,8 +109,21 @@ public class CartService {
 
     // 아이템 개수/옵션 변경
     @Transactional
-    public void updateOption(CartRequest.UpdateOptionDTO updateOptionDTO, Long cartId ,Long cartItemId) {
+    public CartResponse.CartUpdateDTO updateOption(Long cartItemId, CartRequest.UpdateOptionDTO updateOptionDTO, Long userId) {
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
+        CartItem cartItem = cart.getCartItem(cartItemId);
+
+        cartItem.updateQuantity(cartItem.getQuantity() + updateOptionDTO.getQuantity());
+        cartItem.updateTotalPrice();
+        cart.updateAmount();
+
+        Integer newQuantity = cartItem.getQuantity();
+        Long newTotalPrice = cartItem.getTotalPrice();
+        Long newAmount = cart.getAmount();
+
+        return new CartResponse.CartUpdateDTO(cartItemId, newQuantity, newTotalPrice, newAmount);
     }
 
 }

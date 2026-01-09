@@ -187,4 +187,11 @@ public class PaymentService {
     }
 
 
+    public List<PaymentResponse> paymentList(Long userId) {
+        List<Payment> paymentList = paymentRepository.findInfoUserId(userId);
+
+        return paymentList.stream().map(PaymentResponse::new).toList();
+    }
+
+
 }
