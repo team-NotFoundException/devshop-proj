@@ -28,4 +28,19 @@ public class CartResponse {
             this.amount = amount;
         }
     }
+
+    @Data
+    public static class CartUpdateDTO {
+        private Long id;
+        private Integer quantity;
+        private Long totalPrice;
+        private Long amount;
+
+        public CartUpdateDTO(Long id, Integer quantity, Long totalPrice, Long amount) {
+            this.id = id;
+            this.quantity = quantity;
+            this.totalPrice = totalPrice;
+            this.amount = amount;
+        }
+    }
 }

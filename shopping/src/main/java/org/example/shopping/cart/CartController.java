@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -71,9 +68,14 @@ public class CartController {
 
     // 아이템 개수/옵션 변경
     @PostMapping("/cart/{cartItemId}/update-option")
-    public String updateOption(CartRequest.UpdateOptionDTO updateOptionDTO, @PathVariable Long cartItemId, HttpSession session) {
+    @ResponseBody
+    public CartResponse.CartUpdateDTO updateOption(@PathVariable Long cartItemId,
+                               @RequestBody CartRequest.UpdateOptionDTO updateOptionDTO,
+                               HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
+        CartResponse.CartUpdateDTO cartUpdateDTO = cartService.updateOption(cartItemId, updateOptionDTO, sessionUser.getId());
 
-        return "redirect:/cart/list";
+        return cartUpdateDTO;
     }
 }

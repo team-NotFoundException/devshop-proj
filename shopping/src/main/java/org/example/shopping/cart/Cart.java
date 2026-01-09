@@ -70,4 +70,13 @@ public class Cart {
                 .mapToLong(CartItem::getTotalPrice)
                 .sum();
     }
+
+    public CartItem getCartItem(Long cartItemId) {
+        CartItem cartItem = this.cartItems.stream()
+                .filter(ci -> ci.getId().equals(cartItemId))
+                .findFirst()
+                .orElseThrow(() -> new Exception404("상품을 찾을 수 없습니다"));
+
+        return cartItem;
+    }
 }

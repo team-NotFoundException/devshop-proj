@@ -62,9 +62,9 @@
                                 <div class="item-meta">
 
                                     <div class="quantity">
-                                        <button class="quantityBtn"><i class="fa-solid fa-minus"></i></button>
-                                        <span class="item-quantity">수량: {{quantity}}개</span>
-                                        <button class="quantityBtn"><i class="fa-solid fa-plus"></i></button>
+                                        <button class="quantityBtn" onclick="updateOption(-1)"><i class="fa-solid fa-minus"></i></button>
+                                        <span class="item-quantity" id="item-quantity">{{quantity}}개</span>
+                                        <button class="quantityBtn" onclick="updateOption(1)"><i class="fa-solid fa-plus"></i></button>
                                     </div>
 
                                     <span class="badge-fast">빠른배송</span>
@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="item-price">
-                                <p class="price">{{totalPrice}}</p>
+                                <p class="price" id="total-price">{{totalPrice}}</p>
                             </div>
                         </div>
 
@@ -104,7 +104,7 @@
                 <div class="price-breakdown">
                     <div class="price-row">
                         <span class="label">총 상품금액</span>
-                        <span class="value" id="totalProductPrice">{{cart.amount}}원</span>
+                        <span class="value" id="finalPrice">{{cart.amount}}원</span>
                     </div>
                     <div class="price-row">
                         <span class="label">배송비</span>
@@ -163,7 +163,22 @@
                 });
     }
 
+    function updateOption(number) {
+        const quantity = document.getElementById("item-quantity");
+
+        fetch(`/cart/${cartItemId}/update-option`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(number)
+        })
+                .then(res => res.json())
+                .then(data => {
+                    quantity.textContent = data.quantity;
+
+                    document.getElementById("total-price").textContent = data.totalPrice.toLocaleString();
+                    document.getElementById("finalPrice").textContent = data.amount.toLocaleString();
+                })
+    }
 
 </script>
-
 {{>layout/footer}}
