@@ -1,16 +1,20 @@
 package org.example.shopping.category;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.shopping._core.utils.MyDateUtil;
+
+import java.util.List;
 
 public class CategoryResponse {
 
     @Data
+    @NoArgsConstructor
     public static class ListDTO {
         private Long id;
         private String categoryName;
         private int depth;
-        private int displayOrder;
+        private Long displayOrder;
         private String parentName;
         private String createdAt;
 
@@ -18,12 +22,23 @@ public class CategoryResponse {
             this.id = category.getId();
             this.categoryName = category.getCategoryName();
             this.depth = category.getDepth();
-            this.displayOrder = category.getDisplayOrder();
+            this.displayOrder = (category.getDisplayOrder() != null) ? category.getDisplayOrder() : 0;
 
             if (category.getParent() != null) {
                 this.parentName = category.getParent().getCategoryName();
             }
         }
+
+//        public ListDTO(Category category, int depth){
+//            this.id = category.getParent().getId();
+//            this.categoryName = category.getParent().getCategoryName();
+//            this.depth = category.getParent().getDepth();
+//            this.displayOrder = (category.getDisplayOrder() != null) ? category.getDisplayOrder() : 0;
+//
+//            if (category.getParent() != null) {
+//                this.parentName = category.getParent().getCategoryName();
+//            }
+//        }
 
         public boolean isRoot() {
             return this.depth == 1;
@@ -37,7 +52,7 @@ public class CategoryResponse {
         private Long id;
         private String categoryName;
         private int depth;
-        private int displayOrder;
+        private Long displayOrder;
         private Long parentId;
         private String parentName;
         private String createdAt;
@@ -61,12 +76,31 @@ public class CategoryResponse {
     public static class UpdateFormDTO {
         private Long id;
         private String categoryName;
-        private int displayOrder;
+        private Long displayOrder;
 
         public UpdateFormDTO(Category category) {
             this.id = category.getId();
             this.categoryName = category.getCategoryName();
             this.displayOrder = category.getDisplayOrder();
+        }
+    }
+
+
+    @Data
+    public static class NavbarDTO {
+        private Long id;
+        private String categoryName;
+        private List<NavbarDTO> children;
+
+        public NavbarDTO(Category category, List<NavbarDTO> children) {
+            this.id = category.getId();
+            this.categoryName = category.getCategoryName();
+            this.children = children;
+        }
+
+        public NavbarDTO(Category category) {
+            this.id = category.getId();
+            this.categoryName = category.getCategoryName();
         }
     }
 

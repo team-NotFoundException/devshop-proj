@@ -44,9 +44,6 @@ public class ProductController {
         return "category/main";
     }
 
-
-
-
     // - user
     // 상품 목록 조회
     // http://localhost:8080/products/list-form
@@ -58,22 +55,6 @@ public class ProductController {
 
         model.addAttribute("products", list);
         return "product/list-form";
-    }
-
-    // 상품 상세 조회
-    // http://localhost:8080/products/1/detail
-    @GetMapping("/products/{id}/detail")
-    public String detail(@PathVariable Long id, Model model, HttpSession session) {
-
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null || sessionUser.getRole().equals("USER")) {
-            throw  new Exception403("로그인 먼저 해주세요");
-        }
-
-        ProductResponse.DetailDTO product = productService.findById(id);
-        model.addAttribute("product",product);
-        return "product/detail";
     }
 
     // 상태별 조회
@@ -92,11 +73,10 @@ public class ProductController {
         return "product/list-form";
     }
 
-
     // - admin
     // 상품 등록 폼
     // http://localhost:8080/products/save
-    @GetMapping("/owner/products/save")
+    @GetMapping("/products/save")
     public String saveForm( Model model, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
@@ -108,7 +88,7 @@ public class ProductController {
 
     // 상품 등록
     //http://localhost:8080/products/save
-    @PostMapping("/owner/products/save")
+    @PostMapping("/products/save")
     public String save(ProductRequest.SaveDTO dto, HttpSession session) {
         productService.save(dto);
         return "redirect:/products/list-form";
@@ -116,7 +96,7 @@ public class ProductController {
 
     // 상품 수정 폼
     // http://localhost:8080/products/1/edit
-    @GetMapping("/owner/products/{id}/edit")
+    @GetMapping("/products/{id}/edit")
     public String editForm(@PathVariable Long id, Model model, HttpSession session) {
         ProductResponse.UpdateFormDTO dto =
                 productService.findByIdForUpdate(id);
@@ -127,7 +107,7 @@ public class ProductController {
     }
 
     // 상품 수정
-    @PostMapping("/owner/products/{id}/edit")
+    @PostMapping("/products/{id}/edit")
     public String edit(
             @PathVariable Long id,
             ProductRequest.UpdateDTO dto, HttpSession session
@@ -137,10 +117,37 @@ public class ProductController {
     }
 
     // 상품 삭제
-    @PostMapping("/owner/products/{id}/delete")
+    @PostMapping("/products/{id}/delete")
     public String delete(@PathVariable Long id, HttpSession session) {
         productService.deleteById(id);
         return "redirect:/products/list-form";
+    }
+
+    // 상품 상세 조회
+    // http://localhost:8080/products/1/detail
+    @GetMapping("/products/{id}/detail")
+    public String detail(@PathVariable Long id, Model model, HttpSession session) {
+
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null || sessionUser.getRole().equals("USER")) {
+            throw  new Exception403("로그인 먼저 해주세요");
+        }
+
+        ProductResponse.DetailDTO product = productService.findById(id);
+        model.addAttribute("product",product);
+        return "product/detail";
+    }
+
+    // 사용자용 상품 상세 조회 - 경로에 제약 조건 추가함
+    @GetMapping("/products/{productId:[0-9]+}")
+    public String userProductDetail(@PathVariable Long productId, Model model) {
+
+        ProductResponse.UserDetailDTO product =
+                productService.findByIdForUser(productId);
+
+        model.addAttribute("product", product);
+        return "product/user-detail";
     }
 
 }

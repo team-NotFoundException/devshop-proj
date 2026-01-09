@@ -58,7 +58,7 @@ public class CategoryPersistRepository {
 
     // 카테고리 수정
     @Transactional
-    public Category updateById(Long id, String categoryName, int displayOrder) {
+    public Category updateById(Long id, String categoryName, Long displayOrder) {
         Category category = entityManager.find(Category.class, id);
         if (category == null) {
             throw new Exception404("수정할 카테고리를 찾을 수 없습니다");

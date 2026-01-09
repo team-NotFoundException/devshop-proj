@@ -1,8 +1,6 @@
-<div class="header-wrapper">
-    <div class="container">
+
         {{> layout/header }}
-    </div>
-</div>
+
 
 <main class="admin-owner-wrapper">
     {{> layout/admin-sidebar}}
@@ -39,8 +37,9 @@
                             <select name="parentId" class="form-select" required>
                                 <option value="">대분류를 선택하세요</option>
                                 {{#categories}}
-                                    {{#isRoot}} <option value="{{id}}">{{categoryName}}</option>
-                                    {{/isRoot}}
+
+                                        <option value="{{id}}">{{categoryName}}</option>
+
                                 {{/categories}}
                             </select>
                         </div>

@@ -1,8 +1,5 @@
-<div class="header-wrapper">
-    <div class="container">
-        {{> layout/header }}
-    </div>
-</div>
+{{> layout/header }}
+
 
 <main class="admin-owner-wrapper">
     {{> layout/admin-sidebar}}
@@ -29,23 +26,66 @@
                 <tr>
                     <td>{{id}}</td>
                     <td>
-                        <span class="badge {{#parentName}}bg-info-dark{{/parentName}}{{^parentName}}bg-primary-dark{{/parentName}}">
-                            {{#parentName}}소분류{{/parentName}}{{^parentName}}대분류{{/parentName}}
+                        <span class="badge
+                            {{#parentName}}bg-info-dark{{/parentName}}
+                            {{^parentName}}bg-primary-dark{{/parentName}}">
+                            {{#parentName}}소분류{{/parentName}}
+                            {{^parentName}}대분류{{/parentName}}
                         </span>
                     </td>
                     <td class="fw-bold">{{categoryName}}</td>
-                    <td>{{#parentName}}{{parentName}}{{/parentName}}{{^parentName}}-{{/parentName}}</td>
-                    <td>{{displayOrder}}</td>
+                    <td>
+                        {{#parentName}}{{parentName}}{{/parentName}}
+                        {{^parentName}}-{{/parentName}}
+                    </td>
+                    <td>
+                        {{#displayOrder}}{{displayOrder}}{{/displayOrder}}
+                        {{^displayOrder}}없음{{/displayOrder}}
+                    </td>
                     <td>
                         <div class="d-flex gap-2">
                             <a href="/admin/categories/{{id}}/edit" class="btn-sm btn-edit text-decoration-none">수정</a>
-                            <form action="/admin/categories/{{id}}/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+                            <form action="/admin/categories/{{id}}/delete" method="post"
+                                  onsubmit="return confirm('정말 삭제하시겠습니까?')">
                                 <button type="submit" class="btn-sm btn-delete" style="border:none;">삭제</button>
                             </form>
                         </div>
                     </td>
                 </tr>
             {{/categories}}
+            {{#children}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>
+                        <span class="badge
+                            {{#parentName}}bg-info-dark{{/parentName}}
+                            {{^parentName}}bg-primary-dark{{/parentName}}">
+                            {{#parentName}}소분류{{/parentName}}
+                            {{^parentName}}대분류{{/parentName}}
+                        </span>
+                    </td>
+                    <td class="fw-bold">{{categoryName}}</td>
+                    <td>
+                        {{#parentName}}{{parentName}}{{/parentName}}
+                        {{^parentName}}-{{/parentName}}
+                    </td>
+                    <td>
+                        {{#displayOrder}}{{displayOrder}}{{/displayOrder}}
+                        {{^displayOrder}}없음{{/displayOrder}}
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a href="/admin/categories/{{id}}/edit" class="btn-sm btn-edit text-decoration-none">수정</a>
+                            <form action="/admin/categories/{{id}}/delete" method="post"
+                                  onsubmit="return confirm('정말 삭제하시겠습니까?')">
+                                <button type="submit" class="btn-sm btn-delete" style="border:none;">삭제</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {{/children}}
+
+
             {{^categories}}
                 <tr>
                     <td colspan="6" class="text-center py-5 text-muted">등록된 카테고리가 없습니다.</td>

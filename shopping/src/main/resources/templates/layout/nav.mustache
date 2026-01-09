@@ -1,18 +1,14 @@
-<div class="nav">
-    <a href="#">키보드</a>
-    <a href="#">손목 받침대</a>
-    <a href="#">머그컵</a>
-    <a href="#">슬리퍼</a>
-    <a href="#">옷</a>
-    {{#sessionUser}}
-        {{#isAdmin}}
-            <a href="/admin/main">관리자 페이지</a>
-        {{/isAdmin}}
-        {{#isOwner}}
-            <a href="/owner/dashboard">판매자 페이지</a>
-        {{/isOwner}}
-    {{/sessionUser}}
+<div class="nav-container d-flex align-items-center border-top">
+    {{> category/category-nav }}
+
+    <div class="user-menu ms-auto">
+        {{#sessionUser}}
+            {{#isAdmin}}
+                <a href="/admin/main" class="admin-link">관리자 페이지</a>
+            {{/isAdmin}}
+            {{#isOwner}}
+                <a href="/owner/dashboard" class="owner-link">판매자 페이지</a>
+            {{/isOwner}}
+        {{/sessionUser}}
+    </div>
 </div>
-
-
-

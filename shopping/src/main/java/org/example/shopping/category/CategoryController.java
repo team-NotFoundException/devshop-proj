@@ -4,9 +4,9 @@ package org.example.shopping.category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -39,10 +39,27 @@ public class CategoryController {
     }
 
 
-
-    @GetMapping("/categories/list")
+    @GetMapping("/admin/categories/list")
     public String list(Model model) {
-        model.addAttribute("categories", categoryService.findAll());
+        List<CategoryResponse.ListDTO> categories = categoryService.findAll();
+        List<CategoryResponse.ListDTO> children = categoryService.findAllByDepth();
+        model.addAttribute("categories", categories);
+        model.addAttribute("children", children);
+
+        System.out.println(categories);
         return "category/list";
     }
+
+
+
+    @GetMapping("/categories/nav")
+    public String getCategoryTree (Model model) {
+        List<CategoryResponse.NavbarDTO> categoryTree = categoryService.getCategoryTree();
+
+        model.addAttribute("categories", categoryTree);
+
+        return "category/category-nav";
+    }
+
+
 }

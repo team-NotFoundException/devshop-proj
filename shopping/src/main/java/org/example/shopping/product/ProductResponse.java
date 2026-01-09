@@ -25,6 +25,28 @@ public class ProductResponse {
         }
 
     }
+    @Data
+    public static class UserDetailDTO {
+        private Long id;
+        private String name;
+        private String thumbnailUrl;
+        private long price;
+        private String description;
+
+        private Long categoryId;
+        private String categoryName;
+
+        public UserDetailDTO(Product product) {
+            this.id = product.getId();
+            this.name = product.getProductName();
+            this.thumbnailUrl = product.getThumbnailUrl();
+            this.price = product.getPrice().intValue();
+            this.description = product.getDescription();
+
+            this.categoryId = product.getCategory().getId();
+            this.categoryName = product.getCategory().getCategoryName();
+        }
+    }
 
 
      // 상품 목록 응답 DTO

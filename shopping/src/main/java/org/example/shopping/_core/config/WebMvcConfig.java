@@ -1,10 +1,7 @@
 package org.example.shopping._core.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.interceptor.AdminInterceptor;
-import org.example.shopping._core.interceptor.LoginInterceptor;
-import org.example.shopping._core.interceptor.OwnerInterceptor;
-import org.example.shopping._core.interceptor.SessionInterceptor;
+import org.example.shopping._core.interceptor.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,9 +15,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final SessionInterceptor sessionInterceptor;
     private final OwnerInterceptor ownerInterceptor;
     private final AdminInterceptor adminInterceptor;
+    private final CategoryInterceptor categoryInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(categoryInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/css/**", "/js/**", "/img/**");
+
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/order/**", "/payment/**", "/review/**", "/user/**", "/cart/**", "/product/**")
                 .excludePathPatterns(
@@ -35,7 +37,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(ownerInterceptor)
                 .addPathPatterns("/owner/**")
-                .excludePathPatterns("/owner/login", "/owner/join");
+                .excludePathPatterns("/owner/login", "/owner/join", "/products/**");
     }
 
 

@@ -26,10 +26,11 @@ public class Category  extends BaseTimeEntity {
     private Category parent;
 
     private int depth;
-    private int displayOrder;
+
+    private Long displayOrder;
 
     @Builder
-    public Category(String categoryName, int depth, int displayOrder, Category parent) {
+    public Category(String categoryName, int depth, Long displayOrder, Category parent) {
         this.categoryName = categoryName;
         this.depth = depth;
         this.displayOrder = displayOrder;
@@ -43,7 +44,7 @@ public class Category  extends BaseTimeEntity {
         this.categoryName = categoryName;
     }
 
-    public void setDisplayOrder(int displayOrder) {
+    public void setDisplayOrder(Long displayOrder) {
         if (displayOrder < 0) {
             throw new IllegalArgumentException("정렬은 반드시 0이 필수 입니다.");
         }
