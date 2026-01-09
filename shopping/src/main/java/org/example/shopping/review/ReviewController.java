@@ -43,6 +43,15 @@ public class ReviewController {
         return "redirect:/review/list";
     }
 
+    // 특정 상품에 대한 리뷰 목록 조회
+    @GetMapping("/products/{productId}/review")
+    public String reviewInProduct(@PathVariable Long productId ,Model model) {
+        List<ReviewResponse.InProductReviewDTO> inProductReviewList = reviewService.reviewInProduct(productId);
+
+        model.addAttribute("inProductReviewList", inProductReviewList);
+        return "/review/review-in-product";
+    }
+
     // 리뷰 목록 조회
     // http://localhost:8080/review/list
     @GetMapping({"/review/list"})

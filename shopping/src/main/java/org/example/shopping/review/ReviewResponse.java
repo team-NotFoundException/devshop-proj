@@ -9,6 +9,27 @@ import java.util.stream.IntStream;
 public class ReviewResponse {
 
     @Data
+    public static class InProductReviewDTO {
+        private Long id;
+        private String username;
+        private int rating;
+        private String reviewImage;
+        private String content;
+
+        public InProductReviewDTO(Review review) {
+            this.id = review.getId();
+            this.username = review.getUser().getUsername();
+            this.rating = review.getRating();
+            this.reviewImage = review.getReviewImage();
+            this.content = review.getContent();
+        }
+
+        public String getStars() {
+            return "★".repeat(this.rating) + "☆".repeat(5 - this.rating);
+        }
+    }
+
+    @Data
     public static class ListDTO {
         private Long id;
         private String content;
@@ -22,7 +43,7 @@ public class ReviewResponse {
         private String productName;
 
         /** 상품 상세페이지 리뷰용 */
-//        public ListDTO(Review review, OrderItem orderItem) {
+//        public ListDTO(Review review) {
 ////            this.productId = orderItem.getProduct().getId();
 ////            this.productName = orderItem.getProduct().getProductName();
 //            this.id = review.getId();
