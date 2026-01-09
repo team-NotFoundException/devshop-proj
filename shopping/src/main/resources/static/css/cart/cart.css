@@ -236,10 +236,33 @@ body {
     align-items: center;
 }
 
+.quantity {
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.quantity .quantityBtn {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 8px;
+    line-height: 1;
+    transition: background-color 0.2s ease;
+}
+
+.quantity .quantityBtn:hover {
+    background-color: #333;
+}
+
 .item-quantity {
     font-size: 14px;
     color: #666;
     font-weight: 500;
+    padding: 5px;
 }
 
 .badge-fast {
