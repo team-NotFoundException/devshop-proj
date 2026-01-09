@@ -1,0 +1,26 @@
+.review-summary-box .summary-item .label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.review-summary-box .summary-item .emoji {
+    font-size: 24px;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    background-color: #fafafa;
+}
+
+.star-display {
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}

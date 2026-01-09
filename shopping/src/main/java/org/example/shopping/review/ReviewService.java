@@ -57,6 +57,13 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+    public List<ReviewResponse.InProductReviewDTO> reviewInProduct(Long productId) {
+        List<Review> inProductReview = reviewRepository.findByProductId(productId);
+        return inProductReview.stream()
+                .map(ReviewResponse.InProductReviewDTO::new)
+                .collect(Collectors.toList());
+    }
+
     public ReviewResponse.DetailDTO getDetailView(Long reviewId) {
         Review review = reviewRepository.findByIdWithUser(reviewId)
                 .orElseThrow(() -> new Exception404("리뷰를 찾을 수 없습니다."));
@@ -140,4 +147,6 @@ public class ReviewService {
         return reviewEntity;
 
     }
+
+
 }
