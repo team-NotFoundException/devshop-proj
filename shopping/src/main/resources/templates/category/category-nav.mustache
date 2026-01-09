@@ -3,10 +3,10 @@
         <li class="nav-parent">
             <a href="/categories/{{id}}" class="nav-parent-link">
                 {{categoryName}}
-                {{#children.1}}<span class="arrow-down"></span>{{/children.1}}
+                {{#children}}<span class="arrow-down"></span>{{/children}}
             </a>
 
-            {{#children.1}}
+
                 <ul class="nav-child-list">
                     {{#children}}
                         <li class="nav-child-item">
@@ -14,7 +14,7 @@
                         </li>
                     {{/children}}
                 </ul>
-            {{/children.1}}
+
         </li>
     {{/categories}}
 </ul>

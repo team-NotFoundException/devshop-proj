@@ -15,7 +15,7 @@ public class CategoryRequest {
         private String categoryName;
 
         @Min(value = 0, message = "0보다 커야합니다.")
-        private Integer displayOrder;
+        private Long displayOrder;
 
         private Long parentId;
 
@@ -38,7 +38,7 @@ public class CategoryRequest {
         private int depth;
 
         @Min(value = 0, message = "0보다 커야합니다.")
-        private Integer displayOrder;
+        private Long displayOrder;
 
         public Category toEntity() {
             return Category.builder()
@@ -58,6 +58,6 @@ public class CategoryRequest {
         private String categoryName;   // 필수
 
         @Min(value = 0, message = "0보다 커야합니다.")
-        private Integer displayOrder;  // 필수
+        private Long displayOrder;  // 필수
     }
 }

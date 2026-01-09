@@ -43,7 +43,10 @@ public class CategoryController {
     @GetMapping("/categories/list")
     public String list(Model model) {
         List<CategoryResponse.ListDTO> categories = categoryService.findAll();
+        List<CategoryResponse.ListDTO> children = categoryService.findAllByDepth();
         model.addAttribute("categories", categories);
+        model.addAttribute("children", children);
+
         System.out.println(categories);
         return "category/list";
     }
