@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Controller
 public class PaymentController {
@@ -80,6 +82,14 @@ public class PaymentController {
         model.addAttribute("cartId", cartId);
         return "payment/payment-fail";
 
+    }
+
+    @GetMapping("/order/list")
+    public String paymentList(HttpSession session, Model model){
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        List<PaymentResponse> responses = paymentService.paymentList(sessionUser.getId());
+        model.addAttribute("paymentList", responses);
+        return "user/mypage-orderList";
     }
 
     //==============================================================================================================================
