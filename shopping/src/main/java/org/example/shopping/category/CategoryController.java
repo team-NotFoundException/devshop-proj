@@ -40,7 +40,7 @@ public class CategoryController {
 
 
 
-    @GetMapping("/categories/list")
+    @GetMapping("/admin/categories/list")
     public String list(Model model) {
         List<CategoryResponse.ListDTO> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
