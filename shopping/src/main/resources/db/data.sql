@@ -144,6 +144,11 @@ INSERT INTO user_role_tb (role, user_id) VALUES ('ADMIN', 1), ('OWNER', 2), ('US
 INSERT INTO user_owner_tb (id, user_id, name, status) VALUES
     (1, 2, '대박상사', 'APPROVED');
 
+INSERT INTO cart_tb (amount, user_id) VALUES
+                                              (0, 1),
+                                              (0, 2),
+                                              (0, 3);
+
 
 -- 대분류
 INSERT INTO categories (id, category_name, depth, display_order, parent_id, created_at, updated_at) VALUES

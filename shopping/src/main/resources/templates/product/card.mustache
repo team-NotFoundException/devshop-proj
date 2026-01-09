@@ -28,7 +28,10 @@
                     </div>
                 </a>
                 <div class="card-footer-action">
-                    <button class="btn-add-cart" onclick="addCart({{id}})">담기</button>
+                    <form action="/cart/add" method="post">
+                        <button type="submit" name="productId" class="btn-add-cart" value="{{id}}"><i class="fa-solid fa-cart-plus"></i></button>
+                        <input type="hidden" name="quantity" placeholder="수량" value="1" style="width: 60px; padding: 8px;" required>
+                    </form>
                 </div>
             </div>
         {{/products}}

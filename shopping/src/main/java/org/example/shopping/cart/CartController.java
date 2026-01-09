@@ -2,7 +2,6 @@ package org.example.shopping.cart;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,14 +72,7 @@ public class CartController {
     // 아이템 개수/옵션 변경
     @PostMapping("/cart/{cartItemId}/update-option")
     public String updateOption(CartRequest.UpdateOptionDTO updateOptionDTO, @PathVariable Long cartItemId, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
 
-        Cart cart = cartRepository.findByUserId(sessionUser.getId())
-                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
-
-        Long cartId = cart.getId();
-
-        cartService.updateOption(updateOptionDTO, cartId, cartItemId);
 
         return "redirect:/cart/list";
     }
