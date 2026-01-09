@@ -39,8 +39,7 @@ public class CategoryController {
     }
 
 
-
-    @GetMapping("/categories/list")
+    @GetMapping("/admin/categories/list")
     public String list(Model model) {
         List<CategoryResponse.ListDTO> categories = categoryService.findAll();
         List<CategoryResponse.ListDTO> children = categoryService.findAllByDepth();
@@ -50,6 +49,8 @@ public class CategoryController {
         System.out.println(categories);
         return "category/list";
     }
+
+
 
     @GetMapping("/categories/nav")
     public String getCategoryTree (Model model) {

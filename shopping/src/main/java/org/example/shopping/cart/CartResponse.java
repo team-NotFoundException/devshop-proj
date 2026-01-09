@@ -2,7 +2,6 @@ package org.example.shopping.cart;
 
 import lombok.Data;
 import org.example.shopping.cartItem.CartItem;
-import org.example.shopping.product.Product;
 
 import java.util.List;
 

@@ -7,35 +7,47 @@
     <div class="product-grid">
         {{#products}}
             <div class="product-card">
-                <a href="/products/{{id}}" class="card-link">
-                    <div class="card-image">
-                        {{#thumbnailUrl}}
-                            <img src="{{thumbnailUrl}}" alt="{{name}}">
-                        {{/thumbnailUrl}}
-                        {{^thumbnailUrl}}
-                            <img src="/img/no-image.png" alt="이미지 없음">
-                        {{/thumbnailUrl}}
-                    </div>
-                    <div class="card-body">
-
-                        <div class="owner-info">
-                            <small class="text-muted"><i class="fas fa-store"></i> {{ownerName}}</small>
+                <div class="card-image-wrapper">
+                    <a href="/products/{{id}}" class="card-link">
+                        <div class="card-image">
+                            {{#thumbnailUrl}}
+                                <img src="{{thumbnailUrl}}" alt="{{name}}">
+                            {{/thumbnailUrl}}
+                            {{^thumbnailUrl}}
+                                <img src="/img/no-image.png" alt="이미지 없음">
+                            {{/thumbnailUrl}}
                         </div>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <div class="owner-info d-flex align-items-center">
+                        <span class="owner-name">{{ownerName}}</span>
+                        <i class="fa-solid fa-circle-check ms-1 verification-icon"></i>
+                    </div>
+                    <a href="/products/{{id}}" class="card-link">
                         <h3 class="product-title">{{name}}</h3>
                         <div class="price-section">
                             <span class="price-value">{{price}}</span><span class="price-unit">원</span>
                         </div>
-                    </div>
-                </a>
-                <div class="card-footer-action">
-                    <button class="btn-add-cart" onclick="addCart({{id}})">담기</button>
-                </div>
-            </div>
-        {{/products}}
+                    </a>
 
-        {{^products}}
-            <div class="empty-state">
-                <p>현재 판매 중인 상품이 없습니다.</p>
+                    <div class="product-meta mt-2">
+                        <span class="rating"><i class="fa-solid fa-star"></i> 92% 만족</span>
+                        <span class="divider">|</span>
+                        <span class="reviews">리뷰 50</span>
+                    </div>
+                </div>
+
+                <div class="card-footer-action">
+                    <form action="/cart/add" method="post" class="w-100">
+                        <input type="hidden" name="productId" value="{{id}}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn-add-cart w-100">
+                            <i class="fa-solid fa-cart-plus me-2"></i>장바구니 담기
+                        </button>
+                    </form>
+                </div>
             </div>
         {{/products}}
     </div>

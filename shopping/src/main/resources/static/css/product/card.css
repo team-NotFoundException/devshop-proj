@@ -1,104 +1,133 @@
-/* 메인 그리드 레이아웃 */
+/* 메인 그리드 */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 24px;
-    margin-bottom: 60px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
 }
 
-/* 카드 기본 스타일 */
 .product-card {
     background: #fff;
     border-radius: 12px;
-    border: 1px solid #f0f0f0;
     overflow: hidden;
-    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
-.product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-}
-
-.card-link {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* 이미지 영역 */
-.card-image {
+/* 이미지 및 찜하기 버튼 오버레이 */
+.card-image-wrapper {
+    position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1; /* 정정사각형 비율 유지 */
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
     overflow: hidden;
-    background-color: #f8f9fa;
+    background-color: #f4f4f4;
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
 }
 
 .product-card:hover .card-image img {
     transform: scale(1.05);
 }
 
-/* 텍스트 영역 */
+.btn-wishlist-overlay {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 2;
+    transition: all 0.2s;
+}
+
+.btn-wishlist-overlay:hover {
+    background: #fff;
+    transform: scale(1.1);
+}
+
+/* 텍스트 정보 */
 .card-body {
-    padding: 16px;
-    flex-grow: 1;
+    padding: 12px 4px; /* 이미지는 좌우 여백이 좁은 편 */
 }
 
 .owner-info {
-    margin-bottom: 6px;
-    font-size: 12px;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.verification-icon {
+    color: #ccc;
+    font-size: 11px;
 }
 
 .product-title {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.4;
-    height: 44px; /* 두 줄 제한 */
-    overflow: hidden;
+    font-size: 15px;
+    color: #333;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    /* 두 줄 제한 */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    margin-bottom: 12px;
+    overflow: hidden;
+    height: 45px;
 }
 
 .price-section {
     font-size: 18px;
-    font-weight: 800;
-    color: #222;
+    font-weight: 700;
+    color: #111;
 }
 
-/* 하단 액션 바 */
-.card-footer-action {
-    padding: 12px 16px;
+/* 별점 및 리뷰 */
+.product-meta {
+    font-size: 12px;
+    color: #999;
     display: flex;
-    gap: 8px;
-    border-top: 1px solid #f9f9f9;
+    align-items: center;
+    gap: 6px;
+}
+
+.product-meta .fa-star {
+    color: #ffbb00;
+}
+
+.divider {
+    color: #eee;
+}
+
+/* 장바구니 버튼 */
+.card-footer-action {
+    padding: 8px 0;
 }
 
 .btn-add-cart {
-    flex: 1;
-    background-color: #333;
-    color: white;
+    background-color: #f5f5f5;
+    color: #333;
     border: none;
-    padding: 8px;
-    border-radius: 6px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-.btn-wishlist {
-    width: 38px;
-    background: #f1f1f1;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    color: #666;
+.btn-add-cart:hover {
+    background-color: #eeeeee;
 }

@@ -57,7 +57,13 @@
 
                                 <p class="item-desc">상품 코드: {{product.productCode}}</p>
                                 <div class="item-meta">
-                                    <span class="item-quantity">수량: {{quantity}}개</span>
+
+                                    <div class="quantity">
+                                        <button class="quantityBtn"><i class="fa-solid fa-minus"></i></button>
+                                        <span class="item-quantity">수량: {{quantity}}개</span>
+                                        <button class="quantityBtn"><i class="fa-solid fa-plus"></i></button>
+                                    </div>
+
                                     <span class="badge-fast">빠른배송</span>
                                 </div>
                             </div>
@@ -153,6 +159,8 @@
                     checkbox.checked =! checkbox.checked;
                 });
     }
+
+
 </script>
 
 {{>layout/footer}}

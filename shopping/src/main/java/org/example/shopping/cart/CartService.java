@@ -12,9 +12,7 @@ import org.example.shopping.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -113,13 +111,6 @@ public class CartService {
     @Transactional
     public void updateOption(CartRequest.UpdateOptionDTO updateOptionDTO, Long cartId ,Long cartItemId) {
 
-        CartItem cartItemEntity = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new Exception404("아이템을 찾을 수 없습니다."));
-
-        if (!cartItemEntity.getCart().getId().equals(cartId))
-            throw new Exception400("잘못된 요청입니다.");
-
-        cartItemEntity.updateItemOption(updateOptionDTO.getQuantity());
     }
 
 }
