@@ -10,12 +10,13 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 
+
     // 카테고리 전체 조회
 
     @Query("SELECT c " +
             "FROM Category c " +
             "LEFT JOIN FETCH c.parent " +
-            "ORDER BY c.depth ASC, c.displayOrder ASC")
+            "ORDER BY c.depth ASC, c.displayOrder ASC, c.displayOrder ASC nulls last ")
     List<Category> findAllWithParent();
 
 

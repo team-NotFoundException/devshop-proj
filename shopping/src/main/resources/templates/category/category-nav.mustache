@@ -1,0 +1,20 @@
+<ul class="nav-root">
+    {{#categories}}
+        <li class="nav-parent">
+            <a href="/categories/{{id}}" class="nav-parent-link">
+                {{categoryName}}
+                {{#children.1}}<span class="arrow-down"></span>{{/children.1}}
+            </a>
+
+            {{#children.1}}
+                <ul class="nav-child-list">
+                    {{#children}}
+                        <li class="nav-child-item">
+                            <a href="/categories/{{id}}" class="nav-child-link">{{categoryName}}</a>
+                        </li>
+                    {{/children}}
+                </ul>
+            {{/children.1}}
+        </li>
+    {{/categories}}
+</ul>

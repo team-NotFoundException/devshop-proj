@@ -1,8 +1,5 @@
-<div class="header-wrapper">
-    <div class="container">
-        {{> layout/header }}
-    </div>
-</div>
+{{> layout/header }}
+
 
 <main class="admin-owner-wrapper">
     {{> layout/admin-sidebar}}
@@ -29,13 +26,21 @@
                 <tr>
                     <td>{{id}}</td>
                     <td>
-                        <span class="badge {{#parentName}}bg-info-dark{{/parentName}}{{^parentName}}bg-primary-dark{{/parentName}}">
-                            {{#parentName}}소분류{{/parentName}}{{^parentName}}대분류{{/parentName}}
+                        <span class="badge
+                            {{#parentName}}bg-info-dark{{/parentName}}
+                            {{^parentName}}bg-primary-dark{{/parentName}}">
+                            {{#parentName}}소분류{{/parentName}}
+                            {{^parentName}}대분류{{/parentName}}
                         </span>
                     </td>
                     <td class="fw-bold">{{categoryName}}</td>
-                    <td>{{#parentName}}{{parentName}}{{/parentName}}{{^parentName}}-{{/parentName}}</td>
-                    <td>{{displayOrder}}</td>
+                    <td>
+                        {{#parentName}}{{parentName}}{{/parentName}}
+                        {{^parentName}}-{{/parentName}}
+                    </td>
+                    <td>
+                        {{displayOrder}}
+                    </td>
                     <td>
                         <div class="d-flex gap-2">
                             <a href="/admin/categories/{{id}}/edit" class="btn-sm btn-edit text-decoration-none">수정</a>
