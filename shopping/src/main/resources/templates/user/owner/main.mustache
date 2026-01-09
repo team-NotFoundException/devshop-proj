@@ -45,10 +45,10 @@
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
                         <tr>
-                            [cite_start]<th>상품명 [cite: 2]</th>
-                            [cite_start]<th>가격 [cite: 2]</th>
-                            [cite_start]<th>재고 [cite: 2]</th>
-                            [cite_start]<th>상태 [cite: 2]</th>
+                            <th>상품명</th>
+                            <th>가격</th>
+                            <th>재고</th>
+                            <th>상태</th>
                             <th>관리</th>
                         </tr>
                         </thead>
@@ -56,9 +56,9 @@
                         {{#recentProducts}}
                             <tr>
                                 <td><a href="/products/{{id}}/detail" class="text-decoration-none fw-bold text-dark">{{productName}}</a></td>
-                                [cite_start]<td>{{price}}원 [cite: 3]</td>
-                                [cite_start]<td>{{stockQuantity}}개 [cite: 3]</td>
-                                [cite_start]<td><span class="badge bg-light text-dark border">{{status}}</span> [cite: 3]</td>
+                                <td>{{price}}원</td>
+                                <td>{{stockQuantity}}개</td>
+                                <td><span class="badge bg-light text-dark border">{{status}}</span></td>
                                 <td>
                                     <a href="/products/{{id}}/edit" class="btn btn-sm btn-outline-warning">수정</a>
                                 </td>
