@@ -59,12 +59,21 @@ public class CartController {
     public CartResponse.AmountDTO updateCheck(@PathVariable Long cartItemId, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        Long amount = cartService.toggleItem(sessionUser.getId(), cartItemId);
-
-        return new CartResponse.AmountDTO(amount);
+        return cartService.toggleItem(sessionUser.getId(), cartItemId);
     }
 
     // 전체 선택/해제
+    @PostMapping("/cart/toggle-all")
+    @ResponseBody
+    public CartResponse.ToggleAllChecksDTO toggleAllChecks(
+            HttpSession session,
+            @RequestBody CartRequest.ToggleAllChecksDTO reqDTO
+    ) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        return cartService.toggleAllChecks(sessionUser.getId(), reqDTO);
+    }
+
 
     // 아이템 개수/옵션 변경
     @PostMapping("/cart/{cartItemId}/update-option")
@@ -74,8 +83,6 @@ public class CartController {
                                HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        CartResponse.CartUpdateDTO cartUpdateDTO = cartService.updateOption(cartItemId, updateOptionDTO, sessionUser.getId());
-
-        return cartUpdateDTO;
+        return cartService.updateOption(cartItemId, updateOptionDTO, sessionUser.getId());
     }
 }

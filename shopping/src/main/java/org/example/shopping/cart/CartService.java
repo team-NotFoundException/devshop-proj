@@ -96,7 +96,7 @@ public class CartService {
 
     // 아이템 선택
     @Transactional
-    public Long toggleItem(Long userId ,Long cartItemId) {
+    public CartResponse.AmountDTO toggleItem(Long userId, Long cartItemId) {
 
         Cart cartEntity = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
@@ -104,26 +104,41 @@ public class CartService {
         cartEntity.toggleItem(cartItemId);
         cartEntity.updateAmount();
 
-        return cartEntity.getAmount();
+        return new CartResponse.AmountDTO(cartEntity.getAmount());
+    }
+
+    @Transactional
+    public CartResponse.ToggleAllChecksDTO toggleAllChecks(Long userId, CartRequest.ToggleAllChecksDTO reqDTO) {
+        Cart cartEntity = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+
+        boolean newState = reqDTO.getIsChecked();
+
+        cartEntity.getCartItems().forEach(
+                cartItem -> cartItem.setIsChecked(newState)
+        );
+
+        cartEntity.updateAmount();
+
+        return new CartResponse.ToggleAllChecksDTO(newState, cartEntity.getAmount());
     }
 
     // 아이템 개수/옵션 변경
     @Transactional
     public CartResponse.CartUpdateDTO updateOption(Long cartItemId, CartRequest.UpdateOptionDTO updateOptionDTO, Long userId) {
-        Cart cart = cartRepository.findByUserId(userId)
+        Cart cartEntity = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
 
-        CartItem cartItem = cart.getCartItem(cartItemId);
+        CartItem cartItem = cartEntity.getCartItem(cartItemId);
 
         cartItem.updateQuantity(cartItem.getQuantity() + updateOptionDTO.getQuantity());
         cartItem.updateTotalPrice();
-        cart.updateAmount();
+        cartEntity.updateAmount();
 
         Integer newQuantity = cartItem.getQuantity();
         Long newTotalPrice = cartItem.getTotalPrice();
-        Long newAmount = cart.getAmount();
+        Long newAmount = cartEntity.getAmount();
 
         return new CartResponse.CartUpdateDTO(cartItemId, newQuantity, newTotalPrice, newAmount);
     }
-
 }

@@ -20,4 +20,9 @@ public class CartRequest {
     public static class UpdateOptionDTO {
         private Integer quantity;
     }
+
+    @Data
+    public static class ToggleAllChecksDTO {
+        private Boolean isChecked;
+    }
 }
