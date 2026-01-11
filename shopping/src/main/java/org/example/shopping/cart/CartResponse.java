@@ -43,4 +43,15 @@ public class CartResponse {
             this.amount = amount;
         }
     }
+
+    @Data
+    public static class ToggleAllChecksDTO {
+        private boolean allChecked;
+        private Long amount;
+
+        public ToggleAllChecksDTO(boolean allChecked, Long amount) {
+            this.allChecked = allChecked;
+            this.amount = amount;
+        }
+    }
 }

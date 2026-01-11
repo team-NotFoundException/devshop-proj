@@ -26,7 +26,7 @@
 
             <div class="select-all">
                 <label class="checkbox-label">
-                    <input type="checkbox" id="selectAll">
+                    <input type="checkbox" id="selectAll"  onchange="toggleAllChecks(this.checked)">
                     <span class="checkmark"></span>
                     <span>전체 선택</span>
                 </label>
@@ -146,19 +146,63 @@
                     return response.json()
                 })
                 .then(data => {
+
+                    updateSelectAllCheckbox();
+
                     const cartPrice = data.amount;
                     const totalPrice = cartPrice
 
-                    document.getElementById('totalProductPrice').textContent =
+                    document.getElementById('productFinalPrice').textContent =
                             cartPrice.toLocaleString() + '원';
                     document.getElementById('finalPrice').textContent =
                             totalPrice.toLocaleString() + '원';
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('오류가 발생했습니다.');
                     checkbox.checked =! checkbox.checked;
                 });
+    }
+
+    function toggleAllChecks(isChecked) {
+        fetch(`/cart/toggle-all`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                isChecked: isChecked
+            })
+        })
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('.item-checkbox').forEach(checkbox => {
+                        checkbox.checked = data.allChecked;
+                    });
+                    document.getElementById("productFinalPrice").textContent = data.amount.toLocaleString() + "원";
+                    document.getElementById("finalPrice").textContent = data.amount.toLocaleString() + "원";
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('오류가 발생했습니다.');
+                });
+    }
+
+    function updateSelectAllCheckbox() {
+        const allCheckbox = document.querySelectorAll('.item-checkbox');
+        const selectAllCheckbox = document.getElementById('selectAll');
+
+        if (selectAllCheckbox && allCheckbox.length > 0) {
+            let allChecked = true;
+
+            allCheckbox.forEach(checkbox => {
+                if (!checkbox.checked) {
+                    allChecked = false;
+                }
+            });
+
+            selectAllCheckbox.checked = allChecked;
+        }
     }
 
     function updateOption(cartItemId, number) {
@@ -178,7 +222,14 @@
                     document.getElementById("productFinalPrice").textContent = data.amount.toLocaleString() + "원";
                     document.getElementById("finalPrice").textContent = data.amount.toLocaleString() + "원";
                 })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('오류가 발생했습니다.');
+                });
     }
+
+
+    updateSelectAllCheckbox();
 
 </script>
 {{>layout/footer}}

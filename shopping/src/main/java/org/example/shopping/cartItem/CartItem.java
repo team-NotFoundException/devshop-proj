@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping.cart.Cart;
 import org.example.shopping.product.Product;
 
@@ -42,16 +43,16 @@ public class CartItem {
         return this.isChecked;
     }
 
-    public void updateItemOption(Integer quantity) {
-        this.quantity = quantity;
-    }
-
     public void toggleItem() {
         this.isChecked = !this.isChecked;
     }
 
     public void updateQuantity(Integer quantity) {
         this.quantity = quantity;
+
+        if (this.quantity + quantity <= 0) {
+            throw new Exception400("상품은 0개 이하일 수 없습니다.");
+        }
     }
 
     public void updateTotalPrice() {
