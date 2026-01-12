@@ -1,18 +1,16 @@
 <section class="mypage-content-box">
     <div class="card">
 
-        {{#orderItems}}
+        {{#order}}
+        {{#payments}}
         <div class="order-card">
-            <div class="order-header">주문상품 {{orderItems.size}}개</div>
-
+            <div class="order-header">주문상품 {{payments.size}}개</div>
                 <div class="order-item">
                     <img src="https://cdn.pixabay.com/photo/2025/08/21/15/27/pixel-art-9788141_640.png" alt="{{productName}}" class="product-image">
                     <div class="order-item-info">
                         <h4>{{productName}}</h4>
-                        <p>가격: {{productPrice}}원</p>
-                        <p>수량: {{quantity}}개</p>
-                        <p>총액: {{totalPrice}}</p>
-                        <span class="status">{{orderStatus}}</span>
+                        <p>총액: {{amount}}</p>
+                        <span class="status">{{status}}</span>
                     </div>
                 </div>
         </div>
@@ -28,7 +26,8 @@
                     </div>
                 </div>
         </div>
-        {{/orderItems}}
+        {{/payments}}
+        {{/order}}
 
     </div>
 </section>

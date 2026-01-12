@@ -1,5 +1,4 @@
-
-        {{> layout/header }}
+{{> layout/header }}
 
 
 <main class="main-container">
@@ -8,7 +7,8 @@
     <!-- 테스트 폼들 (나중에 제거) -->
     <div class="test-forms">
         <form action="/cart/add" method="post" style="display:inline-block;">
-            <input type="number" name="productId" placeholder="상품ID" style="width: 80px; padding: 8px;" value="" required>
+            <input type="number" name="productId" placeholder="상품ID" style="width: 80px; padding: 8px;" value=""
+                   required>
             <input type="number" name="quantity" placeholder="수량" value="1" style="width: 60px; padding: 8px;" required>
             <button type="submit" class="btn-test">아이템 추가</button>
         </form>
@@ -26,12 +26,13 @@
 
             <div class="select-all">
                 <label class="checkbox-label">
-                    <input type="checkbox" id="selectAll"  onchange="toggleAllChecks(this.checked)">
+                    <input type="checkbox" id="selectAll" onchange="toggleAllChecks(this.checked)">
                     <span class="checkmark"></span>
                     <span>전체 선택</span>
                 </label>
                 <form action="/cart/delete-checked" method="post" style="display:inline;">
-                    <button type="submit" class="delete-btn" onclick="return confirm('선택한 상품을 삭제하시겠습니까?')">선택 삭제</button>
+                    <button type="submit" class="delete-btn" onclick="return confirm('선택한 상품을 삭제하시겠습니까?')">선택 삭제
+                    </button>
                 </form>
             </div>
 
@@ -39,7 +40,8 @@
             {{#cart.cartItems}}
                 <div class="cart-item">
                     <label class="checkbox-label">
-                        <input type="checkbox" class="item-checkbox" {{#isChecked}}checked{{/isChecked}}  data-item-id="{{id}}"
+                        <input type="checkbox" class="item-checkbox"
+                               {{#isChecked}}checked{{/isChecked}}  data-item-id="{{id}}"
                                onchange="toggleCheck({{id}}, this)">
                         <span class="checkmark"></span>
                     </label>
@@ -60,9 +62,11 @@
                                 <div class="item-meta">
 
                                     <div class="quantity">
-                                        <button class="quantityBtn" onclick="updateOption({{id}}, -1)"><i class="fa-solid fa-minus"></i></button>
+                                        <button class="quantityBtn" onclick="updateOption({{id}}, -1)"><i
+                                                class="fa-solid fa-minus"></i></button>
                                         <span class="item-quantity" data-cart-item-id="{{id}}">{{quantity}}개</span>
-                                        <button class="quantityBtn" onclick="updateOption({{id}}, 1)"><i class="fa-solid fa-plus"></i></button>
+                                        <button class="quantityBtn" onclick="updateOption({{id}}, 1)"><i
+                                                class="fa-solid fa-plus"></i></button>
                                     </div>
 
                                     <span class="badge-fast">빠른배송</span>
@@ -70,7 +74,7 @@
                             </div>
 
                             <div class="item-price">
-                                <p class="price"data-total-price="{{id}}">{{totalPrice}}</p>
+                                <p class="price" data-total-price="{{id}}">{{totalPrice}}</p>
                             </div>
                         </div>
 
@@ -161,7 +165,7 @@
                 .catch(error => {
                     console.error('Error:', error);
                     alert('오류가 발생했습니다.');
-                    checkbox.checked =! checkbox.checked;
+                    checkbox.checked = !checkbox.checked;
                 });
     }
 

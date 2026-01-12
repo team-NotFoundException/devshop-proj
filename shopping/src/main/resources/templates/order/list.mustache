@@ -1,54 +1,41 @@
 <section class="mypage-content-box">
     <div class="card">
-        {{#paymentList}}
+        {{#orderList}}
             <div class="order-card">
                 <div class="order-header">
                     <h3>주문번호: {{id}}</h3>
-                    <span>주문일: {{createdAt}}</span>
+                    <span>주문일자: {{orderedAt}}</span>
+
                     <form action="/order/detail">
-                        <input type="hidden" name="id" value="{{id}}">
+                        <input type="hidden" name="orderId" value="{{id}}">
                         <button class="detailBtn">상세보기</button>
                     </form>
                 </div>
 
-<!--                {{#orderItemList}}-->
+                {{#payments}}
                     <div class="order-item">
-                        <img src="https://cdn.pixabay.com/photo/2025/07/28/23/42/red-fruit-9741345_640.png" alt="{{productName}}" class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2025/07/28/23/42/red-fruit-9741345_640.png"
+                             alt="{{productName}}" class="product-image">
                         <div class="order-item-info">
                             <h4>{{productName}}</h4>
                             <p>가격: {{amount}}원</p>
-<!--                            <p>수량: {{quantity}}개</p>-->
                             <span class="status" id="status">{{status}}</span>
+                            <div class="order-item-buttons">
+                                <button class="primary confirmBtn" data-order-item-id="{{id}}">구매확정</button>
+                                <button class="refundBtn" type="button" data-order-item-id="{{id}}">반품신청</button>
+                                <a href="/review/save" class="reviewBtn" style="display: block">리뷰 작성</a>
+                            </div>
+
                         </div>
                     </div>
-
-<!--                        {{#isComplete}}-->
-<!--                            <div class="order-item-buttons">-->
-<!--                                <a href="/review/save" class="reviewBtn">리뷰 작성</a>-->
-<!--                            </div>-->
-<!--                        {{/isComplete}}-->
-
-<!--                        {{^isComplete}}-->
-<!--                            <div class="order-item-buttons">-->
-<!--                                {{^isRefund}}-->
-<!--                                    <button class="primary confirmBtn" data-order-item-id="{{id}}">구매확정</button>-->
-<!--                                    <button class="refundBtn" type="button" data-order-item-id="{{id}}">반품/교환신청</button>-->
-<!--                                    <a href="/review/save" class="reviewBtn" style="display: none">리뷰 작성</a>-->
-<!--                                {{/isRefund}}-->
-
-<!--                                {{#isRefund}}-->
-<!--                                {{/isRefund}}-->
-<!--                            </div>-->
-<!--                        {{/isComplete}}-->
-<!--                {{/orderItemList}}-->
-
+                {{/payments}}
             </div>
-        {{/paymentList}}
-        {{^paymentList}}
+        {{/orderList}}
+        {{^orderList}}
             <div class="order-card">
                 <h3>주문내역이 없습니다.</h3>
             </div>
-        {{/paymentList}}
+        {{/orderList}}
     </div>
 </section>
 
@@ -90,7 +77,7 @@
                 const orderItemId = this.dataset.orderItemId
                 const statusContainer = this.closest('.order-card');
                 const container = this.closest('.order-item-buttons');
-                if(!confirm("반품하시겠습니까?")) return;
+                if (!confirm("반품하시겠습니까?")) return;
 
                 try {
                     let response = await fetch(`/payment/${orderItemId}/refund`, {
