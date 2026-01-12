@@ -84,13 +84,13 @@ public class PaymentController {
 
     }
 
-    @GetMapping("/order/list")
-    public String paymentList(HttpSession session, Model model){
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        List<PaymentResponse> responses = paymentService.paymentList(sessionUser.getId());
-        model.addAttribute("paymentList", responses);
-        return "user/mypage-orderList";
-    }
+//    @GetMapping("/order/list")
+//    public String paymentList(HttpSession session, Model model){
+//        User sessionUser = (User) session.getAttribute("sessionUser");
+//        List<PaymentResponse> responses = paymentService.paymentList(sessionUser.getId());
+//        model.addAttribute("paymentList", responses);
+//        return "user/mypage-orderList";
+//    }
 
     //==============================================================================================================================
 
