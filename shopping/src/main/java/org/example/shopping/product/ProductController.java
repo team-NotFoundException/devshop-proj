@@ -12,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -22,132 +24,146 @@ public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
 
+    // ==================== USER 영역 ====================
 
     @GetMapping("/")
     public String home(Model model) {
         List<ProductResponse.MainCardDTO> products = productService.findAllForMain();
-
         model.addAttribute("products", products);
-
         return "layout/index";
     }
-
 
     @GetMapping("/category/{categoryId}")
     public String categoryMain(@PathVariable Long categoryId, Model model) {
         List<ProductResponse.MainCardDTO> products = productService.findByCategoryIdForMain(categoryId);
         CategoryResponse.DetailDTO category = categoryService.findById(categoryId);
-
         model.addAttribute("products", products);
         model.addAttribute("category", category);
-
         return "category/main";
     }
 
-    // - user
-    // 상품 목록 조회
-    // http://localhost:8080/products/list-form
-    @GetMapping("/products/list-form")
-    public String list(Model model, HttpSession session) {
+    @GetMapping("/products/{productId:[0-9]+}")
+    public String userProductDetail(@PathVariable Long productId, Model model) {
+        ProductResponse.UserDetailDTO product = productService.findByIdForUser(productId);
+        model.addAttribute("product", product);
+        return "product/user-detail";
+    }
+
+
+    // ==================== OWNER 영역 ====================
+
+    @GetMapping("/owner/products")
+    public String ownerList(Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
 
         List<ProductResponse.ListDTO> list = productService.findAll();
-        System.out.println(list.size());
-
         model.addAttribute("products", list);
         return "product/list-form";
     }
 
-    // 상태별 조회
-    // http://localhost:8080/products/status/1
-    @GetMapping("/products/status/{status}")
-    public String listByStatus(@PathVariable ProductStatus status, Model model, HttpSession session) {
+    @GetMapping("/owner/products/status/{status}")
+    public String ownerListByStatus(@PathVariable ProductStatus status, Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
+
         model.addAttribute("products", productService.findByStatus(status));
         return "product/list-form";
     }
 
-    // 카테고리별 조회
-    // http://localhost:8080/products/category/1
-    @GetMapping("/products/category/{categoryId}")
-    public String listByCategory(@PathVariable Long categoryId, Model model, HttpSession session) {
+    @GetMapping("/owner/products/category/{categoryId}")
+    public String ownerListByCategory(@PathVariable Long categoryId, Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
+
         model.addAttribute("products", productService.findByCategoryId(categoryId));
         return "product/list-form";
     }
 
-    // - admin
-    // 상품 등록 폼
-    // http://localhost:8080/products/save
-    @GetMapping("/products/save")
-    public String saveForm( Model model, HttpSession session) {
+    @GetMapping("/owner/products/save")
+    public String saveForm(Model model, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
 
         List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
         model.addAttribute("category", categoryList);
-
         return "product/save-form";
     }
 
-    // 상품 등록
-    //http://localhost:8080/products/save
-    @PostMapping("/products/save")
+    @PostMapping("/owner/products/save")
     public String save(ProductRequest.SaveDTO dto, HttpSession session) {
-        productService.save(dto);
-        return "redirect:/products/list-form";
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
+
+        productService.save(dto, sessionUser.getId());
+        return "redirect:/owner/products";
     }
 
-    // 상품 수정 폼
-    // http://localhost:8080/products/1/edit
-    @GetMapping("/products/{id}/edit")
+    @GetMapping("/owner/products/{id}/edit")
     public String editForm(@PathVariable Long id, Model model, HttpSession session) {
-        ProductResponse.UpdateFormDTO dto =
-                productService.findByIdForUpdate(id);
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
+
+        ProductResponse.UpdateFormDTO dto = productService.findByIdForUpdate(id);
         model.addAttribute("product", dto);
         model.addAttribute("category", categoryService.findAll());
         return "product/edit-form";
     }
 
-    // 상품 수정
-    @PostMapping("/products/{id}/edit")
-    public String edit(
-            @PathVariable Long id,
-            ProductRequest.UpdateDTO dto, HttpSession session
-    ) {
-        productService.updateById(id, dto);
-        return "redirect:/products/" + id + "/detail";
-    }
-
-    // 상품 삭제
-    @PostMapping("/products/{id}/delete")
-    public String delete(@PathVariable Long id, HttpSession session) {
-        productService.deleteById(id);
-        return "redirect:/products/list-form";
-    }
-
-    // 상품 상세 조회
-    // http://localhost:8080/products/1/detail
-    @GetMapping("/products/{id}/detail")
-    public String detail(@PathVariable Long id, Model model, HttpSession session) {
-
+    @PostMapping("/owner/products/{id}/edit")
+    public String edit(@PathVariable Long id, ProductRequest.UpdateDTO dto, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        if (sessionUser == null || sessionUser.getRole().equals("USER")) {
-            throw  new Exception403("로그인 먼저 해주세요");
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
+
+        productService.updateById(id, dto);
+        return "redirect:/owner/products/" + id;
+    }
+
+    @PostMapping("/owner/products/{id}/delete")
+    public String delete(@PathVariable Long id, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
+
+        productService.deleteById(id);
+        return "redirect:/owner/products";
+    }
+
+    @GetMapping("/owner/products/{id}")
+    public String ownerDetail(@PathVariable Long id, Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
         }
 
         ProductResponse.DetailDTO product = productService.findById(id);
-        model.addAttribute("product",product);
-        return "product/detail";
-    }
-
-    // 사용자용 상품 상세 조회 - 경로에 제약 조건 추가함
-    @GetMapping("/products/{productId:[0-9]+}")
-    public String userProductDetail(@PathVariable Long productId, Model model) {
-
-        ProductResponse.UserDetailDTO product =
-                productService.findByIdForUser(productId);
-
         model.addAttribute("product", product);
-        return "product/user-detail";
+        return "product/detail";
     }
 
 }

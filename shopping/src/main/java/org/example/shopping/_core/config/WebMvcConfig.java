@@ -37,7 +37,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(ownerInterceptor)
                 .addPathPatterns("/owner/**")
-                .excludePathPatterns("/owner/login", "/owner/join", "/products/**");
+                .excludePathPatterns("/owner/login", "/owner/join");
     }
 
 
