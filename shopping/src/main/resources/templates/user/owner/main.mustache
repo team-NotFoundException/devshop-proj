@@ -5,42 +5,69 @@
 
     <main class="flex-grow-1 p-5 bg-light">
         <div class="container-fluid">
+
+
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">운영 현황</h2>
-                <a href="/products/save" class="btn btn-primary">+ 새 상품 등록</a>
+                <h3 class="fw-bold mb-0">운영 현황</h3>
+
+                <a href="/owner/products/save"
+                   class="btn btn-outline-primary px-4 d-flex align-items-center gap-2">
+                    <i class="bi bi-plus-lg"></i>
+                    상품 등록
+                </a>
             </div>
+
 
             <div class="row g-4 mb-5">
                 <div class="col-md-4">
-                    <div class="card shadow-sm border-0 p-3">
-                        <div class="card-body">
-                            <h6 class="text-muted">전체 상품</h6>
-                            <h3 class="fw-bold mb-0">{{totalCount}}</h3>
+                    <div class="card shadow-sm border-0 p-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box bg-primary-subtle text-primary">
+                                <i class="bi bi-box-seam fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">전체 상품</div>
+                                <div class="display-6 fw-bold">{{totalCount}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-4">
-                    <div class="card shadow-sm border-0 p-3 text-white bg-success">
-                        <div class="card-body">
-                            <h6 class="text-white-50">판매 중</h6>
-                            <h3 class="fw-bold mb-0">{{activeCount}}</h3>
+                    <div class="card shadow-sm border-0 p-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box bg-success-subtle text-success">
+                                <i class="bi bi-graph-up-arrow fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">판매 중</div>
+                                <div class="display-6 fw-bold text-success">{{activeCount}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-4">
-                    <div class="card shadow-sm border-0 p-3 text-white bg-secondary">
-                        <div class="card-body">
-                            <h6 class="text-white-50">품절 상품</h6>
-                            <h3 class="fw-bold mb-0">{{soldOutCount}}</h3>
+                    <div class="card shadow-sm border-0 p-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box bg-secondary-subtle text-secondary">
+                                <i class="bi bi-exclamation-circle fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">품절 상품</div>
+                                <div class="display-6 fw-bold text-secondary">{{soldOutCount}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+
             <div class="card shadow-sm border-0">
-                <div class="card-header bg-white py-3">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold">최근 등록 상품</h5>
                 </div>
+
                 <div class="card-body">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
@@ -49,30 +76,48 @@
                             <th>가격</th>
                             <th>재고</th>
                             <th>상태</th>
-                            <th>관리</th>
+                            <th class="text-center">관리</th>
                         </tr>
                         </thead>
                         <tbody>
                         {{#recentProducts}}
                             <tr>
-                                <td><a href="/products/{{id}}/detail" class="text-decoration-none fw-bold text-dark">{{productName}}</a></td>
+                                <td class="fw-semibold">
+                                    <a href="/products/{{id}}/detail" class="text-decoration-none text-dark">
+                                        {{productName}}
+                                    </a>
+                                </td>
                                 <td>{{price}}원</td>
                                 <td>{{stockQuantity}}개</td>
-                                <td><span class="badge bg-light text-dark border">{{status}}</span></td>
                                 <td>
-                                    <a href="/products/{{id}}/edit" class="btn btn-sm btn-outline-warning">수정</a>
+                                    {{#active}}
+                                        <span class="badge bg-success-subtle text-success">판매중</span>
+                                    {{/active}}
+                                    {{#soldOut}}
+                                        <span class="badge bg-secondary-subtle text-secondary">품절</span>
+                                    {{/soldOut}}
+                                </td>
+                                <td class="text-center">
+                                    <a href="/owner/products/{{id}}/edit"
+                                       class="btn btn-sm btn-outline-warning">
+                                        수정
+                                    </a>
                                 </td>
                             </tr>
                         {{/recentProducts}}
+
                         {{^recentProducts}}
                             <tr>
-                                <td colspan="5" class="text-center py-4 text-muted">등록된 상품이 없습니다.</td>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    아직 등록된 상품이 없습니다.
+                                </td>
                             </tr>
                         {{/recentProducts}}
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </main>
 </div>

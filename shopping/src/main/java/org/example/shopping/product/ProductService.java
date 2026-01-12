@@ -7,6 +7,8 @@ import org.example.shopping.category.Category;
 import org.example.shopping.category.CategoryRepository;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.review.ReviewRepository;
+import org.example.shopping.users.owner.Owner;
+import org.example.shopping.users.owner.OwnerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final ReviewRepository  reviewRepository;
+    private final OwnerRepository ownerRepository;
+
 
 
     // 조회
@@ -54,7 +57,7 @@ public class ProductService {
 
     // 등록
     @Transactional
-    public void save(ProductRequest.SaveDTO dto) {
+    public void save(ProductRequest.SaveDTO dto, Long userId) {
         String productImageFileName = null;
 
         if (dto.getThumbnailUrl() != null) {
@@ -68,7 +71,10 @@ public class ProductService {
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
 
-        Product product = dto.toEntity(category, productImageFileName);
+        Owner owner = ownerRepository.findByUserId(userId)
+                .orElseThrow(() -> new Exception404("판매자 정보를 찾을 수 없습니다"));
+
+        Product product = dto.toEntity(category, productImageFileName, owner);
         productRepository.save(product);
     }
 

@@ -1,6 +1,4 @@
-
-        {{> layout/header }}
-
+{{> layout/header }}
 
 <!-- 사이드바 + 컨텐츠 Flex 컨테이너 -->
 <div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
@@ -13,7 +11,7 @@
         <h2 class="mb-4">상품 목록</h2>
 
         <div class="mb-3 text-end">
-            <a href="/products/save" class="btn btn-primary">+ 상품 등록</a>
+            <a href="/owner/products/save" class="btn btn-primary">+ 상품 등록</a>
         </div>
 
         <div class="card shadow-sm">
@@ -33,7 +31,7 @@
                         <tr>
                             <td>{{id}}</td>
                             <td>
-                                <a href="/products/{{id}}/detail" class="text-decoration-none fw-bold">{{productName}}</a>
+                                <a href="/owner/products/{{id}}" class="text-decoration-none fw-bold">{{productName}}</a>
                             </td>
                             <td>{{price}}원</td>
                             <td>{{stockQuantity}}</td>

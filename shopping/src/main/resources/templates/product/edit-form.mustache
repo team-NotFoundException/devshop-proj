@@ -1,46 +1,45 @@
-
-        {{> layout/header }}
-
+{{> layout/header }}
 
 <div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
     {{> layout/owner-sidebar}}
 
-
     <div class="content-area" style="flex: 1; padding: 20px;">
-
         <div class="card shadow-sm" style="max-width: 900px; margin: auto;">
             <div class="card-body p-5">
                 <h2 class="mb-4 text-warning">상품 정보 수정</h2>
 
-                <form action="/products/{{product.id}}/edit" method="post" id="editForm">
+                <form action="/owner/products/{{product.id}}/edit" method="post" id="editForm">
+
                     <div class="mb-3">
                         <label class="form-label fw-bold">카테고리</label>
                         <select name="categoryId" class="form-select" required>
                             {{#category}}
-                                <option value="{{id}}">{{categoryName}}</option>
+                                <option value="{{id}}" {{#isSelected}}selected{{/isSelected}}>
+                                    {{categoryName}}
+                                </option>
                             {{/category}}
                         </select>
                     </div>
 
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">상품명</label>
-                            <input type="text" name="productName" class="form-control" value="{{product.productName}}" required>
-                        </div>
-
-                        <div class="row">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">판매 가격</label>
-                            <input type="number" name="price" class="form-control" value="{{product.price}}" required>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">상품명</label>
+                        <input type="text" name="productName" class="form-control"
+                               value="{{product.productName}}" required>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">판매 가격</label>
+                        <input type="number" name="price" class="form-control"
+                               value="{{product.price}}" required>
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">재고 수량</label>
-                        <input type="number" name="stockQuantity" class="form-control" min="0" value="{{product.stockQuantity}}" required>
+                        <input type="number" name="stockQuantity" class="form-control"
+                               value="{{product.stockQuantity}}" min="0" required>
                     </div>
 
+                    <!-- 에디터 = 본문 + 썸네일 소스 -->
                     <div class="mb-3">
                         <label class="form-label fw-bold">상품 설명</label>
                         <div id="editor"></div>
@@ -56,7 +55,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <a href="/products/list-form" class="btn btn-secondary">취소</a>
+                        <a href="/owner/products" class="btn btn-secondary">취소</a>
                         <button type="submit" class="btn btn-warning px-5 fw-bold">수정 완료</button>
                     </div>
                 </form>
@@ -64,19 +63,24 @@
                 <hr class="my-5">
 
                 <div class="bg-light p-3 rounded d-flex justify-content-between align-items-center">
-                    <span class="text-danger small fw-bold"><i class="bi bi-exclamation-triangle"></i> 상품 삭제 시 복구가 불가능합니다.</span>
-                    <form action="/products/{{product.id}}/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
-                        <button type="submit" class="btn btn-outline-danger btn-sm">상품 삭제</button>
+                    <span class="text-danger small fw-bold">
+                        상품 삭제 시 복구가 불가능합니다.
+                    </span>
+                    <form action="/owner/products/{{product.id}}/delete" method="post"
+                          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            상품 삭제
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
 <script>
     const editor = new toastui.Editor({
         el: document.querySelector('#editor'),
