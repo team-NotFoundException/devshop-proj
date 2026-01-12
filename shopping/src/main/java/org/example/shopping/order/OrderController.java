@@ -25,4 +25,15 @@ public class OrderController {
         return "/user/mypage-orderList";
     }
 
+    @GetMapping("/order/detail")
+    public String detail(Model model, HttpSession session, Long orderId) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        OrderResponse.OrderDetailDTO order = orderService.orderDetail(orderId);
+
+        model.addAttribute("order", order);
+
+        return "user/mypage-orderDetail";
+    }
+
 }

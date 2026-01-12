@@ -2,7 +2,6 @@ package org.example.shopping.order;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception404;
-import org.example.shopping._core.utils.MyDateUtil;
 import org.example.shopping.users.User;
 import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -34,11 +33,14 @@ public class OrderService {
         List<Order> orderList = orderRepository.findAllByUserIdAndOrderByCreatedAtDesc(userId);
 
         return orderList.stream()
-                .map(order -> new OrderResponse.OrderListDTO(
-                        order.getId(),
-                        order.getPayments(),
-                        MyDateUtil.timestampFormat(order.getCreatedAt())
-                ))
+                .map(OrderResponse.OrderListDTO::new)
                 .toList();
+    }
+
+    public OrderResponse.OrderDetailDTO orderDetail(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new Exception404("주문을 찾을 수 없습니다."));
+
+        return new OrderResponse.OrderDetailDTO(order);
     }
 }
