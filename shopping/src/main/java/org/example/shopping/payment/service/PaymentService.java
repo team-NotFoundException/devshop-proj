@@ -7,6 +7,9 @@ import org.example.shopping.cart.Cart;
 import org.example.shopping.cart.CartRepository;
 import org.example.shopping.cartItem.CartItem;
 import org.example.shopping.cartItem.CartItemRepository;
+import org.example.shopping.order.Order;
+import org.example.shopping.order.OrderRepository;
+import org.example.shopping.order.OrderService;
 import org.example.shopping.payment.Payment;
 import org.example.shopping.payment.PaymentRefund;
 import org.example.shopping.payment.PaymentRefundRepository;
@@ -40,6 +43,8 @@ public class PaymentService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
+    private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
 
     // ================== 카트 정보 가져오기 ================
@@ -93,6 +98,8 @@ public class PaymentService {
 
     public Payment processMockPayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
 
+        Order order = orderService.createOrder(sessionUser.getId());
+
         List<CartItem> checkItem = getChecked(cartId);
         for (CartItem item : checkItem) {
             Payment payment = Payment.builder()
@@ -107,8 +114,13 @@ public class PaymentService {
                     .build();
             payment.paySuccess();
             paymentRepository.save(payment);
-
+            order.addPayment(payment);
         }
+        Cart cart = cartRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+        cart.clearItems();
+        cart.updateAmount();
+
         return new Payment();
     }
 
@@ -118,6 +130,7 @@ public class PaymentService {
         List<CartItem> checkItem = getChecked(cartId);
         PaymentGateway gateway = gatewayResolver.resolve(createDTO.getMethod());
         PaymentResult paymentResult = gateway.approve(createDTO);
+        Order order = orderService.createOrder(sessionUser.getId());
 
         for (CartItem item : checkItem) {
             Payment payment = Payment.builder()
@@ -137,6 +150,8 @@ public class PaymentService {
                 payment.paySuccess();
             }
             paymentRepository.save(payment);
+
+            order.addPayment(payment);
         }
 
         List<PaymentResponse.PaymentResultDTO.PaymentItemDTO> items = checkItem.stream()
@@ -149,6 +164,11 @@ public class PaymentService {
                     return dto;
                 })
                 .toList();
+
+        Cart cart = cartRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
+        cart.clearItems();
+        cart.updateAmount();
 
         PaymentResponse.PaymentResultDTO result = new PaymentResponse.PaymentResultDTO();
         result.setItems(items);
