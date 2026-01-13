@@ -1,0 +1,117 @@
+.mypage-main-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+    padding: 40px 20px;
+}
+
+
+
+/* 카드 래퍼 */
+.card {
+    border: none;
+    background: none;
+}
+
+/* 상품 헤더 (상단 배경) */
+.card-header {
+    background-color: #f8f9fa;
+    border: 1px solid #eee;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 15px 20px;
+    margin-top: 25px;
+}
+
+.card-header span {
+    font-size: 14px;
+    color: #666;
+}
+
+.card-header b {
+    font-size: 16px;
+    color: #333;
+    margin-right: 5px;
+}
+
+/* 리뷰 본문 카드 */
+.review-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 0 0 12px 12px;
+    padding: 24px;
+    margin-bottom: 10px;
+    transition: box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* 별점 스타일 */
+.star {
+    font-size: 18px;
+    color: #e9ecef; /* 빈 별 색상 */
+    margin-right: 2px;
+}
+
+.star.filled {
+    color: #ffc107; /* 채워진 별 색상 */
+}
+
+/* 리뷰 내용 텍스트 */
+.card-title {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    word-break: break-all;
+    white-space: pre-line; /* 줄바꿈 허용 */
+}
+
+/* 푸터 영역 (작성 정보 & 버튼) */
+.review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #fbfbfb;
+}
+
+.text-muted-info {
+    font-size: 13px;
+    color: #999;
+}
+
+.text-muted-info span {
+    margin: 0 2px;
+}
+
+/* 상세보기 버튼 */
+.btn-review {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-review:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+/* 데이터가 없을 때 스타일 */
+.empty-state {
+    text-align: center;
+    padding: 60px 0;
+    background-color: #fdfdfd;
+    border: 1px dashed #ddd;
+    border-radius: 12px;
+    color: #888;
+}

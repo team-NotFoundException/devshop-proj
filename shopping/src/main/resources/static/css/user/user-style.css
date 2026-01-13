@@ -1,0 +1,224 @@
+/* 1. 메인 레이아웃 및 배경 분리 */
+body {
+    background-color: #f7f8fa; /* 전체 배경색을 차분하게 설정하여 본문 박스를 돋보이게 함 */
+    margin: 0;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+}
+
+.mypage-main-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 40px auto;
+    gap: 40px;
+    padding: 0 20px;
+}
+
+/* 2. 사이드바 (구분감 있고 스티키한 디자인) */
+.mypage-sidebar {
+    width: 200px; /* 조금 더 여유있게 조정 */
+    height: fit-content;
+    position: sticky;
+    top: 40px;
+    padding: 20px 0;
+}
+
+.mypage-sidebar h2 {
+    font-size: 26px;
+    margin-bottom: 30px;
+    color: #000;
+    font-weight: 800;
+}
+
+.mypage-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mypage-sidebar a {
+    display: block;
+    padding: 12px 16px;
+    color: #888;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.2s;
+    font-weight: 500;
+    border-radius: 12px; /* 사이드바 메뉴도 둥글게 */
+}
+
+.mypage-sidebar a:hover {
+    color: #000;
+    background-color: #fff; /* 호버 시 살짝 배경 추가 */
+}
+
+.mypage-sidebar a.active {
+    color: #000;
+    font-weight: 800;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* 3. 본문 콘텐츠 박스 (사이드바와 분리된 거대한 카드 느낌) */
+.mypage-content-box {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 24px; /* 본문 전체를 크게 라운딩 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    padding: 40px;
+    min-height: 700px;
+}
+
+.mypage-content-box h1,
+.mypage-content-box h3.title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+/* 4. 내부 주문/리뷰 카드 (모던 콤팩트) */
+.order-card, .review-item-group {
+    background: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px; /* 카드 모서리를 더 둥글게 */
+    overflow: hidden;
+    margin-bottom: 24px;
+    transition: transform 0.2s ease;
+}
+
+/* 주문 헤더 (회색 배경 유지) */
+.order-header, .card-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafafa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* 5. 주문 아이템 (세로 중앙 정렬 보완) */
+.order-item, .review-card {
+    padding: 24px;
+    display: flex;
+    align-items: center; /* 핵심: 모든 요소를 세로 중앙에 배치 */
+    gap: 20px;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #f0f0f0;
+    flex-shrink: 0;
+}
+
+.order-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 텍스트 뭉치를 중앙 정렬 */
+    gap: 4px;
+}
+
+.order-item h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+}
+
+.order-item p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* 6. 뱃지 및 버튼 스타일 */
+.status {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #f0f0f0;
+    color: #555;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    margin-top: 6px;
+    width: fit-content;
+}
+
+.order-item-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.order-item-buttons button,
+.order-item-buttons .reviewBtn,
+.detailBtn {
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    color: #444;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.order-item-buttons button.primary {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.order-item-buttons button:hover {
+    background: #f9f9f9;
+    border-color: #bbb;
+}
+
+/* 7. 정보 수정 폼 슬림화 */
+.update-form-group {
+    margin-bottom: 20px;
+}
+
+.update-form-group label {
+    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.update-form-group .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* 반응형 (기존 수치 유지) */
+@media (max-width: 768px) {
+    .mypage-main-wrapper {
+        flex-direction: column;
+        padding: 0 16px;
+    }
+    .mypage-sidebar {
+        width: 100%;
+        position: static;
+    }
+    .mypage-content-box {
+        padding: 30px 20px;
+    }
+    .order-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
