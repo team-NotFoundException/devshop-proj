@@ -15,9 +15,8 @@ package org.example.shopping.payment.paymentEnum;
  *
  * */
 public enum PaymentStatus {
-    READY,
     SUCCESS,
     FAILED,
-    CANCELED,
+    CONFIRMED,
     REFUNDED
 }

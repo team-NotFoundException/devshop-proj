@@ -6,7 +6,6 @@ import org.example.shopping.users.User;
 import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,12 +28,19 @@ public class OrderService {
        return orderRepository.save(order);
     }
 
-    public List<OrderResponse.OrderListDTO> orderList(Long userId) {
-        List<Order> orderList = orderRepository.findAllByUserIdAndOrderByCreatedAtDesc(userId);
+    public List<OrderResponse.OrderListDTO> orderList(Long userId, String keyword) {
 
-        return orderList.stream()
-                .map(OrderResponse.OrderListDTO::new)
-                .toList();
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            List<Order> orderList = orderRepository.findByKeyword(keyword.trim());
+            return orderList.stream()
+                    .map(OrderResponse.OrderListDTO::new)
+                    .toList();
+        } else {
+            List<Order> orderList = orderRepository.findAllByUserIdAndOrderByCreatedAtDesc(userId);
+            return orderList.stream()
+                    .map(OrderResponse.OrderListDTO::new)
+                    .toList();
+        }
     }
 
     public OrderResponse.OrderDetailDTO orderDetail(Long orderId) {

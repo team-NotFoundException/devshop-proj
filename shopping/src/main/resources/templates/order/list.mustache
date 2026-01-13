@@ -1,4 +1,16 @@
 <section class="mypage-content-box">
+    <div class="search-bar">
+        <div class="order-card">
+            <form action="/order/list">
+                <div class="order-item">
+                    <input type="text" name="keyword" value="{{#keyword}}{{keyword}}{{/keyword}}">
+                    <button type="submit" class="search">검색</button>
+                    <a class="reset" href="/order/list">초기화</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="order-box">
         {{#orderList}}
             <div class="order-card">
