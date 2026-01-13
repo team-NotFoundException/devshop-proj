@@ -21,6 +21,8 @@ public class PaymentResponse {
     private String paymentKey;
     private Long amount;
 
+    private Long productId;
+
     PaymentMethod method;
     PaymentStatus status;
     private String productCode;
@@ -37,6 +39,7 @@ public class PaymentResponse {
         this.amount = payment.getAmount();
         this.method = payment.getMethod();
         this.status = payment.getStatus();
+        this.productId = payment.getProductId();
         this.productCode = payment.getProductCode();
         this.productName = payment.getProductName();
         this.createdAt = String.valueOf(payment.getCreatedAt());
