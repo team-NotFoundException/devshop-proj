@@ -1,9 +1,6 @@
-
-        {{> layout/header }}
-
+{{> layout/header }}
 
 <div class="container mt-5">
-    <!-- 카테고리 헤더 -->
     <div class="category-header text-center mb-5">
         <a href="/" class="btn btn-outline-secondary mb-3">
             <i class="fas fa-arrow-left"></i> 메인으로
@@ -12,14 +9,13 @@
         <p class="text-muted">{{category.categoryName}} 카테고리의 상품입니다</p>
     </div>
 
-    <!-- 상품 그리드 -->
     <div class="product-grid">
         {{#products}}
             <div class="product-card">
                 <a href="/products/{{id}}" class="card-link">
                     <div class="card-image">
                         {{#thumbnailUrl}}
-                            <img src="{{thumbnailUrl}}" alt="{{name}}">
+                            <img src="/images/{{thumbnailUrl}}" alt="{{name}}">
                         {{/thumbnailUrl}}
                         {{^thumbnailUrl}}
                             <img src="/img/no-image.png" alt="이미지 없음">

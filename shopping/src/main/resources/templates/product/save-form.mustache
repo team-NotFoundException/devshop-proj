@@ -13,7 +13,7 @@
         <div class="card shadow-sm" style="max-width: 900px; margin: auto;">
             <div class="card-body p-5">
                 <h2 class="mb-4">신규 상품 등록</h2>
-                <form action="/owner/products/save" method="post">
+                <form action="/owner/products/save" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label class="form-label fw-bold">카테고리</label>
                         <select name="categoryId" class="form-select" required>
@@ -72,8 +72,16 @@
         initialEditType: 'wysiwyg',
         previewStyle: 'vertical'
     });
-    document.querySelector('form').addEventListener('submit', function () {
-        document.querySelector('#description').value = editor.getHTML();
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const content = editor.getHTML();
+
+        if (content === "<p><br></p>" || content === "") {
+            alert("상품 설명을 입력해주세요.");
+            e.preventDefault();
+            return false;
+        }
+
+        document.querySelector('#description').value = content;
     });
 </script>
 

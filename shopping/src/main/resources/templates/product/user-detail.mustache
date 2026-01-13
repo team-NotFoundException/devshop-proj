@@ -1,26 +1,44 @@
 {{> layout/header }}
-<div class="product-detail-container">
 
-    <div class="product-image-area">
-        <img src="{{product.thumbnailUrl}}" alt="{{product.name}}">
+{{#product}}
+    <div class="product-detail-container">
+
+        <div class="product-image-area">
+            {{#thumbnailUrl}}
+                <img src="/images/{{thumbnailUrl}}" alt="{{name}}">
+            {{/thumbnailUrl}}
+        </div>
+
+        <div class="product-info-area">
+            <h2 class="product-name">{{name}}</h2>
+
+            <p class="product-price">
+                {{price}} 원
+            </p>
+
+            <div class="product-description">
+                {{{description}}}
+            </div>
+
+            <a class="product-category-link" href="/category/{{categoryId}}">
+                {{categoryName}} 카테고리로 이동
+            </a>
+        </div>
+
     </div>
+{{/product}}
 
-    <div class="product-info-area">
-        <h2 class="product-name">{{product.name}}</h2>
+<style>
+    /* 에디터 내용 스타일링 */
+    .product-description img {
+        max-width: 100%;
+        height: auto;
+    }
 
-        <p class="product-price">
-            {{product.price}} 원
-        </p>
+    .product-description {
+        line-height: 1.6;
+        margin: 20px 0;
+    }
+</style>
 
-        <p class="product-description">
-            {{product.description}}
-        </p>
-
-        <a class="product-category-link"
-           href="/category/{{product.categoryId}}">
-            {{product.categoryName}} 카테고리로 이동
-        </a>
-    </div>
-
-</div>
 {{> layout/footer }}

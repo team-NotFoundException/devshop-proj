@@ -12,10 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -42,7 +40,7 @@ public class ProductController {
         return "category/main";
     }
 
-    @GetMapping("/products/{productId:[0-9]+}")
+    @GetMapping("/products/{productId}")
     public String userProductDetail(@PathVariable Long productId, Model model) {
         ProductResponse.UserDetailDTO product = productService.findByIdForUser(productId);
         model.addAttribute("product", product);
