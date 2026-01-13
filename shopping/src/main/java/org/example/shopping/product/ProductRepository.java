@@ -34,4 +34,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     long countByOwnerId(Long ownerId);
 
     Optional<Product> findByOwnerId(Long ownerId);
+
 }

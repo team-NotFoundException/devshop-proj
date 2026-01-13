@@ -4,9 +4,27 @@ import lombok.Data;
 import org.example.shopping._core.utils.MyDateUtil;
 
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.IntStream;
 
 public class ReviewResponse {
+
+//    @Data
+//    public static class RatingStatisticsDTO {
+//        private Long firstPercentage;
+//        private Long secondPercentage;
+//        private Long thirdPercentage;
+//        private Long forthPercentage;
+//        private Long fifthPercentage;
+//
+//        public RatingStatisticsDTO(Review review) {
+//            this.firstPercentage = getFirstPercentage();
+//            this.secondPercentage = getSecondPercentage();
+//            this.thirdPercentage = getThirdPercentage();
+//            this.forthPercentage = getForthPercentage();
+//            this.fifthPercentage = getFifthPercentage();
+//        }
+//    }
 
     @Data
     public static class InProductReviewDTO {

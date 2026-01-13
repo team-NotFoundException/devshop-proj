@@ -64,7 +64,7 @@ public class ProductService {
             try {
                productImageFileName = FileUtil.saveFile(dto.getThumbnailUrl());
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e); // 고치세요
             }
         }
 

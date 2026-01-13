@@ -23,7 +23,7 @@ public class ReviewController {
     // 리뷰 저장 화면 요청 (로그인 필요)
     // http://localhost:8080/review/save
     @GetMapping("/review/save")
-    public String saveForm(
+    public String saveForm(Model model,
             HttpSession session
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -32,16 +32,26 @@ public class ReviewController {
     }
 
     // 리뷰 저장 (로그인 필요)
-    @PostMapping("/review/save")
-    public String saveProc(
-            ReviewRequest.SaveDTO saveDTO,
-            HttpSession session
-    ) {
+//    @PostMapping("/review/save")
+//    public String saveProc(
+//            ReviewRequest.SaveDTO saveDTO,
+//            HttpSession session
+//    ) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
+//
+//        reviewService.create(saveDTO, sessionUser);
+//        return "redirect:/review/list";
+//    }
+
+    @PostMapping("/review/{productId}/save")
+    public String saveReview(@PathVariable Long productId, ReviewRequest.SaveDTO saveDTO, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        reviewService.create(saveDTO, sessionUser);
+        reviewService.createReview(productId, saveDTO, sessionUser);
+
         return "redirect:/review/list";
     }
+
 
     // 특정 상품에 대한 리뷰 목록 조회
     @GetMapping("/products/{productId}/review")
@@ -52,7 +62,16 @@ public class ReviewController {
         return "/review/review-in-product";
     }
 
-    // 리뷰 목록 조회
+//    @GetMapping("/products/{productId}/statistics")
+//    public String ratingStatistics(@PathVariable Long productId, Model model) {
+//        ReviewResponse.RatingStatisticsDTO statisticsDTO = reviewService.findByGetRating(productId);
+//
+//        model.addAttribute("statistic", statisticsDTO);
+//        return "statistics/rating-in-products";
+//    }
+
+
+    // 내 리뷰 목록 조회
     // http://localhost:8080/review/list
     @GetMapping({"/review/list"})
     public String findAll(Model model, HttpSession session) {
@@ -66,12 +85,12 @@ public class ReviewController {
 
     // 리뷰 상세 조회
     // http://localhost:8080/review/1
-    @GetMapping("/review/{id}")
-    public String findById(@PathVariable Long id, Model model, HttpSession session) {
+    @GetMapping("/review/{reviewId}")
+    public String findById(@PathVariable Long reviewId, Model model, HttpSession session) {
 
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        ReviewResponse.DetailDTO review = reviewService.getDetailView(id);
+        ReviewResponse.DetailDTO review = reviewService.getDetailView(reviewId);
 
         boolean isOwner = false;
         if (sessionUser != null && review.getUserId() != null) {
@@ -85,11 +104,11 @@ public class ReviewController {
 
     // 리뷰 수정 화면 요청 (로그인 필요)
     // http://localhost:8080/review/1/update
-    @GetMapping("/review/{id}/update")
-    public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
+    @GetMapping("/review/{reviewId}/update")
+    public String updateForm(@PathVariable Long reviewId, Model model, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        ReviewResponse.UpdateFormDTO review = reviewService.updateReviewView(id, sessionUser.getId());
+        ReviewResponse.UpdateFormDTO review = reviewService.updateReviewView(reviewId, sessionUser.getId());
 
         model.addAttribute("review", review);
         return "user/mypage-reviewUpdate";
@@ -97,41 +116,41 @@ public class ReviewController {
 
     // 리뷰 수정 (로그인 필요)
     // http://localhost:8080/review/1/update
-    @PostMapping("/review/{id}/update")
+    @PostMapping("/review/{reviewId}/update")
     public String updateProc(
-            @PathVariable Long id,
+            @PathVariable Long reviewId,
             ReviewRequest.UpdateDTO updateDTO,
             HttpSession session
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         updateDTO.validate();
 
-        reviewService.updateReview(updateDTO, id, sessionUser.getId());
+        reviewService.updateReview(updateDTO, reviewId, sessionUser.getId());
 
         return "redirect:/review/list";
     }
 
     // 리뷰 삭제 (로그인 필요)
-    @PostMapping("/review/{id}/delete")
+    @PostMapping("/review/{reviewId}/delete")
     public String delete(
-            @PathVariable Long id,
+            @PathVariable Long reviewId,
             HttpSession session
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        reviewService.deleteReview(id, sessionUser.getId());
+        reviewService.deleteReview(reviewId, sessionUser.getId());
         return "redirect:/review/list";
     }
 
     // 리뷰 이미지 삭제
-    @PostMapping("/review/{id}/review-image/delete")
+    @PostMapping("/review/{reviewId}/review-image/delete")
     public String deleteReviewImage(
-            @PathVariable Long id,
+            @PathVariable Long reviewId,
             HttpSession session,
             Model model
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Review updateReview = reviewService.deleteReviewImage(id, sessionUser.getId());
+        Review updateReview = reviewService.deleteReviewImage(reviewId, sessionUser.getId());
         model.addAttribute("review", updateReview);
         return "redirect:/review/{id}";
     }
