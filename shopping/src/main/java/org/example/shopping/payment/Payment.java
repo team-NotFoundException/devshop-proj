@@ -30,6 +30,8 @@ public class Payment extends BaseTimeEntity {
 
     private String paymentKey;
 
+    private Long productId;
+
     private Long amount;
 
     @Enumerated(EnumType.STRING)
