@@ -10,6 +10,8 @@
 
                 <form action="/owner/products/{{product.id}}/edit" method="post" id="editForm">
 
+
+
                     <div class="mb-3">
                         <label class="form-label fw-bold">카테고리</label>
                         <select name="categoryId" class="form-select" required>
@@ -39,7 +41,7 @@
                                value="{{product.stockQuantity}}" min="0" required>
                     </div>
 
-                    <!-- 에디터 = 본문 + 썸네일 소스 -->
+                    <!-- 상품 설명 -->
                     <div class="mb-3">
                         <label class="form-label fw-bold">상품 설명</label>
                         <div id="editor"></div>

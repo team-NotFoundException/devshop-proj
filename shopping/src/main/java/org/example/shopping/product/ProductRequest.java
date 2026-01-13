@@ -1,6 +1,7 @@
 package org.example.shopping.product;
 
 import lombok.Data;
+import lombok.Getter;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
@@ -8,7 +9,6 @@ import org.example.shopping.users.owner.Owner;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProductRequest {
-
 
     // 상품 등록
     @Data
@@ -19,7 +19,8 @@ public class ProductRequest {
         private Long price;
         private int stockQuantity;
         private String description;
-        private MultipartFile thumbnailUrl;
+
+        private String thumbnailUrl;
 
         public void validate() {
             if (productName == null || productName.isBlank()) {
@@ -33,7 +34,7 @@ public class ProductRequest {
             }
         }
 
-        public Product toEntity(Category category, String thumbnailUrl, Owner owner) {
+        public Product toEntity(Category category, String savedFileName, Owner owner) {
             return Product.builder()
                     .category(category)
                     .owner(owner)
@@ -42,7 +43,7 @@ public class ProductRequest {
                     .price(price)
                     .stockQuantity(stockQuantity)
                     .description(description)
-                    .thumbnailUrl(thumbnailUrl)
+                    .thumbnailUrl(savedFileName)
                     .status(ProductStatus.ACTIVE)
                     .build();
         }
@@ -68,9 +69,7 @@ public class ProductRequest {
                 throw new Exception400("가격은 0보다 커야 합니다.");
             }
         }
-
     }
-
 
     // 재고 수정
     @Data
@@ -83,7 +82,6 @@ public class ProductRequest {
             }
         }
     }
-
 
     // 상태 변경
     @Data

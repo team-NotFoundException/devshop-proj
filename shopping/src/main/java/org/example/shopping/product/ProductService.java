@@ -58,15 +58,12 @@ public class ProductService {
     // 등록
     @Transactional
     public void save(ProductRequest.SaveDTO dto, Long userId) {
-        String productImageFileName = null;
 
-        if (dto.getThumbnailUrl() != null) {
-            try {
-               productImageFileName = FileUtil.saveFile(dto.getThumbnailUrl());
-            } catch (Exception e) {
-                throw new RuntimeException(e); // 고치세요
-            }
-        }
+        System.out.println("상품명: " + dto.getProductName());
+        System.out.println("설명: " + dto.getDescription());
+        System.out.println("썸네일 값: " + dto.getThumbnailUrl());
+
+        String savedFileName = dto.getThumbnailUrl();
 
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
@@ -74,7 +71,18 @@ public class ProductService {
         Owner owner = ownerRepository.findByUserId(userId)
                 .orElseThrow(() -> new Exception404("판매자 정보를 찾을 수 없습니다"));
 
-        Product product = dto.toEntity(category, productImageFileName, owner);
+        Product product = Product.builder()
+                .category(category)
+                .owner(owner)
+                .productName(dto.getProductName())
+                .productCode(dto.getProductCode())
+                .price(dto.getPrice())
+                .stockQuantity(dto.getStockQuantity())
+                .description(dto.getDescription())
+                .thumbnailUrl(savedFileName)
+                .status(ProductStatus.ACTIVE)
+                .build();
+
         productRepository.save(product);
     }
 

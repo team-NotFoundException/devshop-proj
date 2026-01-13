@@ -8,6 +8,7 @@ import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.owner.Owner;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 
@@ -30,7 +31,7 @@ public class Product {
     private Long price;
     private int stockQuantity;
 
-    @Column(length = 500)
+    @Column(columnDefinition = "TEXT")
     private String thumbnailUrl;
 
     @Lob
@@ -111,6 +112,6 @@ public class Product {
 
 
     public boolean isOwner(Long sessionUserId) {
-        return this.id == sessionUserId;
+        return this.owner.getUser().getId().equals(sessionUserId);
     }
 }
