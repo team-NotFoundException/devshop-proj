@@ -36,7 +36,7 @@
                             <div class="order-item-buttons">
 
                                 <button class="primary confirmBtn" data-order-item-id="{{id}}">구매확정</button>
-                                <button class="refundBtn" type="button" value="{{id}}" id="paymentId">반품신청</button>
+                                <button class="refundBtn" type="button" value="{{id}}" data-payment-id="{{id}}">반품신청</button>
                                 <a href="/review/{{productId}}/save" class="reviewBtn" style="display: block">리뷰 작성</a>
                             </div>
 
@@ -88,11 +88,10 @@
 
         document.querySelectorAll('.refundBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
-                const orderItemId = this.dataset.orderItemId
+                const paymentId = this.dataset.paymentId;
                 const statusContainer = this.closest('.order-card');
                 const container = this.closest('.order-item-buttons');
 
-                const paymentId = document.getElementById("paymentId");
                 if (!confirm("반품하시겠습니까?")) return;
 
                 try {
