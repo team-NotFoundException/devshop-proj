@@ -27,31 +27,6 @@ public class ReviewService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-//    public Review create(ReviewRequest.SaveDTO saveDTO, Product product) {
-//        String reviewImageFileName = null;
-//
-//        // 이미지가 선택되었으면~
-//        if (saveDTO.getReviewImage() != null) {
-//            try {
-//
-//                /**
-//                 * TODO !!
-//                 * 이미지 선택 안하고 리뷰 작성하면 예외 터져서 아래 주석처리함
-//                 * - 후에 처리해야함.
-//                 * */
-////                if (!FileUtil.isImageFile(saveDTO.getReviewImage())) {
-////                    throw new Exception400("이미지 파일만 업로드 가능합니다.");
-////                }
-//                reviewImageFileName = FileUtil.saveFile(saveDTO.getReviewImage());
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//
-//        Review review = saveDTO.toEntity(product, reviewImageFileName);
-//
-//        return reviewRepository.save(review);
-//    }
 
     @Transactional
     public void createReview(Long productId, ReviewRequest.SaveDTO saveDTO, User sessionUser) {
@@ -63,7 +38,7 @@ public class ReviewService {
 
         String reviewImageFileName = null;
 
-        if (saveDTO.getReviewImage() != null) {
+        if (saveDTO.getReviewImage() != null && !saveDTO.getReviewImage().isEmpty()) {
             try {
                 if (!FileUtil.isImageFile(saveDTO.getReviewImage())) {
                     throw new Exception400("이미지 파일만 업로드 가능합니다.");
@@ -79,10 +54,9 @@ public class ReviewService {
     }
 
     public List<ReviewResponse.ListDTO> getReviews(Long sessionUserId) {
-        List<Review> reviewList = reviewRepository.findAllWithUserOrderByCreatedAtDesc();
+        List<Review> reviewList = reviewRepository.findByUserIdWithProduct(sessionUserId);
         return reviewList.stream()
-                .map(ReviewResponse.ListDTO::new) // -> Review 정보만
-//                .map(r -> new ReviewResponse.ListDTO(r, r.getOrderItem()))
+                .map(ReviewResponse.ListDTO::new)
                 .collect(Collectors.toList());
     }
 

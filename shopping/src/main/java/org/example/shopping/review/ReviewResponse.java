@@ -81,6 +81,8 @@ public class ReviewResponse {
             this.id = review.getId();
             this.content = review.getContent();
             this.rating = review.getRating();
+            this.productId = review.getProduct().getId();
+            this.productName = review.getProduct().getProductName();
 
             if (review.getUser() != null) {
                 this.username = review.getUser().getUsername();

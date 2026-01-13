@@ -23,23 +23,13 @@ public class ReviewRequest {
         private String content;
         private MultipartFile reviewImage;
 
-        // 검증 메서드
-        public void validate() {
-            if (rating < 1 || rating > 5) {
-                throw new IllegalArgumentException("평점은 1~5점만 가능합니다.");
-            }
-
-            if (content == null || content.trim().isEmpty()) {
-                throw new IllegalArgumentException("내용은 필수입니다.");
-            }
-        }
 
         public Review toEntity(User user, Product product, String reviewImageFileName) {
             return Review.builder()
                     .user(user)
                     .product(product)
-                    .content(this.content)
-                    .rating(this.rating)
+                    .content(content)
+                    .rating(rating)
                     .reviewImage(reviewImageFileName)
                     .build();
         }
