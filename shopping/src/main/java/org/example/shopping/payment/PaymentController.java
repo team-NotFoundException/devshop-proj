@@ -7,11 +7,13 @@ import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.service.PaymentService;
 import org.example.shopping.users.User;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -84,41 +86,14 @@ public class PaymentController {
 
     }
 
-//    @GetMapping("/order/list")
-//    public String paymentList(HttpSession session, Model model){
-//        User sessionUser = (User) session.getAttribute("sessionUser");
-//        List<PaymentResponse> responses = paymentService.paymentList(sessionUser.getId());
-//        model.addAttribute("paymentList", responses);
-//        return "user/mypage-orderList";
-//    }
-
     //==============================================================================================================================
 
-    //    @GetMapping("/payment/{id}/refund")
-//    public String refundPaymentForm(@PathVariable Long id, Model model
-//            ,HttpSession session
-//    ) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
-//        PaymentResponse response =
-//                paymentService.refundPaymentForm(id
-//                        , sessionUser.getId()
-//                );
-//        model.addAttribute("payment", response);
-//        return "payment/refund-form";
-//    }
-//
-//    @PostMapping("/payment/{id}/refund")
-//    public String refundPaymentProc(@PathVariable Long id, PaymentRequest.RefundDTO refundDTO
-//            , HttpSession session
-//    ) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
-//
-//        PaymentRefund response = paymentService.refundPayment(id, refundDTO
-//                , sessionUser.getId()
-//        );
-//        session.setAttribute("sessionUser", response);
-//        return "redirect:/";
-//    }
-
+    @PostMapping("/payment/{id}/refund")
+    @ResponseBody
+    public ResponseEntity<PaymentResponse.SingleRefundDTO> singleRefund(@PathVariable(name = "id") Long paymentId, HttpSession session, PaymentRequest.RefundDTO req) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        PaymentResponse.SingleRefundDTO response = paymentService.singleRefund(paymentId, sessionUser.getId(), req);
+        return ResponseEntity.ok().body(response);
+    }
 
 }

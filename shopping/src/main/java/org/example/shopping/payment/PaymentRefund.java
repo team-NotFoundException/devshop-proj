@@ -30,10 +30,6 @@ public class PaymentRefund extends BaseTimeEntity {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "order_id")
-//    private Order order;
-
     private Long amount;
 
     private String reason;

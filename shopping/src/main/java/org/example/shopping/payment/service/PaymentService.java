@@ -182,18 +182,19 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponse.SingleRefundDTO singleRefund(
-            Long orderItemId, Long userId, PaymentRequest.RefundDTO req) {
+            Long paymentId, Long userId, PaymentRequest.RefundDTO req) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception404("사용자 찾을수 없음"));
 
-        Payment payment = paymentRepository.findByUserId(userId)
+        Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
 
         PaymentRefund refund = PaymentRefund.builder()
                 .user(user)
                 .payment(payment)
-
+                .amount(req.getAmount())
+                .reason(req.getReason())
                 .status(RefundStatus.REQUESTED)
                 .requestedAt(LocalDateTime.now())
                 .build();
