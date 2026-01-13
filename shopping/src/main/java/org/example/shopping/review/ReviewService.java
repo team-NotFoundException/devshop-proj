@@ -1,11 +1,15 @@
 package org.example.shopping.review;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping._core.errors.exception.Exception500;
 import org.example.shopping._core.utils.FileUtil;
+import org.example.shopping.product.Product;
 import org.example.shopping.product.ProductRepository;
 import org.example.shopping.users.User;
+import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,32 +25,57 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+
+//    public Review create(ReviewRequest.SaveDTO saveDTO, Product product) {
+//        String reviewImageFileName = null;
+//
+//        // 이미지가 선택되었으면~
+//        if (saveDTO.getReviewImage() != null) {
+//            try {
+//
+//                /**
+//                 * TODO !!
+//                 * 이미지 선택 안하고 리뷰 작성하면 예외 터져서 아래 주석처리함
+//                 * - 후에 처리해야함.
+//                 * */
+////                if (!FileUtil.isImageFile(saveDTO.getReviewImage())) {
+////                    throw new Exception400("이미지 파일만 업로드 가능합니다.");
+////                }
+//                reviewImageFileName = FileUtil.saveFile(saveDTO.getReviewImage());
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//
+//        Review review = saveDTO.toEntity(product, reviewImageFileName);
+//
+//        return reviewRepository.save(review);
+//    }
 
     @Transactional
-    public Review create(ReviewRequest.SaveDTO saveDTO, User sessionsUser) {
+    public void createReview(Long productId, ReviewRequest.SaveDTO saveDTO, User sessionUser) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new Exception404("상품이 없음"));
+
+        User user = userRepository.findById(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("로그인 상태가 아닙니다."));
+
         String reviewImageFileName = null;
 
-        // 이미지가 선택되었으면~
         if (saveDTO.getReviewImage() != null) {
             try {
-
-                /**
-                 * TODO !!
-                 * 이미지 선택 안하고 리뷰 작성하면 예외 터져서 아래 주석처리함
-                 * - 후에 처리해야함.
-                 * */
-//                if (!FileUtil.isImageFile(saveDTO.getReviewImage())) {
-//                    throw new Exception400("이미지 파일만 업로드 가능합니다.");
-//                }
+                if (!FileUtil.isImageFile(saveDTO.getReviewImage())) {
+                    throw new Exception400("이미지 파일만 업로드 가능합니다.");
+                }
                 reviewImageFileName = FileUtil.saveFile(saveDTO.getReviewImage());
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new Exception500("서버 오류입니당");
             }
         }
 
-        Review review = saveDTO.toEntity(sessionsUser, reviewImageFileName);
-
-        return reviewRepository.save(review);
+        Review newReview = saveDTO.toEntity(user, product, reviewImageFileName);
+        reviewRepository.save(newReview);
     }
 
     public List<ReviewResponse.ListDTO> getReviews(Long sessionUserId) {
@@ -57,6 +86,8 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+
+    // 특정 상품의 리뷰 조회
     public List<ReviewResponse.InProductReviewDTO> reviewInProduct(Long productId) {
         List<Review> inProductReview = reviewRepository.findByProductId(productId);
         return inProductReview.stream()
@@ -149,4 +180,19 @@ public class ReviewService {
     }
 
 
+//    public ReviewResponse.RatingStatisticsDTO findByGetRating(Long productId) {
+//        Product product = productRepository.findById(productId)
+//                .orElseThrow(() -> new Exception404("상품을 찾을 수 없어요"));
+//
+//        long totalReviews = reviewRepository.countReviewByProductId(productId);
+//
+//        long firstCount = reviewRepository.countReviewByProductIdWithRating(productId, 5);
+//        long secondCount = reviewRepository.countReviewByProductIdWithRating(productId, 4);
+//        long thirdCount = reviewRepository.countReviewByProductIdWithRating(productId, 3);
+//        long forthCount = reviewRepository.countReviewByProductIdWithRating(productId, 2);
+//        long fifthCount = reviewRepository.countReviewByProductIdWithRating(productId, 1);
+//
+//
+//        return null;
+//    }
 }

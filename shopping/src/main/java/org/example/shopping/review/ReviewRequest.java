@@ -1,6 +1,10 @@
 package org.example.shopping.review;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.example.shopping.product.Product;
 import org.example.shopping.users.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -8,7 +12,14 @@ public class ReviewRequest {
 
     @Data
     public static class SaveDTO {
+        private Long productId;
+
+        @Min(value = 1, message = "별점은 1점 이상이어야 합니다.")
+        @Max(value = 5, message = "별점은 5점 이하여야 합니다.")
         private int rating;
+
+        @NotBlank(message = "내용이 비워질 수 없습니다.")
+        @Max(value = 150, message = "150자를 초과할 수 없습니다.")
         private String content;
         private MultipartFile reviewImage;
 
@@ -23,9 +34,10 @@ public class ReviewRequest {
             }
         }
 
-        public Review toEntity(User user, String reviewImageFileName) {
+        public Review toEntity(User user, Product product, String reviewImageFileName) {
             return Review.builder()
                     .user(user)
+                    .product(product)
                     .content(this.content)
                     .rating(this.rating)
                     .reviewImage(reviewImageFileName)

@@ -45,8 +45,9 @@ public class Review extends BaseTimeEntity {
     private String reviewImage;
 
     @Builder
-    public Review(User user, int rating, String content, String reviewImage) {
+    public Review(User user, Product product, int rating, String content, String reviewImage) {
         this.user = user;
+        this.product = product;
         this.rating = rating;
         this.content = content;
         this.reviewImage = reviewImage;
