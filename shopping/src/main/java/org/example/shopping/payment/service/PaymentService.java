@@ -107,11 +107,12 @@ public class PaymentService {
                     .orderId("ORD-" + UUID.randomUUID())
                     .paymentKey("MOCK-" + UUID.randomUUID())
                     .amount(item.getTotalPrice())
+                    .quantity(item.getQuantity())
                     .productId(item.getProduct().getId())
                     .method(createDTO.getMethod())
                     .status(PaymentStatus.SUCCESS)
                     .productCode(item.getProduct().getProductCode())
-                    .productName(item.getProduct().getProductName() + "(수량: " + item.getQuantity() + "개")
+                    .productName(item.getProduct().getProductName())
                     .build();
             payment.paySuccess();
             paymentRepository.save(payment);
@@ -139,6 +140,7 @@ public class PaymentService {
                     .orderId(createDTO.getOrderId() + "-" + item.getId())
                     .paymentKey(createDTO.getPaymentKey())
                     .amount(item.getTotalPrice())
+                    .quantity(item.getQuantity())
                     .method(createDTO.getMethod())
                     .productId(item.getProduct().getId())
                     .status(paymentResult.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)

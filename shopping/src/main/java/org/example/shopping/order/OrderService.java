@@ -23,7 +23,7 @@ public class OrderService {
 
         Order order = Order.builder()
                 .user(userEntity)
-                .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+                .createdAt(LocalDateTime.now())
                 .build();
 
        return orderRepository.save(order);
