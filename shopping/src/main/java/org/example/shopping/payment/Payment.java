@@ -34,6 +34,8 @@ public class Payment extends BaseTimeEntity {
 
     private Long amount;
 
+    private Integer quantity;
+
     @Enumerated(EnumType.STRING)
     private PaymentMethod method;
 

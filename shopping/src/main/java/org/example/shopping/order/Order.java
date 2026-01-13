@@ -9,6 +9,7 @@ import org.example.shopping.users.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +29,10 @@ public class Order {
     @OneToMany
     private List<Payment> payments = new ArrayList<>();
 
-    @CreationTimestamp
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @Builder
-    public Order(Long id, User user, Timestamp createdAt) {
+    public Order(Long id, User user, LocalDateTime createdAt) {
         this.id = id;
         this.user = user;
         this.createdAt = createdAt;

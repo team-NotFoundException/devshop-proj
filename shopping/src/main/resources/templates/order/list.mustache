@@ -1,5 +1,5 @@
 <section class="mypage-content-box">
-    <div class="card">
+    <div class="order-box">
         {{#orderList}}
             <div class="order-card">
                 <div class="order-header">
@@ -18,7 +18,8 @@
                              alt="{{productName}}" class="product-image">
                         <div class="order-item-info">
                             <h4>{{productName}}</h4>
-                            <p>가격: {{amount}}원</p>
+                            <p>개수: {{quantity}}</p>
+                            <p>가격: {{orderAmount}}원</p>
                             <span class="status" id="status">{{status}}</span>
                             <div class="order-item-buttons">
                                 <button class="primary confirmBtn" data-order-item-id="{{id}}">구매확정</button>

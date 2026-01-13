@@ -22,7 +22,7 @@ public class PaymentResponse {
     private Long amount;
 
     private Long productId;
-
+    private Integer quantity;
     PaymentMethod method;
     PaymentStatus status;
     private String productCode;
@@ -37,6 +37,7 @@ public class PaymentResponse {
         this.orderId = payment.getOrderId();
         this.paymentKey = payment.getPaymentKey();
         this.amount = payment.getAmount();
+        this.quantity = payment.getQuantity();
         this.method = payment.getMethod();
         this.status = payment.getStatus();
         this.productId = payment.getProductId();
