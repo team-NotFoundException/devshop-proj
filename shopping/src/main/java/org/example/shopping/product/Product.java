@@ -8,7 +8,6 @@ import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.owner.Owner;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 

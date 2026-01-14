@@ -20,7 +20,6 @@ public class ProductRequest {
         private int stockQuantity;
         private String description;
 
-        private String thumbnailUrl;
 
         public void validate() {
             if (productName == null || productName.isBlank()) {
