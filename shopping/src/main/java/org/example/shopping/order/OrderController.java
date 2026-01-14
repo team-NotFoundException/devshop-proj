@@ -22,6 +22,7 @@ public class OrderController {
         List<OrderResponse.OrderListDTO> orderList = orderService.orderList(sessionUser.getId(), keyword);
 
         model.addAttribute("orderList", orderList);
+        model.addAttribute("keyword", keyword);
 
         return "/user/mypage-orderList";
     }
