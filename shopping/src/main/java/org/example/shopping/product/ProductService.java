@@ -149,4 +149,28 @@ public class ProductService {
 
         return new ProductResponse.UserDetailDTO(product);
     }
+
+    // 상품명 검색
+    public List<ProductResponse.ListDTO> searchByProductName(String keyword) {
+        return productRepository.searchByProductNameWithCategory(keyword)
+                .stream()
+                .map(ProductResponse.ListDTO::new)
+                .toList();
+    }
+
+    // 상품명 + 상태 검색
+    public List<ProductResponse.ListDTO> searchByProductNameAndStatus(String keyword, ProductStatus status) {
+        return productRepository.searchByProductNameAndStatusWithCategory(keyword, status)
+                .stream()
+                .map(ProductResponse.ListDTO::new)
+                .toList();
+    }
+
+    // 상품명 + 카테고리 검색
+    public List<ProductResponse.ListDTO> searchByProductNameAndCategoryId(String keyword, Long categoryId) {
+        return productRepository.searchByProductNameAndCategoryIdWithCategory(keyword, categoryId)
+                .stream()
+                .map(ProductResponse.ListDTO::new)
+                .toList();
+    }
 }
