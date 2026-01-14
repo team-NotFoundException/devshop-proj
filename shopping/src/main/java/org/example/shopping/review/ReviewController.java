@@ -47,7 +47,7 @@ public class ReviewController {
 
 
     // 특정 상품에 대한 리뷰 목록 조회
-    @GetMapping("/products/{productId}/review")
+    @GetMapping("/products/{productId}")
     public String reviewInProduct(@PathVariable Long productId ,Model model) {
         List<ReviewResponse.InProductReviewDTO> inProductReviewList = reviewService.reviewInProduct(productId);
 
