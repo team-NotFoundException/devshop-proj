@@ -16,7 +16,6 @@
                     <ul>
                         <li class="active" onclick="loadTab('description', this)">상세정보</li>
                         <li onclick="loadTab('review', this, {{id}})">리뷰</li>
-                        <li onclick="loadTab('qna', this)">문의</li>
                     </ul>
                 </nav>
 
@@ -73,14 +72,13 @@
         const contentArea = document.getElementById('tab-content');
 
         if (type === 'description') {
-            contentArea.innerHTML = document.getElementById('origin-description');
+            contentArea.innerHTML = document.getElementById('origin-description').innerHTML;
         } else if (type === 'review') {
             try {
                 contentArea.innerHTML = '<div class="loading">리뷰를 가져오는 중입니다.</div>';
                 const response = await fetch(`/products/${productId}/reviews`);
                 if (response.ok) {
-                    const html = await response.text();
-                    contentArea.innerHTML = html;
+                    contentArea.innerHTML = await response.text();
                 } else {
                     contentArea.innerHTML = '리뷰를 불러오지 못하였습니다.';
                 }
