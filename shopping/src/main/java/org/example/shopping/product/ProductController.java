@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -102,14 +104,18 @@ public class ProductController {
     }
 
     @PostMapping("/owner/products/save")
-    public String save(ProductRequest.SaveDTO dto, HttpSession session) {
+    public String save(
+            ProductRequest.SaveDTO dto,
+            @RequestParam("thumbnail") MultipartFile thumbnail,
+            HttpSession session
+    ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null || !sessionUser.isOwner()) {
             throw new Exception403("판매자만 접근할 수 있습니다");
         }
 
-        productService.save(dto, sessionUser.getId());
+        productService.save(dto, sessionUser.getId(), thumbnail);
         return "redirect:/owner/products";
     }
 

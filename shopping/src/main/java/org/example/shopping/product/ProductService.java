@@ -1,6 +1,7 @@
 package org.example.shopping.product;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping._core.utils.FileUtil;
 import org.example.shopping.category.Category;
@@ -11,6 +12,7 @@ import org.example.shopping.users.owner.Owner;
 import org.example.shopping.users.owner.OwnerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -57,13 +59,9 @@ public class ProductService {
 
     // 등록
     @Transactional
-    public void save(ProductRequest.SaveDTO dto, Long userId) {
+    public void save(ProductRequest.SaveDTO dto, Long userId, MultipartFile thumbnail) {
 
-        System.out.println("상품명: " + dto.getProductName());
-        System.out.println("설명: " + dto.getDescription());
-        System.out.println("썸네일 값: " + dto.getThumbnailUrl());
-
-        String savedFileName = dto.getThumbnailUrl();
+        dto.validate();
 
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
@@ -71,21 +69,22 @@ public class ProductService {
         Owner owner = ownerRepository.findByUserId(userId)
                 .orElseThrow(() -> new Exception404("판매자 정보를 찾을 수 없습니다"));
 
-        Product product = Product.builder()
-                .category(category)
-                .owner(owner)
-                .productName(dto.getProductName())
-                .productCode(dto.getProductCode())
-                .price(dto.getPrice())
-                .stockQuantity(dto.getStockQuantity())
-                .description(dto.getDescription())
-                .thumbnailUrl(savedFileName)
-                .status(ProductStatus.ACTIVE)
-                .build();
+        String savedFileName = null;
 
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            if (!FileUtil.isImageFile(thumbnail)) {
+                throw new Exception400("이미지 파일만 업로드 가능합니다.");
+            }
+            try {
+                savedFileName = FileUtil.saveFile(thumbnail);
+            } catch (Exception e) {
+                throw new RuntimeException("썸네일 저장 실패", e);
+            }
+        }
+
+        Product product = dto.toEntity(category, savedFileName, owner);
         productRepository.save(product);
     }
-
 
     // 수정
     @Transactional
