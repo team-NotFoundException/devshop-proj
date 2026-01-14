@@ -5,6 +5,7 @@ import org.example.shopping._core.utils.MoneyUtils;
 import org.example.shopping._core.utils.MyDateUtil;
 import org.example.shopping.payment.Payment;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
+import org.example.shopping.payment.paymentEnum.PaymentStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,7 @@ public class OrderResponse {
         private List<Payment> payments;
         private String orderAmount;
         private String orderedAt;
+        private String statusDisplay;
 
         public OrderListDTO(Order order) {
             this.id = order.getId();
@@ -26,6 +28,22 @@ public class OrderResponse {
                     .orElse(null);
             this.orderAmount = MoneyUtils.decimalFormat.format(PaymentAmount);
             this.orderedAt = MyDateUtil.toDateString(order.getCreatedAt());
+            PaymentStatus status = order.getPayments().stream()
+                    .map(Payment::getStatus)
+                    .findFirst()
+                    .orElse(null);
+            if (status.toString().equals("SUCCESS")) {
+                this.statusDisplay = "구매완료";
+            }
+            if (status.toString().equals("CONFIRMED")) {
+                this.statusDisplay = "구매확정";
+            }
+            if (status.toString().equals("FAILED")) {
+                this.statusDisplay = "결제실패";
+            }
+            if (status.toString().equals("REFUNDED")) {
+                this.statusDisplay = "환불";
+            }
         }
     }
 
