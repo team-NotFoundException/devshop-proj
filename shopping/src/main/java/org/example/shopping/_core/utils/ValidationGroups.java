@@ -1,6 +1,7 @@
 package org.example.shopping._core.utils;
 
 import jakarta.validation.GroupSequence;
+import org.example.shopping.review.ReviewRequest;
 import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.owner.dto.OwnerRequest;
 
@@ -40,4 +41,12 @@ public interface ValidationGroups {
             UserRequest.UpdateDTO.class
     })
     public interface UpdateOrderGroup {}
+
+    @GroupSequence({
+            PatternCheckGroup.class,
+            NotEmptyGroup.class,
+            ReviewRequest.SaveDTO.class
+    })
+    public interface ReviewOrderGroup {}
 }
+
