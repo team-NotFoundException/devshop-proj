@@ -36,7 +36,7 @@
 
                             <div class="order-item-buttons" id="order-item-buttons">
                                 <button class="primary confirmBtn" type="button" data-payment-id="{{id}}">구매확정</button>
-                                <button class="primary refundBtn" type="button"
+                                <button class=" refundBtn" type="button"
                                         data-payment-id="{{id}}"
                                         data-payment-method="{{method}}"
                                         data-payment-key="{{paymentKey}}"
@@ -64,46 +64,66 @@
         const status = statusEl.dataset.status;
 
         if (status === 'SUCCESS') {
-            document.querySelector('.status').textContent = '구매완료';
-            document.querySelector('.reviewBtn').style.display = 'none';
+            item.querySelector('.status').textContent = '구매완료';
+            item.querySelector('.confirmBtn').style.display = '';
+            item.querySelector('.refundBtn').style.display = '';
+            item.querySelector('.reviewBtn').style.display = 'none';
         }
 
         if (status === 'CONFIRMED') {
-            document.querySelector('.status').textContent = '구매확정';
-            document.querySelector('.confirmBtn').style.display = 'none';
-            document.querySelector('.refundBtn').style.display = 'none';
+            item.querySelector('.status').textContent = '구매확정';
+            item.querySelector('.confirmBtn').style.display = 'none';
+            item.querySelector('.refundBtn').style.display = 'none';
+            item.querySelector('.reviewBtn').style.display = '';
         }
 
         if (status === 'REFUNDED') {
-            document.querySelector('.status').textContent = '환불';
-            document.querySelector('.confirmBtn').style.display = 'none';
-            document.querySelector('.refundBtn').style.display = 'none';
-            document.querySelector('.reviewBtn').style.display = 'none';
+            item.querySelector('.status').textContent = '환불';
+            item.querySelector('.confirmBtn').style.display = 'none';
+            item.querySelector('.refundBtn').style.display = 'none';
+            item.querySelector('.reviewBtn').style.display = 'none';
         }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
 
+        document.querySelectorAll('.order-item-info').forEach(updateOrderStatus);
+
         document.querySelectorAll('.confirmBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
+                const item = this.closest('.order-item-info');
+                const paymentId = this.dataset.paymentId;
 
                 if (!confirm("구매확정 하시겠습니까?")) return;
 
                 try {
+                    let response = await fetch(`/payment/${paymentId}/confirm`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        item.querySelector('.status').textContent = "구매확정";
+                        item.querySelector('.confirmBtn').style.display = 'none';
+                        item.querySelector('.refundBtn').style.display = 'none';
+                        item.querySelector('.reviewBtn').style.display = '';
+                    } else {
+                        console.error(response);
+                        alert("구매확정에 실패했습니다.");
+                    }
 
                 } catch (e) {
-
+                    alert("오류가 발생했습니다." + e.message);
                 }
-
             });
         });
 
         document.querySelectorAll('.refundBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
+                const item = this.closest('.order-item-info');
                 const paymentId = this.dataset.paymentId;
-                const paymentMethod = this.dataset.paymentMethod;
-                const statusContainer = this.closest('.order-card');
-                const container = this.closest('.order-item-buttons');
 
                 const reason = prompt("환불 사유를 입력해주세요:", "단순 변심");
                 if (!reason) return;
@@ -123,9 +143,11 @@
 
                     if (response.ok) {
                         const result = await response.json();
-                        statusContainer.querySelector('.status').textContent = "반품";
-                        container.querySelector('.confirmBtn').style.display = "none";
-                        btn.style.display = "none";
+                        item.querySelector('.status').textContent = "환불";
+                        item.querySelector('.confirmBtn').style.display = 'none';
+                        item.querySelector('.refundBtn').style.display = 'none';
+                        item.querySelector('.reviewBtn').style.display = 'none';
+
                         alert("환불이 완료되었습니다.");
                     } else {
                         const errorData = await response.json();

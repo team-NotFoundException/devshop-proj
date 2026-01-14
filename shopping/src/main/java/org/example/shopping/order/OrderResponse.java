@@ -56,6 +56,7 @@ public class OrderResponse {
         private String totalAmount;
         private PaymentMethod method;
         private String approvedAt;
+        private String statusDisplay;
 
         public OrderDetailDTO(Order order) {
             this.id = order.getId();
@@ -83,6 +84,23 @@ public class OrderResponse {
                     .orElse(null);
 
             this.approvedAt = MyDateUtil.toDateString(approvedAt);
+
+            PaymentStatus status = order.getPayments().stream()
+                    .map(Payment::getStatus)
+                    .findFirst()
+                    .orElse(null);
+            if (status.toString().equals("SUCCESS")) {
+                this.statusDisplay = "구매완료";
+            }
+            if (status.toString().equals("CONFIRMED")) {
+                this.statusDisplay = "구매확정";
+            }
+            if (status.toString().equals("FAILED")) {
+                this.statusDisplay = "결제실패";
+            }
+            if (status.toString().equals("REFUNDED")) {
+                this.statusDisplay = "환불";
+            }
         }
     }
 }
