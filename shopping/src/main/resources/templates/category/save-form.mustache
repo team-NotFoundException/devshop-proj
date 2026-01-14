@@ -1,62 +1,326 @@
-
-        {{> layout/header }}
-
+{{> layout/header }}
 
 <main class="admin-owner-wrapper">
     {{> layout/admin-sidebar}}
 
     <section class="content-section">
-        <h2>카테고리 관리 및 등록</h2>
+        <div class="page-header">
+            <div>
+                <h2>카테고리 관리</h2>
+                <p class="subtitle">상품 카테고리를 등록하고 관리하세요</p>
+            </div>
+        </div>
 
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <div class="admin-table-container">
-                    <h5>대분류 등록</h5>
-                    <hr>
-                    <form action="/admin/categories/parent-save" method="post">
-                        <div class="mb-3">
-                            <label class="form-label">카테고리 명</label>
-                            <input type="text" name="categoryName" class="form-control" placeholder="예: 의류, 가전" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">노출 순서</label>
-                            <input type="number" name="displayOrder" class="form-control" value="1" min="1">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">상위 카테고리 추가</button>
-                    </form>
+        <div class="category-form-grid">
+            <!-- 대분류 등록 -->
+            <div class="form-card">
+                <div class="card-header">
+                    <div class="header-icon parent">
+                        <i class="bi bi-folder-plus"></i>
+                    </div>
+                    <div>
+                        <h5>대분류 등록</h5>
+                        <p>최상위 카테고리를 추가합니다</p>
+                    </div>
                 </div>
+
+                <form action="/admin/categories/parent-save" method="post" class="category-form">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="bi bi-tag"></i>
+                            카테고리명
+                        </label>
+                        <input type="text"
+                               name="categoryName"
+                               class="form-input"
+                               placeholder="예: 의류, 가전, 식품"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="bi bi-sort-numeric-down"></i>
+                            노출 순서
+                        </label>
+                        <input type="number"
+                               name="displayOrder"
+                               class="form-input"
+                               value="1"
+                               min="1">
+                        <small class="form-hint">숫자가 작을수록 먼저 표시됩니다</small>
+                    </div>
+
+                    <button type="submit" class="btn-submit parent">
+                        <i class="bi bi-plus-circle"></i>
+                        대분류 추가
+                    </button>
+                </form>
             </div>
 
-            <div class="col-md-6">
-                <div class="admin-table-container">
-                    <h5>소분류 등록</h5>
-                    <hr>
-                    <form action="/admin/categories/child-save" method="post">
-                        <div class="mb-3">
-                            <label class="form-label">상위 카테고리 선택</label>
-                            <select name="parentId" class="form-select" required>
-                                <option value="">대분류를 선택하세요</option>
-                                {{#categories}}
-
-                                        <option value="{{id}}">{{categoryName}}</option>
-
-                                {{/categories}}
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">카테고리 명</label>
-                            <input type="text" name="categoryName" class="form-control" placeholder="예: 티셔츠, 바지" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">노출 순서</label>
-                            <input type="number" name="displayOrder" class="form-control" value="1" min="1">
-                        </div>
-                        <button type="submit" class="btn btn-success w-100">하위 카테고리 추가</button>
-                    </form>
+            <!-- 소분류 등록 -->
+            <div class="form-card">
+                <div class="card-header">
+                    <div class="header-icon child">
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </div>
+                    <div>
+                        <h5>소분류 등록</h5>
+                        <p>하위 카테고리를 추가합니다</p>
+                    </div>
                 </div>
+
+                <form action="/admin/categories/child-save" method="post" class="category-form">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="bi bi-folder"></i>
+                            상위 카테고리
+                        </label>
+                        <select name="parentId" class="form-select" required>
+                            <option value="">대분류를 선택하세요</option>
+                            {{#categories}}
+                                <option value="{{id}}">{{categoryName}}</option>
+                            {{/categories}}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="bi bi-tag"></i>
+                            카테고리명
+                        </label>
+                        <input type="text"
+                               name="categoryName"
+                               class="form-input"
+                               placeholder="예: 티셔츠, 바지, 아우터"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="bi bi-sort-numeric-down"></i>
+                            노출 순서
+                        </label>
+                        <input type="number"
+                               name="displayOrder"
+                               class="form-input"
+                               value="1"
+                               min="1">
+                        <small class="form-hint">숫자가 작을수록 먼저 표시됩니다</small>
+                    </div>
+
+                    <button type="submit" class="btn-submit child">
+                        <i class="bi bi-plus-circle"></i>
+                        소분류 추가
+                    </button>
+                </form>
             </div>
         </div>
     </section>
 </main>
+
+<style>
+    .content-section {
+        padding: 30px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* 페이지 헤더 */
+    .page-header {
+        margin-bottom: 40px;
+    }
+
+    .page-header h2 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        color: #6b7280;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    /* 폼 그리드 */
+    .category-form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 30px;
+    }
+
+    /* 폼 카드 */
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .form-card:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        transform: translateY(-4px);
+    }
+
+    /* 카드 헤더 */
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 32px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f1f3f5;
+    }
+
+    .header-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .header-icon.parent {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .header-icon.child {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    .card-header h5 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 0 0 4px 0;
+    }
+
+    .card-header p {
+        color: #6b7280;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    /* 폼 그룹 */
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 10px;
+    }
+
+    .form-label i {
+        color: #9ca3af;
+        font-size: 16px;
+    }
+
+    .form-input,
+    .form-select {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 15px;
+        color: #1a1a1a;
+        transition: all 0.3s ease;
+        background: #f9fafb;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-input::placeholder {
+        color: #9ca3af;
+    }
+
+    .form-hint {
+        display: block;
+        margin-top: 8px;
+        font-size: 13px;
+        color: #6b7280;
+    }
+
+    /* 제출 버튼 */
+    .btn-submit {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 32px;
+    }
+
+    .btn-submit.parent {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-submit.parent:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-submit.child {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+    }
+
+    .btn-submit.child:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+    }
+
+    .btn-submit i {
+        font-size: 18px;
+    }
+
+    /* 반응형 */
+    @media (max-width: 1024px) {
+        .category-form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .content-section {
+            padding: 20px;
+        }
+
+        .form-card {
+            padding: 24px;
+        }
+
+        .page-header h2 {
+            font-size: 24px;
+        }
+    }
+</style>
 
 {{> layout/footer}}

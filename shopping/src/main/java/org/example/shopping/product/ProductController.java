@@ -56,15 +56,16 @@ public class ProductController {
     public String ownerList(Model model, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-
         if (sessionUser == null || !sessionUser.isOwner()) {
             throw new Exception403("판매자만 접근할 수 있습니다");
         }
 
         List<ProductResponse.ListDTO> list = productService.findAll();
         model.addAttribute("products", list);
+        model.addAttribute("keyword", "");
         return "product/list-form";
     }
+
 
     @GetMapping("/owner/products/status/{status}")
     public String ownerListByStatus(@PathVariable ProductStatus status, Model model, HttpSession session) {
@@ -75,6 +76,38 @@ public class ProductController {
         }
 
         model.addAttribute("products", productService.findByStatus(status));
+        model.addAttribute("keyword", "");
+        return "product/list-form";
+    }
+
+    // 상품 검색
+    @GetMapping("/owner/products/search")
+    public String search(
+            @RequestParam("keyword") String keyword,
+            @RequestParam(value = "status", required = false) ProductStatus status,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            Model model,
+            HttpSession session
+    ) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null || !sessionUser.isOwner()) {
+            throw new Exception403("판매자만 접근할 수 있습니다");
+        }
+
+        List<ProductResponse.ListDTO> products;
+
+        // 검색 조건에 따라 분기
+        if (status != null) {
+            products = productService.searchByProductNameAndStatus(keyword, status);
+        } else if (categoryId != null) {
+            products = productService.searchByProductNameAndCategoryId(keyword, categoryId);
+        } else {
+            products = productService.searchByProductName(keyword);
+        }
+
+        model.addAttribute("products", products);
+        model.addAttribute("keyword", keyword);
         return "product/list-form";
     }
 
@@ -87,8 +120,10 @@ public class ProductController {
         }
 
         model.addAttribute("products", productService.findByCategoryId(categoryId));
+        model.addAttribute("keyword", "");
         return "product/list-form";
     }
+
 
     @GetMapping("/owner/products/save")
     public String saveForm(Model model, HttpSession session) {

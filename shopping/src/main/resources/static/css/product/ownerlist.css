@@ -1,0 +1,263 @@
+/* 페이지 헤더 */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.btn-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+/* 검색 컨테이너 */
+.search-container {
+    margin-bottom: 25px;
+}
+
+.search-wrapper {
+    position: relative;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 16px;
+    padding: 4px 4px 4px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.search-wrapper:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+}
+
+.search-icon {
+    color: #adb5bd;
+    font-size: 18px;
+    margin-right: 12px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 14px 8px;
+    font-size: 15px;
+    color: #495057;
+}
+
+.search-input::placeholder {
+    color: #adb5bd;
+}
+
+.search-btn {
+    padding: 12px 28px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #5568d3;
+    transform: translateY(-1px);
+}
+
+/* 검색 결과 정보 */
+.search-result-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border-left: 4px solid #3b82f6;
+}
+
+.result-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1e40af;
+    font-size: 15px;
+}
+
+.result-text i {
+    font-size: 18px;
+}
+
+.btn-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: white;
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-reset:hover {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* 테이블 컨테이너 */
+.table-container {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-table thead {
+    background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 100%);
+}
+
+.product-table th {
+    padding: 18px 20px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.product-table tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    transition: all 0.2s ease;
+}
+
+.product-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.product-table td {
+    padding: 18px 20px;
+    font-size: 15px;
+    color: #495057;
+}
+
+.id-cell {
+    color: #adb5bd;
+    font-weight: 500;
+}
+
+.product-link {
+    color: #1a1a1a;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.product-link:hover {
+    color: #667eea;
+}
+
+.price-cell {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.stock-cell {
+    text-align: center;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status-ACTIVE {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-SOLD_OUT {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.status-INACTIVE {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+/* 빈 상태 */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #dee2e6;
+    margin-bottom: 16px;
+}
+
+.empty-state p {
+    color: #adb5bd;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .search-wrapper {
+        max-width: 100%;
+    }
+}
