@@ -1,17 +1,16 @@
 <section class="mypage-content-box">
-    <div class="search-bar">
-        <div class="order-card">
+
+    <div class="order-box">
+        <div class="search-bar">
             <form action="/order/list">
                 <div class="order-item">
                     <input type="text" name="keyword" value="{{#keyword}}{{keyword}}{{/keyword}}">
-                    <button type="submit" class="search">검색</button>
-                    <a class="reset" href="/order/list">초기화</a>
+                    <button type="submit" class="search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <a class="reset" href="/order/list"><i class="fa-solid fa-arrows-rotate"></i></a>
                 </div>
             </form>
         </div>
-    </div>
 
-    <div class="order-box">
         {{#orderList}}
             <div class="order-card">
                 <div class="order-header">
@@ -25,21 +24,21 @@
                 </div>
 
                 {{#payments}}
-                    <div class="order-item">
+                    <div class="order-item payment">
                         <img src="https://cdn.pixabay.com/photo/2025/07/28/23/42/red-fruit-9741345_640.png"
                              alt="{{productName}}" class="product-image">
                         <div class="order-item-info">
                             <h4>{{productName}}</h4>
                             <p>개수: {{quantity}}</p>
                             <p>가격: {{orderAmount}}원</p>
-                            <span class="status" id="status">{{status}}</span>
-                            <div class="order-item-buttons">
 
-                                <button class="primary confirmBtn" data-order-item-id="{{id}}">구매확정</button>
-                                <button class="refundBtn" type="button" value="{{id}}" data-payment-id="{{id}}">반품신청</button>
-                                <a href="/review/{{productId}}/save" class="reviewBtn" style="display: block">리뷰 작성</a>
+                            <span class="status" data-status="{{status}}">{{statusDisplay}}</span>
+
+                            <div class="order-item-buttons" id="order-item-buttons">
+                                <button class="primary confirmBtn" type="button" data-payment-id="{{id}}">구매확정</button>
+                                <button class="refundBtn" type="button" data-payment-id="{{id}}">반품신청</button>
+                                <a href="/review/{{productId}}/save" class="reviewBtn">리뷰 작성</a>
                             </div>
-
                         </div>
                     </div>
                 {{/payments}}
@@ -54,43 +53,49 @@
 </section>
 
 <script>
+    function updateOrderStatus(item) {
+        const statusEl = item.querySelector('.status');
+        const status = statusEl.dataset.status;
+
+        if (status === 'SUCCESS') {
+            document.querySelector('.status').textContent = '구매완료';
+            document.querySelector('.reviewBtn').style.display = 'none';
+        }
+
+        if (status === 'CONFIRMED') {
+            document.querySelector('.status').textContent = '구매확정';
+            document.querySelector('.confirmBtn').style.display = 'none';
+            document.querySelector('.refundBtn').style.display = 'none';
+        }
+
+        if (status === 'REFUNDED') {
+            document.querySelector('.status').textContent = '환불';
+            document.querySelector('.confirmBtn').style.display = 'none';
+            document.querySelector('.refundBtn').style.display = 'none';
+            document.querySelector('.reviewBtn').style.display = 'none';
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll('.confirmBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
-                const orderItemId = this.dataset.orderItemId
-                const statusContainer = this.closest('.order-card');
-                const container = this.closest('.order-item-buttons');
+
                 if (!confirm("구매확정 하시겠습니까?")) return;
 
                 try {
-                    let response = await fetch(`/order/${orderItemId}/confirm`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    if (response.ok) {
-                        statusContainer.querySelector('.status').textContent = "구매확정";
-                        container.querySelector('.refundBtn').style.display = "none";
-                        container.querySelector('.reviewBtn').style.display = "block";
-                        btn.style.display = "none";
-                    } else {
-                        alert("구매확정에 실패했습니다.");
-                    }
 
                 } catch (e) {
-                    alert("오류가 발생했습니다. " + e.message)
+
                 }
+
             });
         });
 
         document.querySelectorAll('.refundBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
+                const item = this.closest('.payment');
                 const paymentId = this.dataset.paymentId;
-                const statusContainer = this.closest('.order-card');
-                const container = this.closest('.order-item-buttons');
 
                 if (!confirm("반품하시겠습니까?")) return;
 
@@ -103,9 +108,8 @@
                     });
 
                     if (response.ok) {
-                        statusContainer.querySelector('.status').textContent = "반품";
-                        container.querySelector('.confirmBtn').style.display = "none";
-                        btn.style.display = "none";
+                        item.querySelector('.status').dataset.status = 'REFUNDED';
+                        updateOrderStatus(item);
                     } else {
                         console.error(response);
                         alert("반품에 실패했습니다.");
@@ -117,4 +121,6 @@
             });
         });
     });
+
+    document.querySelectorAll('.order-item-info').forEach(updateOrderStatus);
 </script>
