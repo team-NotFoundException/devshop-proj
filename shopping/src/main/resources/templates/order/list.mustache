@@ -36,7 +36,13 @@
 
                             <div class="order-item-buttons" id="order-item-buttons">
                                 <button class="primary confirmBtn" type="button" data-payment-id="{{id}}">구매확정</button>
-                                <button class="refundBtn" type="button" data-payment-id="{{id}}">반품신청</button>
+                                <button class="primary refundBtn" type="button"
+                                        data-payment-id="{{id}}"
+                                        data-payment-method="{{method}}"
+                                        data-payment-key="{{paymentKey}}"
+                                        data-amount="{{amount}}"
+                                        data-order-id="{{orderId}}">반품신청
+                                </button>
                                 <a href="/review/{{productId}}/save" class="reviewBtn">리뷰 작성</a>
                             </div>
                         </div>
@@ -94,9 +100,13 @@
 
         document.querySelectorAll('.refundBtn').forEach(btn => {
             btn.addEventListener('click', async function () {
-                const item = this.closest('.payment');
                 const paymentId = this.dataset.paymentId;
+                const paymentMethod = this.dataset.paymentMethod;
+                const statusContainer = this.closest('.order-card');
+                const container = this.closest('.order-item-buttons');
 
+                const reason = prompt("환불 사유를 입력해주세요:", "단순 변심");
+                if (!reason) return;
                 if (!confirm("반품하시겠습니까?")) return;
 
                 try {
@@ -104,18 +114,27 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
-                        }
+                        },
+                        body: JSON.stringify( {
+                            reason: reason,
+                            amount: null
+                        })
                     });
 
                     if (response.ok) {
-                        item.querySelector('.status').dataset.status = 'REFUNDED';
-                        updateOrderStatus(item);
+                        const result = await response.json();
+                        statusContainer.querySelector('.status').textContent = "반품";
+                        container.querySelector('.confirmBtn').style.display = "none";
+                        btn.style.display = "none";
+                        alert("환불이 완료되었습니다.");
                     } else {
-                        console.error(response);
+                        const errorData = await response.json();
+                        console.error(errorData);
                         alert("반품에 실패했습니다.");
                     }
 
                 } catch (e) {
+                    console.error("환불 오류:", e);
                     alert("오류가 발생했습니다." + e.message);
                 }
             });

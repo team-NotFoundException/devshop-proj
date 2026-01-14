@@ -56,4 +56,35 @@ public class TossPayGateway implements PaymentGateway {
             return PaymentResult.fail("TOSS_ERROR", e.getMessage());
         }
     }
+
+    @Override
+    public PaymentResult refund(PaymentRequest.RefundDTO refundDTO) {
+        try {
+            String url = baseUrl + "/v1/payments/" + refundDTO.getPaymentKey() + "/cancel";
+            String auth = Base64.getEncoder()
+                    .encodeToString((secretKey + ":").getBytes(StandardCharsets.UTF_8));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Authorization", "Basic " + auth);
+            headers.set("Content-Type", "application/json");
+
+            Map<String, Object> body = Map.of(
+                    "paymentKey", refundDTO.getPaymentKey(),
+                    "cancelReason" ,  refundDTO.getReason(),
+                    "cancelAmount", refundDTO.getAmount()
+            );
+
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+            String response = restTemplate.postForObject(url, entity, String.class);
+            log.info("[TossPay] refund response={}", response);
+
+            return PaymentResult.ok(refundDTO.getPaymentKey());
+
+        } catch (Exception e) {
+            log.error("[TossPay] Refund ERROR", e);
+            return PaymentResult.fail("TOSS_REFUND_ERROR", e.getMessage());
+
+        }
+    }
 }

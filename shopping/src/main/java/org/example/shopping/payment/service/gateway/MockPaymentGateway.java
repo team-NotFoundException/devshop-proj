@@ -12,4 +12,10 @@ public class MockPaymentGateway implements PaymentGateway {
 
         return PaymentResult.ok(paymentKey);
     }
+
+    @Override
+    public PaymentResult refund(PaymentRequest.RefundDTO refundDTO) {
+        return PaymentResult.ok(refundDTO.getPaymentKey());
+    }
+
 }

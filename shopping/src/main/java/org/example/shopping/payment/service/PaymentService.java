@@ -190,6 +190,17 @@ public class PaymentService {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
 
+        Long refundAmount = (req.getAmount() != null) ? req.getAmount(): payment.getAmount();
+        String refundReason = (req.getReason() != null) ? req.getReason() : "고객요청";
+
+        PaymentRequest.RefundDTO refundDTO = new PaymentRequest.RefundDTO();
+        refundDTO.setPaymentKey(payment.getPaymentKey());
+        refundDTO.setAmount(refundAmount);
+        refundDTO.setReason(refundReason);
+
+        PaymentGateway gateway = gatewayResolver.resolve(payment.getMethod());
+        PaymentResult result = gateway.refund(refundDTO);
+
         PaymentRefund refund = PaymentRefund.builder()
                 .user(user)
                 .payment(payment)
@@ -198,25 +209,16 @@ public class PaymentService {
                 .status(RefundStatus.REQUESTED)
                 .requestedAt(LocalDateTime.now())
                 .build();
-
+        if(result.isSuccess()){
         refund.refundCompleted();
         payment.payRefund();
+        }else{
+            refund.refundFailed(result.getFailureCode(), result.getFailureMessage());
+        }
         refundRepository.save(refund);
         paymentRepository.save(payment);
 
         return new PaymentResponse.SingleRefundDTO(refund);
     }
-
-    private String generateMerchantUid() {
-        return System.currentTimeMillis() + "_" + UUID.randomUUID().toString().substring(0, 8);
-    }
-
-
-    public List<PaymentResponse> paymentList(Long userId) {
-        List<Payment> paymentList = paymentRepository.findInfoUserId(userId);
-
-        return paymentList.stream().map(PaymentResponse::new).toList();
-    }
-
 
 }

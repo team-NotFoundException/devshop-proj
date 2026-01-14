@@ -1,5 +1,4 @@
-
-        {{>layout/header}}
+{{>layout/header}}
 
 
 <main class="main-container">
@@ -33,22 +32,21 @@
                     </div>
                 {{/paymentKey}}
             </div>
-            {{#items}}
-                <div class="order-items-box">
-                    <h2>주문 상품</h2>
-                    {{#items}}
-                        <div class="order-item">
-                            <div class="item-info">
-                                <h3>{{productName}}</h3>
-                                <p>상품코드: {{productCode}}</p>
-                            </div>
-                            <div class="item-price">
-                                <p>{{totalPrice}}원</p>
-                            </div>
+
+            <div class="order-items-box">
+                <h2>주문 상품</h2>
+                {{#items}}
+                    <div class="order-item">
+                        <div class="item-info">
+                            <h3>{{productName}}</h3>
+                            <p>상품코드: {{productCode}}</p>
                         </div>
-                    {{/items}}
-                </div>
-            {{/items}}
+                        <div class="item-price">
+                            <p>{{totalPrice}}원</p>
+                        </div>
+                    </div>
+                {{/items}}
+            </div>
 
             <div class="button-group">
                 <a href="/" class="btn-primary">홈으로 가기</a>
