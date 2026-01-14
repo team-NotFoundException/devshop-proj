@@ -221,4 +221,11 @@ public class PaymentService {
         return new PaymentResponse.SingleRefundDTO(refund);
     }
 
+    @Transactional
+    public void confirmPurchase(Long paymentId) {
+        Payment payment = paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
+
+        payment.confirm();
+    }
 }
