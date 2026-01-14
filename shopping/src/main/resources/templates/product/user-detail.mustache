@@ -92,6 +92,54 @@
     }
 </script>
 
+<style>
+    /* 상세 설명 영역 */
+    .product-detail-content {
+        max-width: 100%;
+        overflow: hidden;
+        line-height: 1.7;
+        font-size: 15px;
+        color: #333;
+    }
+
+    /* 에디터 이미지 */
+    .product-detail-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 16px auto;
+        object-fit: contain;
+    }
+
+    /* 혹시 모를 테이블/코드 대응 */
+    .product-detail-content table {
+        max-width: 100%;
+    }
+
+    .product-detail-content pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .content-left {
+        min-width: 0;
+    }
+
+    .main-image-area {
+        width: 100%;
+        max-width: 600px;
+        overflow: hidden;
+    }
+
+    .main-image-area img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: contain;
+    }
+
+</style>
+
 
 {{> layout/footer }}
 
