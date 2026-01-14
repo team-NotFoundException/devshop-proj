@@ -3,10 +3,12 @@ package org.example.shopping.review;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception401;
+import org.example.shopping._core.utils.ValidationGroups;
 import org.example.shopping.product.ProductService;
 import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,29 +24,20 @@ public class ReviewController {
 
     // 리뷰 저장 화면 요청 (로그인 필요)
     // http://localhost:8080/review/save
-    @GetMapping("/review/save")
-    public String saveForm(Model model,
-            HttpSession session
+    @GetMapping("/review/{productId}/save")
+    public String saveForm(@PathVariable Long productId, Model model,
+                           HttpSession session
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        return "user/mypage-reviewSave";
+        model.addAttribute("productId", productId);
+
+        return "review/save-form";
     }
 
-    // 리뷰 저장 (로그인 필요)
-//    @PostMapping("/review/save")
-//    public String saveProc(
-//            ReviewRequest.SaveDTO saveDTO,
-//            HttpSession session
-//    ) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
-//
-//        reviewService.create(saveDTO, sessionUser);
-//        return "redirect:/review/list";
-//    }
 
     @PostMapping("/review/{productId}/save")
-    public String saveReview(@PathVariable Long productId, ReviewRequest.SaveDTO saveDTO, HttpSession session) {
+    public String saveReview(@PathVariable Long productId, @Validated(ValidationGroups.ReviewOrderGroup.class) ReviewRequest.SaveDTO saveDTO, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         reviewService.createReview(productId, saveDTO, sessionUser);
@@ -73,14 +66,14 @@ public class ReviewController {
 
     // 내 리뷰 목록 조회
     // http://localhost:8080/review/list
-    @GetMapping({"/review/list"})
+    @GetMapping("/review/list")
     public String findAll(Model model, HttpSession session) {
 
         User sessionUser = (User) session.getAttribute("sessionUser");
         List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews(sessionUser.getId());
 
         model.addAttribute("reviewList", reviewList);
-        return "user/mypage-reviewList";
+        return "review/list";
     }
 
     // 리뷰 상세 조회
