@@ -1,8 +1,11 @@
 /* 네비게이션 바 전체 컨테이너 */
 .navbar-container {
-    background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .nav-root {
@@ -10,76 +13,181 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    justify-content: center; /* 가운데 정렬 */
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* 부모 아이템 */
 .nav-parent {
-    position: relative; /* 자식 리스트 배치의 기준 */
+    position: relative;
 }
 
 .nav-parent-link {
-    display: block;
-    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 18px 28px;
     text-decoration: none;
-    color: #333;
+    color: rgba(255, 255, 255, 0.95);
     font-weight: 600;
-    font-size: 16px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-.nav-parent-link:hover {
-    color: #007bff;
+.nav-parent-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 80%;
+    height: 3px;
+    background: white;
+    border-radius: 3px 3px 0 0;
+    transition: transform 0.3s ease;
+}
+
+.nav-parent:hover .nav-parent-link {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-parent:hover .nav-parent-link::after {
+    transform: translateX(-50%) scaleX(1);
 }
 
 /* 자식 리스트 (기본 숨김) */
 .nav-child-list {
     position: absolute;
-    top: 100%; /* 부모 바로 아래 */
-    left: 0;
-    min-width: 180px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    min-width: 220px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     list-style: none;
     margin: 0;
-    padding: 10px 0;
+    padding: 12px 0;
 
-    /* 애니메이션 준비 */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
 }
 
-/* ⭐ 핵심: 부모 아이템에 마우스 올릴 때 자식 리스트 표시 */
+/* 자식 리스트 상단 화살표 */
+.nav-child-list::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 2px;
+    transform: translateX(-50%) rotate(45deg);
+    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* 부모 아이템에 마우스 올릴 때 자식 리스트 표시 */
 .nav-parent:hover .nav-child-list {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 /* 자식 아이템 스타일 */
+.nav-child-item {
+    position: relative;
+    z-index: 1;
+}
+
 .nav-child-item a {
     display: block;
-    padding: 10px 20px;
+    padding: 12px 24px;
     text-decoration: none;
-    color: #555;
+    color: #374151;
     font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    margin: 0 8px;
 }
 
 .nav-child-item a:hover {
-    background-color: #f8f9fa;
-    color: #007bff;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    color: #667eea;
+    transform: translateX(4px);
 }
 
-/* 화살표 아이콘 (CSS로 구현) */
+/* 화살표 아이콘 */
 .arrow-down {
     display: inline-block;
-    width: 0; height: 0;
-    margin-left: 5px;
+    width: 0;
+    height: 0;
+    margin-left: 6px;
     vertical-align: middle;
-    border-top: 4px solid #333;
+    border-top: 5px solid rgba(255, 255, 255, 0.8);
     border-right: 4px solid transparent;
     border-left: 4px solid transparent;
+    transition: all 0.3s ease;
 }
+
+.nav-parent:hover .arrow-down {
+    transform: rotate(180deg);
+    border-top-color: white;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .nav-root {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        padding: 0 10px;
+    }
+
+    .nav-parent-link {
+        padding: 14px 18px;
+        font-size: 14px;
+    }
+
+    .nav-child-list {
+        left: 0;
+        transform: translateX(0) translateY(10px);
+    }
+
+    .nav-parent:hover .nav-child-list {
+        transform: translateX(0) translateY(0);
+    }
+
+    .nav-child-list::before {
+        left: 30px;
+        transform: rotate(45deg);
+    }
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-child-item {
+    animation: fadeInUp 0.3s ease forwards;
+}
+
+.nav-child-item:nth-child(1) { animation-delay: 0.05s; }
+.nav-child-item:nth-child(2) { animation-delay: 0.1s; }
+.nav-child-item:nth-child(3) { animation-delay: 0.15s; }
+.nav-child-item:nth-child(4) { animation-delay: 0.2s; }
+.nav-child-item:nth-child(5) { animation-delay: 0.25s; }

@@ -95,4 +95,13 @@ public class PaymentController {
         return ResponseEntity.ok().body(response);
     }
 
+    @PostMapping("/payment/{id}/confirm")
+    @ResponseBody
+    public ResponseEntity<Void> confirmPurchase(@PathVariable(name = "id") Long paymentId,
+                                             HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        paymentService.confirmPurchase(paymentId);
+        return ResponseEntity.ok().build();
+    }
+
 }
