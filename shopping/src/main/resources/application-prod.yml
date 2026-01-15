@@ -6,6 +6,10 @@ spring:
     servlet:
       cache: false
 
+  h2:
+    console:
+      enabled: false
+
 server:
   port: 8080
 

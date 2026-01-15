@@ -1,8 +1,10 @@
 package org.example.shopping.product;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping._core.errors.exception.Exception500;
 import org.example.shopping._core.utils.FileUtil;
 import org.example.shopping.category.Category;
 import org.example.shopping.category.CategoryRepository;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -78,8 +81,11 @@ public class ProductService {
             }
             try {
                 savedFileName = FileUtil.saveFile(thumbnail);
+
+                log.info("파일 저장 성공: {}", savedFileName);
             } catch (Exception e) {
-                throw new RuntimeException("썸네일 저장 실패", e);
+                log.error("파일 저장 실패", e);
+                throw new Exception500("썸네일 저장 실패");
             }
         }
 
@@ -100,7 +106,7 @@ public class ProductService {
                     .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
         }
 
-        System.out.println("status dto = " + dto.getStatus());
+        log.info("저장정보확인: {} \n 저장카테고리: {}", dto, category);
 
         product.update(dto, category);
 
