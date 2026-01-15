@@ -8,7 +8,7 @@
                 <img src="/images/{{review.reviewImage}}" alt="리뷰 이미지" class="rounded-circle border"
                      style="width: 200px;height: 200px; object-fit: cover">
                 <div class="mt-2">
-                    <form action="/review/{{id}}/review-image/delete" method="post" style="display: inline">
+                    <form action="/review/{{reviewId}}/review-image/delete" method="post" style="display: inline">
                         <button type="submit" class="btn btn-sm btn-danger"
                                 onclick="return confirm('리뷰 이미지 사진을 삭제하시겠습니까?')">리뷰 이미지 삭제
                         </button>
@@ -26,7 +26,7 @@
 
         <div class="card">
             <div class="card-header"><b>상품 리뷰 수정</b></div>
-            <form action="/review/{{id}}/update" method="post" enctype="multipart/form-data">
+            <form action="/review/{{reviewId}}/update" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                 <textarea class="form-control" rows="5" placeholder="내용 입력" name="content"
                           required>{{review.content}}</textarea>

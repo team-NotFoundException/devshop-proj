@@ -1,0 +1,182 @@
+.mypage-main-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+    padding: 40px 20px;
+}
+
+/* 사이드바 */
+.mypage-sidebar {
+    width: 180px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.mypage-sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #000;
+    font-weight: 700;
+}
+
+.mypage-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mypage-sidebar li {
+    margin: 0;
+}
+
+.mypage-sidebar a {
+    display: block;
+    padding: 12px 0;
+    color: #888;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s;
+    font-weight: 400;
+}
+
+.mypage-sidebar a:hover {
+    color: #000;
+}
+
+.mypage-sidebar a.active {
+    color: #000;
+    font-weight: 700;
+}
+
+/* 전체 레이아웃 */
+.mypage-content-box {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.card {
+    border: none;
+    margin-bottom: 30px;
+}
+
+.card-header {
+    background: none;
+    padding: 0 0 15px 0;
+    font-size: 20px;
+    font-weight: 800;
+    border-bottom: 2px solid #f4f4f4;
+    margin-bottom: 25px;
+}
+
+/* 1. 이미지 미리보기 및 삭제 버튼 영역 */
+.text-center.mb-4 {
+    background-color: #fcfcfc;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #f1f1f1;
+}
+
+img.rounded-circle.border {
+    border: 4px solid #fff !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.bg-secondary.d-inline-flex {
+    border-radius: 50%;
+    background-color: #eee !important;
+    color: #999 !important;
+}
+
+.btn-danger {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* 2. 별점 수정 시스템 (Star Rating) */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse; /* 역순 배치 */
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0 30px 0;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 35px;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+/* 호버 및 선택 상태 (기존 별점 로직 유지) */
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: #fee500;
+}
+
+/* 3. 입력 폼 디자인 */
+.form-control {
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #333;
+    outline: none;
+    background-color: #fafafa;
+}
+
+textarea.form-control {
+    resize: none;
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+/* 4. 수정 완료 버튼 */
+.btn-review {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 20px;
+}
+
+.btn-review:hover {
+    background-color: #333;
+}
+
+.form-text {
+    font-size: 13px;
+    color: #999;
+}
