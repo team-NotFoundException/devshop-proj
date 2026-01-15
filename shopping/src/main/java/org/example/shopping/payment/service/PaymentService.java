@@ -89,7 +89,7 @@ public class PaymentService {
     public PaymentResponse createPayment(PaymentRequest.CreateDTO createDTO, User user, Long cartId) {
         switch (createDTO.getMethod()){
             case MOCK -> new PaymentResponse(processMockPayment(user,cartId ,createDTO));
-            case TOSS_PAY -> throw new BusinessException(ErrorCode.INVALID_INPUT);
+            case TOSS_PAY -> throw new BusinessException(ErrorCode.INVALID_INPUT, "TossPay는 approvePayment 메서드를 사용하세요");
         }
         return new PaymentResponse();
     }
