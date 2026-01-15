@@ -1,159 +1,239 @@
-/* 컨테이너 및 헤더 */
-.mypage-content-box {
-    max-width: 700px; /* 너무 넓지 않게 조정 */
-    margin: 0 auto;
-    background: #fff;
-    padding: 40px;
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-}
-
-.review-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.review-header h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #111;
-    margin-bottom: 8px;
-}
-
-/* 섹션 공통 */
-.review-section {
-    margin-bottom: 30px;
-}
-
-.section-label {
-    display: block;
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 12px;
-}
-
-.optional {
-    color: #aaa;
-    font-weight: 400;
-    font-size: 13px;
-}
-
-/* 별점 스타일 고도화 */
-.star-rating {
+.mypage-main-wrapper {
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+    padding: 40px 20px;
 }
 
-.star-rating input { display: none; }
-
-.star-rating label {
-    font-size: 40px; /* 별 크기 키움 */
-    color: #e9ecef;
-    cursor: pointer;
-    transition: transform 0.2s ease, color 0.2s ease;
+/* 사이드바 */
+.mypage-sidebar {
+    width: 180px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
 }
 
-.star-rating label:hover,
-.star-rating label:hover ~ label,
-.star-rating input:checked ~ label {
-    color: #ffc107; /* 황금색 별 */
+.mypage-sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #000;
+    font-weight: 700;
 }
 
-.star-rating label:hover {
-    transform: scale(1.15);
+.mypage-sidebar ul {
+    list-style: none;
+    padding: 0;
 }
 
-.rating-guide {
-    font-size: 13px;
+.mypage-sidebar li {
+    margin: 0;
 }
 
-/* 텍스트 영역 */
-.review-textarea {
-    border: 1px solid #dee2e6;
+.mypage-sidebar a {
+    display: block;
+    padding: 12px 0;
+    color: #888;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s;
+    font-weight: 400;
+}
+
+.mypage-sidebar a:hover {
+    color: #000;
+}
+
+.mypage-sidebar a.active {
+    color: #000;
+    font-weight: 700;
+}
+
+/* 컨테이너 및 헤더 */
+/* 전체 컨테이너 */
+.mypage-content-box {
+    padding: 20px;
+    background-color: #fff;
     border-radius: 12px;
-    padding: 15px;
-    resize: none;
-    font-size: 14px;
-    background-color: #f8f9fa;
+}
+
+/* 상단 타이틀 */
+.card-header {
+    padding: 15px 0;
+    font-size: 18px;
+    color: #333;
+    border-bottom: 2px solid #f4f4f4;
+    margin-bottom: 20px;
+}
+
+/* 개별 리뷰 카드 */
+.review-card {
+    background: #ffffff;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* 상품 이름 헤더 (별도 분리된 디자인) */
+.card-header.product-title {
+    background-color: #fafafa;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+    color: #222;
+}
+
+/* 카드 내부 바디 */
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* 별점 스타일 */
+.star {
+    font-size: 18px;
+    color: #e0e0e0; /* 빈 별 색상 */
+    margin-right: 2px;
+}
+
+.star.filled {
+    color: #fee500; /* 채워진 별 색상 (카카오 옐로우) */
+}
+
+/* 작성일 */
+.text-date {
+    display: block;
+    font-size: 13px;
+    color: #999;
+    margin-top: 15px;
+}
+
+/* 상세보기 버튼 */
+.btn-review {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 20px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
     transition: all 0.2s;
 }
 
-.review-textarea:focus {
-    background-color: #fff;
-    border-color: #333;
-    box-shadow: none;
-}
-
-/* 이미지 업로드 스타일링 */
-.image-upload-wrapper {
-    position: relative;
-    border: 2px dashed #dee2e6;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    transition: border-color 0.2s;
-}
-
-.image-upload-wrapper:hover {
-    border-color: #adb5bd;
-}
-
-.upload-guide {
-    color: #6c757d;
-    pointer-events: none;
-}
-
-.upload-guide i {
-    font-size: 24px;
-    display: block;
-    margin-bottom: 5px;
-}
-
-#reviewImage {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-/* 버튼 영역 */
-.form-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 40px;
-}
-
-.btn-review-submit {
-    flex: 2;
-    padding: 16px;
-    background-color: #111;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-review-submit:hover {
+.btn-review:hover {
     background-color: #333;
+    color: #fff;
+    border-color: #333;
 }
 
-.btn-review-cancel {
-    flex: 1;
-    padding: 16px;
-    background-color: #f1f3f5;
-    color: #495057;
-    border: none;
+/* 이미지 섹션 */
+.text-center.mb-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px !important;
+}
+
+/* 리뷰 이미지 스타일 (원형 강조) */
+img.rounded-circle.border {
+    width: 220px !important;
+    height: 220px !important;
+    object-fit: cover;
+    border: 4px solid #f8f9fa !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* 이미지가 없을 때의 Placeholder */
+.bg-secondary.d-inline-flex {
+    width: 220px !important;
+    height: 220px !important;
+    border-radius: 50%;
+    background-color: #e9ecef !important;
+    color: #adb5bd !important;
+    border: 1px dashed #dee2e6 !important;
+}
+
+/* 텍스트 정보 영역 (내용, 별점, 작성자) */
+.mb-3 {
+    padding: 15px 20px;
+    background-color: #fcfcfc;
     border-radius: 12px;
+    border: 1px solid #f1f1f1;
+    margin-bottom: 15px !important;
+}
+
+.form-control-plaintext {
     font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 별점 스타일 */
+.star {
+    font-size: 20px;
+    color: #e0e0e0;
+}
+
+.star.filled {
+    color: #fee500; /* 카카오 옐로우 포인트 */
+}
+
+/* 버튼 그룹 (수정/삭제) */
+.d-flex.justify-content-end {
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-warning {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd !important;
+}
+
+.btn-warning:hover {
+    background-color: #333;
+    color: #fff;
+    border-color: #333 !important;
+}
+
+.btn-danger {
+    background-color: #ff4d4f;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #d9363e;
 }

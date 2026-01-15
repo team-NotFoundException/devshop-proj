@@ -76,9 +76,17 @@
         } else if (type === 'review') {
             try {
                 contentArea.innerHTML = '<div class="loading">리뷰를 가져오는 중입니다.</div>';
-                const response = await fetch(`/products/${productId}/reviews`);
-                if (response.ok) {
-                    contentArea.innerHTML = await response.text();
+
+                const [ratingResponse, reviewResponse] = await Promise.all([
+                    fetch(`/products/${productId}/statistics`),
+                    fetch(`/products/${productId}/reviews`)
+                ]);
+
+                if (ratingResponse.ok && reviewResponse.ok) {
+                    const ratingHtml = await ratingResponse.text();
+                    const reviewHtml = await reviewResponse.text();
+
+                    contentArea.innerHTML = ratingHtml + reviewHtml;
                 } else {
                     contentArea.innerHTML = '리뷰를 불러오지 못하였습니다.';
                 }

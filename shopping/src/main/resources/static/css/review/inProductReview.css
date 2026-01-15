@@ -24,3 +24,21 @@
 .object-fit-cover {
     object-fit: cover;
 }
+
+.bar-container {
+    flex: 1;
+    height: 10px;
+    background: #eee;
+    border-radius: 5px;
+    margin: 0 10px;
+}
+.bar {
+    height: 100%;
+    background: #25cd62; /* 카카오 노란색 */
+    border-radius: 5px;
+}
+.stat-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}

@@ -1,20 +1,15 @@
 <div class="mypage-content-box">
-    <div class="card">
         <div class="card-header"><b>상품 리뷰 상세보기</b></div>
 
     <div class="text-center mb-4">
         {{#review.reviewImage}}
-        {{!어 src 경로가 /images/ 이네... 스프링에 등록한 리소드 핸들러가 동작 함 }}
-            <img src="/images/{{review.reviewImage}}" alt="리뷰 이미지" class="rounded-circle border"
-                 style="width: 200px;height: 200px; object-fit: cover">
+            <img src="/images/{{review.reviewImage}}" alt="리뷰 이미지" class="rounded-circle border">
         {{/review.reviewImage}}
 
         {{^review.reviewImage}}
-            <div class="bg-secondary d-inline-flex align-items-center justify-content-center border"
-                 style="width: 200px; height: 200px;">
-                <span class="text-white fs-5">리뷰 사진 없음</span>
+            <div class="bg-secondary d-inline-flex align-items-center justify-content-center border">
+                <span class="fs-5">리뷰 사진 없음</span>
             </div>
-        </div>
         {{/review.reviewImage}}
     </div>
 
@@ -37,10 +32,9 @@
     <!-- 수정삭제버튼 -->
     {{#isOwner}}
         <div class="d-flex justify-content-end mb-2">
-            <a href="/review/{{id}}/update" class="btn btn-warning me-2">수정</a>
-            <form action="/review/{{id}}/delete" method="post">
+            <a href="/review/{{reviewId}}/update" class="btn btn-warning me-2">수정</a>
+            <form action="/review/{{reviewId}}/delete" method="post">
                 <button class="btn btn-danger">삭제</button>
             </form>
         </div>
     {{/isOwner}}
-</div>

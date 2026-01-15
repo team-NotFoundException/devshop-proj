@@ -1,5 +1,6 @@
 package org.example.shopping._core.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -8,14 +9,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-    // IOC 대상 아님 static 메서드로 만들 예정
-// new 하는 객체보다 미리 떠있어서 (태양) 1개 .
-// new 객체들이 static 공유자원에 접근 가능함.ㅁ
 public class FileUtil {
+
+    @Value("${file.upload.path}")
+    private static String imagesDir;
+
 
         // 프로젝트 루트 폴더 아래에 images/ 폴더를 생성할 예정 (프로필 이미지만 넣을 예정)
 //    public static final String IMAGES_DIR = "images/";
-        public static final String IMAGES_DIR = "C:/shopImages/"; // 외부에 폴더 생성
+        public static final String IMAGES_DIR = imagesDir; // 외부에 폴더 생성
 
         public static String saveFile(MultipartFile file) throws IOException {
             return saveFile(file, IMAGES_DIR);
