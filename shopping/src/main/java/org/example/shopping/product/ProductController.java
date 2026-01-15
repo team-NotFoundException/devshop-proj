@@ -60,7 +60,7 @@ public class ProductController {
             throw new Exception403("판매자만 접근할 수 있습니다");
         }
 
-        List<ProductResponse.ListDTO> list = productService.findAll();
+        List<ProductResponse.ListDTO> list = productService.findAll(sessionUser.getId());
         model.addAttribute("products", list);
         model.addAttribute("keyword", "");
         return "product/list-form";

@@ -18,6 +18,9 @@ import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.error.BusinessException;
 import org.example.shopping.payment.error.ErrorCode;
+import org.example.shopping.payment.log.Field;
+import org.example.shopping.payment.log.History;
+import org.example.shopping.payment.log.HistoryRepository;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
@@ -45,6 +48,7 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final OrderService orderService;
     private final OrderRepository orderRepository;
+    private final HistoryRepository historyRepository;
 
 
     // ================== 카트 정보 가져오기 ================
@@ -115,13 +119,15 @@ public class PaymentService {
                     .productName(item.getProduct().getProductName())
                     .build();
             payment.paySuccess();
-            paymentRepository.save(payment);
+            Payment save = paymentRepository.save(payment);
             order.addPayment(payment);
+            paymentHistory(save, sessionUser, null, save.getStatus().name(), Field.STATUS, null);
         }
         Cart cart = cartRepository.findByUserId(sessionUser.getId())
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
         cart.clearItems();
         cart.updateAmount();
+
 
         return new Payment();
     }
@@ -153,7 +159,8 @@ public class PaymentService {
             if (paymentResult.isSuccess()) {
                 payment.paySuccess();
             }
-            paymentRepository.save(payment);
+            Payment save = paymentRepository.save(payment);
+            paymentHistory(save, sessionUser, null, save.getStatus().name(), Field.STATUS, null);
 
             order.addPayment(payment);
         }
@@ -190,6 +197,8 @@ public class PaymentService {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
 
+        String old_value = payment.getStatus().name();
+
         Long refundAmount = (req.getAmount() != null) ? req.getAmount(): payment.getAmount();
         String refundReason = (req.getReason() != null) ? req.getReason() : "고객요청";
 
@@ -215,8 +224,9 @@ public class PaymentService {
         }else{
             refund.refundFailed(result.getFailureCode(), result.getFailureMessage());
         }
-        refundRepository.save(refund);
-        paymentRepository.save(payment);
+        PaymentRefund reason = refundRepository.save(refund);
+        Payment save = paymentRepository.save(payment);
+        paymentHistory(save, user, old_value, save.getStatus().name(), Field.STATUS, reason.getReason());
 
         return new PaymentResponse.SingleRefundDTO(refund);
     }
@@ -225,7 +235,32 @@ public class PaymentService {
     public void confirmPurchase(Long paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
+        String old_value = payment.getStatus().name();
 
         payment.confirm();
+
+        paymentHistory(payment, payment.getUser(), old_value, payment.getStatus().name(), Field.STATUS, null);
+    }
+
+    // =============== History HelperMethod =================
+
+    private void paymentHistory(Payment payment, User user, String old_value, String new_value, Field field, String reason){
+        History history = History.builder()
+                .user(user)
+                .payment(payment)
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .field(field)
+                .old_value(old_value)
+                .new_value(new_value)
+                .productId(payment.getProductId())
+                .productCode(payment.getProductCode())
+                .productName(payment.getProductName())
+                .amount(payment.getAmount())
+                .quantity(payment.getQuantity())
+                .method(payment.getMethod())
+                .reason(reason)
+                .build();
+        historyRepository.save(history);
     }
 }
