@@ -7,7 +7,7 @@
 
             <div class="chat-box" id="chatBox">
                 {{#chatList}}
-                    <div class="msg-wrap {{#isUser}}user{{/isUser}}{{^isUser}}admin{{/isUser}}">
+                    <div class="msg-wrap {{#isMe}}me{{/isMe}}{{^isMe}}other{{/isMe}}">
                         <div class="msg-box">
                             <span class="name">{{sender}}</span>
                             <span class="msg">{{message}}</span>
@@ -17,7 +17,6 @@
             </div>
 
             <form id="chatForm" method="post" class="input-area">
-                <input type="hidden" id="sender" name="sender" value="USER" class="input-sender" required>
                 <input type="text" id="message" name="message" placeholder="내용을 입력..." class="input-msg" autofocus>
                 <button type="submit" class="btn-send">전송</button>
             </form>
@@ -32,6 +31,7 @@
         const chatBox = document.getElementById("chatBox");
         const chatForm = document.getElementById("chatForm");
         const chatRoomId = Number(document.querySelector('.chat-room').dataset.roomId);
+        const myRole = "{{myRole}}";
 
         chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -52,7 +52,7 @@
 
         function showMessage(msg) {
             const separatorIndex = msg.indexOf(":");
-            let sender = "알수없음";
+            let sender = myRole;
             let message = msg;
 
             if (separatorIndex !== -1) {
@@ -62,11 +62,13 @@
 
 
             const msgWrap = document.createElement("div");
-            if (sender === 'USER') {
-                msgWrap.className = 'msg-wrap user'
+            if (sender === myRole) {
+                msgWrap.className = 'msg-wrap me'
             } else {
-                msgWrap.className = 'msg-wrap admin'
+                msgWrap.className = 'msg-wrap other'
             }
+
+            console.log("sender raw:", JSON.stringify(sender), "myRole raw:", JSON.stringify(myRole));
 
             const msgBox = document.createElement("div");
             msgBox.className = 'msg-box';
@@ -88,10 +90,9 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        function sendMessage(sender, message, chatRoomId) {
+        function sendMessage(message, chatRoomId) {
             if (stompClient) {
                 const payload = {
-                    'sender': sender,
                     'message': message,
                     'chatRoomId': chatRoomId
                 };
@@ -103,11 +104,10 @@
         chatForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
-            const sender = document.getElementById('sender').value;
             const messageInput = document.getElementById('message');
             const message = messageInput.value;
             if (message.trim()) {
-                sendMessage(sender, message, chatRoomId);
+                sendMessage(message, chatRoomId);
                 messageInput.value = '';
                 messageInput.focus();
             }

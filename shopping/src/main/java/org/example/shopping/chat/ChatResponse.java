@@ -21,12 +21,12 @@ public class ChatResponse {
     public static class ChatList {
         private String sender;
         private String message;
-        private boolean isUser;
+        private boolean isMe;
 
-        public ChatList(String sender, String message,boolean isUser) {
+        public ChatList(String sender, String message,boolean isMe) {
             this.sender = sender;
             this.message = message;
-            this.isUser = isUser;
+            this.isMe = isMe;
         }
     }
 }

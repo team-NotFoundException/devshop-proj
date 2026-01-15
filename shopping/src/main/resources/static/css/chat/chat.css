@@ -140,26 +140,26 @@
 }
 
 /* 내 메시지 (오른쪽) */
-.msg-wrap.user {
+.msg-wrap.me {
     justify-content: flex-end;
 }
 
-.msg-wrap.user .msg-box {
+.msg-wrap.me .msg-box {
     background: white;
     color: #fff;
     border-radius: 14px 14px 0 14px;
 }
 
-.msg-wrap.user .name {
+.msg-wrap.me .name {
     display: none; /* 내 이름 숨겨도 됨 */
 }
 
 /* 상대 메시지 (왼쪽) */
-.msg-wrap.admin {
+.msg-wrap.other {
     justify-content: flex-start;
 }
 
-.msg-wrap.admin .msg-box {
+.msg-wrap.other .msg-box {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 14px 14px 14px 0;

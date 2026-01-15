@@ -3,7 +3,9 @@ package org.example.shopping.chat;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.users.User;
+import org.example.shopping.users.enums.RoleType;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,16 +25,19 @@ public class ChatController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         ChatResponse.ChatRoom myChatRoom = chatService.findMyChatRoom(sessionUser.getId());
 
+        String myRole = sessionUser.getRole().getRole().toString();
+
         List<ChatResponse.ChatList> chatList = myChatRoom.getChatList().stream()
                         .map(chat -> new ChatResponse.ChatList(
                                 chat.getSender().name(),
                                 chat.getMessage(),
-                                chat.getSender() == SenderRole.USER
+                                chat.getSender().toString().equals(myRole)
                         ))
                         .toList();
 
         model.addAttribute("chatList", chatList);
         model.addAttribute("chatRoomId", myChatRoom.getChatRoomId());
+        model.addAttribute("myRole", myRole);
         return "user/mypage-myChat";
     }
 
@@ -46,12 +51,14 @@ public class ChatController {
 
     // 메세지 수신
     @MessageMapping("/chat/message")
-    public void receiveMessage(Map<String, Object> payload) {
+    public void receiveMessage(Map<String, Object> payload, SimpMessageHeaderAccessor accessor) {
+
+        User sessionUser = (User) accessor.getSessionAttributes().get("sessionUser");
+
         String message = (String) payload.get("message");
         Long chatRoomId = ((Number) payload.get("chatRoomId")).longValue();
-        String senderStr = (String) payload.get("sender");
-        SenderRole sender = SenderRole.valueOf(senderStr);
 
+        SenderRole sender = sessionUser.getRole().getRole().equals(RoleType.ADMIN) ? SenderRole.ADMIN : SenderRole.USER;
         chatService.saveAndBroadcast(message, chatRoomId, sender);
     }
 
