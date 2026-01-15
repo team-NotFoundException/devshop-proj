@@ -29,6 +29,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final CartRepository cartRepository;
 
+    private static final int TOP_USERS_COUNT = 3;
+
 
     @Value("${tenco.key}")
     private String tencoKey;
@@ -120,7 +122,7 @@ public class UserService {
     }
 
     public List<UserResponse.UserList> topTenList() {
-        List<User> userList = userRepository.findAllOrderByCreatedAt();
+        List<User> userList = userRepository.findTopUsers(TOP_USERS_COUNT);
 
         return userList.stream()
                 .map(UserResponse.UserList::new).toList();

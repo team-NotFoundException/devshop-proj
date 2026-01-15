@@ -1,6 +1,7 @@
 package org.example.shopping.review;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping._core.errors.exception.Exception404;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,10 +33,8 @@ public class ReviewService {
     @Transactional
     public void createReview(Long productId, ReviewRequest.SaveDTO saveDTO, User sessionUser) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new Exception404("상품이 없음"));
+                .orElseThrow(() -> new Exception404("상품이 없습니다"));
 
-        User user = userRepository.findById(sessionUser.getId())
-                .orElseThrow(() -> new Exception404("로그인 상태가 아닙니다."));
 
         String reviewImageFileName = null;
 
@@ -45,11 +45,11 @@ public class ReviewService {
                 }
                 reviewImageFileName = FileUtil.saveFile(saveDTO.getReviewImage());
             } catch (Exception e) {
-                throw new Exception500("서버 오류입니당");
+                throw new Exception500("서버 오류입니다");
             }
         }
 
-        Review newReview = saveDTO.toEntity(user, product, reviewImageFileName);
+        Review newReview = saveDTO.toEntity(sessionUser, product, reviewImageFileName);
         reviewRepository.save(newReview);
     }
 
@@ -143,6 +143,7 @@ public class ReviewService {
             try {
                 FileUtil.deleteFile(reviewImage);
             } catch (Exception e) {
+                log.error("리뷰 이미지 삭제 실패: {}", reviewImage, e);
                 throw new Exception500("리뷰 이미지 삭제 실패");
             }
         }

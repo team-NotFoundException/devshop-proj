@@ -35,8 +35,8 @@ spring:
 #    driver-class-name: org.h2.Driver
     # MODE=MySQL: H2를 MySQL 호환 모드로 실행
     url: jdbc:mysql://localhost:3306/shopping?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 #        url: jdbc:h2:mem:test;MODE=MySQL
 #    username: sa
 #    password:
