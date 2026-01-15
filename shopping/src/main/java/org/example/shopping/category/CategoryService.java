@@ -92,11 +92,18 @@ public class CategoryService {
      */
     @Transactional
     public void updateById(Long id, CategoryRequest.UpdateDTO dto) {
+        System.out.println("=== 카테고리 수정 시작 ===");
+        System.out.println("ID: " + id);
+        System.out.println("카테고리명: " + dto.getCategoryName());
+        System.out.println("노출순서: " + dto.getDisplayOrder());
+
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
 
         category.setCategoryName(dto.getCategoryName());
         category.setDisplayOrder(dto.getDisplayOrder());
+
+        System.out.println("=== 카테고리 수정 완료 ===");
     }
 
     /**
