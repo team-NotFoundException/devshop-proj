@@ -1,6 +1,7 @@
 package org.example.shopping._core.utils;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -9,16 +10,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+@Component
 public class FileUtil {
 
-    @Value("${file.upload.path}")
     private static String imagesDir;
 
+    @Value("${file.upload.path}")
+    public void setImagesDir(String value) {
+        imagesDir = value;
+    }
 
-        public static final String IMAGES_DIR = imagesDir; // 외부에 폴더 생성
 
         public static String saveFile(MultipartFile file) throws IOException {
-            return saveFile(file, IMAGES_DIR);
+            return saveFile(file, imagesDir);
         }
 
         public static String saveFile(MultipartFile file, String uploadDir) throws IOException {
@@ -28,7 +32,7 @@ public class FileUtil {
             }
 
             // 2. 업로드 디렉토리 생성
-            Path uploadPath = Paths.get(IMAGES_DIR);
+            Path uploadPath = Paths.get(imagesDir);
 
             if (!Files.exists(uploadPath)) {
 
@@ -70,7 +74,7 @@ public class FileUtil {
 
         // 이미지 삭제 처리
         public static void deleteFile(String filename) throws IOException {
-            deleteFile(filename, IMAGES_DIR);
+            deleteFile(filename, imagesDir);
         }
 
         public static void deleteFile(String filename, String uploadDir) throws IOException {

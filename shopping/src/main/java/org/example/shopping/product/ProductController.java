@@ -7,6 +7,7 @@ import org.example.shopping.category.CategoryResponse;
 import org.example.shopping.category.CategoryService;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.User;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +64,7 @@ public class ProductController {
         List<ProductResponse.ListDTO> list = productService.findAll(sessionUser.getId());
         model.addAttribute("products", list);
         model.addAttribute("keyword", "");
-        return "product/list-form";
+        return "user/owner/product-list";
     }
 
 
@@ -77,7 +78,7 @@ public class ProductController {
 
         model.addAttribute("products", productService.findByStatus(status));
         model.addAttribute("keyword", "");
-        return "product/list-form";
+        return "user/owner/product-list";
     }
 
     // 상품 검색
@@ -108,7 +109,7 @@ public class ProductController {
 
         model.addAttribute("products", products);
         model.addAttribute("keyword", keyword);
-        return "product/list-form";
+        return "user/owner/product-list";
     }
 
     @GetMapping("/owner/products/category/{categoryId}")
@@ -121,7 +122,7 @@ public class ProductController {
 
         model.addAttribute("products", productService.findByCategoryId(categoryId));
         model.addAttribute("keyword", "");
-        return "product/list-form";
+        return "user/owner/product-list";
     }
 
 
@@ -135,10 +136,10 @@ public class ProductController {
 
         List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
         model.addAttribute("category", categoryList);
-        return "product/save-form";
+        return "user/owner/product-save";
     }
 
-    @PostMapping("/owner/products/save")
+    @PostMapping(value = "/owner/products/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String save(
             ProductRequest.SaveDTO dto,
             @RequestParam("thumbnail") MultipartFile thumbnail,
