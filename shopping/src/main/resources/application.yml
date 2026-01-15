@@ -6,3 +6,12 @@ spring:
       - secret
 #        dev -> mysql
 #        local -> h2-console
+file:
+  upload:
+    path: ${FILE_UPLOAD_PATH:C:/shopImages/}
+
+
+logging:
+  level:
+    root: info
+    org.example.shopping: debug

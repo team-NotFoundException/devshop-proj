@@ -28,8 +28,9 @@ public class ProductService {
 
 
     // 조회
-    public List<ProductResponse.ListDTO> findAll() {
-        return productRepository.findAllWithCategory()
+    public List<ProductResponse.ListDTO> findAll(Long userId) {
+        Owner owner = ownerRepository.findByUserId(userId).orElseThrow(() -> new Exception404("찾을수 없음"));
+        return productRepository.findAllWithUser(owner.getId())
                 .stream()
                 .map(ProductResponse.ListDTO::new)
                 .toList();

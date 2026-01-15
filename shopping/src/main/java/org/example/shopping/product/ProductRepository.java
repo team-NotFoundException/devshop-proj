@@ -14,6 +14,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p JOIN FETCH p.category ORDER BY p.createdAt DESC")
     List<Product> findAllWithCategory();
 
+    @Query("SELECT p FROM Product p JOIN FETCH p.owner o where o.id = :id ORDER BY p.createdAt DESC")
+    List<Product> findAllWithUser(@Param("id") Long ownerId);
+
     // 단건 조회
     @Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.id = :id")
     Optional<Product> findByIdWithCategory(@Param("id") Long id);

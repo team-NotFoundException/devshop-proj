@@ -63,7 +63,7 @@ public class ReviewService {
 
     // 특정 상품의 리뷰 조회
     public List<ReviewResponse.InProductReviewDTO> reviewInProduct(Long productId) {
-        List<Review> inProductReview = reviewRepository.findByProductId(productId);
+        List<Review> inProductReview = reviewRepository.findByProductIdWithUserAndProduct(productId);
         return inProductReview.stream()
                 .map(ReviewResponse.InProductReviewDTO::new)
                 .collect(Collectors.toList());
@@ -104,8 +104,8 @@ public class ReviewService {
             String savedFileName = null;
             try {
                 savedFileName = FileUtil.saveFile(image);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                throw new Exception400("수정에 실패하였습니다.");
             }
             updateDTO.setProfileImageFilename(savedFileName);
         }
@@ -139,11 +139,11 @@ public class ReviewService {
         }
 
         String reviewImage = reviewEntity.getReviewImage();
-        if (reviewImage != null && reviewImage.isEmpty()) {
+        if (reviewImage != null && !reviewImage.isEmpty()) {
             try {
                 FileUtil.deleteFile(reviewImage);
-            } catch (IOException e) {
-                System.err.println("리뷰 이미지 삭제 실패");
+            } catch (Exception e) {
+                throw new Exception500("리뷰 이미지 삭제 실패");
             }
         }
 
@@ -154,19 +154,22 @@ public class ReviewService {
     }
 
 
-//    public ReviewResponse.RatingStatisticsDTO findByGetRating(Long productId) {
-//        Product product = productRepository.findById(productId)
-//                .orElseThrow(() -> new Exception404("상품을 찾을 수 없어요"));
-//
-//        long totalReviews = reviewRepository.countReviewByProductId(productId);
-//
-//        long firstCount = reviewRepository.countReviewByProductIdWithRating(productId, 5);
-//        long secondCount = reviewRepository.countReviewByProductIdWithRating(productId, 4);
-//        long thirdCount = reviewRepository.countReviewByProductIdWithRating(productId, 3);
-//        long forthCount = reviewRepository.countReviewByProductIdWithRating(productId, 2);
-//        long fifthCount = reviewRepository.countReviewByProductIdWithRating(productId, 1);
-//
-//
-//        return null;
-//    }
+    public ReviewResponse.RatingStatisticsDTO findByGetRating(Long productId) {
+        productRepository.findById(productId)
+                .orElseThrow(() -> new Exception404("상품을 찾을 수 없어요"));
+
+        long totalReviews = reviewRepository.countReviewByProductId(productId);
+
+        if (totalReviews == 0) {
+            return new ReviewResponse.RatingStatisticsDTO(0L, 0L, 0L, 0L, 0L);
+        }
+
+        long p1 = Math.round((double) reviewRepository.countReviewByProductIdWithRating(productId, 1) / totalReviews * 100);
+        long p2 = Math.round((double) reviewRepository.countReviewByProductIdWithRating(productId, 2) / totalReviews * 100);
+        long p3 = Math.round((double) reviewRepository.countReviewByProductIdWithRating(productId, 3) / totalReviews * 100);
+        long p4 = Math.round((double) reviewRepository.countReviewByProductIdWithRating(productId, 4) / totalReviews * 100);
+        long p5 = Math.round((double) reviewRepository.countReviewByProductIdWithRating(productId, 5) / totalReviews * 100);
+
+        return new ReviewResponse.RatingStatisticsDTO(p1, p2, p3, p4, p5);
+    }
 }

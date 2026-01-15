@@ -38,7 +38,7 @@ public class ProductRequest {
                     .category(category)
                     .owner(owner)
                     .productName(productName)
-                    .productCode(productCode)
+                    .productCode(owner.getId() + "-" + category.getId() +"-"+ productCode)
                     .price(price)
                     .stockQuantity(stockQuantity)
                     .description(description)

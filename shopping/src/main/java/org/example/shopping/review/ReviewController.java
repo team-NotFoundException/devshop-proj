@@ -55,13 +55,14 @@ public class ReviewController {
         return "/review/review-in-product";
     }
 
-//    @GetMapping("/products/{productId}/statistics")
-//    public String ratingStatistics(@PathVariable Long productId, Model model) {
-//        ReviewResponse.RatingStatisticsDTO statisticsDTO = reviewService.findByGetRating(productId);
-//
-//        model.addAttribute("statistic", statisticsDTO);
-//        return "statistics/rating-in-products";
-//    }
+    // 특정 상품에 대한 별점 백분율 조회
+    @GetMapping("/products/{productId}/statistics")
+    public String ratingStatistics(@PathVariable Long productId, Model model) {
+        ReviewResponse.RatingStatisticsDTO statisticsDTO = reviewService.findByGetRating(productId);
+
+        model.addAttribute("statistic", statisticsDTO);
+        return "statistics/rating-in-products";
+    }
 
 
     // 내 리뷰 목록 조회
@@ -73,7 +74,7 @@ public class ReviewController {
         List<ReviewResponse.ListDTO> reviewList = reviewService.getReviews(sessionUser.getId());
 
         model.addAttribute("reviewList", reviewList);
-        return "review/list";
+        return "user/mypage-reviewList";
     }
 
     // 리뷰 상세 조회

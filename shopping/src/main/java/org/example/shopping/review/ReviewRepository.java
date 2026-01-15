@@ -24,7 +24,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT r FROM Review r JOIN FETCH r.user WHERE r.id = :id")
     Optional<Review> findByIdWithUser(@Param("id") Long id);
 
-    List<Review> findByProductId(Long id);
+    @Query("SELECT r FROM Review r " +
+            "JOIN FETCH r.user " +
+            "JOIN FETCH r.product " +
+            "WHERE r.product.id = :productId")
+    List<Review> findByProductIdWithUserAndProduct(@Param("productId") Long productId);
 
 
     @Query("SELECT r FROM Review r " +
@@ -33,9 +37,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "ORDER BY r.createdAt DESC")
     List<Review> findByUserIdWithProduct(@Param("userId") Long userId);
 
-//    @Query("SELECT count(r) from Review r join fetch r.product where  r.product.id = :productId")
-//    long countReviewByProductId(@Param("productId") Long productId);
+    @Query("SELECT count(r) from Review r where  r.product.id = :productId")
+    long countReviewByProductId(@Param("productId") Long productId);
 
-//    @Query("select count (r) from Review r join fetch  r.product where  r.product.id = :productId AND r.rating = :i")
-//    long countReviewByProductIdWithRating(@Param("productId")Long productId, @Param("i") int i);
+    @Query("select count (r) from Review r where  r.product.id = :productId AND r.rating = :i")
+    long countReviewByProductIdWithRating(@Param("productId")Long productId, @Param("i") int i);
+
+    @Query("SELECT r.rating, COUNT(r) FROM Review r WHERE r.product.id = :productId GROUP BY r.rating")
+    List<Object[]> countGroupByRating(@Param("productId") Long productId);
 }

@@ -124,7 +124,7 @@ public class OwnerController {
     public String dashboard(HttpSession session, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        List<ProductResponse.ListDTO> allProducts = productService.findAll();
+        List<ProductResponse.ListDTO> allProducts = productService.findAll(sessionUser.getId());
 
         long totalCount = allProducts.size();
 
