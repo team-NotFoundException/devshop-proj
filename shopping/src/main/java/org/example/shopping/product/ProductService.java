@@ -81,10 +81,13 @@ public class ProductService {
             }
             try {
                 savedFileName = FileUtil.saveFile(thumbnail);
-
-                log.info("파일 저장 성공: {}", savedFileName);
+                if (savedFileName == null) {
+                    log.warn("파일 저장 결과가 null입니다. 파일이 비어있거나 이미지가 아닙니다.");
+                } else {
+                    log.info("파일 저장 완료: {}", savedFileName);
+                }
             } catch (Exception e) {
-                log.error("파일 저장 실패", e);
+                log.error("파일 저장 실패: {}", e.getMessage());
                 throw new Exception500("썸네일 저장 실패");
             }
         }

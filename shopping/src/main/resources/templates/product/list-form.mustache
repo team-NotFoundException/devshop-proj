@@ -1,13 +1,5 @@
-{{> layout/header }}
 
-<!-- 사이드바 + 컨텐츠 Flex 컨테이너 -->
-<div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
-
-    <!-- 사이드바 -->
-    {{> layout/owner-sidebar}}
-
-    <!-- 컨텐츠 영역 -->
-    <div class="content-area" style="flex: 1; padding: 20px; max-width: 1400px;">
+    <div class="container-fluid">
         <div class="page-header">
             <h2>상품 목록</h2>
             <a href="/owner/products/save" class="btn-add">
@@ -44,6 +36,8 @@
                 </a>
             </div>
         {{/keyword}}
+
+
 
         <!-- 상품 테이블 -->
         <div class="table-container">
@@ -93,7 +87,3 @@
         </div>
     </div>
 
-
-</div>
-
-{{> layout/footer }}
