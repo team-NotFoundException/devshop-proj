@@ -1,0 +1,92 @@
+{{> layout/header }}
+
+
+<div class="admin-container">
+    {{> layout/admin-sidebar}}
+    <main class="flex-grow-1 p-4 bg-light">
+        <section class="content-section">
+            <h2>회원 관리</h2>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>제품 ID</th>
+                    <th>제품 이름</th>
+                    <th>제품 코드</th>
+                    <th>결제 수량</th>
+                    <th>결제 금액</th>
+                    <th>결제 방법</th>
+                    <th>현재 결제 상태</th>
+                    <th>이전 결제 상태</th>
+                    <th>환불 사유</th>
+                    <th>생성 시간</th>
+                    <th>수정 시간</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#historyList}}
+                    <tr>
+                        <th>{{id}}</th>
+                        <th>{{username}}</th>
+                        <th>{{email}}</th>
+                        <th>{{productId}}</th>
+                        <th>{{productName}}</th>
+                        <th>{{productCode}}</th>
+                        <th>{{quantity}}</th>
+                        <th>{{amount}}</th>
+                        <th>{{method}}</th>
+                        <th>{{newValue}}</th>
+                        <th>{{oldValue}}</th>
+                        <th>{{reason}}</th>
+                        <th>{{createdAt}}</th>
+                        <th>{{updatedAt}}</th>
+                    </tr>
+                {{/historyList}}
+                </tbody>
+            </table>
+
+            <div >
+                <canvas id="myChart" width="200px" height="200px"></canvas>
+<!--                <canvas class="flex-1" id="myChart2" width="50px" height="50px"></canvas>-->
+            </div>
+
+        </section>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    const myChart1 = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green'],
+            datasets: [{
+                label: '투표 수',
+                data: [12, 19, 3, 5],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+{{> layout/footer}}
+
+<!-- user list / 권한별 user 조회 / owner / user -->

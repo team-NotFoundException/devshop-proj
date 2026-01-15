@@ -4,6 +4,8 @@ package org.example.shopping.users.admin;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception500;
+import org.example.shopping.payment.log.HistoryResponse;
+import org.example.shopping.payment.log.HistoryService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserResponse;
 import org.example.shopping.users.enums.RoleType;
@@ -23,6 +25,7 @@ public class AdminController {
 
     private final UserService userService;
     private final OwnerService ownerService;
+    private final HistoryService historyService;
 
     @GetMapping("/admin/main")
     public String dashboard(HttpSession session, Model model) {
@@ -42,6 +45,7 @@ public class AdminController {
 
         return "user/admin/user-list";
     }
+
 
 
     // 회원삭제
@@ -87,9 +91,14 @@ public class AdminController {
         return ownerService.ownerDetail(ownerId);
     }
 
-    // owner 전체 조회
+    // statistics 페이지 불러오기
+    @GetMapping("/admin/statistics")
+    public String statistics(HttpSession session, Model model){
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        List<HistoryResponse.ListDTO> list = historyService.findAll();
+        model.addAttribute("historyList", list);
 
-    // 상품 전체 조회
+        return "user/admin/statistics";
+    }
 
-    // 그냥 다 조회
 }
