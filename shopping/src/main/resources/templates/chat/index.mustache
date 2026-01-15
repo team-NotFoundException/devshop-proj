@@ -1,0 +1,118 @@
+<section class="mypage-content-box">
+    <div class="chat-container">
+        <div class="chat-card">
+            <div class="header">
+                <h3 class="chat-room" data-room-id="{{chatRoomId}}">실시간 1:1 상담{{chatRoomId}}</h3>
+            </div>
+
+            <div class="chat-box" id="chatBox">
+                {{#chatList}}
+                    <div class="msg-wrap {{#isUser}}user{{/isUser}}{{^isUser}}admin{{/isUser}}">
+                        <div class="msg-box">
+                            <span class="name">{{sender}}</span>
+                            <span class="msg">{{message}}</span>
+                        </div>
+                    </div>
+                {{/chatList}}
+            </div>
+
+            <form id="chatForm" method="post" class="input-area">
+                <input type="hidden" id="sender" name="sender" value="USER" class="input-sender" required>
+                <input type="text" id="message" name="message" placeholder="내용을 입력..." class="input-msg" autofocus>
+                <button type="submit" class="btn-send">전송</button>
+            </form>
+        </div>
+
+    </div>
+    <form action="/chatRoom/delete" method="post">
+        <button class="btn btn-danger">상담 종료</button>
+    </form>
+
+    <script>
+        const chatBox = document.getElementById("chatBox");
+        const chatForm = document.getElementById("chatForm");
+        const chatRoomId = Number(document.querySelector('.chat-room').dataset.roomId);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        function connect() {
+            const socket = new SockJS('/ws-stomp');
+
+            stompClient = Stomp.over(socket);
+            stompClient.debug = (str) => console.log(str);
+
+            stompClient.connect({}, function (frame) {
+                console.log(frame);
+
+                stompClient.subscribe(`/sub/chat/${chatRoomId}`, function (res) {
+                    showMessage(res.body);
+                });
+            });
+        }
+
+        function showMessage(msg) {
+            const separatorIndex = msg.indexOf(":");
+            let sender = "알수없음";
+            let message = msg;
+
+            if (separatorIndex !== -1) {
+                sender = msg.substring(0, separatorIndex);
+                message = msg.substring(separatorIndex + 1);
+            }
+
+
+            const msgWrap = document.createElement("div");
+            if (sender === 'USER') {
+                msgWrap.className = 'msg-wrap user'
+            } else {
+                msgWrap.className = 'msg-wrap admin'
+            }
+
+            const msgBox = document.createElement("div");
+            msgBox.className = 'msg-box';
+
+            const nameSpan = document.createElement("span");
+            nameSpan.className = 'name';
+            nameSpan.textContent = sender;
+
+            const msgSpan = document.createElement("span");
+            msgSpan.className = 'msg';
+            msgSpan.textContent = message;
+
+            msgBox.appendChild(nameSpan);
+            msgBox.appendChild(msgSpan);
+
+            msgWrap.appendChild(msgBox);
+
+            chatBox.appendChild(msgWrap);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendMessage(sender, message, chatRoomId) {
+            if (stompClient) {
+                const payload = {
+                    'sender': sender,
+                    'message': message,
+                    'chatRoomId': chatRoomId
+                };
+
+                stompClient.send("/pub/chat/message", {}, JSON.stringify(payload));
+            }
+        }
+
+        chatForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const sender = document.getElementById('sender').value;
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+            if (message.trim()) {
+                sendMessage(sender, message, chatRoomId);
+                messageInput.value = '';
+                messageInput.focus();
+            }
+        });
+
+        connect();
+    </script>
+</section>
