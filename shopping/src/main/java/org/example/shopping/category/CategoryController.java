@@ -18,54 +18,30 @@ public class CategoryController {
 
     // 카테고리 등록 폼
     @GetMapping("/admin/categories/save")
-    public String saveForm(Model model, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null || !sessionUser.isAdmin()) {
-            throw new Exception403("관리자만 접근할 수 있습니다");
-        }
-
+    public String saveForm(Model model) {
         model.addAttribute("categories", categoryService.findRootCategories());
         return "category/save-form";
     }
 
     // 하위 카테고리 등록
     @PostMapping("/admin/categories/child-save")
-    public String childSave(CategoryRequest.SaveChildDTO childDTO, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null || !sessionUser.isAdmin()) {
-            throw new Exception403("관리자만 접근할 수 있습니다");
-        }
-
+    public String childSave(CategoryRequest.SaveChildDTO childDTO) {
         categoryService.childSave(childDTO);
         return "redirect:/admin/categories/list";
     }
 
     // 상위 카테고리 등록
     @PostMapping("/admin/categories/parent-save")
-    public String parentSave(CategoryRequest.SaveParentDTO parentDTO, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null || !sessionUser.isAdmin()) {
-            throw new Exception403("관리자만 접근할 수 있습니다");
-        }
-
+    public String parentSave(CategoryRequest.SaveParentDTO parentDTO) {
         categoryService.parentSave(parentDTO);
         return "redirect:/admin/categories/list";
     }
 
     @GetMapping("/admin/categories/list")
-    public String list(Model model, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null || !sessionUser.isAdmin()) {
-            throw new Exception403("관리자만 접근할 수 있습니다");
-        }
-
+    public String list(Model model) {
         List<CategoryResponse.ListDTO> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-
+        model.addAttribute("children", categoryService.findAllByDepth());
         return "category/list";
     }
 
