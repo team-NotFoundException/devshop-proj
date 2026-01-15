@@ -1,0 +1,208 @@
+/* 메인 래퍼 */
+.mypage-main-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+    padding: 40px 20px;
+}
+
+/* 사이드바 */
+.mypage-sidebar {
+    width: 180px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.mypage-sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #000;
+    font-weight: 700;
+}
+
+.mypage-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mypage-sidebar li {
+    margin: 0;
+}
+
+.mypage-sidebar a {
+    display: block;
+    padding: 12px 0;
+    color: #888;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s;
+    font-weight: 400;
+}
+
+.mypage-sidebar a:hover {
+    color: #000;
+}
+
+.mypage-sidebar a.active {
+    color: #000;
+    font-weight: 700;
+}
+
+/* 메인 콘텐츠 */
+.mypage-content-box {
+    flex: 1;
+    max-width: 900px;
+    /*border: 1px solid #eaeaea;*/
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+}
+
+.mypage-content-box .order-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 5px;
+}
+
+/* 전체 채팅 컨테이너 */
+.chat-container {
+    width: 100%;
+    max-width: 480px;
+    margin: 40px auto;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    background: #f0f0f0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* 헤더 */
+.header {
+    padding: 14px 16px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f9fafb;
+}
+
+.header h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* 채팅 영역 */
+.chat-box {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: #f5f7fa;
+}
+
+/* 메시지 한 줄 */
+.msg-wrap {
+    margin-bottom: 10px;
+    display: flex;
+}
+
+/* 메시지 박스 */
+.msg-box {
+    max-width: 70%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* 보낸 사람 이름 */
+.msg-box .name {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+/* 메시지 텍스트 */
+.msg-box .msg {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+/* 공통 */
+.msg-wrap {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+/* 내 메시지 (오른쪽) */
+.msg-wrap.user {
+    justify-content: flex-end;
+}
+
+.msg-wrap.user .msg-box {
+    background: white;
+    color: #fff;
+    border-radius: 14px 14px 0 14px;
+}
+
+.msg-wrap.user .name {
+    display: none; /* 내 이름 숨겨도 됨 */
+}
+
+/* 상대 메시지 (왼쪽) */
+.msg-wrap.admin {
+    justify-content: flex-start;
+}
+
+.msg-wrap.admin .msg-box {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px 14px 14px 0;
+}
+
+
+/* 입력 영역 */
+.input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #e5e5e5;
+    background: #fff;
+    gap: 6px;
+}
+
+/* sender 입력 */
+.input-sender {
+    width: 70px;
+    padding: 8px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+/* 메시지 입력 */
+.input-msg {
+    flex: 10;
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+/* 전송 버튼 */
+.btn-send {
+    padding: 0 14px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.btn-send:hover {
+    background: yellow;
+}
