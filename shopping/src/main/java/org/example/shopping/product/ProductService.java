@@ -9,7 +9,6 @@ import org.example.shopping._core.utils.FileUtil;
 import org.example.shopping.category.Category;
 import org.example.shopping.category.CategoryRepository;
 import org.example.shopping.product.productEnum.ProductStatus;
-import org.example.shopping.review.ReviewRepository;
 import org.example.shopping.users.owner.Owner;
 import org.example.shopping.users.owner.OwnerRepository;
 import org.springframework.stereotype.Service;
@@ -98,10 +97,16 @@ public class ProductService {
 
     // 수정
     @Transactional
-    public void updateById(Long id, ProductRequest.UpdateDTO dto) {
+    public void updateById(Long id, ProductRequest.UpdateDTO dto, MultipartFile thumbnail) {
+        log.info("=== 상품 수정 시작 ===");
+        log.info("상품 ID: {}", id);
+        log.info("DTO: {}", dto);
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new Exception404("상품을 찾을 수 없습니다"));
+
+        log.info("수정 전 상품명: {}", product.getProductName());
+        log.info("수정 전 가격: {}", product.getPrice());
 
         Category category = null;
         if (dto.getCategoryId() != null) {
@@ -109,12 +114,29 @@ public class ProductService {
                     .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
         }
 
-        log.info("저장정보확인: {} \n 저장카테고리: {}", dto, category);
+        // 새 썸네일이 있으면 저장
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            if (!FileUtil.isImageFile(thumbnail)) {
+                throw new Exception400("이미지 파일만 업로드 가능합니다.");
+            }
+            try {
+                String savedFileName = FileUtil.saveFile(thumbnail);
+                if (savedFileName != null) {
+                    dto.setThumbnailUrl(savedFileName);
+                    log.info("새 썸네일 저장 완료: {}", savedFileName);
+                }
+            } catch (Exception e) {
+                log.error("썸네일 저장 실패: {}", e.getMessage());
+                throw new Exception500("썸네일 저장 실패");
+            }
+        }
 
         product.update(dto, category);
 
+        log.info("수정 후 상품명: {}", product.getProductName());
+        log.info("수정 후 가격: {}", product.getPrice());
+        log.info("=== 상품 수정 완료 ===");
     }
-
 
     // 삭제
     @Transactional
