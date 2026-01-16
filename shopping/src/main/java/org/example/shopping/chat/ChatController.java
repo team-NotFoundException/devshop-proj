@@ -19,16 +19,17 @@ import java.util.Map;
 public class ChatController {
     private final ChatService chatService;
 
+
     // 내 채팅방 조회
     @GetMapping("/chatRoom/me")
     public String findMyChatRoom(HttpSession session, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        ChatResponse.ChatRoom myChatRoom = chatService.findMyChatRoom(sessionUser.getId());
+        ChatResponse.ChatRoomDTO myChatRoom = chatService.findMyChatRoom(sessionUser.getId());
 
         String myRole = sessionUser.getRole().getRole().toString();
 
-        List<ChatResponse.ChatList> chatList = myChatRoom.getChatList().stream()
-                        .map(chat -> new ChatResponse.ChatList(
+        List<ChatResponse.ChatListDTO> chatList = myChatRoom.getChatList().stream()
+                        .map(chat -> new ChatResponse.ChatListDTO(
                                 chat.getSender().name(),
                                 chat.getMessage(),
                                 chat.getSender().toString().equals(myRole)
@@ -38,7 +39,7 @@ public class ChatController {
         model.addAttribute("chatList", chatList);
         model.addAttribute("chatRoomId", myChatRoom.getChatRoomId());
         model.addAttribute("myRole", myRole);
-        return "user/mypage-myChat";
+        return "chat/index";
     }
 
     @PostMapping("/chatRoom/delete")
