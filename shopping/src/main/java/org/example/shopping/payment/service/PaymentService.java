@@ -197,6 +197,8 @@ public class PaymentService {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
 
+        History history = historyRepository.findByPaymentId(paymentId).orElseThrow(() -> new Exception404("없음"));
+
         String old_value = payment.getStatus().name();
 
         Long refundAmount = (req.getAmount() != null) ? req.getAmount(): payment.getAmount();
@@ -226,7 +228,11 @@ public class PaymentService {
         }
         PaymentRefund reason = refundRepository.save(refund);
         Payment save = paymentRepository.save(payment);
+
         paymentHistory(save, user, old_value, save.getStatus().name(), Field.STATUS, reason.getReason());
+        if(old_value.equals(history.getNew_value()) ){
+            historyRepository.delete(history);
+        }
 
         return new PaymentResponse.SingleRefundDTO(refund);
     }
@@ -235,11 +241,14 @@ public class PaymentService {
     public void confirmPurchase(Long paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new Exception404("결제내역 찾을수 없음"));
+        History history = historyRepository.findByPaymentId(paymentId).orElseThrow(() -> new Exception404("기록없음"));
         String old_value = payment.getStatus().name();
 
         payment.confirm();
-
         paymentHistory(payment, payment.getUser(), old_value, payment.getStatus().name(), Field.STATUS, null);
+        if(old_value.equals(history.getNew_value()) ){
+            historyRepository.delete(history);
+        }
     }
 
     // =============== History HelperMethod =================
