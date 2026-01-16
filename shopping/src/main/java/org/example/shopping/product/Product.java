@@ -108,6 +108,15 @@ public class Product {
         }
     }
 
+    // 결제 후 수량 감소
+    public void decreaseQuantity(int quantity) {
+        this.stockQuantity -= quantity;
+    }
+    // 환불 후 수량 증가
+    public void increaseQuantity(int quantity) {
+        this.stockQuantity += quantity;
+    }
+
     // 상태 변경
     public void updateStatus(ProductStatus status) {
         this.status = status;
