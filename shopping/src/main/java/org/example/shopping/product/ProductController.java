@@ -3,14 +3,10 @@ package org.example.shopping.product;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception403;
-import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.category.CategoryResponse;
 import org.example.shopping.category.CategoryService;
-import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.User;
-import org.example.shopping.users.owner.Owner;
 import org.example.shopping.users.owner.OwnerRepository;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -71,75 +68,6 @@ public class ProductController {
         return "user/owner/product-list";
     }
 
-
-    @GetMapping("/owner/products/status/{status}")
-    public String ownerListByStatus(@PathVariable ProductStatus status, Model model, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null || !sessionUser.isOwner()) {
-            throw new Exception403("판매자만 접근할 수 있습니다");
-        }
-
-        model.addAttribute("products", productService.findByStatus(status));
-        model.addAttribute("keyword", "");
-        return "user/owner/product-list";
-    }
-
-    // 상품 검색
-    @GetMapping("/owner/products/search")
-    public String search(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "status", required = false) ProductStatus status,
-            @RequestParam(value = "categoryId", required = false) Long categoryId,
-            Model model,
-            HttpSession session
-    ) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null || !sessionUser.isOwner()) {
-            throw new Exception403("판매자만 접근할 수 있습니다");
-        }
-
-        // ⭐ 검색어가 비어있으면 전체 목록으로 리다이렉트
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return "redirect:/owner/products";
-        }
-
-        // Owner ID 가져오기
-        Owner owner = ownerRepository.findByUserId(sessionUser.getId())
-                .orElseThrow(() -> new Exception404("판매자 정보를 찾을 수 없습니다"));
-
-        List<ProductResponse.ListDTO> products;
-
-        // ⭐ 검색 조건에 따라 분기 (Owner ID 포함)
-        if (status != null) {
-            products = productService.searchByOwnerAndProductNameAndStatus(owner.getId(), keyword, status);
-        } else if (categoryId != null) {
-            products = productService.searchByOwnerAndProductNameAndCategory(owner.getId(), keyword, categoryId);
-        } else {
-            products = productService.searchByOwnerAndProductName(owner.getId(), keyword);
-        }
-
-        model.addAttribute("products", products);
-        model.addAttribute("keyword", keyword);
-        return "user/owner/product-list";
-    }
-
-
-    @GetMapping("/owner/products/category/{categoryId}")
-    public String ownerListByCategory(@PathVariable Long categoryId, Model model, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null || !sessionUser.isOwner()) {
-            throw new Exception403("판매자만 접근할 수 있습니다");
-        }
-
-        model.addAttribute("products", productService.findByCategoryId(categoryId));
-        model.addAttribute("keyword", "");
-        return "user/owner/product-list";
-    }
-
-
     @GetMapping("/owner/products/save")
     public String saveForm(Model model, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -153,21 +81,20 @@ public class ProductController {
         return "user/owner/product-save";
     }
 
-    @PostMapping(value = "/owner/products/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/owner/products/save")
     public String save(
             ProductRequest.SaveDTO dto,
             @RequestParam("thumbnail") MultipartFile thumbnail,
             HttpSession session
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-
         if (sessionUser == null || !sessionUser.isOwner()) {
             throw new Exception403("판매자만 접근할 수 있습니다");
         }
-
         productService.save(dto, sessionUser.getId(), thumbnail);
         return "redirect:/owner/products";
     }
+
 
     @GetMapping("/owner/products/{id}/edit")
     public String editForm(@PathVariable Long id, Model model, HttpSession session) {
@@ -177,33 +104,34 @@ public class ProductController {
             throw new Exception403("판매자만 접근할 수 있습니다");
         }
 
-        ProductResponse.UpdateFormDTO dto = productService.findByIdForUpdate(id);
-        model.addAttribute("product", dto);
-        model.addAttribute("category", categoryService.findAll());
+        ProductResponse.UpdateFormDTO product = productService.findByIdForUpdate(id);
+        List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
+
+        model.addAttribute("product", product);
+        model.addAttribute("category", categoryList);
+
         return "product/edit-form";
     }
 
     @PostMapping("/owner/products/{id}/edit")
-    public String edit(@PathVariable Long id, ProductRequest.UpdateDTO dto, HttpSession session) {
+    public String edit(
+            @PathVariable Long id,
+            ProductRequest.UpdateDTO dto,
+            @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
+            HttpSession session,
+            RedirectAttributes redirectAttributes
+    ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null || !sessionUser.isOwner()) {
             throw new Exception403("판매자만 접근할 수 있습니다");
         }
 
-        productService.updateById(id, dto);
-        return "redirect:/owner/products/" + id;
-    }
+        productService.updateById(id, dto, thumbnail);
 
-    @PostMapping("/owner/products/{id}/delete")
-    public String delete(@PathVariable Long id, HttpSession session) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
+        redirectAttributes.addFlashAttribute("message", "상품이 성공적으로 수정되었습니다.");
 
-        if (sessionUser == null || !sessionUser.isOwner()) {
-            throw new Exception403("판매자만 접근할 수 있습니다");
-        }
 
-        productService.deleteById(id);
         return "redirect:/owner/products";
     }
 
@@ -218,6 +146,4 @@ public class ProductController {
         ProductResponse.DetailDTO product = productService.findById(id);
         model.addAttribute("product", product);
         return "product/detail";
-    }
-
-}
+    }}
