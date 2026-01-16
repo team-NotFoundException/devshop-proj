@@ -160,27 +160,28 @@ public class ProductService {
         return new ProductResponse.UserDetailDTO(product);
     }
 
-    // 상품명 검색
-    public List<ProductResponse.ListDTO> searchByProductName(String keyword) {
-        return productRepository.searchByProductNameWithCategory(keyword)
+    // Owner별 상품명 검색
+    public List<ProductResponse.ListDTO> searchByOwnerAndProductName(Long ownerId, String keyword) {
+        return productRepository.searchByOwnerAndProductName(ownerId, keyword)
                 .stream()
                 .map(ProductResponse.ListDTO::new)
                 .toList();
     }
 
-    // 상품명 + 상태 검색
-    public List<ProductResponse.ListDTO> searchByProductNameAndStatus(String keyword, ProductStatus status) {
-        return productRepository.searchByProductNameAndStatusWithCategory(keyword, status)
+    // Owner별 상품명 + 상태 검색
+    public List<ProductResponse.ListDTO> searchByOwnerAndProductNameAndStatus(Long ownerId, String keyword, ProductStatus status) {
+        return productRepository.searchByOwnerAndProductNameAndStatus(ownerId, keyword, status)
                 .stream()
                 .map(ProductResponse.ListDTO::new)
                 .toList();
     }
 
-    // 상품명 + 카테고리 검색
-    public List<ProductResponse.ListDTO> searchByProductNameAndCategoryId(String keyword, Long categoryId) {
-        return productRepository.searchByProductNameAndCategoryIdWithCategory(keyword, categoryId)
+    // Owner별 상품명 + 카테고리 검색
+    public List<ProductResponse.ListDTO> searchByOwnerAndProductNameAndCategory(Long ownerId, String keyword, Long categoryId) {
+        return productRepository.searchByOwnerAndProductNameAndCategory(ownerId, keyword, categoryId)
                 .stream()
                 .map(ProductResponse.ListDTO::new)
                 .toList();
     }
+
 }

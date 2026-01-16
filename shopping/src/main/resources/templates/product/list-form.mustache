@@ -10,14 +10,15 @@
 
         <!-- 검색 폼 -->
         <div class="search-container">
-            <form action="/owner/products/search" method="get" class="search-form">
+            <form action="/owner/products/search" method="get" class="search-form" onsubmit="return validateSearch()">
                 <div class="search-wrapper">
                     <i class="bi bi-search search-icon"></i>
                     <input type="text"
                            name="keyword"
                            class="search-input"
                            placeholder="상품명으로 검색하세요..."
-                           value="{{keyword}}">
+                           value="{{keyword}}"
+                           required>
                     <button type="submit" class="search-btn">검색</button>
                 </div>
             </form>
