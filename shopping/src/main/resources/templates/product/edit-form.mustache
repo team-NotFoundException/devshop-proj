@@ -1,5 +1,5 @@
 <div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
-    {{> layout/owner-sidebar}}
+
 
     <div class="content-area" style="flex: 1; padding: 20px;">
         <div class="card shadow-sm" style="max-width: 900px; margin: auto;">
@@ -126,7 +126,149 @@
 </script>
 
 <style>
+    /* ===============================
+   공통 레이아웃
+================================ */
+
+    .dashboard-wrapper {
+        background-color: #f8f9fa;
+    }
+
+    .content-area {
+        box-sizing: border-box;
+    }
+
+    /* ===============================
+       카드 영역
+    ================================ */
+
+    .card {
+        border-radius: 12px;
+        border: none;
+    }
+
+    .card-body {
+        background-color: #ffffff;
+        border-radius: 12px;
+    }
+
+    /* 제목 */
+    .card-body h2 {
+        font-weight: 700;
+        letter-spacing: -0.3px;
+    }
+
+    /* ===============================
+       폼 공통 스타일
+    ================================ */
+
+    .form-label {
+        margin-bottom: 6px;
+        color: #343a40;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.15rem rgba(255, 193, 7, 0.25);
+    }
+
+    /* ===============================
+       썸네일 영역
+    ================================ */
+
+    .current-thumbnail {
+        padding: 10px;
+        background-color: #f1f3f5;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .current-thumbnail img {
+        display: block;
+        max-width: 100%;
+        border: 1px solid #dee2e6;
+    }
+
+    #thumbnailPreview {
+        padding: 10px;
+        background-color: #fff3cd;
+        border-radius: 10px;
+    }
+
+    #thumbnailPreview img {
+        border: 1px solid #ffc107;
+    }
+
+    /* ===============================
+       Toast UI Editor
+    ================================ */
+
+    #editor {
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .toastui-editor-defaultUI {
+        border-radius: 10px;
+    }
+
+    /* ===============================
+       버튼 영역
+    ================================ */
+
+    .btn-warning {
+        color: #212529;
+        border-radius: 30px;
+    }
+
+    .btn-warning:hover {
+        background-color: #ffca2c;
+    }
+
+    .btn-secondary {
+        border-radius: 30px;
+    }
+
+    /* ===============================
+       삭제 경고 박스
+    ================================ */
+
+    .bg-light {
+        border: 1px solid #dee2e6;
+    }
+
+    .bg-light span {
+        font-size: 13px;
+    }
+
+    .btn-outline-danger {
+        border-radius: 20px;
+        padding: 4px 14px;
+    }
+
+    /* ===============================
+       반응형 대응
+    ================================ */
+
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 30px 20px;
+        }
+
+        #editor {
+            height: 300px;
+        }
+    }
 
 </style>
 
-{{> layout/footer }}
+
