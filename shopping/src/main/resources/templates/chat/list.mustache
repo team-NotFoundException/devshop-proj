@@ -1,0 +1,22 @@
+{{> layout/header }}
+
+<div class="admin-container">
+    {{> layout/admin-sidebar}}
+
+    <main class="flex-grow-1 p-4 bg-light">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>채팅방</h2>
+        </div>
+
+        <div class="row">
+            {{#chatRoomList}}
+                <form action="/admin/chat/{{chatRoomId}}">
+                    <button name="chatRoomId" value="{{chatRoomId}}">
+                        채팅방: {{chatRoomId}}
+                        유저: {{userId}}
+                    </button>
+                </form>
+            {{/chatRoomList}}
+        </div>
+    </main>
+{{> layout/footer}}

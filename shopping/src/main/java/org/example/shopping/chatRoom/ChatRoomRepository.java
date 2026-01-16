@@ -1,4 +1,4 @@
-package org.example.shopping.chat;
+package org.example.shopping.chatRoom;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
