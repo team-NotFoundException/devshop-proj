@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 // @ControllerAdvice - 모든 컨트롤러에서 발생하는 예외를 이 클래스에서 중앙 집중화 시킴
 // @RestControllerAdvice = @ControllerAdvice + @ResponseBody
 @ControllerAdvice
@@ -20,8 +23,25 @@ public class MyExceptionHandler {
 
 
     // 400 에러: 유효성 검사 실패 등
+//    @ExceptionHandler(Exception400.class)
+//    public String ex400(Exception400 e, Model model, HttpServletRequest request) {
+//        model.addAttribute("alertMessage", e.getMessage());
+//        // url을 안 보내면 mustache에서 history.back() 처리
+//        return "alert";
+//    }
+
     @ExceptionHandler(Exception400.class)
-    public String ex400(Exception400 e, Model model) {
+    public Object ex400(Exception400 e, Model model, HttpServletRequest request) {
+        String message = e.getMessage();
+
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            log.debug("API 요청 에러 발생: {}", e.getMessage());
+            Map<String , String> response = new HashMap<>();
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
         model.addAttribute("alertMessage", e.getMessage());
         // url을 안 보내면 mustache에서 history.back() 처리
         return "alert";

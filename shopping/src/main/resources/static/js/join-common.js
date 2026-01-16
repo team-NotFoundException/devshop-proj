@@ -77,3 +77,80 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+async function callSendApi() {
+    let email = document.querySelector("#email").value;
+
+    if (!email) {
+        alert("이메일을 입력해주세요");
+        return
+    }
+
+    try {
+        let response = await fetch("/user/email/send", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({email: email})
+        });
+
+        let result = await response.json();
+
+        if (response.ok) {
+            alert("인증번호가 메일로 전송되었어요. 메일을 확인해주세요.");
+            document.querySelector("#code-box").style.display = "block";
+        } else {
+            alert(result.message || "이메일 전송 실패");
+        }
+    } catch (e) {
+        console.error("파싱 에러: ", e);
+        alert("서버 통신 중 오류" );
+
+    }
+}
+
+async function callVerifyApi() {
+    let email = document.querySelector("#email").value;
+    let code = document.querySelector("#code").value;
+
+    if (!code) {
+        alert("인증번호를 입력해주세요");
+        return
+    }
+
+    try {
+        let response = await fetch("/user/email/verify", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({email: email, code: code})
+        });
+
+        let result = await response.json();
+        let msgBox = document.querySelector("#msg");
+        const checkButton = document.querySelector(".checkBtn");
+
+        if (response.ok) {
+            msgBox.innerHTML = "<span style='color: green'>인증되었습니다.</span>"
+            document.querySelector("#isEmailAuth").value = true;
+            document.querySelector("#email").readOnly = true;
+
+            checkButton.disabled = true;
+            checkButton.style.opacity = "0.6";
+            checkButton.innerHTML = "인증 완료";
+
+            document.querySelector("#code").readOnly = true;
+        } else {
+            msgBox.innerHTML = "<span style='color: red'>인증번호가 틀렸습니다.</span>"
+            document.querySelector("#isEmailAuth").value = false;
+
+            checkButton.disabled = false;
+        }
+    } catch (e) {
+        console.log(e);
+        alert("네트워크 오류 발생");
+    }
+}

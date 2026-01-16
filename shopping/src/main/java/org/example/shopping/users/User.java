@@ -38,7 +38,7 @@ public class User extends BaseTimeEntity {
 
     private String nickname;
 
-
+    @Column(unique = true)
     private String email;
 
     @Embedded

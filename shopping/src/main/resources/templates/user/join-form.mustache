@@ -31,7 +31,19 @@
 
             <div class="join-form-group">
                 <label for="email">이메일 주소 <span class="required">*</span></label>
-                <input type="text" id="email" name="email" placeholder="예) sample@dev.com">
+                <div>
+                    <input type="text" id="email" name="email" placeholder="예) sample@dev.com">
+                    <button type="button" class="btn btn-outline-secondary" onclick="callSendApi()">인증번호 전송</button>
+                </div>
+                <div id="code-box" style="display: none">
+                    <label>인증번호</label>
+                    <div>
+                        <input type="text" id="code" class="form-control" placeholder="인증번호 6자리를 입력해주세요" maxlength="6">
+                        <button type="button" class="btn btn-outline-secondary checkBtn" onclick="callVerifyApi()">확인</button>
+                    </div>
+                    <div id="msg" class="form-text"></div>
+                </div>
+                <input type="hidden" id="isEmailAuth" value="false">
             </div>
 
             <div class="join-form-group">

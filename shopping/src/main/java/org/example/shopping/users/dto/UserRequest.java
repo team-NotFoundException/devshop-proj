@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.example.shopping._core.utils.ValidationGroups;
+import org.example.shopping._core.utils.ValidationUtils;
 import org.example.shopping.users.User;
 import org.example.shopping.users.enums.Gender;
 import org.example.shopping.users.user.Address;
@@ -83,6 +84,19 @@ public class UserRequest {
         private Address address;
 
         private Gender gender;
+    }
+
+
+    @Data
+    public static class EmailCheckDTO {
+
+        @NotBlank(groups = ValidationGroups.NotEmptyGroup.class)
+        @Email(groups = ValidationGroups.EmailCheckGroup.class)
+        private String email;
+
+        private String code;
+
+
     }
 }
 
