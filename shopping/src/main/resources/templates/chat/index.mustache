@@ -1,8 +1,9 @@
-<section class="mypage-content-box">
+{{> layout/header }}
+<div class="chat-page">
     <div class="chat-container">
         <div class="chat-card">
             <div class="header">
-                <h3 class="chat-room" data-room-id="{{chatRoomId}}">실시간 1:1 상담{{chatRoomId}}</h3>
+                <h3 class="chat-room" data-room-id="{{chatRoomId}}">실시간 1:1 상담 [방번호: {{chatRoomId}}]</h3>
             </div>
 
             <div class="chat-box" id="chatBox">
@@ -21,98 +22,100 @@
                 <button type="submit" class="btn-send">전송</button>
             </form>
         </div>
-
     </div>
-    <form action="/chatRoom/delete" method="post">
-        <button class="btn btn-danger">상담 종료</button>
-    </form>
+</div>
 
-    <script>
-        const chatBox = document.getElementById("chatBox");
-        const chatForm = document.getElementById("chatForm");
-        const chatRoomId = Number(document.querySelector('.chat-room').dataset.roomId);
-        const myRole = "{{myRole}}";
+<form action="/chatRoom/delete" method="post">
+    <button class="btn btn-danger">상담 종료</button>
+</form>
 
-        chatBox.scrollTop = chatBox.scrollHeight;
+<script>
+    const chatBox = document.getElementById("chatBox");
+    const chatForm = document.getElementById("chatForm");
+    const chatRoomId = Number(document.querySelector('.chat-room').dataset.roomId);
+    const myRole = "{{myRole}}";
 
-        function connect() {
-            const socket = new SockJS('/ws-stomp');
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-            stompClient = Stomp.over(socket);
-            stompClient.debug = (str) => console.log(str);
+    function connect() {
+        const socket = new SockJS('/ws-stomp');
 
-            stompClient.connect({}, function (frame) {
-                console.log(frame);
+        stompClient = Stomp.over(socket);
+        stompClient.debug = (str) => console.log(str);
 
-                stompClient.subscribe(`/sub/chat/${chatRoomId}`, function (res) {
-                    showMessage(res.body);
-                });
+        stompClient.connect({}, function (frame) {
+            console.log(frame);
+
+            stompClient.subscribe(`/sub/chat/${chatRoomId}`, function (res) {
+                showMessage(res.body);
             });
-        }
-
-        function showMessage(msg) {
-            const separatorIndex = msg.indexOf(":");
-            let sender = myRole;
-            let message = msg;
-
-            if (separatorIndex !== -1) {
-                sender = msg.substring(0, separatorIndex);
-                message = msg.substring(separatorIndex + 1);
-            }
-
-
-            const msgWrap = document.createElement("div");
-            if (sender === myRole) {
-                msgWrap.className = 'msg-wrap me'
-            } else {
-                msgWrap.className = 'msg-wrap other'
-            }
-
-            console.log("sender raw:", JSON.stringify(sender), "myRole raw:", JSON.stringify(myRole));
-
-            const msgBox = document.createElement("div");
-            msgBox.className = 'msg-box';
-
-            const nameSpan = document.createElement("span");
-            nameSpan.className = 'name';
-            nameSpan.textContent = sender;
-
-            const msgSpan = document.createElement("span");
-            msgSpan.className = 'msg';
-            msgSpan.textContent = message;
-
-            msgBox.appendChild(nameSpan);
-            msgBox.appendChild(msgSpan);
-
-            msgWrap.appendChild(msgBox);
-
-            chatBox.appendChild(msgWrap);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function sendMessage(message, chatRoomId) {
-            if (stompClient) {
-                const payload = {
-                    'message': message,
-                    'chatRoomId': chatRoomId
-                };
-
-                stompClient.send("/pub/chat/message", {}, JSON.stringify(payload));
-            }
-        }
-
-        chatForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            const messageInput = document.getElementById('message');
-            const message = messageInput.value;
-            if (message.trim()) {
-                sendMessage(message, chatRoomId);
-                messageInput.value = '';
-                messageInput.focus();
-            }
         });
+    }
 
-        connect();
-    </script>
-</section>
+    function showMessage(msg) {
+        const separatorIndex = msg.indexOf(":");
+        let sender = myRole;
+        let message = msg;
+
+        if (separatorIndex !== -1) {
+            sender = msg.substring(0, separatorIndex);
+            message = msg.substring(separatorIndex + 1);
+        }
+
+        const msgWrap = document.createElement("div");
+        if (sender === myRole) {
+            msgWrap.className = 'msg-wrap me'
+        } else {
+            msgWrap.className = 'msg-wrap other'
+        }
+
+        console.log("sender raw:", JSON.stringify(sender), "myRole raw:", JSON.stringify(myRole));
+
+        const msgBox = document.createElement("div");
+        msgBox.className = 'msg-box';
+
+        const nameSpan = document.createElement("span");
+        nameSpan.className = 'name';
+        nameSpan.textContent = sender;
+
+        const msgSpan = document.createElement("span");
+        msgSpan.className = 'msg';
+        msgSpan.textContent = message;
+
+        msgBox.appendChild(nameSpan);
+        msgBox.appendChild(msgSpan);
+
+        msgWrap.appendChild(msgBox);
+
+        chatBox.appendChild(msgWrap);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendMessage(message, chatRoomId) {
+        if (stompClient) {
+            const payload = {
+                'message': message,
+                'chatRoomId': chatRoomId
+            };
+
+            stompClient.send("/pub/chat/message", {}, JSON.stringify(payload));
+        }
+    }
+
+    chatForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const messageInput = document.getElementById('message');
+        const message = messageInput.value;
+        if (message.trim()) {
+            sendMessage(message, chatRoomId);
+            messageInput.value = '';
+            messageInput.focus();
+        }
+    });
+
+    connect();
+</script>
+
+
+{{>layout/footer}}
