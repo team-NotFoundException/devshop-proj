@@ -99,6 +99,10 @@ public class Product {
         this.category = category;
         this.status = dto.getStatus();
 
+
+        this.category = category;
+        this.status = dto.getStatus();
+
         if (this.stockQuantity <= 0) {
             this.status = ProductStatus.SOLD_OUT;
         }
