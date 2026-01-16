@@ -3,13 +3,15 @@
 </footer>
 
 {{#sessionUser}}
-<div id="floatingBanner" class="floating-banner">
-    <div class="banner-content">
-        <a href="/chatRoom/me">
-            <div class="banner-icon"><i class="fa-solid fa-headset"></i></div>
-        </a>
-    </div>
-</div>
+    {{^isAdmin}}
+        <div id="floatingBanner" class="floating-banner">
+            <div class="banner-content">
+                <a href="/chatRoom/me">
+                    <div class="banner-icon"><i class="fa-solid fa-headset"></i></div>
+                </a>
+            </div>
+        </div>
+    {{/isAdmin}}
 {{/sessionUser}}
 
 <style>
@@ -22,7 +24,7 @@
         background-color: #ffffff;
         border: 2px solid #D1D5DB;
         border-radius: 50%;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
         z-index: 1050;
 
         display: flex;
@@ -35,7 +37,7 @@
 
     .floating-banner:hover {
         transform: translateY(-6px);
-        box-shadow: 0 14px 36px rgba(0,0,0,0.22);
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
     }
 
     /* 링크 전체 클릭 가능 */
