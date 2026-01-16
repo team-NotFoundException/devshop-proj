@@ -3,10 +3,13 @@ package org.example.shopping.product;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception403;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.category.CategoryResponse;
 import org.example.shopping.category.CategoryService;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.User;
+import org.example.shopping.users.owner.Owner;
+import org.example.shopping.users.owner.OwnerRepository;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final OwnerRepository ownerRepository;
 
     // ==================== USER 영역 ====================
 
@@ -84,7 +88,7 @@ public class ProductController {
     // 상품 검색
     @GetMapping("/owner/products/search")
     public String search(
-            @RequestParam("keyword") String keyword,
+            @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "status", required = false) ProductStatus status,
             @RequestParam(value = "categoryId", required = false) Long categoryId,
             Model model,
@@ -96,21 +100,31 @@ public class ProductController {
             throw new Exception403("판매자만 접근할 수 있습니다");
         }
 
+        // ⭐ 검색어가 비어있으면 전체 목록으로 리다이렉트
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return "redirect:/owner/products";
+        }
+
+        // Owner ID 가져오기
+        Owner owner = ownerRepository.findByUserId(sessionUser.getId())
+                .orElseThrow(() -> new Exception404("판매자 정보를 찾을 수 없습니다"));
+
         List<ProductResponse.ListDTO> products;
 
-        // 검색 조건에 따라 분기
+        // ⭐ 검색 조건에 따라 분기 (Owner ID 포함)
         if (status != null) {
-            products = productService.searchByProductNameAndStatus(keyword, status);
+            products = productService.searchByOwnerAndProductNameAndStatus(owner.getId(), keyword, status);
         } else if (categoryId != null) {
-            products = productService.searchByProductNameAndCategoryId(keyword, categoryId);
+            products = productService.searchByOwnerAndProductNameAndCategory(owner.getId(), keyword, categoryId);
         } else {
-            products = productService.searchByProductName(keyword);
+            products = productService.searchByOwnerAndProductName(owner.getId(), keyword);
         }
 
         model.addAttribute("products", products);
         model.addAttribute("keyword", keyword);
         return "user/owner/product-list";
     }
+
 
     @GetMapping("/owner/products/category/{categoryId}")
     public String ownerListByCategory(@PathVariable Long categoryId, Model model, HttpSession session) {
