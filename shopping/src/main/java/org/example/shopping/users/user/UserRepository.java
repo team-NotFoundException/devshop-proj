@@ -28,4 +28,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Predicate<? super Owner> findByRole(UserRole role);
 
+    Optional<User> findByEmail(String email);
+
+
 }
