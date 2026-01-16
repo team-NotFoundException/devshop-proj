@@ -38,8 +38,8 @@
                         <th>{{amount}}</th>
                         <th>{{method}}</th>
                         <th>{{newValue}}</th>
-                        <th>{{oldValue}}</th>
-                        <th>{{reason}}</th>
+                        <th>{{#oldValue}}{{oldValue}}{{/oldValue}}{{^oldValue}} - {{/oldValue}}</th>
+                        <th>{{#reason}}{{reason}}{{/reason}}{{^reason}} - {{/reason}}</th>
                         <th>{{createdAt}}</th>
                         <th>{{updatedAt}}</th>
                     </tr>
@@ -69,30 +69,44 @@
         {{#historyList}}
         historyData.push({
             newValue: "{{newValue}}",
-            method: "{{method}}"
+            method: "{{method}}",
+            oldValue: "{{oldValue}}" || null
         })
         {{/historyList}}
 
+    console.log(historyData)
+
     const statusCount = {};
+    const statusMinusCount = {};
     const methodCount = {};
     historyData.forEach(item => {
         if (statusCount[item.newValue]) {
             statusCount[item.newValue]++;
+
         } else {
             statusCount[item.newValue] = 1;
         }
 
-        if(methodCount[item.method]){
+        if (statusCount[item.oldValue] !== null) {
+            statusCount[item.newValue]--;
+        }
+
+        if (methodCount[item.method]) {
             methodCount[item.method]++;
-        }else{
+        } else {
             methodCount[item.method] = 1;
         }
     });
+
+    console.log(statusCount)
+    console.log(statusMinusCount)
 
     const statusLabels = Object.keys(statusCount);
     const statusData = Object.values(statusCount);
     const methodLabels = Object.keys(methodCount);
     const methodData = Object.values(methodCount);
+
+    console.log(statusData)
 
     new Chart(ctx, {
         type: 'doughnut',
@@ -165,7 +179,7 @@
                 },
                 title: {
                     display: true,
-                    text: '결제 상태별 분포'
+                    text: '결제 방법 분포'
                 }
             }
         }

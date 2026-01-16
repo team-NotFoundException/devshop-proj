@@ -1,8 +1,8 @@
 spring:
   profiles:
     active:
-#      - dev
-      - local
+      - dev
+#      - local
       - secret
 #        dev -> mysql
 #        local -> h2-console
