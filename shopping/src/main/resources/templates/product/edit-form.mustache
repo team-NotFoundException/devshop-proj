@@ -8,9 +8,10 @@
             <div class="card-body p-5">
                 <h2 class="mb-4 text-warning">상품 정보 수정</h2>
 
-                <form action="/owner/products/{{product.id}}/edit" method="post" id="editForm">
-
-
+                <form action="/owner/products/{{product.id}}/edit"
+                      method="post"
+                      enctype="multipart/form-data"
+                      id="editForm">
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">카테고리</label>

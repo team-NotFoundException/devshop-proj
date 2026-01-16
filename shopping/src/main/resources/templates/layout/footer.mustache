@@ -2,5 +2,96 @@
     <div class="container">&copy; 404 Not Found | All right Reserved</div>
 </footer>
 
+<div id="floatingBanner" class="floating-banner">
+    <div class="banner-content">
+        <span class="close-btn" onclick="closeBanner()">&times;</span>
+
+        <a href="/owner/products/save">
+            <div class="banner-icon"></div>
+            <div class="banner-text">
+                <small>판매자님!</small>
+                <strong>새 상품 등록하기</strong>
+            </div>
+        </a>
+    </div>
+</div>
+
+<style>
+    .floating-banner {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 180px;
+        background-color: #ffffff;
+        border: 2px solid #ffc107;
+        border-radius: 15px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        z-index: 1050;
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+    }
+
+    .floating-banner:hover {
+        transform: translateY(-10px); /* 마우스 올리면 뿅 올라감 */
+    }
+
+    .banner-content {
+        padding: 15px;
+        position: relative;
+    }
+
+    .banner-icon {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+
+    .banner-text {
+        color: #333;
+        line-height: 1.2;
+    }
+
+    .banner-text small {
+        display: block;
+        font-size: 11px;
+        color: #666;
+    }
+
+    .banner-text strong {
+        font-size: 14px;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        color: #bbb;
+        transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+        color: #ff0000;
+    }
+
+    /* 링크 스타일 초기화 */
+    .floating-banner a {
+        text-decoration: none;
+        display: block;
+    }
+</style>
+
+<script>
+    function closeBanner() {
+        const banner = document.getElementById('floatingBanner');
+        // 부드럽게 사라지는 효과
+        banner.style.opacity = '0';
+        banner.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            banner.style.display = 'none';
+        }, 300);
+    }
+</script>
+
 </body>
 </html>
