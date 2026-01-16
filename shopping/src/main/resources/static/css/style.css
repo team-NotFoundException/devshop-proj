@@ -87,3 +87,8 @@ a { text-decoration: none; color: inherit; }
 /* 카테고리 카드 호버 애니메이션 */
 .card { transition: transform 0.2s; }
 .card:hover { transform: translateY(-5px); }
+
+
+body {
+    min-height: 100vh;
+}
