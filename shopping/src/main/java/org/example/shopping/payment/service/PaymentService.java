@@ -27,6 +27,8 @@ import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.payment.service.gateway.PaymentGateway;
 import org.example.shopping.payment.service.gateway.PaymentGatewayResolver;
 import org.example.shopping.payment.service.gateway.PaymentResult;
+import org.example.shopping.product.Product;
+import org.example.shopping.product.ProductRepository;
 import org.example.shopping.users.User;
 import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,7 @@ public class PaymentService {
     private final OrderService orderService;
     private final OrderRepository orderRepository;
     private final HistoryRepository historyRepository;
+    private final ProductRepository productRepository;
 
 
     // ================== 카트 정보 가져오기 ================
@@ -87,6 +90,20 @@ public class PaymentService {
         return checkItem;
     }
 
+    // ===================== 결제 후 수량 증가 감소 메서드 =====================
+    @Transactional
+    public void decreaseQuantity(Long productId, Integer quantity) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new Exception404("NOT FOUND"));
+        product.decreaseQuantity(quantity);
+        productRepository.save(product);
+    }
+    // ===================== 환불 후 수량 증가 감소 메서드 =====================
+    @Transactional
+    public void increaseQuantity(Long productId, Integer quantity) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new Exception404("NOT FOUND"));
+        product.increaseQuantity(quantity);
+        productRepository.save(product);
+    }
 
     // ===================== 결제 =====================
     @Transactional
@@ -122,6 +139,7 @@ public class PaymentService {
             Payment save = paymentRepository.save(payment);
             order.addPayment(payment);
             paymentHistory(save, sessionUser, null, save.getStatus().name(), Field.STATUS, null);
+            decreaseQuantity(save.getProductId(), save.getQuantity());
         }
         Cart cart = cartRepository.findByUserId(sessionUser.getId())
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
@@ -162,6 +180,7 @@ public class PaymentService {
             Payment save = paymentRepository.save(payment);
             paymentHistory(save, sessionUser, null, save.getStatus().name(), Field.STATUS, null);
 
+            decreaseQuantity(save.getProductId(), save.getQuantity());
             order.addPayment(payment);
         }
 
@@ -233,6 +252,8 @@ public class PaymentService {
         if(old_value.equals(history.getNew_value()) ){
             historyRepository.delete(history);
         }
+
+        increaseQuantity(save.getProductId(), save.getQuantity());
 
         return new PaymentResponse.SingleRefundDTO(refund);
     }
