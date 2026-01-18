@@ -14,36 +14,58 @@ public class OrderResponse {
     @Data
     public static class OrderListDTO {
         private Long id;
-        private List<Payment> payments;
-        private String orderAmount;
+        private List<PaymentViewDTO> payments;
         private String orderedAt;
-        private String statusDisplay;
 
         public OrderListDTO(Order order) {
             this.id = order.getId();
-            this.payments = order.getPayments();
-            Long PaymentAmount = order.getPayments().stream()
-                    .map(Payment::getAmount)
-                    .findFirst()
-                    .orElse(null);
-            this.orderAmount = MoneyUtils.decimalFormat.format(PaymentAmount);
+            this.payments = order.getPayments().stream()
+                    .map(payment -> {
+                        PaymentViewDTO dto = new PaymentViewDTO(payment);
+                        return dto;
+                    })
+                    .toList();
             this.orderedAt = MyDateUtil.toDateString(order.getCreatedAt());
-            PaymentStatus status = order.getPayments().stream()
-                    .map(Payment::getStatus)
-                    .findFirst()
-                    .orElse(null);
-            if (status.toString().equals("SUCCESS")) {
+        }
+    }
+
+    @Data
+    public static class PaymentViewDTO {
+        private Long id;
+        private String orderAmount;
+        private String productName;
+        private String productCode;
+        private Integer quantity;
+        private String statusDisplay;
+        private PaymentStatus status;
+        private Long productId;
+        private PaymentMethod method;
+        private String paymentKey;
+        private String orderId;
+
+        public PaymentViewDTO(Payment payment) {
+            this.id = payment.getId();
+            this.orderAmount = MoneyUtils.decimalFormat.format(payment.getAmount());
+            this.productName = payment.getProductName();
+            this.productCode = payment.getProductCode();
+            this.quantity = payment.getQuantity();
+            if (payment.getStatus().toString().equals("SUCCESS")) {
                 this.statusDisplay = "구매완료";
             }
-            if (status.toString().equals("CONFIRMED")) {
+            if (payment.getStatus().toString().equals("CONFIRMED")) {
                 this.statusDisplay = "구매확정";
             }
-            if (status.toString().equals("FAILED")) {
+            if (payment.getStatus().toString().equals("FAILED")) {
                 this.statusDisplay = "결제실패";
             }
-            if (status.toString().equals("REFUNDED")) {
+            if (payment.getStatus().toString().equals("REFUNDED")) {
                 this.statusDisplay = "환불";
             }
+            this.status = payment.getStatus();
+            this.productId = payment.getProductId();
+            this.method = payment.getMethod();
+            this.paymentKey = payment.getPaymentKey();
+            this.orderId = payment.getOrderId();
         }
     }
 
@@ -51,7 +73,7 @@ public class OrderResponse {
     public static class OrderDetailDTO {
 
         private Long id;
-        private List<Payment> payments;
+        private List<PaymentViewDTO> payments;
         private String orderAmount;
         private String totalAmount;
         private PaymentMethod method;
@@ -60,18 +82,21 @@ public class OrderResponse {
 
         public OrderDetailDTO(Order order) {
             this.id = order.getId();
-            this.payments = order.getPayments();
 
-            Long PaymentAmount = order.getPayments().stream()
-                    .map(Payment::getAmount)
-                    .findFirst()
-                    .orElse(null);
-            this.orderAmount = MoneyUtils.decimalFormat.format(PaymentAmount);
+           this.payments = order.getPayments().stream()
+                    .map(payment -> {
+                        PaymentViewDTO dto = new PaymentViewDTO(payment);
+                        return dto;
+                    })
+                    .toList();
+
 
             Long amount = order.getPayments().stream()
+                    .filter(payment -> payment.getStatus() != PaymentStatus.REFUNDED && payment.getStatus() != PaymentStatus.FAILED)
                     .mapToLong(Payment::getAmount)
                     .sum();
             this.totalAmount = MoneyUtils.decimalFormat.format(amount);
+
 
             this.method = order.getPayments().stream()
                     .map(Payment::getMethod)
@@ -85,22 +110,7 @@ public class OrderResponse {
 
             this.approvedAt = MyDateUtil.toDateString(approvedAt);
 
-            PaymentStatus status = order.getPayments().stream()
-                    .map(Payment::getStatus)
-                    .findFirst()
-                    .orElse(null);
-            if (status.toString().equals("SUCCESS")) {
-                this.statusDisplay = "구매완료";
-            }
-            if (status.toString().equals("CONFIRMED")) {
-                this.statusDisplay = "구매확정";
-            }
-            if (status.toString().equals("FAILED")) {
-                this.statusDisplay = "결제실패";
-            }
-            if (status.toString().equals("REFUNDED")) {
-                this.statusDisplay = "환불";
-            }
+
         }
     }
 }

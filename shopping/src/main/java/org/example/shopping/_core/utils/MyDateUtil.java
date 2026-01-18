@@ -22,7 +22,7 @@ public class MyDateUtil {
     }
 
     public static String toDateString(LocalDateTime createdAtKst) {
-        if (createdAtKst == null) return null;
+        if (createdAtKst == null) return "";
         return createdAtKst.format(DATE_FORMATTER);
     }
 }

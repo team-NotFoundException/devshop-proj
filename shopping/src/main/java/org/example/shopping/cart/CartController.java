@@ -3,6 +3,7 @@ package org.example.shopping.cart;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.users.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,13 @@ public class CartController {
 
     // 아이템 추가
     @PostMapping("/cart/add")
-    public String addProc(CartRequest.AddDTO addDTO, HttpSession session) {
+    @ResponseBody
+    public ResponseEntity<Void> addProc(@RequestBody CartRequest.AddDTO addDTO, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         cartService.addCartItem(sessionUser.getId(), addDTO);
 
-        return "redirect:/cart/list";
+        return ResponseEntity.ok().build();
     }
 
     // 선택된 아이템 제거
