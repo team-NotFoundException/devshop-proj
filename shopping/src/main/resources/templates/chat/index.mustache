@@ -1,9 +1,21 @@
+
 {{> layout/header }}
 <div class="chat-page">
     <div class="chat-container">
         <div class="chat-card">
             <div class="header">
-                <h3 class="chat-room" data-room-id="{{chatRoomId}}">실시간 1:1 상담 [방번호: {{chatRoomId}}]</h3>
+                <div class="chat-icon-header">
+                    <div class="chat-icon">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                </div>
+                <div class="header-info">
+                    <h3 class="chat-room" data-room-id="{{chatRoomId}}">실시간 1:1 상담</h3>
+                    <p class="room-number"> [방번호: {{chatRoomId}}]</p>
+                </div>
+                <div class="status-badge">
+                    <span class="status-dot">상담중</span>
+                </div>
             </div>
 
             <div class="chat-box" id="chatBox">
@@ -18,15 +30,15 @@
             </div>
 
             <form id="chatForm" method="post" class="input-area">
-                <input type="text" id="message" name="message" placeholder="내용을 입력..." class="input-msg" autofocus>
-                <button type="submit" class="btn-send">전송</button>
+                <input type="text" id="message" name="message" placeholder="내용을 입력하세요..." class="input-msg" autofocus>
+                <button type="submit" class="btn-send"><i class="fa-solid fa-paper-plane"></i> 전송</button>
             </form>
         </div>
     </div>
 </div>
 
 <form action="/chatRoom/delete" method="post">
-    <button class="btn btn-danger">상담 종료</button>
+    <button class="btn-end">상담 종료</button>
 </form>
 
 <script>

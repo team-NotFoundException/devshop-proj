@@ -10,7 +10,8 @@
                              alt="{{productName}}" class="product-image">
                         <div class="order-item-info">
                             <h4>{{productName}}</h4>
-                            <p>총액: {{orderAmount}}</p>
+                            <p>상품코드: {{productCode}}</p>
+                            <p>총액: {{orderAmount}}원</p>
                             <p>수량: {{quantity}}개</p>
                             <span class="status">{{statusDisplay}}</span>
                         </div>
@@ -25,10 +26,11 @@
                     <div class="order-item-info">
                         <p>결제 방법: {{method}}</p>
                         <p>결제 날짜: {{approvedAt}}</p>
-                        <p>결제 총액: {{totalAmount}}</p>
+                        <p>결제 총액: {{totalAmount}}원</p>
                     </div>
                 </div>
             </div>
+
         {{/order}}
 
     </div>

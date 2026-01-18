@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="action-buttons">
-                        <button class="cart-btn">🛒</button>
+                        <button class="cart-btn" data-product-id="{{id}}">🛒</button>
                         <button class="buy-now-btn">바로구매</button>
                     </div>
                 </div>
@@ -94,6 +94,35 @@
                 contentArea.innerHTML = '오류 발생';
                 throw new Error("오류 발생");
             }
+        }
+    }
+
+    const cartBtn = document.querySelector('.cart-btn');
+
+    cartBtn.addEventListener('click', () => {
+        const productId = cartBtn.dataset.productId;
+        const quantity = document.getElementById('quantity').value;
+
+        addCart(productId, quantity);
+    })
+
+    async function addCart(productId, quantity) {
+
+        const response =  await fetch('/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                productId,
+                quantity
+            })
+        });
+
+        if (!response.ok) {
+            alert("오류가 발생하였습니다.");
+        } else {
+            alert("장바구니에 상품을 담았습니다.");
         }
     }
 </script>
