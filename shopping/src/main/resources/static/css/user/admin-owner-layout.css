@@ -1,0 +1,173 @@
+/* [공통] 대시보드 레이아웃 구조 */
+.admin-owner-wrapper {
+    display: flex;
+    flex-direction: row;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+/* 사이드바 통일 디자인 */
+.sidebar-menu {
+    width: 240px;
+    min-width: 240px;
+    background: #ffffff;
+    border: 1px solid #e3e6f0;
+    border-radius: 12px;
+    padding: 20px 15px;
+    position: sticky;
+    top: 180px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.sidebar-header {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f4f4f4;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    text-align: center;
+}
+
+.admin-nav-list {
+    padding: 0; margin: 0; list-style: none;
+}
+
+.admin-nav-list li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: #5a5c69;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.admin-nav-list li a i { margin-right: 10px; font-size: 1.1rem; }
+
+.admin-nav-list li a:hover {
+    background-color: #f8f9fc;
+    color: #4e73df;
+    transform: translateX(5px);
+}
+
+/* 콘텐츠 영역 통일 */
+.content-section {
+    flex: 1;
+    min-width: 0;
+    background: #fff;
+    border: 1px solid #e3e6f0;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.content-section h2, .content-section h3 {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* 데이터 테이블 공통 스타일 */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    background-color: #f8f9fc;
+    padding: 12px 15px;
+    color: #4e73df;
+    border-bottom: 2px solid #e3e6f0;
+    white-space: nowrap;
+}
+
+.data-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    vertical-align: middle;
+}
+
+/* 통계 카드 통일 */
+.stat-card {
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.bg-primary-dark { background: linear-gradient(135deg, #4e73df, #224abe); }
+.bg-success-dark { background: linear-gradient(135deg, #1cc88a, #13855c); }
+.bg-warning-dark { background: linear-gradient(135deg, #f6c23e, #dda20a); }
+
+.gender-group {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.gender-card {
+    flex: 1; /* 세 카드가 동일한 너비를 가짐 */
+    cursor: pointer;
+    position: relative;
+}
+
+/* 실제 라디오 버튼은 숨김 */
+.gender-card input[type="radio"] {
+    display: none;
+}
+
+/* 카드 기본 모양 */
+.gender-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* 마우스를 올렸을 때 */
+.gender-card:hover .gender-text {
+    border-color: #3498db;
+    background-color: #f7fbff;
+}
+
+/* 선택되었을 때 (Checked State) */
+.gender-card input[type="radio"]:checked + .gender-text {
+    border-color: #3498db;
+    background-color: #3498db;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+}
+
+/* 📱 반응형 분기점 (창 너비가 좁아질 때) */
+@media (max-width: 1024px) {
+    .admin-owner-wrapper { flex-direction: column; }
+    .sidebar-menu {
+        width: 100%; min-width: 100%;
+        position: static; margin-bottom: 10px;
+    }
+    .admin-nav-list {
+        display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px;
+    }
+    .admin-nav-list li a {
+        background: #f8f9fc; white-space: nowrap; padding: 8px 15px;
+    }
+}

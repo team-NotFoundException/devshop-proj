@@ -1,62 +1,56 @@
-{{> layout/header }}
+{{> layout/header}}
 
-
-<div class="admin-container">
+<div class="admin-owner-wrapper">
     {{> layout/admin-sidebar}}
-    <main class="flex-grow-1 p-4 bg-light">
-        <section class="content-section">
-            <h2>회원 관리</h2>
+
+    <div class="content-section">
+        <h2 class="mb-4">매출 및 결제 통계</h2>
+
+        <div class="table-responsive mb-5">
             <table class="data-table">
                 <thead>
                 <tr>
                     <th>이름</th>
-                    <th>이메일</th>
-                    <th>제품 ID</th>
-                    <th>제품 이름</th>
-                    <th>제품 코드</th>
-                    <th>결제 수량</th>
+                    <th>제품명</th>
                     <th>결제 금액</th>
                     <th>결제 방법</th>
-                    <th>현재 결제 상태</th>
-                    <th>이전 결제 상태</th>
-                    <th>환불 사유</th>
+                    <th>상태</th>
                     <th>생성 시간</th>
-                    <th>수정 시간</th>
                 </tr>
                 </thead>
                 <tbody>
                 {{#historyList}}
                     <tr>
-                        <th>{{username}}</th>
-                        <th>{{email}}</th>
-                        <th>{{productId}}</th>
-                        <th>{{productName}}</th>
-                        <th>{{productCode}}</th>
-                        <th>{{quantity}}</th>
-                        <th>{{amount}}</th>
-                        <th>{{method}}</th>
-                        <th>{{newValue}}</th>
-                        <th>{{#oldValue}}{{oldValue}}{{/oldValue}}{{^oldValue}} - {{/oldValue}}</th>
-                        <th>{{#reason}}{{reason}}{{/reason}}{{^reason}} - {{/reason}}</th>
-                        <th>{{createdAt}}</th>
-                        <th>{{updatedAt}}</th>
+                        <td>{{username}}</td>
+                        <td>{{productName}}</td>
+                        <td>{{amount}}</td>
+                        <td>{{method}}</td>
+                        <td><span class="badge bg-primary">{{newValue}}</span></td>
+                        <td>{{createdAt}}</td>
                     </tr>
                 {{/historyList}}
                 </tbody>
             </table>
+        </div>
 
-            <div class="chart-container" style="display: flex; gap: 20px;">
-                <div style="width: 400px; height: 400px;">
-                    <canvas id="countChart"></canvas>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm p-3">
+                    <h5 class="card-title text-center mb-3">결제 상태별 분포</h5>
+                    <canvas id="statusChart"></canvas>
                 </div>
-                <div style="width: 400px; height: 400px;">
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm p-3">
+                    <h5 class="card-title text-center mb-3">결제 수단별 비중</h5>
                     <canvas id="methodChart"></canvas>
                 </div>
             </div>
-
-        </section>
-    </main>
+        </div>
+    </div>
 </div>
+
+{{> layout/footer}}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -175,7 +169,3 @@
         }
     });
 </script>
-
-{{> layout/footer}}
-
-<!-- user list / 권한별 user 조회 / owner / user -->

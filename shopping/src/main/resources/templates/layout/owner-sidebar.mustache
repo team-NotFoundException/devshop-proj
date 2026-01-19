@@ -1,29 +1,22 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end" style="width: 250px; min-height: 100vh;">
-    <a href="/owner/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+<aside class="sidebar-menu">
+    <div class="sidebar-header">
         <span class="fs-4 fw-bold text-primary">판매자 센터</span>
-    </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="/owner/dashboard" class="nav-link mb-2">
-                <i class="bi bi-speedometer2 me-2"></i> 대시보드
+    </div>
+    <ul class="admin-nav-list">
+        <li>
+            <a href="/owner/dashboard">
+                <i class="bi bi-speedometer2"></i> <span>대시보드</span>
             </a>
         </li>
         <li>
-            <a href="/owner/products" class="nav-link link-dark mb-2">
-                <i class="bi bi-box-seam me-2"></i> 상품 목록 관리
+            <a href="/owner/products">
+                <i class="bi bi-box-seam"></i> <span>상품 목록 관리</span>
             </a>
         </li>
         <li>
-            <a href="/owner/products/save" class="nav-link link-dark mb-2">
-                <i class="bi bi-plus-circle me-2"></i> 신규 상품 등록
+            <a href="/owner/products/save">
+                <i class="bi bi-plus-circle"></i> <span>신규 상품 등록</span>
             </a>
         </li>
     </ul>
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-            <strong>{{sessionUser.username}} 님</strong>
-        </a>
-    </div>
-</div>
+</aside>
