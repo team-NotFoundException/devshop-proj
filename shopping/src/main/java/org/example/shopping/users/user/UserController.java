@@ -172,7 +172,13 @@ public class UserController {
 
     // ---------------------------------------- //
 
-    // 회원정보 조회
+    // 아이디 찾기
+    @GetMapping("/user/findEmail")
+    public String findUsername (HttpSession session, Model model) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        return null;
+    }
 
     // 로그인용 사용자 조회
 
