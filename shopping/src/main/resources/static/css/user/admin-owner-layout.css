@@ -164,6 +164,9 @@
         width: 100%; min-width: 100%;
         position: static; margin-bottom: 10px;
     }
+    .content-section {
+        width: 100%;
+    }
     .admin-nav-list {
         display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px;
     }
