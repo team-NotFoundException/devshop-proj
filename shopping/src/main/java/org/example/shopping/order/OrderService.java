@@ -2,12 +2,14 @@ package org.example.shopping.order;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping._core.utils.MyDateUtil;
 import org.example.shopping.users.User;
 import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class OrderService {
 
         Order order = Order.builder()
                 .user(userEntity)
+                .orderNumber(createOrderNumber())
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -48,5 +51,12 @@ public class OrderService {
                 .orElseThrow(() -> new Exception404("주문을 찾을 수 없습니다."));
 
         return new OrderResponse.OrderDetailDTO(order);
+    }
+
+    private String createOrderNumber() {
+        String orderNumber = UUID.randomUUID().toString();
+        orderNumber = orderNumber.replaceAll("-","").substring(0, 8);
+        orderNumber = orderNumber.toUpperCase();
+        return MyDateUtil.toOrderString(LocalDateTime.now()) + orderNumber;
     }
 }

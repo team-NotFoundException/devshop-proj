@@ -14,11 +14,13 @@ public class OrderResponse {
     @Data
     public static class OrderListDTO {
         private Long id;
+        private String orderNumber;
         private List<PaymentViewDTO> payments;
         private String orderedAt;
 
         public OrderListDTO(Order order) {
             this.id = order.getId();
+            this.orderNumber = order.getOrderNumber();
             this.payments = order.getPayments().stream()
                     .map(payment -> {
                         PaymentViewDTO dto = new PaymentViewDTO(payment);
