@@ -1,13 +1,19 @@
-<div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
+{{> layout/header }}
 
+<div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
+    {{> layout/owner-sidebar}}
 
     <div class="content-area" style="flex: 1; padding: 20px;">
         <div class="card shadow-sm" style="max-width: 900px; margin: auto;">
             <div class="card-body p-5">
                 <h2 class="mb-4 text-warning">상품 정보 수정</h2>
 
-
                 <form action="/owner/products/{{product.id}}/edit" method="post" id="editForm" enctype="multipart/form-data">
+
+
+                    {{#product.thumbnailUrl}}
+                        <input type="hidden" name="existingThumbnail" value="{{product.thumbnailUrl}}">
+                    {{/product.thumbnailUrl}}
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">카테고리</label>
@@ -38,26 +44,29 @@
                                value="{{product.stockQuantity}}" min="0" required>
                     </div>
 
-                    <!-- 썸네일 미리보기 추가 -->
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">썸네일</label>
-                        {{#product.thumbnailUrl}}
-                            <div class="current-thumbnail mb-2">
-                                <p class="text-muted small">현재 썸네일:</p>
-                                <img src="/images/{{product.thumbnailUrl}}" alt="현재 썸네일" style="max-width: 200px; border-radius: 8px;">
-                            </div>
-                        {{/product.thumbnailUrl}}
-                        <input type="file" name="thumbnail" class="form-control" accept="image/*" id="thumbnailInput">
-                        <small class="text-muted">새 이미지를 선택하면 기존 썸네일이 교체됩니다.</small>
 
-                        <!-- 썸네일 미리보기 -->
+                    {{#product.thumbnailUrl}}
+                        <div class="current-thumbnail mb-2">
+                            <p class="text-muted small">현재 썸네일:</p>
+                            <!-- getThumbnailDisplayUrl() 메서드 사용 -->
+                            <img src="{{product.thumbnailDisplayUrl}}" alt="현재 썸네일"
+                                 style="max-width: 200px; border-radius: 8px;">
+                        </div>
+                        <!-- 기존 썸네일 URL을 hidden으로 유지 (DB 저장용 원본) -->
+                        <input type="hidden" name="existingThumbnail" value="{{product.thumbnailUrl}}">
+                    {{/product.thumbnailUrl}}
+                    <input type="file" name="thumbnail" class="form-control" accept="image/*" id="thumbnailInput" required>
+                        <small class="text-muted">새 이미지를 선택하면 기존 썸네일이 교체됩니다. 선택하지 않으면 기존 썸네일이 유지됩니다.</small>
+
+
                         <div id="thumbnailPreview" class="mt-2" style="display: none;">
                             <p class="text-muted small">새 썸네일 미리보기:</p>
                             <img id="previewImage" style="max-width: 200px; border-radius: 8px;">
                         </div>
-                    </div>
 
-                    <!-- 상품 설명 -->
+
+
+
                     <div class="mb-3">
                         <label class="form-label fw-bold">상품 설명</label>
                         <div id="editor"></div>
@@ -111,7 +120,7 @@
         document.querySelector('#description').value = editor.getHTML();
     });
 
-    // 썸네일 미리보기 기능
+
     document.getElementById('thumbnailInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -121,6 +130,8 @@
                 document.getElementById('thumbnailPreview').style.display = 'block';
             };
             reader.readAsDataURL(file);
+        } else {
+            document.getElementById('thumbnailPreview').style.display = 'none';
         }
     });
 </script>
@@ -268,7 +279,6 @@
             height: 300px;
         }
     }
-
 </style>
 
-
+{{> layout/footer }}

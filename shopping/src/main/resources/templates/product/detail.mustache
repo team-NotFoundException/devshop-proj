@@ -14,7 +14,18 @@
                 <div class="card-header bg-white py-3">
                     <h4 class="mb-0 fw-bold">{{productName}} <small class="text-muted fs-6">#{{id}}</small></h4>
                 </div>
+
                 <div class="card-body p-4">
+                    <!-- 썸네일 이미지 섹션 -->
+                    {{#thumbnailUrl}}
+                        <div class="product-thumbnail-section mb-4 text-center">
+                            <img src="{{thumbnailUrl}}" alt="{{productName}}"
+                                 class="img-fluid rounded shadow-sm"
+                                 style="max-width: 400px; max-height: 400px; object-fit: cover;">
+                        </div>
+                    {{/thumbnailUrl}}
+
+                    <!-- 상품 정보 카드 -->
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <div class="p-3 bg-light rounded text-center">
@@ -24,18 +35,25 @@
                         </div>
                         <div class="col-md-4">
                             <div class="p-3 bg-light rounded text-center">
+                                <div class="text-muted small">재고 수량</div>
+                                <div class="h4 fw-bold text-success">{{stockQuantity}}개</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded text-center">
                                 <div class="text-muted small">판매 상태</div>
-                                <span class="badge bg-secondary">{{status}}</span>
+                                <span class="badge bg-secondary fs-6">{{status}}</span>
                             </div>
                         </div>
                     </div>
 
-
+                    <!-- 상세 설명 -->
                     <h5 class="fw-bold mb-3 border-bottom pb-2">상세 설명</h5>
                     <div class="product-detail-content mb-5">
                         {{{description}}}
                     </div>
 
+                    <!-- 하단 버튼 -->
                     <div class="d-flex justify-content-between border-top pt-4">
                         <a href="/owner/products" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left"></i> 목록으로
@@ -50,5 +68,42 @@
 
     </div>
 </div>
+
+<style>
+    .product-thumbnail-section {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .product-thumbnail-section img {
+        border: 1px solid #dee2e6;
+    }
+
+    .product-detail-content {
+        max-width: 100%;
+        overflow: hidden;
+        line-height: 1.7;
+        font-size: 15px;
+        color: #333;
+    }
+
+    .product-detail-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 16px auto;
+        object-fit: contain;
+    }
+
+    .product-detail-content table {
+        max-width: 100%;
+    }
+
+    .product-detail-content pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+</style>
 
 {{> layout/footer }}
