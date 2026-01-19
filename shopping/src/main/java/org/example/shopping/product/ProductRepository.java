@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,4 +66,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     long countByOwnerId(Long ownerId);
 
     Optional<Product> findByOwnerId(Long ownerId);
+    @Query("SELECT p FROM Product p JOIN FETCH p.owner WHERE p.status = :status AND p.owner.id = :id")
+    List<Product> findByStatusWithUser(@Param("status") ProductStatus status, @Param("id") Long ownerId);
 }
