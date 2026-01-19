@@ -1,7 +1,6 @@
 package org.example.shopping.chat;
 
 import lombok.Data;
-import org.example.shopping.chatRoom.ChatRoom;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package org.example.shopping.chat;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.chatRoom.ChatRoom;
 import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +31,13 @@ public class AdminChatController {
     public String getChatRoom(@PathVariable Long chatRoomId, HttpSession session, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        String myRole = sessionUser.getRole().getRole().toString();
+        String myRole;
+
+        if (sessionUser.getRole().getRole().toString().equals("OWNER")) {
+            myRole = "USER";
+        } else {
+            myRole = sessionUser.getRole().getRole().toString();
+        }
 
         ChatResponse.ChatRoomDTO chatRoom = chatService.enterChatRoom(chatRoomId);
 
