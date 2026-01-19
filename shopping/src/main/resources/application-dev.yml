@@ -5,6 +5,9 @@ server:
       force: true
   port: 8080
 
+  session:
+    tracking-modes: cookie
+
 # 2칸 공백, 탭키 절대 사용 금지!
 # 로그 설정 (개발환경용)
 # 로그 레벨의 개념
