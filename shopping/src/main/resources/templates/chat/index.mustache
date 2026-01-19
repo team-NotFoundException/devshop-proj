@@ -79,6 +79,9 @@
             msgWrap.className = 'msg-wrap me'
         } else {
             msgWrap.className = 'msg-wrap other'
+            if (myRole === "OWNER") {
+                msgWrap.className = 'msg-wrap me'
+            }
         }
 
         console.log("sender raw:", JSON.stringify(sender), "myRole raw:", JSON.stringify(myRole));

@@ -59,7 +59,7 @@ public class ChatController {
         String message = (String) payload.get("message");
         Long chatRoomId = ((Number) payload.get("chatRoomId")).longValue();
 
-        SenderRole sender = sessionUser.getRole().getRole().equals(RoleType.ADMIN) ? SenderRole.ADMIN : SenderRole.USER;
+        SenderRole sender = sessionUser.getRole().getRole().equals(RoleType.ADMIN) ? SenderRole.ADMIN : SenderRole.OWNER;
         chatService.saveAndBroadcast(message, chatRoomId, sender);
     }
 

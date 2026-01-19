@@ -5,6 +5,7 @@
 
 {{#sessionUser}}
     {{^isAdmin}}
+        {{^isUser}}
         <div id="floatingBanner" class="floating-banner">
             <div class="banner-content">
                 <a href="/chatRoom/me">
@@ -12,6 +13,7 @@
                 </a>
             </div>
         </div>
+        {{/isUser}}
     {{/isAdmin}}
 {{/sessionUser}}
 
