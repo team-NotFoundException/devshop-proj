@@ -1,4 +1,4 @@
-<div class="mypage-content-box">
+<div class="content-section">
 
     <div class="order-box">
         <div class="search-bar">
@@ -14,12 +14,12 @@
         {{#orderList}}
             <div class="order-card">
                 <div class="order-header">
-                    <h3>주문번호: {{orderNumber}}</h3>
-                    <span>주문일자: {{orderedAt}}</span>
+                    <h3 class="order-number">주문번호: {{orderNumber}}</h3>
+                    <span class="order-date">주문일자: {{orderedAt}}</span>
 
-                    <form action="/order/detail">
+                    <form action="/order/detail" style="margin: 0;">
                         <input type="hidden" name="orderId" value="{{id}}">
-                        <button class="detailBtn">상세보기</button>
+                        <button type="submit" class="detailBtn">상세보기</button>
                     </form>
                 </div>
 
