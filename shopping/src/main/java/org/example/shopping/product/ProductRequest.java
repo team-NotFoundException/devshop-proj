@@ -1,12 +1,10 @@
 package org.example.shopping.product;
 
 import lombok.Data;
-import lombok.Getter;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping.category.Category;
 import org.example.shopping.product.productEnum.ProductStatus;
 import org.example.shopping.users.owner.Owner;
-import org.springframework.web.multipart.MultipartFile;
 
 public class ProductRequest {
 
@@ -19,7 +17,6 @@ public class ProductRequest {
         private Long price;
         private int stockQuantity;
         private String description;
-
 
         public void validate() {
             if (productName == null || productName.isBlank()) {
@@ -38,7 +35,7 @@ public class ProductRequest {
                     .category(category)
                     .owner(owner)
                     .productName(productName)
-                    .productCode(owner.getId() + "-" + category.getId() +"-"+ productCode)
+                    .productCode(owner.getId() + "-" + category.getId() + "-" + productCode)
                     .price(price)
                     .stockQuantity(stockQuantity)
                     .description(description)
@@ -57,7 +54,8 @@ public class ProductRequest {
         private Long price;
         private int stockQuantity;
         private String description;
-        private String thumbnailUrl;
+        private String thumbnailUrl;  // 새로 업로드된 썸네일 또는 기존 썸네일
+        private String existingThumbnail;  // 폼에서 전달받은 기존 썸네일
         private ProductStatus status;
 
         public void validate() {

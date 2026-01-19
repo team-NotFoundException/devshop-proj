@@ -40,10 +40,8 @@ public class ProductController {
 
     @GetMapping("/category/{categoryId}")
     public String categoryMain(@PathVariable Long categoryId, Model model) {
-        List<ProductResponse.MainCardDTO> products =
-                productService.findByCategoryIdForMain(categoryId);
+        List<ProductResponse.MainCardDTO> products = productService.findByCategoryIdForMain(categoryId);
         CategoryResponse.DetailDTO category = categoryService.findById(categoryId);
-
         model.addAttribute("products", products);
         model.addAttribute("category", category);
         return "category/main";
@@ -51,72 +49,17 @@ public class ProductController {
 
     @GetMapping("/products/{productId}")
     public String userProductDetail(@PathVariable Long productId, Model model) {
-        ProductResponse.UserDetailDTO product =
-                productService.findByIdForUser(productId);
+        ProductResponse.UserDetailDTO product = productService.findByIdForUser(productId);
         model.addAttribute("product", product);
         return "product/user-detail";
     }
-
-    // ==================== ADMIN 영역 ====================
-
-    @GetMapping("/admin/products")
-    public String adminList(Model model, HttpSession session) {
-        User sessionUser = getOwnerUser(session);
-
-        List<ProductResponse.ListDTO> list =
-                productService.findAll(sessionUser.getId());
-
-        model.addAttribute("products", list);
-        model.addAttribute("keyword", "");
-        return "user/owner/product-list";
-    }
-
-    @GetMapping("/admin/products/search")
-    public String adminSearch(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "status", required = false) ProductStatus status,
-            @RequestParam(value = "categoryId", required = false) Long categoryId,
-            Model model,
-            HttpSession session
-    ) {
-        User sessionUser = getOwnerUser(session);
-
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return "redirect:/admin/products";
-        }
-
-        Owner owner = ownerRepository.findByUserId(sessionUser.getId())
-                .orElseThrow(() -> new Exception404("판매자 정보를 찾을 수 없습니다"));
-
-        List<ProductResponse.ListDTO> products;
-
-        if (status != null) {
-            products = productService
-                    .searchByOwnerAndProductNameAndStatus(owner.getId(), keyword, status);
-        } else if (categoryId != null) {
-            products = productService
-                    .searchByOwnerAndProductNameAndCategory(owner.getId(), keyword, categoryId);
-        } else {
-            products = productService
-                    .searchByOwnerAndProductName(owner.getId(), keyword);
-        }
-
-        model.addAttribute("products", products);
-        model.addAttribute("keyword", keyword);
-        return "user/admin/product-list";
-    }
-
-
 
     // ==================== OWNER 영역 ====================
 
     @GetMapping("/owner/products")
     public String ownerList(Model model, HttpSession session) {
         User sessionUser = getOwnerUser(session);
-
-        List<ProductResponse.ListDTO> list =
-                productService.findAll(sessionUser.getId());
-
+        List<ProductResponse.ListDTO> list = productService.findAll(sessionUser.getId());
         model.addAttribute("products", list);
         model.addAttribute("keyword", "");
         return "user/owner/product-list";
@@ -125,7 +68,6 @@ public class ProductController {
     @GetMapping("/owner/products/save")
     public String saveForm(Model model, HttpSession session) {
         getOwnerUser(session);
-
         List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
         model.addAttribute("category", categoryList);
         return "user/owner/product-save";
@@ -162,14 +104,11 @@ public class ProductController {
         List<ProductResponse.ListDTO> products;
 
         if (status != null) {
-            products = productService
-                    .searchByOwnerAndProductNameAndStatus(owner.getId(), keyword, status);
+            products = productService.searchByOwnerAndProductNameAndStatus(owner.getId(), keyword, status);
         } else if (categoryId != null) {
-            products = productService
-                    .searchByOwnerAndProductNameAndCategory(owner.getId(), keyword, categoryId);
+            products = productService.searchByOwnerAndProductNameAndCategory(owner.getId(), keyword, categoryId);
         } else {
-            products = productService
-                    .searchByOwnerAndProductName(owner.getId(), keyword);
+            products = productService.searchByOwnerAndProductName(owner.getId(), keyword);
         }
 
         model.addAttribute("products", products);
@@ -180,11 +119,8 @@ public class ProductController {
     @GetMapping("/owner/products/{id}/edit")
     public String editForm(@PathVariable Long id, Model model, HttpSession session) {
         getOwnerUser(session);
-
-        ProductResponse.UpdateFormDTO product =
-                productService.findByIdForUpdate(id);
+        ProductResponse.UpdateFormDTO product = productService.findByIdForUpdate(id);
         List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
-
         model.addAttribute("product", product);
         model.addAttribute("category", categoryList);
         return "product/edit-form";
@@ -199,16 +135,23 @@ public class ProductController {
             RedirectAttributes redirectAttributes
     ) {
         getOwnerUser(session);
-
         productService.updateById(id, dto, thumbnail);
         redirectAttributes.addFlashAttribute("message", "상품이 성공적으로 수정되었습니다.");
+        return "redirect:/owner/products/" + id;
+    }
+
+
+    @PostMapping("/owner/products/{id}/delete")
+    public String delete(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+        getOwnerUser(session);
+        productService.deleteById(id);
+        redirectAttributes.addFlashAttribute("message", "상품이 삭제되었습니다.");
         return "redirect:/owner/products";
     }
 
     @GetMapping("/owner/products/{id}")
     public String ownerDetail(@PathVariable Long id, Model model, HttpSession session) {
         getOwnerUser(session);
-
         ProductResponse.DetailDTO product = productService.findById(id);
         model.addAttribute("product", product);
         return "product/detail";

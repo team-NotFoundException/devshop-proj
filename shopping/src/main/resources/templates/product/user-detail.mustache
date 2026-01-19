@@ -8,7 +8,10 @@
             <div class="content-left">
                 <div class="main-image-area">
                     {{#thumbnailUrl}}
-                        <img src="/images/{{thumbnailUrl}}" alt="{{name}}">
+                        <img src="{{thumbnailUrl}}" alt="{{name}}">
+                    {{/thumbnailUrl}}
+                    {{^thumbnailUrl}}
+                        <img src="/img/no-image.png" alt="이미지 없음">
                     {{/thumbnailUrl}}
                 </div>
 
