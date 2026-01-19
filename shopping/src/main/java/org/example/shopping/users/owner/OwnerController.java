@@ -99,9 +99,9 @@ public class OwnerController {
 
         long totalCount = allProducts.size();
 
-        long  activeCount = productService.findByStatus(ProductStatus.ACTIVE).size();
+        long  activeCount = productService.findByStatus(ProductStatus.ACTIVE, sessionUser.getId()).size();
 
-        long soldOutCount = productService.findByStatus(ProductStatus.SOLD_OUT).size();
+        long soldOutCount = productService.findByStatus(ProductStatus.SOLD_OUT, sessionUser.getId()).size();
 
         List<ProductResponse.ListDTO> recentProducts =  allProducts.stream().limit(5).collect(Collectors.toList());
 

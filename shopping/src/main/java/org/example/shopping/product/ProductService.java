@@ -45,8 +45,9 @@ public class ProductService {
         return new ProductResponse.DetailDTO(product);
     }
 
-    public List<ProductResponse.ListDTO> findByStatus(ProductStatus status) {
-        return productRepository.findByStatusWithCategory(status)
+    public List<ProductResponse.ListDTO> findByStatus(ProductStatus status, Long userId) {
+        Owner owner = ownerRepository.findByUserId(userId).orElseThrow(() -> new Exception404("없음"));
+        return productRepository.findByStatusWithUser(status, owner.getId())
                 .stream()
                 .map(ProductResponse.ListDTO::new)
                 .toList();
