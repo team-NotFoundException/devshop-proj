@@ -29,6 +29,7 @@ import org.example.shopping.payment.service.gateway.PaymentGatewayResolver;
 import org.example.shopping.payment.service.gateway.PaymentResult;
 import org.example.shopping.product.Product;
 import org.example.shopping.product.ProductRepository;
+import org.example.shopping.users.MailService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,7 @@ public class PaymentService {
     private final OrderRepository orderRepository;
     private final HistoryRepository historyRepository;
     private final ProductRepository productRepository;
+    private final MailService mailService;
 
 
     // ================== 카트 정보 가져오기 ================
@@ -97,6 +99,7 @@ public class PaymentService {
         product.decreaseQuantity(quantity);
         productRepository.save(product);
     }
+
     // ===================== 환불 후 수량 증가 감소 메서드 =====================
     @Transactional
     public void increaseQuantity(Long productId, Integer quantity) {
@@ -108,8 +111,8 @@ public class PaymentService {
     // ===================== 결제 =====================
     @Transactional
     public PaymentResponse createPayment(PaymentRequest.CreateDTO createDTO, User user, Long cartId) {
-        switch (createDTO.getMethod()){
-            case MOCK -> new PaymentResponse(processMockPayment(user,cartId ,createDTO));
+        switch (createDTO.getMethod()) {
+            case MOCK -> new PaymentResponse(processMockPayment(user, cartId, createDTO));
             case TOSS_PAY -> throw new BusinessException(ErrorCode.INVALID_INPUT, "TossPay는 approvePayment 메서드를 사용하세요");
         }
         return new PaymentResponse();
@@ -118,7 +121,6 @@ public class PaymentService {
     // 목 결제
 
     public Payment processMockPayment(User sessionUser, Long cartId, PaymentRequest.CreateDTO createDTO) {
-
         Order order = orderService.createOrder(sessionUser.getId());
 
         List<CartItem> checkItem = getChecked(cartId);
@@ -140,12 +142,13 @@ public class PaymentService {
             order.addPayment(payment);
             paymentHistory(save, sessionUser, null, save.getStatus().name(), Field.STATUS, null);
             decreaseQuantity(save.getProductId(), save.getQuantity());
+
         }
+        mailService.sendPayInfo(sessionUser, order.getId());
         Cart cart = cartRepository.findByUserId(sessionUser.getId())
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
         cart.clearItems();
         cart.updateAmount();
-
 
         return new Payment();
     }
@@ -220,7 +223,7 @@ public class PaymentService {
 
         String old_value = payment.getStatus().name();
 
-        Long refundAmount = (req.getAmount() != null) ? req.getAmount(): payment.getAmount();
+        Long refundAmount = (req.getAmount() != null) ? req.getAmount() : payment.getAmount();
         String refundReason = (req.getReason() != null) ? req.getReason() : "고객요청";
 
         PaymentRequest.RefundDTO refundDTO = new PaymentRequest.RefundDTO();
@@ -239,17 +242,17 @@ public class PaymentService {
                 .status(RefundStatus.REQUESTED)
                 .requestedAt(LocalDateTime.now())
                 .build();
-        if(result.isSuccess()){
-        refund.refundCompleted();
-        payment.payRefund();
-        }else{
+        if (result.isSuccess()) {
+            refund.refundCompleted();
+            payment.payRefund();
+        } else {
             refund.refundFailed(result.getFailureCode(), result.getFailureMessage());
         }
         PaymentRefund reason = refundRepository.save(refund);
         Payment save = paymentRepository.save(payment);
 
         paymentHistory(save, user, old_value, save.getStatus().name(), Field.STATUS, reason.getReason());
-        if(old_value.equals(history.getNew_value()) ){
+        if (old_value.equals(history.getNew_value())) {
             historyRepository.delete(history);
         }
 
@@ -267,14 +270,14 @@ public class PaymentService {
 
         payment.confirm();
         paymentHistory(payment, payment.getUser(), old_value, payment.getStatus().name(), Field.STATUS, null);
-        if(old_value.equals(history.getNew_value()) ){
+        if (old_value.equals(history.getNew_value())) {
             historyRepository.delete(history);
         }
     }
 
     // =============== History HelperMethod =================
 
-    private void paymentHistory(Payment payment, User user, String old_value, String new_value, Field field, String reason){
+    private void paymentHistory(Payment payment, User user, String old_value, String new_value, Field field, String reason) {
         History history = History.builder()
                 .user(user)
                 .payment(payment)
