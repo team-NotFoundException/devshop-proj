@@ -30,6 +30,8 @@ public class Product {
     private Long price;
     private int stockQuantity;
 
+    private int minusQuantity;
+
     @Column(columnDefinition = "TEXT")
     private String thumbnailUrl;
 
@@ -51,13 +53,14 @@ public class Product {
     private Timestamp createdAt;
 
     @Builder
-    public Product(Long id, Owner owner, String productName, String productCode, Long price, int stockQuantity, String thumbnailUrl, String description, ProductStatus status, Category category, Timestamp createdAt) {
+    public Product(Long id, Owner owner, String productName, String productCode, Long price, int stockQuantity, int minusQuantity, String thumbnailUrl, String description, ProductStatus status, Category category, Timestamp createdAt) {
         this.id = id;
         this.owner = owner;
         this.productName = productName;
         this.productCode = productCode;
         this.price = price;
         this.stockQuantity = stockQuantity;
+        this.minusQuantity = minusQuantity;
         this.thumbnailUrl = thumbnailUrl;
         this.description = description;
         this.status = status;
@@ -113,10 +116,12 @@ public class Product {
     // 결제 후 수량 감소
     public void decreaseQuantity(int quantity) {
         this.stockQuantity -= quantity;
+        this.minusQuantity += quantity;
     }
     // 환불 후 수량 증가
     public void increaseQuantity(int quantity) {
         this.stockQuantity += quantity;
+        this.minusQuantity -= quantity;
     }
 
     // 상태 변경

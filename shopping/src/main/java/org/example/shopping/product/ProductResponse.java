@@ -64,6 +64,7 @@ public class ProductResponse {
         private String categoryName;
         private int price;
         private int stockQuantity;
+        private int minusQuantity;
         private String status;
         private String createdAt;
         private String thumbnailUrl;
@@ -75,6 +76,7 @@ public class ProductResponse {
             this.status = product.getStatus().name();
             this.thumbnailUrl = getImagePath(product.getThumbnailUrl());
             this.stockQuantity = product.getStockQuantity();
+            this.minusQuantity = product.getMinusQuantity();
 
             if (product.getCategory() != null) {
                 this.categoryName = product.getCategory().getCategoryName();
@@ -93,6 +95,7 @@ public class ProductResponse {
         private String productCode;
         private int price;
         private int stockQuantity;
+        private int minusQuantity;
         private String description;
         private String thumbnailUrl;
         private String categoryName;
@@ -105,6 +108,7 @@ public class ProductResponse {
             this.productCode = product.getProductCode();
             this.price = product.getPrice().intValue();
             this.stockQuantity = product.getStockQuantity();
+            this.minusQuantity = product.getMinusQuantity();
             this.description = product.getDescription();
             this.thumbnailUrl = getImagePath(product.getThumbnailUrl());
             this.status = product.getStatus().name();

@@ -87,5 +87,90 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById("Chart");
+    const data = [];
+        {{#recentProducts}}
+        data.push({
+            stockQuantity: "{{stockQuantity}}",
+            minusQuantity: "{{minusQuantity}}"
+        })
+        {{/recentProducts}}
 
+    const productCount = {};
+    const minusCount = {};
+    data.forEach(item => {
+        if(productCount[item.stockQuantity]){
+            productCount[item.stockQuantity]++;
+        }else{
+            productCount[item.stockQuantity] = 1;
+        }
+        if(minusCount[item.minusQuantity]){
+            minusCount[item.minusQuantity]++;
+        }else{
+            minusCount[item.minusQuantity] = 1;
+        }
+    })
+
+    const productLabels = Object.keys(productCount);
+    const productData = Object.values(productCount);
+    const minusLabels = Object.keys(minusCount);
+    const minusData = Object.values(minusCount);
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: productLabels,
+            datasets: [{
+                label: productLabels,
+                data: productData,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.8)',   // 청록색
+                    'rgba(255, 99, 132, 0.8)',   // 빨간색
+                    'rgba(255, 206, 86, 0.8)',   // 노란색
+                    'rgba(54, 162, 235, 0.8)',   // 파란색
+                    'rgba(153, 102, 255, 0.8)',  // 보라색
+                    'rgba(255, 159, 64, 0.8)'    // 주황색
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ], borderWidth: 1
+            },
+                {
+                    label: minusLabels,
+                    data: minusData,
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.8)',   // 청록색
+                        'rgba(255, 99, 132, 0.8)',   // 빨간색
+                        'rgba(255, 206, 86, 0.8)',   // 노란색
+                        'rgba(54, 162, 235, 0.8)',   // 파란색
+                        'rgba(153, 102, 255, 0.8)',  // 보라색
+                        'rgba(255, 159, 64, 0.8)'    // 주황색
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ], borderWidth: 1
+                }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: ''
+                }
+            }
+        }
+    });
 </script>
