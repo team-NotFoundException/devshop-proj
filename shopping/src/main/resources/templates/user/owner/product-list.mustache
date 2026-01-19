@@ -1,14 +1,12 @@
-
 {{> layout/header}}
-<link rel="stylesheet" href="/css/admin-owner/style.css">
-<main class="admin-owner-wrapper">
+
+<div class="admin-owner-wrapper">
     {{> layout/owner-sidebar}}
-        <section class="content-section">
-            {{> product/list-form}}
-        </section>
 
-</main>
+    <div class="content-section">
+        <h2 class="mb-4">상품 목록 관리</h2>
+        {{> product/list-form}}
+    </div>
+</div>
 
-
-
-{{> layout/footer }}
+{{> layout/footer}}

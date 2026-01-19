@@ -1,6 +1,4 @@
-<div class="mypage-content-box">
-    <h1>내정보 수정</h1>
-
+<div class="mypage-content-inner">
     <form action="/user/update" method="post">
 
 
@@ -21,10 +19,19 @@
 
         <div class="update-form-group">
             <label>성별</label>
-            <div class="gender-radio-group">
-                <label><input type="radio" name="gender" value="M" {{#isMale}}checked{{/isMale}}> 남성</label>
-                <label><input type="radio" name="gender" value="F" {{#isFemale}}checked{{/isFemale}}> 여성</label>
-                <label><input type="radio" name="gender" value="N" {{#isNone}}checked{{/isNone}}> 선택 안 함</label>
+            <div class="gender-group">
+                <label class="gender-card">
+                    <input type="radio" name="gender" value="M">
+                    <span class="gender-text">남성</span>
+                </label>
+                <label class="gender-card">
+                    <input type="radio" name="gender" value="F">
+                    <span class="gender-text">여성</span>
+                </label>
+                <label class="gender-card">
+                    <input type="radio" name="gender" value="N" checked>
+                    <span class="gender-text">선택 안 함</span>
+                </label>
             </div>
         </div>
 

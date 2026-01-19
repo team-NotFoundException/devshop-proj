@@ -1,0 +1,151 @@
+/* 1. 판매자 페이지 테마 컬러 */
+:root {
+    --owner-primary: #4e73df;
+    --owner-secondary: #858796;
+    --owner-success: #1cc88a;
+    --owner-sidebar-width: 240px;
+    --container-max-width: 1320px;
+}
+
+/* 2. 레이아웃 래퍼 (중앙 정렬 및 사이드바-본문 배치) */
+.admin-owner-wrapper {
+    display: flex;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 20px;
+    gap: 25px;
+    align-items: flex-start; /* 사이드바와 본문 높이 독립 */
+}
+
+/* 3. 판매자 사이드바 디자인 */
+.sidebar-menu {
+    width: var(--owner-sidebar-width);
+    min-width: var(--owner-sidebar-width);
+    background: #ffffff;
+    border: 1px solid #e3e6f0;
+    border-radius: 15px;
+    padding: 20px 15px;
+    position: sticky;
+    top: 180px; /* 헤더 높이에 맞게 조절 */
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
+.sidebar-header {
+    padding: 10px 15px 20px;
+    border-bottom: 1px solid #f8f9fc;
+    margin-bottom: 15px;
+}
+
+.admin-nav-list {
+    padding: 0;
+    margin: 0;
+}
+
+.admin-nav-list li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    color: #4e5e6a;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.admin-nav-list li a i {
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+/* 활성화 또는 호스트 시 효과 */
+.admin-nav-list li a:hover {
+    background-color: #f8f9fc;
+    color: var(--owner-primary);
+    transform: translateX(5px);
+}
+
+/* 4. 본문 콘텐츠 영역 */
+.content-section {
+    flex: 1;
+    min-width: 0;
+    background: #ffffff;
+    border: 1px solid #e3e6f0;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
+/* 5. 통계 카드 (Dashboard 전용) */
+.stat-card {
+    padding: 25px;
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.stat-card:hover { transform: translateY(-5px); }
+.bg-primary-dark { background: linear-gradient(135deg, #4e73df 0%, #224abe 100%); }
+.bg-success-dark { background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%); }
+.bg-warning-dark { background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%); }
+
+.stat-card h5 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+.stat-card .value { font-size: 1.8rem; font-weight: 800; }
+
+/* 6. 데이터 테이블 스타일 */
+.table-responsive {
+    margin-top: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    background-color: #f8f9fc;
+    color: #4e73df;
+    font-weight: 700;
+    padding: 15px;
+    border-bottom: 2px solid #e3e6f0;
+}
+
+.data-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    vertical-align: middle;
+}
+
+/* 7. 반응형 디자인 (1024px 이하) */
+@media (max-width: 1024px) {
+    .admin-owner-wrapper {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .sidebar-menu {
+        width: 100%;
+        min-width: 100%;
+        position: static;
+        margin-bottom: 10px;
+    }
+
+    .admin-nav-list {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 10px;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .admin-nav-list::-webkit-scrollbar { display: none; } /* Chrome, Safari */
+
+    .admin-nav-list li a {
+        background: #f8f9fc;
+        white-space: nowrap;
+        padding: 10px 18px;
+    }
+}
