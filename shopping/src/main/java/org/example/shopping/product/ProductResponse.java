@@ -1,6 +1,7 @@
 package org.example.shopping.product;
 
 import lombok.Data;
+import org.example.shopping._core.utils.MoneyUtils;
 import org.example.shopping._core.utils.MyDateUtil;
 import org.example.shopping.product.productEnum.ProductStatus;
 
@@ -24,14 +25,14 @@ public class ProductResponse {
         private Long id;
         private String name;
         private String thumbnailUrl;
-        private long price;
+        private String price;
         private String ownerName;
 
         public MainCardDTO(Product product) {
             this.id = product.getId();
             this.name = product.getProductName();
             this.thumbnailUrl = getImagePath(product.getThumbnailUrl());
-            this.price = product.getPrice();
+            this.price = MoneyUtils.format(product.getPrice());
             this.ownerName = product.getOwner().getName();
         }
     }
