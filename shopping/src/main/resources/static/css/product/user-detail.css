@@ -1,3 +1,7 @@
+/* ===============================
+   상품 상세 전체 레이아웃
+================================ */
+
 .product-detail-container {
     max-width: 1200px;
     margin: 40px auto;
@@ -13,7 +17,10 @@
     min-width: 0;
 }
 
-/* 사진과 같은 탭 디자인 */
+/* ===============================
+   탭 네비게이션
+================================ */
+
 .product-tab-nav {
     display: flex;
     border: 1px solid #ddd;
@@ -40,84 +47,18 @@
     border-right: 1px solid #eee;
 }
 
+.product-tab-nav li:last-child {
+    border-right: none;
+}
+
 .product-tab-nav li.active {
-    background: #333; /* 활성화 시 어두운 배경 */
+    background: #333;
     color: #fff;
 }
 
-/* 오른쪽 고정 사이드바 (사진 레이아웃 핵심) */
-.purchase-sidebar {
-    width: 350px;
-    flex-shrink: 0;
-}
-
-.sticky-box {
-    position: sticky;
-    top: 20px;
-    border: 1px solid #eee;
-    padding: 25px;
-    border-radius: 12px;
-    background: #fff;
-}
-
-.option-selector {
-    margin-bottom: 10px;
-}
-
-.quantity-control {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    margin-left: 2px;
-    margin-right: 2px;
-}
-
-.quantity-control button {
-    background-color: #555;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-size: 8px;
-    line-height: 1;
-    transition: background-color 0.2s ease;
-}
-
-.quantity-control button:hover {
-    background-color: #333;
-}
-
-.quantity-control input {
-    padding: 5px;
-    width: 45px;
-    justify-content: center;
-    text-align: center;
-    border: none;
-}
-
-.cart-btn {
-    width: 100%;
-    padding: 15px;
-    background: #272524; /* 카카오 노란색 포인트 */
-    border: none;
-    border-radius: 8px;
-    font-weight: 800;
-    margin-top: 15px;
-    cursor: pointer;
-}
-
-.buy-now-btn {
-    width: 100%;
-    padding: 15px;
-    background: #272524; /* 카카오 노란색 포인트 */
-    border: none;
-    border-radius: 8px;
-    font-weight: 800;
-    margin-top: 15px;
-    cursor: pointer;
-}
-
-/* ===== 오른쪽 구매창 스타일 개선 ===== */
+/* ===============================
+   오른쪽 구매 사이드바
+================================ */
 
 .purchase-sidebar {
     width: 360px;
@@ -128,11 +69,10 @@
     position: sticky;
     top: 24px;
 
+    padding: 26px 24px;
     border: 1px solid #e9edf3;
     border-radius: 14px;
     background: #fff;
-
-    padding: 26px 24px;
     box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
 }
 
@@ -153,8 +93,8 @@
     gap: 10px;
 
     padding: 12px 0 18px;
-    border-bottom: 1px solid #eef2f7;
     margin-bottom: 18px;
+    border-bottom: 1px solid #eef2f7;
 }
 
 .current-price {
@@ -166,7 +106,7 @@
 .discount-rate {
     font-size: 13px;
     font-weight: 700;
-    color: #ef4444; /* 할인율 쓰는 경우 대비 */
+    color: #ef4444;
 }
 
 /* 옵션 제목 */
@@ -177,19 +117,24 @@
     color: #374151;
 }
 
-/* 수량 컨트롤 */
+/* ===============================
+   수량 컨트롤
+================================ */
+
 .quantity-control {
     display: inline-flex;
     align-items: center;
+    overflow: hidden;
+
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    overflow: hidden;
     background: #fff;
 }
 
 .quantity-control button {
     width: 38px;
     height: 38px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -197,7 +142,7 @@
     background: #f3f4f6;
     color: #111827;
 
-    border: 0;
+    border: none;
     cursor: pointer;
     transition: background-color 0.15s ease, transform 0.05s ease;
 }
@@ -213,25 +158,30 @@
 .quantity-control input {
     width: 52px;
     height: 38px;
-    border: 0;
-    outline: none;
-    text-align: center;
 
+    border: none;
+    outline: none;
+
+    text-align: center;
     font-size: 14px;
     font-weight: 800;
     color: #111827;
     background: #fff;
 
-    /* number input 화살표 숨김 */
+    /* number input 화살표 제거 */
     -moz-appearance: textfield;
 }
+
 .quantity-control input::-webkit-outer-spin-button,
 .quantity-control input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* 총계 박스 */
+/* ===============================
+   총 금액 요약
+================================ */
+
 .total-summary {
     margin-top: 18px;
     padding: 16px 14px;
@@ -267,7 +217,10 @@
     color: #ef4444;
 }
 
-/* 버튼들 */
+/* ===============================
+   액션 버튼
+================================ */
+
 .action-buttons {
     margin-top: 18px;
     display: grid;
@@ -284,20 +237,19 @@
 
     font-size: 14px;
     font-weight: 900;
+    color: #fff;
 
     cursor: pointer;
     transition: transform 0.06s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
 
 .cart-btn {
-    background: #333; /* 진한 네이비/블랙 */
-    color: #fff;
+    background: #333;
     box-shadow: 0 10px 18px rgba(17, 24, 39, 0.18);
 }
 
 .buy-now-btn {
-    background: #333; /* 살짝 톤 차이 */
-    color: #fff;
+    background: #333;
     box-shadow: 0 10px 18px rgba(31, 41, 55, 0.16);
 }
 
@@ -311,16 +263,20 @@
     transform: translateY(1px);
 }
 
-/* 모바일 대응 */
-@media (max-width: 980px) {
-    .detail-main-content {
-        flex-direction: column;
-    }
-    .purchase-sidebar {
-        width: 100%;
-    }
-    .sticky-box {
-        position: relative;
-        top: 0;
-    }
+.product-description {
+    max-width: 100%;
+    overflow: hidden;
+    line-height: 1.7;
+    font-size: 15px;
+    color: #333;
 }
+
+.product-description img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 16px auto;
+    object-fit: contain;
+}
+
+
