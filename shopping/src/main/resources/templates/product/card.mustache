@@ -31,22 +31,6 @@
                             <span class="price-value">{{price}}</span><span class="price-unit">원</span>
                         </div>
                     </a>
-
-                    <div class="product-meta mt-2">
-                        <span class="rating"><i class="fa-solid fa-star"></i> 92% 만족</span>
-                        <span class="divider">|</span>
-                        <span class="reviews">리뷰 50</span>
-                    </div>
-                </div>
-
-                <div class="card-footer-action">
-                    <form action="/cart/add" method="post" class="w-100">
-                        <input type="hidden" name="productId" value="{{id}}">
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="btn-add-cart w-100">
-                            <i class="fa-solid fa-cart-plus me-2"></i>장바구니 담기
-                        </button>
-                    </form>
                 </div>
             </div>
         {{/products}}
