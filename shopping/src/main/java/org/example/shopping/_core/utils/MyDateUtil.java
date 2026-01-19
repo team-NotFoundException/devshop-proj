@@ -14,6 +14,7 @@ public class MyDateUtil {
     // 시간 포맷터
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter ORDER_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHss");
 
 
     public static String timestampFormat(Timestamp createdAt) {
@@ -22,7 +23,12 @@ public class MyDateUtil {
     }
 
     public static String toDateString(LocalDateTime createdAtKst) {
-        if (createdAtKst == null) return null;
+        if (createdAtKst == null) return "";
         return createdAtKst.format(DATE_FORMATTER);
+    }
+
+    public static String toOrderString(LocalDateTime createdAtKst) {
+        if (createdAtKst == null) return "";
+        return createdAtKst.format(ORDER_DATE_FORMATTER);
     }
 }

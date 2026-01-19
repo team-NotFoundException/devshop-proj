@@ -35,14 +35,14 @@ public class HistoryResponse {
             this.amount = history.getAmount();
             this.method = history.getMethod().name();
             if (history.getOld_value() == null) {
-                this.oldValue = "-";
+                this.oldValue = null;
             } else {
                 this.oldValue = history.getOld_value();
             }
 
             this.newValue = history.getNew_value();
             if (history.getReason() == null) {
-                this.reason = "-";
+                this.reason = null;
             } else {
                 this.reason = history.getReason();
             }

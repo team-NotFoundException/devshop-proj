@@ -198,7 +198,7 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -239,31 +239,54 @@ body {
 .quantity {
     display: inline-flex;
     align-items: center;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
     overflow: hidden;
-    margin-left: 2px;
-    margin-right: 2px;
+
+    background: #fff;
 }
 
+/* + / - 버튼 */
 .quantity .quantityBtn {
-    background-color: #555;
-    color: #fff;
-    border: none;
+    width: 30px;
+    height: 30px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f3f4f6;
+    color: #111827;
+
+    border: 0;
     cursor: pointer;
-    font-size: 8px;
-    line-height: 1;
-    transition: background-color 0.2s ease;
+
+    font-size: 10px;
+    transition: background-color 0.15s ease, transform 0.05s ease;
 }
 
 .quantity .quantityBtn:hover {
-    background-color: #333;
+    background: #e5e7eb;
 }
 
-.item-quantity {
-    font-size: 14px;
-    color: #666;
-    font-weight: 500;
-    padding: 5px;
+.quantity .quantityBtn:active {
+    transform: scale(0.95);
 }
+
+/* 가운데 수량 텍스트 */
+.item-quantity {
+    min-width: 48px;
+    text-align: center;
+
+    font-size: 13px;
+    font-weight: 800;
+    color: #111827;
+
+    padding: 0 6px;
+    background: #fff;
+}
+
 
 .badge-fast {
     background-color: #e8f5e9;

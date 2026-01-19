@@ -91,21 +91,32 @@ public class Product {
         dto.validate();
 
         this.productName = dto.getProductName();
-        this.productCode = dto.getProductCode();
         this.price = dto.getPrice();
         this.stockQuantity = dto.getStockQuantity();
         this.description = dto.getDescription();
-        this.thumbnailUrl = dto.getThumbnailUrl();
         this.category = category;
         this.status = dto.getStatus();
 
 
-        this.category = category;
-        this.status = dto.getStatus();
+        // 썸네일 URL이 있는 경우에만 업데이트
+        if (dto.getThumbnailUrl() != null && !dto.getThumbnailUrl().isEmpty()) {
+            this.thumbnailUrl = dto.getThumbnailUrl();
+        }
 
+
+        // 재고가 0 이하면 자동으로 품절 상태로 변경
         if (this.stockQuantity <= 0) {
             this.status = ProductStatus.SOLD_OUT;
         }
+    }
+
+    // 결제 후 수량 감소
+    public void decreaseQuantity(int quantity) {
+        this.stockQuantity -= quantity;
+    }
+    // 환불 후 수량 증가
+    public void increaseQuantity(int quantity) {
+        this.stockQuantity += quantity;
     }
 
     // 상태 변경

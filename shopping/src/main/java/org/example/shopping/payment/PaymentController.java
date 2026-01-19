@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.shopping.payment.dto.PaymentRequest;
 import org.example.shopping.payment.dto.PaymentResponse;
 import org.example.shopping.payment.service.PaymentService;
+import org.example.shopping.users.MailService;
 import org.example.shopping.users.User;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final Environment env;
+    private final MailService mailService;
 
     // 결제 생성
     @GetMapping("/payment")

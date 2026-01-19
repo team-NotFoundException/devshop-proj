@@ -14,7 +14,7 @@
         {{#orderList}}
             <div class="order-card">
                 <div class="order-header">
-                    <h3>주문번호: {{id}}</h3>
+                    <h3>주문번호: {{orderNumber}}</h3>
                     <span>주문일자: {{orderedAt}}</span>
 
                     <form action="/order/detail">
@@ -40,7 +40,7 @@
                                         data-payment-id="{{id}}"
                                         data-payment-method="{{method}}"
                                         data-payment-key="{{paymentKey}}"
-                                        data-amount="{{amount}}"
+                                        data-amount="{{orderAmount}}"
                                         data-order-id="{{orderId}}">반품신청
                                 </button>
                                 <a href="/review/{{productId}}/save" class="reviewBtn">리뷰 작성</a>

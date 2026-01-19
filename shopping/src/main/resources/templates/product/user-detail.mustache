@@ -8,7 +8,10 @@
             <div class="content-left">
                 <div class="main-image-area">
                     {{#thumbnailUrl}}
-                        <img src="/images/{{thumbnailUrl}}" alt="{{name}}">
+                        <img src="{{thumbnailUrl}}" alt="{{name}}">
+                    {{/thumbnailUrl}}
+                    {{^thumbnailUrl}}
+                        <img src="/img/no-image.png" alt="이미지 없음">
                     {{/thumbnailUrl}}
                 </div>
 
@@ -37,21 +40,23 @@
                     <div class="option-selector">
                         <p class="option-title">수량선택</p>
                         <div class="quantity-control">
-                            <button type="button" onclick="changeQty(-1)">-</button>
-                            <input type="number" id="quantity" value="1" readonly>
-                            <button type="button" onclick="changeQty(1)">+</button>
+                            <button type="button" onclick="changeQty(-1)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <input type="number" id="quantity" readonly value="1">
+                            <button type="button" onclick="changeQty(1)"><i
+                                    class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>
 
                     <div class="total-summary">
                         <div class="summary-line">
-                            <span>총 수량 <strong id="total-qty">1</strong>개</span>
-                            <span>총 주문금액 <strong id="total-price" class="text-danger">{{price}}</strong>원</span>
+                            <p>총 수량 <strong id="total-qty">1</strong>개</p>
+                            <p>총 주문금액 <strong id="total-price" class="text-danger" data-price="{{price}}">{{price}}</strong>원</p>
                         </div>
                     </div>
 
                     <div class="action-buttons">
-                        <button class="cart-btn">🛒</button>
+                        <button class="cart-btn" data-product-id="{{id}}">장바구니 담기</button>
                         <button class="buy-now-btn">바로구매</button>
                     </div>
                 </div>
@@ -94,6 +99,52 @@
                 contentArea.innerHTML = '오류 발생';
                 throw new Error("오류 발생");
             }
+        }
+    }
+
+    function changeQty(quantity) {
+        const $quantity = document.getElementById('quantity');
+        const $totalQty = document.getElementById('total-qty');
+        const $totalPrice = document.getElementById('total-price');
+
+        let currentQty = parseInt($quantity.value, 10);
+        let currentPrice = parseInt($totalPrice.dataset.price, 10);
+
+        const nextQty = currentQty + quantity;
+        if (nextQty <= 0) return;
+        $quantity.value = nextQty;
+        $totalQty.textContent = nextQty;
+
+        const nextPrice = currentPrice * nextQty;
+        $totalPrice.textContent = nextPrice.toLocaleString()
+    }
+
+    const cartBtn = document.querySelector('.cart-btn');
+
+    cartBtn.addEventListener('click', () => {
+        const productId = cartBtn.dataset.productId;
+        const quantity = document.getElementById('quantity').value;
+
+        addCart(productId, quantity);
+    })
+
+    async function addCart(productId, quantity) {
+
+        const response =  await fetch('/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                productId,
+                quantity
+            })
+        });
+
+        if (!response.ok) {
+            alert("오류가 발생하였습니다.");
+        } else {
+            alert("장바구니에 상품을 담았습니다.");
         }
     }
 </script>

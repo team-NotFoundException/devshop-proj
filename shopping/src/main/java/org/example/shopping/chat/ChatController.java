@@ -47,7 +47,7 @@ public class ChatController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         chatService.deleteChatRoom(sessionUser.getId());
-        return "redirect:/user/update";
+        return "redirect:/";
     }
 
     // 메세지 수신

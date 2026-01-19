@@ -107,6 +107,8 @@ public class ProductService {
 
         log.info("수정 전 상품명: {}", product.getProductName());
         log.info("수정 전 가격: {}", product.getPrice());
+        log.info("수정 전 썸네일: {}", product.getThumbnailUrl());
+        log.info("수정 전 상품코드: {}", product.getProductCode());
 
         Category category = null;
         if (dto.getCategoryId() != null) {
@@ -114,7 +116,7 @@ public class ProductService {
                     .orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다"));
         }
 
-        // 새 썸네일이 있으면 저장
+        // 썸네일 처리: 새 파일이 있으면 저장, 없으면 기존 유지
         if (thumbnail != null && !thumbnail.isEmpty()) {
             if (!FileUtil.isImageFile(thumbnail)) {
                 throw new Exception400("이미지 파일만 업로드 가능합니다.");
@@ -129,12 +131,29 @@ public class ProductService {
                 log.error("썸네일 저장 실패: {}", e.getMessage());
                 throw new Exception500("썸네일 저장 실패");
             }
+        } else {
+            // 새 파일이 없으면 기존 썸네일 유지
+            if (dto.getExistingThumbnail() != null) {
+                dto.setThumbnailUrl(dto.getExistingThumbnail());
+                log.info("기존 썸네일 유지: {}", dto.getExistingThumbnail());
+            } else {
+                dto.setThumbnailUrl(product.getThumbnailUrl());
+                log.info("DB의 기존 썸네일 유지: {}", product.getThumbnailUrl());
+            }
+        }
+
+        // 상품 코드는 수정하지 않고 기존 값 유지
+        if (dto.getProductCode() == null || dto.getProductCode().isEmpty()) {
+            dto.setProductCode(product.getProductCode());
+            log.info("기존 상품 코드 유지: {}", product.getProductCode());
         }
 
         product.update(dto, category);
 
         log.info("수정 후 상품명: {}", product.getProductName());
         log.info("수정 후 가격: {}", product.getPrice());
+        log.info("수정 후 썸네일: {}", product.getThumbnailUrl());
+        log.info("수정 후 상품코드: {}", product.getProductCode());
         log.info("=== 상품 수정 완료 ===");
     }
 

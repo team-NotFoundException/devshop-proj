@@ -9,7 +9,6 @@
             <table class="data-table">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>이름</th>
                     <th>이메일</th>
                     <th>제품 ID</th>
@@ -28,7 +27,6 @@
                 <tbody>
                 {{#historyList}}
                     <tr>
-                        <th>{{id}}</th>
                         <th>{{username}}</th>
                         <th>{{email}}</th>
                         <th>{{productId}}</th>
@@ -38,8 +36,8 @@
                         <th>{{amount}}</th>
                         <th>{{method}}</th>
                         <th>{{newValue}}</th>
-                        <th>{{oldValue}}</th>
-                        <th>{{reason}}</th>
+                        <th>{{#oldValue}}{{oldValue}}{{/oldValue}}{{^oldValue}} - {{/oldValue}}</th>
+                        <th>{{#reason}}{{reason}}{{/reason}}{{^reason}} - {{/reason}}</th>
                         <th>{{createdAt}}</th>
                         <th>{{updatedAt}}</th>
                     </tr>
@@ -73,6 +71,8 @@
         })
         {{/historyList}}
 
+    console.log(historyData)
+
     const statusCount = {};
     const methodCount = {};
     historyData.forEach(item => {
@@ -82,17 +82,21 @@
             statusCount[item.newValue] = 1;
         }
 
-        if(methodCount[item.method]){
+        if (methodCount[item.method]) {
             methodCount[item.method]++;
-        }else{
+        } else {
             methodCount[item.method] = 1;
         }
     });
+
+    console.log(statusCount)
 
     const statusLabels = Object.keys(statusCount);
     const statusData = Object.values(statusCount);
     const methodLabels = Object.keys(methodCount);
     const methodData = Object.values(methodCount);
+
+    console.log(statusData)
 
     new Chart(ctx, {
         type: 'doughnut',
@@ -137,7 +141,7 @@
         data: {
             labels: methodLabels,
             datasets: [{
-                label: methodLabels,
+                label: "methodLabels",
                 data: methodData,
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.8)',   // 청록색
@@ -165,7 +169,7 @@
                 },
                 title: {
                     display: true,
-                    text: '결제 상태별 분포'
+                    text: '결제 방법 분포'
                 }
             }
         }

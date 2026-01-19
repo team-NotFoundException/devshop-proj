@@ -20,6 +20,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String orderNumber;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -30,9 +32,10 @@ public class Order {
     private LocalDateTime createdAt;
 
     @Builder
-    public Order(Long id, User user, LocalDateTime createdAt) {
+    public Order(Long id, User user, String orderNumber, LocalDateTime createdAt) {
         this.id = id;
         this.user = user;
+        this.orderNumber = orderNumber;
         this.createdAt = createdAt;
     }
 
