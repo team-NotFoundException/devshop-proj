@@ -202,7 +202,7 @@ public class PaymentService {
                 .orElseThrow(() -> new Exception404("장바구니를 찾을 수 없습니다."));
         cart.clearItems();
         cart.updateAmount();
-
+        mailService.sendPayInfo(sessionUser, order.getId());
         PaymentResponse.PaymentResultDTO result = new PaymentResponse.PaymentResultDTO();
         result.setItems(items);
         return result;
