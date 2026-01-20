@@ -2,8 +2,6 @@ package org.example.shopping.users;
 
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping._core.errors.exception.Exception400;
@@ -29,7 +27,6 @@ public class MailService {
     private final JavaMailSender javaMailSender;
     private final HttpSession session;
     private final UserRepository userRepository;
-    private final PaymentRepository paymentRepository;
     private final OrderRepository orderRepository;
 
     public void sendAuthCode(String email) {

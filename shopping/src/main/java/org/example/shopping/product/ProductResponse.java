@@ -12,11 +12,11 @@ public class ProductResponse {
         if (thumbnailUrl == null || thumbnailUrl.isEmpty()) {
             return "/img/no-image.png";
         }
-        // http:// 또는 https://로 시작하면 외부 URL이므로 그대로 반환
+
         if (thumbnailUrl.startsWith("http://") || thumbnailUrl.startsWith("https://")) {
             return thumbnailUrl;
         }
-        // 로컬 파일이면 /images/ 경로 추가
+
         return "/images/" + thumbnailUrl;
     }
 
@@ -153,7 +153,6 @@ public class ProductResponse {
             this.price = product.getPrice().intValue();
             this.stockQuantity = product.getStockQuantity();
             this.description = product.getDescription();
-            // 수정 폼에서는 원본 thumbnailUrl 필요 (DB 저장용)
             this.thumbnailUrl = product.getThumbnailUrl();
             this.status = product.getStatus().name();
 
@@ -169,13 +168,12 @@ public class ProductResponse {
             }
         }
 
-        // 수정 폼의 이미지 미리보기를 위한 메서드
+
         public String getThumbnailDisplayUrl() {
             return getImagePath(this.thumbnailUrl);
         }
     }
 
-    // ProductResponse.java 파일 끝에 다음 DTO들을 추가하세요
 
     @Data
     public static class AdminListDTO {

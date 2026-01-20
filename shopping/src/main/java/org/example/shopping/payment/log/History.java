@@ -5,12 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.shopping.payment.Payment;
-import org.example.shopping.payment.PaymentRefund;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
-import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.users.User;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
@@ -33,12 +30,13 @@ public class History {
     private Payment payment;
 
     private String old_value;
+
     private String new_value;
-    // ======================================
+
     private String username;
 
     private String email;
-    // ======================================
+
     private Long productId;
 
     private String productCode;
@@ -54,9 +52,9 @@ public class History {
 
     @Enumerated(EnumType.STRING)
     private Field field;
-    // ======================================
+
     private String reason;
-    // ======================================
+
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp createdAt;

@@ -72,13 +72,4 @@ public class ResponseDto<T> {
                 .build();
     }
 
-//    public static <T> ResponseDto<T> error(ErrorCode errorCode) {
-//        return ResponseDto.<T>builder()
-//                .success(false)
-//                .message(errorCode.getMessage())
-//                .status(errorCode.getStatus().value())
-//                .code(errorCode.getCode())
-//                .timestamp(Instant.now())
-//                .build();
-//    }
 }

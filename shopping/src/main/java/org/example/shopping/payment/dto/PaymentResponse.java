@@ -27,7 +27,6 @@ public class PaymentResponse {
     PaymentStatus status;
     private String productCode;
     private String productName;
-    // private Long userPointBalance;
     private String createdAt;
     LocalDateTime requestedAt;
     LocalDateTime approvedAt;
@@ -82,12 +81,10 @@ public class PaymentResponse {
     }
 
 
-
     @Data
     public static class SingleRefundDTO {
         private Long userId;
         private Long orderItemId;
-//        private String orderId;
         private String paymentKey;
         private Long amount;
         PaymentMethod method;
@@ -97,10 +94,7 @@ public class PaymentResponse {
 
         public SingleRefundDTO(PaymentRefund refund){
             this.userId = refund.getUser().getId();
-//            this.orderItemId = refund.getOrderItem().getId();
-//            this.orderId = refund.getPayment().getOrderId();
             this.paymentKey = refund.getPayment().getPaymentKey();
-//            this.amount = refund.getOrderItem().getTotalPrice();
             this.method = refund.getPayment().getMethod();
             this.status = refund.getStatus();
             this.productCode = refund.getPayment().getProductCode();

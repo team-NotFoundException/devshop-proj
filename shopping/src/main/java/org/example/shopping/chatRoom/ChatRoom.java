@@ -3,7 +3,6 @@ package org.example.shopping.chatRoom;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.shopping._core.utils.BaseTimeEntity;
 

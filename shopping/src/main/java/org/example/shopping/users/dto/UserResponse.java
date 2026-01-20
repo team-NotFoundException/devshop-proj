@@ -3,7 +3,6 @@ package org.example.shopping.users.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
-import org.example.shopping._core.utils.MyDateUtil;
 import org.example.shopping.users.User;
 import org.example.shopping.users.user.Address;
 import org.example.shopping.users.user.UserRole;

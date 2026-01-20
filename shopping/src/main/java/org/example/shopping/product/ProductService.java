@@ -231,7 +231,6 @@ public class ProductService {
                 .toList();
     }
 
-    // ProductService.java 파일 끝에 다음 메서드들을 추가하세요
 
     // ==================== ADMIN 영역 ====================
 

@@ -2,7 +2,6 @@ package org.example.shopping.category;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.shopping._core.utils.MyDateUtil;
 
 import java.util.List;
 
@@ -28,18 +27,6 @@ public class CategoryResponse {
                 this.parentName = category.getParent().getCategoryName();
             }
         }
-
-//        public ListDTO(Category category, int depth){
-//            this.id = category.getParent().getId();
-//            this.categoryName = category.getParent().getCategoryName();
-//            this.depth = category.getParent().getDepth();
-//            this.displayOrder = (category.getDisplayOrder() != null) ? category.getDisplayOrder() : 0;
-//
-//            if (category.getParent() != null) {
-//                this.parentName = category.getParent().getCategoryName();
-//            }
-//        }
-
         public boolean isRoot() {
             return this.depth == 1;
         }

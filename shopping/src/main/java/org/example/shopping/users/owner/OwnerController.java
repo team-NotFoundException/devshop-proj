@@ -7,7 +7,6 @@ import org.example.shopping._core.utils.ValidationGroups;
 import org.example.shopping.product.ProductResponse;
 import org.example.shopping.product.ProductService;
 import org.example.shopping.product.productEnum.ProductStatus;
-import org.example.shopping.users.OAuthService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
 import org.example.shopping.users.owner.dto.OwnerRequest;
@@ -18,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +40,7 @@ public class OwnerController {
     // ---------------------------------------- //
 
     // 회원가입 화면 요청
-    // http://localhost:8080/join
+
     @GetMapping("/owner/join")
     public String JoinForm() {
         return "user/owner/join-form";
