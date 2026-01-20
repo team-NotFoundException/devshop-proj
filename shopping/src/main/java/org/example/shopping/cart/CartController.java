@@ -55,7 +55,7 @@ public class CartController {
     }
 
     // 아이템 선택
-    @PostMapping("/cart/{cartItemId}/update-check")
+    @PutMapping("/cart/items/{cartItemId}")
     @ResponseBody
     public CartResponse.AmountDTO updateCheck(@PathVariable Long cartItemId, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -64,7 +64,7 @@ public class CartController {
     }
 
     // 전체 선택/해제
-    @PostMapping("/cart/toggle-all")
+    @PutMapping("/cart")
     @ResponseBody
     public CartResponse.ToggleAllChecksDTO toggleAllChecks(
             HttpSession session,
@@ -77,7 +77,7 @@ public class CartController {
 
 
     // 아이템 개수/옵션 변경
-    @PostMapping("/cart/{cartItemId}/update-option")
+    @PutMapping("/cart/item/{cartItemId}")
     @ResponseBody
     public CartResponse.CartUpdateDTO updateOption(@PathVariable Long cartItemId,
                                @RequestBody CartRequest.UpdateOptionDTO updateOptionDTO,

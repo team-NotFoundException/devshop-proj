@@ -4,16 +4,6 @@
 <main class="main-container">
     <h1 class="page-title">장바구니</h1>
 
-    <!-- 테스트 폼들 (나중에 제거) -->
-<!--    <div class="test-forms">-->
-<!--        <form action="/cart/add" method="post" style="display:inline-block;">-->
-<!--            <input type="number" name="productId" placeholder="상품ID" style="width: 80px; padding: 8px;" value=""-->
-<!--                   required>-->
-<!--            <input type="number" name="quantity" placeholder="수량" value="1" style="width: 60px; padding: 8px;" required>-->
-<!--            <button type="submit" class="btn-test">아이템 추가</button>-->
-<!--        </form>-->
-<!--    </div>-->
-
     <div class="cart-layout">
         <!-- 왼쪽: 장바구니 상품 목록 -->
         <div class="cart-left">
@@ -30,7 +20,7 @@
                     <span class="checkmark"></span>
                     <span>전체 선택</span>
                 </label>
-                <form action="/cart/delete-checked" method="post" style="display:inline;">
+                <form action="/cart/items" method="post" style="display:inline;">
                     <button type="submit" class="delete-btn" onclick="return confirm('선택한 상품을 삭제하시겠습니까?')">선택 삭제
                     </button>
                 </form>
@@ -137,9 +127,9 @@
 </main>
 
 <script>
-    function toggleCheck(itemId, checkbox) {
-        fetch(`/cart/${itemId}/update-check`, {
-            method: 'POST'
+    function toggleCheck(cartItemId, checkbox) {
+        fetch(`/cart/items/${cartItemId}`, {
+            method: 'PUT'
         })
                 .then(response => {
                     if (!response.ok) {
@@ -168,8 +158,8 @@
     }
 
     function toggleAllChecks(isChecked) {
-        fetch(`/cart/toggle-all`, {
-            method: 'POST',
+        fetch(`/cart`, {
+            method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 isChecked: isChecked
@@ -209,8 +199,8 @@
 
     function updateOption(cartItemId, number) {
 
-        fetch(`/cart/${cartItemId}/update-option`, {
-            method: 'POST',
+        fetch(`/cart/item/${cartItemId}`, {
+            method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 quantity: number
