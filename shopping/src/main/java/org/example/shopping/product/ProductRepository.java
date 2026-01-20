@@ -11,14 +11,10 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    // 전체 조회
-    @Query("SELECT p FROM Product p JOIN FETCH p.category ORDER BY p.createdAt DESC")
-    List<Product> findAllWithCategory();
 
     @Query("SELECT p FROM Product p JOIN FETCH p.owner o WHERE o.id = :id ORDER BY p.createdAt DESC")
     List<Product> findAllWithUser(@Param("id") Long ownerId);
 
-    // 단건 조회
     @Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.id = :id")
     Optional<Product> findByIdWithCategory(@Param("id") Long id);
 
@@ -49,18 +45,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                                          @Param("keyword") String keyword,
                                                          @Param("categoryId") Long categoryId);
 
-    // 기존 검색 (전체)
-    @Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.productName LIKE %:keyword% ORDER BY p.createdAt DESC")
-    List<Product> searchByProductNameWithCategory(@Param("keyword") String keyword);
-
-    @Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.productName LIKE %:keyword% AND p.status = :status ORDER BY p.createdAt DESC")
-    List<Product> searchByProductNameAndStatusWithCategory(@Param("keyword") String keyword, @Param("status") ProductStatus status);
-
-    @Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.productName LIKE %:keyword% AND p.category.id = :categoryId ORDER BY p.createdAt DESC")
-    List<Product> searchByProductNameAndCategoryIdWithCategory(@Param("keyword") String keyword, @Param("categoryId") Long categoryId);
-
-    List<Product> findByStatusOrderByCreatedAtDesc(ProductStatus status);
-
     List<Product> findByStatusAndCategoryIdOrderByCreatedAtDesc(ProductStatus status, Long categoryId);
 
     long countByOwnerId(Long ownerId);
@@ -68,4 +52,45 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByOwnerId(Long ownerId);
     @Query("SELECT p FROM Product p JOIN FETCH p.owner WHERE p.status = :status AND p.owner.id = :id")
     List<Product> findByStatusWithUser(@Param("status") ProductStatus status, @Param("id") Long ownerId);
+
+
+    @Query("SELECT p FROM Product p JOIN FETCH p.category JOIN FETCH p.owner WHERE p.status = :status ORDER BY p.createdAt DESC")
+    List<Product> findByStatusWithCategoryOrderByCreatedAtDesc(@Param("status") ProductStatus status);
+
+
+
+    // ==================== ADMIN 쿼리 ====================
+
+    /**
+     * 관리자 - 전체 상품 조회 (카테고리, Owner 포함)
+     */
+    @Query("SELECT p FROM Product p " +
+            "JOIN FETCH p.category " +
+            "JOIN FETCH p.owner o " +
+            "JOIN FETCH o.user " +
+            "ORDER BY p.createdAt DESC")
+    List<Product> findAllWithCategoryAndOwner();
+
+
+    // 관리자 - 상품명 검색 (카테고리, Owner 포함)
+
+    @Query("SELECT p FROM Product p " +
+            "JOIN FETCH p.category " +
+            "JOIN FETCH p.owner o " +
+            "JOIN FETCH o.user " +
+            "WHERE p.productName LIKE %:keyword% " +
+            "ORDER BY p.createdAt DESC")
+    List<Product> searchByProductNameWithCategoryAndOwner(@Param("keyword") String keyword);
+
+
+     // 관리자 - 상품 단건 조회 (카테고리, Owner 포함)
+
+    @Query("SELECT p FROM Product p " +
+            "JOIN FETCH p.category " +
+            "JOIN FETCH p.owner o " +
+            "JOIN FETCH o.user " +
+            "WHERE p.id = :id")
+    Optional<Product> findByIdWithCategoryAndOwner(@Param("id") Long id);
 }
+
+

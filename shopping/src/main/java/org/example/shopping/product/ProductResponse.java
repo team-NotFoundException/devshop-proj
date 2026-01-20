@@ -27,6 +27,8 @@ public class ProductResponse {
         private String thumbnailUrl;
         private String price;
         private String ownerName;
+        private Long categoryId;
+        private String categoryName;
 
         public MainCardDTO(Product product) {
             this.id = product.getId();
@@ -34,6 +36,12 @@ public class ProductResponse {
             this.thumbnailUrl = getImagePath(product.getThumbnailUrl());
             this.price = MoneyUtils.format(product.getPrice());
             this.ownerName = product.getOwner().getName();
+
+
+            if (product.getCategory() != null) {
+                this.categoryId = product.getCategory().getId();
+                this.categoryName = product.getCategory().getCategoryName();
+            }
         }
     }
 
@@ -164,6 +172,75 @@ public class ProductResponse {
         // 수정 폼의 이미지 미리보기를 위한 메서드
         public String getThumbnailDisplayUrl() {
             return getImagePath(this.thumbnailUrl);
+        }
+    }
+
+    // ProductResponse.java 파일 끝에 다음 DTO들을 추가하세요
+
+    @Data
+    public static class AdminListDTO {
+        private Long id;
+        private String productName;
+        private String ownerName;
+        private String categoryName;
+        private int price;
+        private int stockQuantity;
+        private String status;
+
+        public AdminListDTO(Product product) {
+            this.id = product.getId();
+            this.productName = product.getProductName();
+            this.price = product.getPrice().intValue();
+            this.status = product.getStatus().name();
+            this.stockQuantity = product.getStockQuantity();
+
+            if (product.getOwner() != null) {
+                this.ownerName = product.getOwner().getName();
+            }
+
+            if (product.getCategory() != null) {
+                this.categoryName = product.getCategory().getCategoryName();
+            }
+        }
+    }
+
+    @Data
+    public static class AdminDetailDTO {
+        private Long id;
+        private String productName;
+        private String productCode;
+        private int price;
+        private int stockQuantity;
+        private int minusQuantity;
+        private String description;
+        private String thumbnailUrl;
+        private String ownerName;
+        private String categoryName;
+        private String status;
+        private String createdAt;
+
+        public AdminDetailDTO(Product product) {
+            this.id = product.getId();
+            this.productName = product.getProductName();
+            this.productCode = product.getProductCode();
+            this.price = product.getPrice().intValue();
+            this.stockQuantity = product.getStockQuantity();
+            this.minusQuantity = product.getMinusQuantity();
+            this.description = product.getDescription();
+            this.thumbnailUrl = getImagePath(product.getThumbnailUrl());
+            this.status = product.getStatus().name();
+
+            if (product.getOwner() != null) {
+                this.ownerName = product.getOwner().getName();
+            }
+
+            if (product.getCategory() != null) {
+                this.categoryName = product.getCategory().getCategoryName();
+            }
+
+            if (product.getCreatedAt() != null) {
+                this.createdAt = MyDateUtil.timestampFormat(product.getCreatedAt());
+            }
         }
     }
 }
