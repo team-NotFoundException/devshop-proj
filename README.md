@@ -614,184 +614,177 @@ CREATE DATABASE shopping CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 
 ```mermaid
-classDiagram
-direction LR
+erDiagram
+    USER ||--o| USER_ROLE : "has"
+    USER ||--o| CART : "owns"
+    USER ||--o{ ORDER : "places"
+    USER ||--o{ PAYMENT : "makes"
+    USER ||--o{ PAYMENT_REFUND : "requests"
+    USER ||--o{ REVIEW : "writes"
+    USER ||--o{ HISTORY : "generates"
+    USER ||--o| OWNER : "registers_as"
 
-class AbstractAuditable {
-    Date  createdDate
-    Date  lastModifiedDate
-}
+    OWNER ||--o{ PRODUCT : "manages"
+    CATEGORY ||--o{ PRODUCT : "contains"
+    CATEGORY ||--o{ CATEGORY : "parent_of"
 
-class AbstractPersistable {
-    PK  id
-}
+    CART ||--o{ CART_ITEM : "contains"
+    PRODUCT ||--o{ CART_ITEM : "added_to"
 
-class Address {
-    String  addrDetail
-    String  jibunAddr
-    String  roadAddr
-    String  roadAddrPart2
-    String  zipNo
-}
+    ORDER ||--o{ PAYMENT : "consists_of"
+    PRODUCT ||--o{ PAYMENT : "ordered_item"
 
-class BaseTimeEntity {
-    LocalDateTime  createdAt
-    LocalDateTime  updatedAt
-}
+    PAYMENT ||--o{ PAYMENT_REFUND : "refunded_by"
+    PAYMENT ||--o{ HISTORY : "logged_to"
 
-class Cart {
-    Long  id
-    Long  amount
-}
+    PRODUCT ||--o{ REVIEW : "has"
 
-class CartItem {
-    Long  id
-    Boolean  isChecked
-    Integer  quantity
-    Long  totalPrice
-}
+    USER {
+        Long id PK
+        String username
+        String password
+        String nickname
+        String email
+        String phoneNumber
+        LocalDate birthday
+        Gender gender
+        OAuthProvider provider
+        String addrDetail
+        String jibunAddr
+        String roadAddr
+        String zipNo
+        LocalDateTime createdAt
+        LocalDateTime updatedAt
+    }
 
-class Category {
-    Long  id
-    String  categoryName
-    int  depth
-    Long  displayOrder
-}
+    USER_ROLE {
+        Long id PK
+        RoleType role
+        Long userId FK
+    }
 
-class Chat {
-    Long  id
-    Long  chatRoomId
-    LocalDateTime  createdAt
-    String  message
-    SenderRole  sender
-}
+    OWNER {
+        Long id PK
+        String name
+        OwnerStatus status
+        Long userId FK
+    }
 
-class ChatRoom {
-    Long  id
-    Long  adminId
-    Long  userId
-}
+    CATEGORY {
+        Long id PK
+        String categoryName
+        int depth
+        Long displayOrder
+        Long parentCategoryId FK
+        LocalDateTime createdAt
+        LocalDateTime updatedAt
+    }
 
-class History {
-    Long  id
-    Long  amount
-    Timestamp  createdAt
-    String  email
-    Field  field
-    PaymentMethod  method
-    String  new_value
-    String  old_value
-    String  productCode
-    Long  productId
-    String  productName
-    Integer  quantity
-    String  reason
-    Timestamp  updateAt
-    String  username
-}
+    PRODUCT {
+        Long id PK
+        String productName
+        String productCode
+        Long price
+        int stockQuantity
+        String description
+        String thumbnailUrl
+        ProductStatus status
+        Long categoryId FK
+        Long ownerId FK
+        Timestamp createdAt
+    }
 
-class Order {
-    Long  id
-    LocalDateTime  createdAt
-    String  orderNumber
-}
+    CART {
+        Long id PK
+        Long amount
+        Long userId FK
+    }
 
-class Owner {
-    Long  id
-    String  name
-    OwnerStatus  status
-}
+    CART_ITEM {
+        Long id PK
+        Integer quantity
+        Long totalPrice
+        Boolean isChecked
+        Long cartId FK
+        Long productId FK
+    }
 
-class Payment {
-    Long  id
-    Long  amount
-    LocalDateTime  approvedAt
-    LocalDateTime  cancelledAt
-    String  failureCode
-    String  failureMessage
-    PaymentMethod  method
-    String  orderId
-    String  paymentKey
-    String  productCode
-    String  productName
-    Integer  quantity
-    LocalDateTime  requestedAt
-    PaymentStatus  status
-}
+    ORDER {
+        Long id PK
+        String orderNumber
+        Long userId FK
+        LocalDateTime createdAt
+    }
 
-class PaymentRefund {
-    Long  id
-    Long  amount
-    LocalDateTime  completedAt
-    String  failureCode
-    String  failureMessage
-    String  reason
-    LocalDateTime  requestedAt
-    RefundStatus  status
-}
+    PAYMENT {
+        Long id PK
+        String orderId FK
+        Long productId FK
+        Long userId FK
+        String productName
+        String productCode
+        Integer quantity
+        Long amount
+        PaymentMethod method
+        PaymentStatus status
+        String paymentKey
+        LocalDateTime approvedAt
+        LocalDateTime requestedAt
+    }
 
-class Product {
-    Long  id
-    Timestamp  createdAt
-    String  description
-    int  minusQuantity
-    Long  price
-    String  productCode
-    String  productName
-    ProductStatus  status
-    int  stockQuantity
-    String  thumbnailUrl
-}
+    PAYMENT_REFUND {
+        Long id PK
+        Long paymentId FK
+        Long userId FK
+        Long amount
+        String reason
+        RefundStatus status
+        LocalDateTime requestedAt
+        LocalDateTime completedAt
+    }
 
-class Review {
-    Long  id
-    String  content
-    int  rating
-    String  reviewImage
-}
+    REVIEW {
+        Long id PK
+        Long productId FK
+        Long userId FK
+        String content
+        int rating
+        String reviewImage
+        LocalDateTime createdAt
+        LocalDateTime updatedAt
+    }
 
-class User {
-    Long  id
-    LocalDate  birthday
-    String  email
-    Gender  gender
-    String  nickname
-    String  password
-    String  phoneNumber
-    OAuthProvider  provider
-    String  username
-}
+    HISTORY {
+        Long id PK
+        Long paymentId FK
+        Long userId FK
+        Long productId FK
+        String productName
+        String productCode
+        Integer quantity
+        Long amount
+        String old_value
+        String new_value
+        String reason
+        Timestamp createdAt
+        Timestamp updateAt
+    }
 
-class UserRole {
-    Long  id
-    RoleType  role
-}
+    CHAT_ROOM {
+        Long id PK
+        Long adminId
+        Long userId
+        LocalDateTime createdAt
+        LocalDateTime updatedAt
+    }
 
-AbstractAuditable  --|>  AbstractPersistable 
-Cart "0..1" --> "0..1" User 
-CartItem "0..*" --> "0..1" Cart 
-CartItem "0..*" --> "0..1" Product 
-Category  --|>  BaseTimeEntity 
-Category "0..*" --> "0..1" Category 
-ChatRoom  --|>  BaseTimeEntity 
-History "0..*" --> "1" Payment 
-History "0..*" --> "1" User 
-Order "0..*" --> "0..1" User 
-Owner "0..1" --> "0..1" User 
-Payment  --|>  BaseTimeEntity 
-Payment "0..*" --> "0..1" Product 
-Payment "0..*" --> "1" User 
-PaymentRefund  --|>  BaseTimeEntity 
-PaymentRefund "0..*" --> "0..1" Payment 
-PaymentRefund "0..*" --> "0..1" User 
-Product "0..*" --> "0..1" Category 
-Product "0..*" --> "0..1" Owner 
-Review  --|>  BaseTimeEntity 
-Review "0..*" --> "0..1" Product 
-Review "0..*" --> "0..1" User 
-Address  --*  User 
-User  --|>  BaseTimeEntity 
-User "1" <--> "0..1" UserRole 
+    CHAT {
+        Long id PK
+        Long chatRoomId FK
+        String message
+        SenderRole sender
+        LocalDateTime createdAt
+    }
 
 
 ```
