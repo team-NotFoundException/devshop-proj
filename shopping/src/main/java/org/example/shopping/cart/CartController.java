@@ -26,7 +26,7 @@ public class CartController {
     }
 
     // 아이템 추가
-    @PostMapping("/cart/add")
+    @PostMapping("/cart/items")
     @ResponseBody
     public ResponseEntity<Void> addProc(@RequestBody CartRequest.AddDTO addDTO, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");

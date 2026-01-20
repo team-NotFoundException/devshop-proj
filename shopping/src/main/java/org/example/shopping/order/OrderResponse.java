@@ -40,6 +40,7 @@ public class OrderResponse {
         private Integer quantity;
         private String statusDisplay;
         private PaymentStatus status;
+        private String thumbnailUrl;
         private Long productId;
         private PaymentMethod method;
         private String paymentKey;
