@@ -52,6 +52,7 @@ public class OrderResponse {
             this.productName = payment.getProductName();
             this.productCode = payment.getProductCode();
             this.quantity = payment.getQuantity();
+            this.thumbnailUrl = payment.getProduct().getThumbnailUrl();
             if (payment.getStatus().toString().equals("SUCCESS")) {
                 this.statusDisplay = "구매완료";
             }
@@ -65,7 +66,7 @@ public class OrderResponse {
                 this.statusDisplay = "환불";
             }
             this.status = payment.getStatus();
-            this.productId = payment.getProductId();
+            this.productId = payment.getProduct().getId();
             this.method = payment.getMethod();
             this.paymentKey = payment.getPaymentKey();
             this.orderId = payment.getOrderId();
