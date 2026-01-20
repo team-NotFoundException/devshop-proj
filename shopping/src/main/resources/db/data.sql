@@ -23,15 +23,15 @@ INSERT INTO cart_tb (amount, user_id) VALUES
 
 
 -- 대분류
-INSERT INTO categories (id, category_name, depth, display_order, parent_id, created_at, updated_at) VALUES
-                                                                                                        (1, '패션의류', 1, 1, NULL, NOW(), NOW()),
-                                                                                                        (2, '가전디지털', 1, 2, NULL, NOW(), NOW());
+INSERT INTO categories (id, category_name, depth, display_order, image_url, parent_id, created_at, updated_at) VALUES
+                     (1, '패션의류', 1, 1, '/img/hoodie.jpg', NULL, NOW(), NOW()),
+                     (2, '가전디지털', 1, 2,'/img/earbuds.jpg', NULL, NOW(), NOW());
 
 -- 소분류
-INSERT INTO categories (id, category_name, depth, display_order, parent_id, created_at, updated_at) VALUES
-                                                                                                        (3, '남성상의', 2, 1, 1, NOW(), NOW()),
-                                                                                                        (4, '여성상의', 2, 2, 1, NOW(), NOW()),
-                                                                                                        (5, '노트북', 2, 1, 2, NOW(), NOW());
+INSERT INTO categories (id, category_name, depth, display_order, parent_id, created_at, updated_at, image_url) VALUES
+                                                                                                        (3, '남성상의', 2, 1, 1, NOW(), NOW(),'/img/manTop.jpg'),
+                                                                                                        (4, '여성상의', 2, 2, 1, NOW(), NOW(),'/img/womanTom.jpg'),
+                                                                                                        (5, '노트북', 2, 1, 2, NOW(), NOW(),'/img/banner3.jpg');
 
 -- product_tb 데이터 (허용된 Enum 값: ACTIVE, SOLD_OUT 사용)
 INSERT INTO product_tb (owner_id, category_id, product_name, product_code, price, stock_quantity,minus_quantity, status, thumbnail_url, description, created_at) VALUES

@@ -23,14 +23,14 @@
         </button>
     </div>
     <div class="row row-cols-2 row-cols-md-4 g-4 mt-4">
-{{#products}}
+{{#category}}
         <div class="col">
-            <a href="/category/{{categoryId}}" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="{{thumbnailUrl}}" alt="keybaord">
-                <div class="card-body">{{name}}</div>
+            <a href="/category/{{id}}" class="card h-100 border-0 text-center">
+                <img class="card-img-top rounded-3" src="{{imageUrl}}" alt="keybaord">
+                <div class="card-body">{{categoryName}}</div>
             </a>
         </div>
-{{/products}}
+{{/category}}
 
 
     </div>
