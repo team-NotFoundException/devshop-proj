@@ -33,7 +33,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**");
         registry.addInterceptor(adminInterceptor)
-                .addPathPatterns("/admin/**");
+                .addPathPatterns("/admin/**")
+                .excludePathPatterns("/admin/products/**");
 
         registry.addInterceptor(ownerInterceptor)
                 .addPathPatterns("/owner/**")

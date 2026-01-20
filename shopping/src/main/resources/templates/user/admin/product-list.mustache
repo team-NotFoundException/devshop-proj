@@ -1,51 +1,94 @@
+{{> layout/header }}
+
 <div class="admin-owner-wrapper">
     {{> layout/admin-sidebar}}
 
     <div class="content-section">
-        <h2 class="mb-4">전체 상품 관리</h2>
 
-        <div class="mb-4">
-            <form action="/admin/products/search" method="get" class="d-flex gap-2" style="max-width: 500px;">
-                <input type="text" name="keyword" class="form-control" placeholder="상품명으로 검색..." value="{{keyword}}">
-                <button type="submit" class="btn btn-dark text-nowrap">검색</button>
+
+        <div class="page-header">
+            <h2>전체 상품 관리</h2>
+            <a href="/owner/products/save" class="btn-add">
+                <i class="bi bi-plus-lg"></i> 상품 등록
+            </a>
+        </div>
+
+
+        <div class="search-container">
+            <form action="/admin/products/search" method="get">
+                <div class="search-wrapper">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text"
+                           name="keyword"
+                           class="search-input"
+                           placeholder="상품명으로 검색하세요"
+                           value="{{keyword}}">
+                    <button type="submit" class="search-btn">검색</button>
+                </div>
             </form>
         </div>
 
+
         {{#keyword}}
-            <div class="alert alert-light d-flex justify-content-between align-items-center border mb-4">
-                <span>"<strong>{{keyword}}</strong>" 검색 결과</span>
-                <a href="/admin/products" class="btn btn-sm btn-outline-secondary">목록 초기화</a>
+            <div class="search-result-info">
+                <div class="result-text">
+                    <i class="bi bi-search"></i>
+                    "<strong>{{keyword}}</strong>" 검색 결과
+                </div>
+                <a href="/admin/products" class="btn-reset">
+                    <i class="bi bi-arrow-clockwise"></i> 전체 목록
+                </a>
             </div>
         {{/keyword}}
 
-        <div class="table-responsive">
-            <table class="data-table">
+
+        <div class="table-container">
+            <table class="product-table">
                 <thead>
                 <tr>
-                    <th width="80">ID</th>
+                    <th>ID</th>
                     <th>상품명</th>
                     <th>가격</th>
                     <th>재고</th>
-                    <th>상태</th>
+                    <th style="text-align:center;">상태</th>
                 </tr>
                 </thead>
                 <tbody>
+
                 {{#products}}
                     <tr>
-                        <td>{{id}}</td>
-                        <td><a href="/admin/products/{{id}}" class="text-primary fw-bold text-decoration-none">{{productName}}</a></td>
-                        <td>{{price}}원</td>
-                        <td>{{stockQuantity}}</td>
-                        <td><span class="badge bg-secondary">{{status}}</span></td>
+                        <td class="id-cell">{{id}}</td>
+                        <td>
+                            <a href="/admin/products/{{id}}" class="product-link">
+                                {{productName}}
+                            </a>
+                        </td>
+                        <td class="price-cell">{{price}}원</td>
+                        <td class="stock-cell">{{stockQuantity}}</td>
+                        <td class="status-cell">
+                        <span class="status-badge status-{{status}}">
+                            {{status}}
+                        </span>
+                        </td>
                     </tr>
                 {{/products}}
+
                 {{^products}}
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">등록된 상품이 없습니다.</td>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <i class="bi bi-inbox"></i>
+                                <p>등록된 상품이 없습니다.</p>
+                            </div>
+                        </td>
                     </tr>
                 {{/products}}
+
                 </tbody>
             </table>
         </div>
+
     </div>
 </div>
+
+{{> layout/footer }}
