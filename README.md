@@ -614,192 +614,184 @@ CREATE DATABASE shopping CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 
 ```mermaid
-erDiagram
+classDiagram
+direction LR
 
-    %% ============================
-    %% SHIPPING INFO 추가
-    %% ============================
-    SHIPPING_INFO {
-        BIGINT id PK
-        BIGINT orderId FK
-        VARCHAR receiverName
-        VARCHAR receiverPhone
-        VARCHAR address
-        VARCHAR detailAddress
-        VARCHAR requestMessage
-    }
+class AbstractAuditable {
+    Date  createdDate
+    Date  lastModifiedDate
+}
 
-    ORDER ||--|| SHIPPING_INFO : "has shipping info"
+class AbstractPersistable {
+    PK  id
+}
 
-    %% ============================
-    %% USER & ROLE
-    %% ============================
-    USER {
-        BIGINT id PK
-        VARCHAR username
-        VARCHAR password
-        VARCHAR nickname
-        VARCHAR email
-        VARCHAR address
-        VARCHAR phoneNum
-        DATETIME createdAt
-        DATETIME updatedAt
-    }
+class Address {
+    String  addrDetail
+    String  jibunAddr
+    String  roadAddr
+    String  roadAddrPart2
+    String  zipNo
+}
 
-    ROLE {
-        BIGINT id PK
-        VARCHAR roleName
-    }
+class BaseTimeEntity {
+    LocalDateTime  createdAt
+    LocalDateTime  updatedAt
+}
 
-    USER_ROLES {
-        BIGINT id PK
-        BIGINT userId FK
-        BIGINT roleId FK
-    }
+class Cart {
+    Long  id
+    Long  amount
+}
 
-    USER ||--o{ USER_ROLES : "has"
-    ROLE ||--o{ USER_ROLES : "assigned"
+class CartItem {
+    Long  id
+    Boolean  isChecked
+    Integer  quantity
+    Long  totalPrice
+}
 
-    %% ============================
-    %% CATEGORY & PRODUCT
-    %% ============================
-    CATEGORY {
-        BIGINT categoryId PK
-        VARCHAR categoryName
-        BIGINT parentId FK
-        INT depth
-        INT displayOrder
-        DATETIME createdAt
-    }
+class Category {
+    Long  id
+    String  categoryName
+    int  depth
+    Long  displayOrder
+}
 
-    PRODUCT {
-        BIGINT productId PK
-        BIGINT categoryId FK
-        VARCHAR productName
-        VARCHAR productCode
-        DECIMAL price
-        INT stockQuantity
-        TEXT description
-        VARCHAR thumbnailUrl
-        ENUM status
-        DATETIME createdAt
-        DATETIME updatedAt
-    }
+class Chat {
+    Long  id
+    Long  chatRoomId
+    LocalDateTime  createdAt
+    String  message
+    SenderRole  sender
+}
 
-    CATEGORY ||--o{ CATEGORY : "parent of"
-    CATEGORY ||--o{ PRODUCT : "categorizes"
+class ChatRoom {
+    Long  id
+    Long  adminId
+    Long  userId
+}
 
-    %% ============================
-    %% FILE MANAGEMENT
-    %% ============================
-    FILE_INFO {
-        BIGINT fileId PK
-        VARCHAR originalName
-        VARCHAR storedName
-        VARCHAR contentType
-        BIGINT fileSize
-        VARCHAR url
-        DATETIME uploadedAt
-    }
+class History {
+    Long  id
+    Long  amount
+    Timestamp  createdAt
+    String  email
+    Field  field
+    PaymentMethod  method
+    String  new_value
+    String  old_value
+    String  productCode
+    Long  productId
+    String  productName
+    Integer  quantity
+    String  reason
+    Timestamp  updateAt
+    String  username
+}
 
-    PRODUCT_FILE {
-        BIGINT id PK
-        BIGINT productId FK
-        BIGINT fileId FK
-    }
+class Order {
+    Long  id
+    LocalDateTime  createdAt
+    String  orderNumber
+}
 
-    REVIEW_FILE {
-        BIGINT id PK
-        BIGINT reviewId FK
-        BIGINT fileId FK
-    }
+class Owner {
+    Long  id
+    String  name
+    OwnerStatus  status
+}
 
-    PRODUCT ||--o{ PRODUCT_FILE : "has image"
-    FILE_INFO ||--o{ PRODUCT_FILE : "referenced by"
+class Payment {
+    Long  id
+    Long  amount
+    LocalDateTime  approvedAt
+    LocalDateTime  cancelledAt
+    String  failureCode
+    String  failureMessage
+    PaymentMethod  method
+    String  orderId
+    String  paymentKey
+    String  productCode
+    String  productName
+    Integer  quantity
+    LocalDateTime  requestedAt
+    PaymentStatus  status
+}
 
-    REVIEW ||--o{ REVIEW_FILE : "has image"
-    FILE_INFO ||--o{ REVIEW_FILE : "referenced by"
+class PaymentRefund {
+    Long  id
+    Long  amount
+    LocalDateTime  completedAt
+    String  failureCode
+    String  failureMessage
+    String  reason
+    LocalDateTime  requestedAt
+    RefundStatus  status
+}
 
-    %% ============================
-    %% REVIEW
-    %% ============================
-    REVIEW {
-        BIGINT reviewId PK
-        BIGINT productId FK
-        BIGINT userId FK
-        INT rating
-        TEXT content
-        DATETIME createdAt
-    }
+class Product {
+    Long  id
+    Timestamp  createdAt
+    String  description
+    int  minusQuantity
+    Long  price
+    String  productCode
+    String  productName
+    ProductStatus  status
+    int  stockQuantity
+    String  thumbnailUrl
+}
 
-    USER ||--o{ REVIEW : "writes"
-    PRODUCT ||--o{ REVIEW : "has reviews"
+class Review {
+    Long  id
+    String  content
+    int  rating
+    String  reviewImage
+}
 
-    %% ============================
-    %% CART
-    %% ============================
-    CART {
-        BIGINT cartId PK
-        BIGINT userId FK
-    }
+class User {
+    Long  id
+    LocalDate  birthday
+    String  email
+    Gender  gender
+    String  nickname
+    String  password
+    String  phoneNumber
+    OAuthProvider  provider
+    String  username
+}
 
-    CART_ITEM {
-        BIGINT cartItemId PK
-        BIGINT cartId FK
-        BIGINT productId FK
-        INT quantity
-    }
+class UserRole {
+    Long  id
+    RoleType  role
+}
 
-    USER ||--|| CART : "owns"
-    CART ||--o{ CART_ITEM : "contains"
-    PRODUCT ||--o{ CART_ITEM : "in cart"
+AbstractAuditable  --|>  AbstractPersistable 
+Cart "0..1" --> "0..1" User 
+CartItem "0..*" --> "0..1" Cart 
+CartItem "0..*" --> "0..1" Product 
+Category  --|>  BaseTimeEntity 
+Category "0..*" --> "0..1" Category 
+ChatRoom  --|>  BaseTimeEntity 
+History "0..*" --> "1" Payment 
+History "0..*" --> "1" User 
+Order "0..*" --> "0..1" User 
+Owner "0..1" --> "0..1" User 
+Payment  --|>  BaseTimeEntity 
+Payment "0..*" --> "0..1" Product 
+Payment "0..*" --> "1" User 
+PaymentRefund  --|>  BaseTimeEntity 
+PaymentRefund "0..*" --> "0..1" Payment 
+PaymentRefund "0..*" --> "0..1" User 
+Product "0..*" --> "0..1" Category 
+Product "0..*" --> "0..1" Owner 
+Review  --|>  BaseTimeEntity 
+Review "0..*" --> "0..1" Product 
+Review "0..*" --> "0..1" User 
+Address  --*  User 
+User  --|>  BaseTimeEntity 
+User "1" <--> "0..1" UserRole 
 
-    %% ============================
-    %% ORDER
-    %% ============================
-    "ORDER" {
-        BIGINT orderId PK
-        BIGINT userId FK
-        ENUM orderStatus
-        DECIMAL totalPrice
-        BIGINT paymentId FK
-        DATETIME createdAt
-    }
-
-    ORDER_ITEM {
-        BIGINT orderItemId PK
-        BIGINT orderId FK
-        BIGINT productId FK
-        INT quantity
-        DECIMAL orderPrice
-        DECIMAL totalPrice
-    }
-
-    USER ||--o{ ORDER : "places"
-    ORDER ||--o{ ORDER_ITEM : "contains"
-    PRODUCT ||--o{ ORDER_ITEM : "purchased"
-
-    %% ============================
-    %% PAYMENT
-    %% ============================
-    PAYMENT {
-        BIGINT id PK
-        VARCHAR username FK
-        VARCHAR orderId
-        VARCHAR paymentKey
-        BIGINT amount
-        ENUM method
-        ENUM status
-        VARCHAR productCode
-        VARCHAR productName
-        VARCHAR failureCode
-        VARCHAR failureMessage
-        DATETIME requestAt
-        DATETIME approvedAt
-        DATETIME cancelledAt
-    }
-
-    USER ||--o{ PAYMENT : "makes"
-    ORDER ||--|| PAYMENT : "paid by"
 
 ```
