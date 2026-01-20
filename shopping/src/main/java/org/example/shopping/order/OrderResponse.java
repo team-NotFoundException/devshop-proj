@@ -11,6 +11,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderResponse {
+
+    private static String getImagePath(String thumbnailUrl) {
+        if (thumbnailUrl == null || thumbnailUrl.isEmpty()) {
+            return "/img/no-image.png";
+        }
+
+        if (thumbnailUrl.startsWith("http://") || thumbnailUrl.startsWith("https://")) {
+            return thumbnailUrl;
+        }
+
+        return "/images/" + thumbnailUrl;
+    }
+
     @Data
     public static class OrderListDTO {
         private Long id;
@@ -52,7 +65,7 @@ public class OrderResponse {
             this.productName = payment.getProductName();
             this.productCode = payment.getProductCode();
             this.quantity = payment.getQuantity();
-            this.thumbnailUrl = payment.getProduct().getThumbnailUrl();
+            this.thumbnailUrl = getImagePath(payment.getProduct().getThumbnailUrl());
             if (payment.getStatus().toString().equals("SUCCESS")) {
                 this.statusDisplay = "구매완료";
             }
