@@ -26,10 +26,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/css/**", "/js/**", "/img/**");
 
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/order/**", "/payment/**", "/review/**", "/user/**", "/cart/**")
+                .addPathPatterns("/order/**", "/payment/**", "/review/**", "/user/**", "/cart/**", "/products/**")
                 .excludePathPatterns(
-                        "/user/login", "/user/join", "/user/email/**", "/user/join/**", "/user/logout", "/user/username-check", "/detail", "/", "/css/**",
-                        "/static/js/**", "/images/**", "/favicon.io", "/user/popup/**", "/h2-console/**"
+                        "/user/login", "/user/join", "/user/email/**", "/user/join/**", "/user/logout", "/user/username-check", "/", "/css/**",
+                        "/static/js/**", "/images/**", "/favicon.io", "/user/popup/**", "/h2-console/**", "/products/{productId}"
                 );
 
         registry.addInterceptor(sessionInterceptor)
