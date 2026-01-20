@@ -47,9 +47,11 @@ public class ProductController {
     }
 
     @GetMapping("/products/{productId}")
-    public String userProductDetail(@PathVariable Long productId, Model model) {
+    public String userProductDetail(@PathVariable Long productId, Model model, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
         ProductResponse.UserDetailDTO product = productService.findByIdForUser(productId);
         model.addAttribute("product", product);
+        model.addAttribute("sessionUser", sessionUser);
         return "product/user-detail";
     }
 

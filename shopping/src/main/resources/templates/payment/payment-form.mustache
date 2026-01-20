@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="/css/payment/payment.css">
         {{> layout/header }}
 
 
@@ -40,10 +40,10 @@
                 <form action="/payment/cart/{{cartId}}" method="post">
                     <div class="button-group">
                         <button type="submit" name="method" value="MOCK" class="btn-primary">{{totalAmount}}원 결제하기</button>
-                        <button type="button" id="tossPayButton" class="btn-toss">
+                        <button type="button" id="tossPayButton" class="btn-blue">
                             TossPay 결제하기
                         </button>
-                        <a href="/cart/list" class="btn-secondary">장바구니로 돌아가기</a>
+                        <a href="/cart/list" class="btn-toss">장바구니로 돌아가기</a>
                     </div>
                 </form>
             </div>
