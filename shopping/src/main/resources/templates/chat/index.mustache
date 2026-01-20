@@ -1,4 +1,3 @@
-
 {{> layout/header }}
 <div class="chat-page">
     <div class="chat-container">
@@ -37,9 +36,13 @@
     </div>
 </div>
 
-<form action="/chatRoom/delete" method="post">
-    <button class="btn-end">상담 종료</button>
-</form>
+{{#sessionUser}}
+    {{^isAdmin}}
+        <form action="/chatRoom/delete" method="post">
+            <button class="btn-end">상담 종료</button>
+        </form>
+    {{/isAdmin}}
+{{/sessionUser}}
 
 <script>
     const chatBox = document.getElementById("chatBox");

@@ -38,6 +38,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(ownerInterceptor)
                 .addPathPatterns("/owner/**")
+                .addPathPatterns("/chatRoom/delete")
                 .excludePathPatterns("/owner/login", "/owner/join");
     }
 
