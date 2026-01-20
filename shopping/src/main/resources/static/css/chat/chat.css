@@ -229,13 +229,6 @@
     word-break: break-word;
 }
 
-/* 타임스탬프 (사진에 있는 경우 추가용) */
-.timestamp {
-    font-size: 11px;
-    color: #95a5a6;
-    margin-top: 4px;
-}
-
 /* 입력 영역 */
 .input-area {
     padding: 20px 24px;
@@ -309,7 +302,6 @@
     background: transparent;
 }
 
-/* 상담 종료 버튼 (페이지 하단) */
 .btn-end {
     margin: 20px auto;
     display: block;

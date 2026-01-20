@@ -19,7 +19,6 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class CartService {
     private final CartRepository cartRepository;
-    private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
 
     // 장바구니 생성
