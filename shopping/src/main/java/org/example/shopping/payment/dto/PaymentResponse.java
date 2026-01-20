@@ -20,7 +20,6 @@ public class PaymentResponse {
     private String orderId;
     private String paymentKey;
     private Long amount;
-
     private Long productId;
     private Integer quantity;
     PaymentMethod method;

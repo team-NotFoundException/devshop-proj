@@ -87,4 +87,11 @@ public class Payment extends BaseTimeEntity {
     public void confirm() {
         this.status = PaymentStatus.CONFIRMED;
     }
+
+    public boolean isThumbnailUrl(Product product) {
+
+        return product.getThumbnailUrl().startsWith("http://") || product.getThumbnailUrl().startsWith("https://");
+    }
+
+
 }
