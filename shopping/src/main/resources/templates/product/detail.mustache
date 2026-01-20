@@ -1,18 +1,14 @@
-{{> layout/header }}
+{{> layout/header}}
 
-<!-- 사이드바 + 컨텐츠 Flex 컨테이너 -->
-<div class="dashboard-wrapper" style="display: flex; min-height: 100vh; gap: 20px;">
-
-    <!-- 사이드바 -->
+<div class="admin-owner-wrapper">
     {{> layout/owner-sidebar}}
 
-    <!-- 컨텐츠 영역 -->
-    <div class="content-area" style="flex: 1; padding: 20px;">
+    <div class="content-section">
 
         {{#product}}
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
-                    <h4 class="mb-0 fw-bold">{{productName}} <small class="text-muted fs-6">#{{id}}</small></h4>
+                    <h4 class="mb-0 fw-bold">{{productName}} <small class="text-muted fs-6"></small></h4>
                 </div>
 
                 <div class="card-body p-4">

@@ -3,24 +3,32 @@
 
     {{#reviewList}}
         <div class="review-card">
-            <div class="card-header product-title">상품: {{productName}}</div>
+            <li class="mb-3">
+                <div class="card border-0 shadow-sm p-3">
+                    <div class="card-top d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold"><i class="bi bi-person-circle me-1"></i>{{username}}</span>
+                        <span class="text-warning">
+                                <span class="star-display" data-rating="{{rating}}">
+                                    {{#rating}}★{{/rating}} ({{rating}}점)
+                                </span>
+                            </span>
+                    </div>
 
-            <div class="card-body">
-                <h4 class="card-title"><strong>내용:</strong> {{content}}</h4>
-                <h4 class="card-title"><strong>작성자:</strong> {{username}}</h4>
+                    <div class="card-body p-0 d-flex gap-3">
+                        {{#reviewImage}}
+                            <div class="review-img-wrapper" style="width: 100px; height: 100px;">
+                                <img src="{{reviewImage}}" class="img-fluid rounded object-fit-cover w-100 h-100"
+                                     alt="리뷰 이미지">
+                            </div>
+                        {{/reviewImage}}
 
-                <div class="star-rating mb-2">
-                    {{#stars}}
-                        <span class="star filled">★</span>
-                    {{/stars}}
-                    {{#emptyStars}}
-                        <span class="star">★</span>
-                    {{/emptyStars}}
+                        <div class="review-content flex-grow-1">
+                            <p class="mb-0 text-secondary">{{content}}</p>
+                        </div>
+                    </div>
+                    <a href="/review/{{id}}" class="btn-review">상세보기</a>
                 </div>
-
-                <span class="text-date">작성일: {{createdAt}}</span>
-                <a href="/review/{{id}}" class="btn-review">상세보기</a>
-            </div>
+            </li>
         </div>
     {{/reviewList}}
 
@@ -30,3 +38,4 @@
         </div>
     {{/reviewList}}
 </div>
+
