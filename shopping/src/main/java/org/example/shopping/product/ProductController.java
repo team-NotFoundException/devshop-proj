@@ -153,6 +153,7 @@ public class ProductController {
         return "product/detail";
     }
 
+
     // ==================== ADMIN 영역 ====================
 
     @GetMapping("/admin/products")
