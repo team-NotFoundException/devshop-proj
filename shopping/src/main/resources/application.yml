@@ -1,14 +1,14 @@
 spring:
   profiles:
     active:
-#      - dev
-      - local
+      - dev
+#      - local
       - secret
 #        dev -> mysql
 #        local -> h2-console
 file:
   upload:
-    path: ${FILE_UPLOAD_PATH:C:/shopImages/}
+    path: ${FILE_UPLOAD_PATH}
 
 
 logging:

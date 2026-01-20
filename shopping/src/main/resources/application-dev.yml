@@ -70,12 +70,12 @@ spring:
   sql:
     init:
       # 2.5 이상 버전부터 명시를 해야 insert 처리 됨
-#      mode: never
-      mode: always
+      mode: never
+#      mode: always
       # 애플리케이션 시작시 실행할 SQL 파일 위치
 
-      data-locations:
-        - classpath:db/data.sql
+#      data-locations:
+#        - classpath:db/data.sql
 #      data-locations:
 #        - classpath:db/data.sql
 
@@ -85,8 +85,8 @@ spring:
     hibernate:
       # create: 애플리케이션 시작시 테이블을 새로 생성
       # 기존 데이터는 모두 삭제됨 (개발용)
-#      ddl-auto: update
-      ddl-auto: create
+      ddl-auto: update
+#      ddl-auto: create
     # SQL 쿼리를 콘솔에 출력 (개발용 디버깅)
     show-sql: true
     properties:
