@@ -98,6 +98,39 @@
     vertical-align: middle;
 }
 
+.mypage-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.mypage-input:hover {
+    outline: none;
+    border-color: #333;
+}
+
+.btn-submit-update,
+.btn-overlap {
+    flex: 1;
+    padding: 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-submit-update:hover,
+.btn-overlap {
+    background-color: #555;
+}
+
 /* 통계 카드 통일 */
 .stat-card {
     padding: 20px;

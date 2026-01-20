@@ -29,16 +29,16 @@ INSERT INTO categories (id, category_name, depth, display_order, image_url, pare
 
 -- 소분류
 INSERT INTO categories (id, category_name, depth, display_order, parent_id, created_at, updated_at, image_url) VALUES
-                                                                                                        (3, '남성상의', 2, 1, 1, NOW(), NOW(),'/img/manTop.jpg'),
-                                                                                                        (4, '여성상의', 2, 2, 1, NOW(), NOW(),'/img/womanTom.jpg'),
-                                                                                                        (5, '노트북', 2, 1, 2, NOW(), NOW(),'/img/banner3.jpg');
+                                                                                                        (3, '반팔', 2, 1, 1, NOW(), NOW(),'/img/birdT.jpg'),
+                                                                                                        (4, '머그컵', 2, 2, 1, NOW(), NOW(),'/img/mug.jpg'),
+                                                                                                        (5, '노트북', 2, 1, 2, NOW(), NOW(),'/img/notebook.jpg');
 
 -- product_tb 데이터 (허용된 Enum 값: ACTIVE, SOLD_OUT 사용)
 INSERT INTO product_tb (owner_id, category_id, product_name, product_code, price, stock_quantity,minus_quantity, status, thumbnail_url, description, created_at) VALUES
-                                                                                                                                                      (1, 1, '베이직 반팔 티셔츠', 'TSHIRT-001', 15000, 100,20,  'ACTIVE', 'https://picsum.photos/seed/1/200', '부드러운 면 소재의 기본 반팔 티셔츠', NOW()),
-                                                                                                                                                      (1, 1, '데일리 후드티', 'HOODIE-001', 32000, 50,10, 'ACTIVE', 'https://picsum.photos/seed/2/200', '캐주얼 데일리용 후드티', NOW()),
-                                                                                                                                                      (1, 2, '슬림 데님 팬츠', 'JEANS-001', 45000, 30, 0,'ACTIVE', 'https://picsum.photos/seed/3/200', '슬림핏 청바지', NOW()),
-                                                                                                                                                      (1, 2, '코튼 팬츠', 'PANTS-001', 38000, 40, 2,'ACTIVE', 'https://picsum.photos/seed/4/200', '편안한 착용감의 면 바지', NOW()),
+                                                                                                                                                      (1, 1, 'Hyeku Aluminum Mechanical Keyboard', 'KEYBOARD-001', 118000, 100,20,  'ACTIVE', 'https://www.ipopularshop.com/cdn/shop/products/00f7438d4dadcc6dd1ddf6102d96d47a.jpg?v=1688442324', '알루미늄 키보드', NOW()),
+                                                                                                                                                      (1, 1, '데일리 후드티', 'HOODIE-001', 32000, 50,10, 'ACTIVE', 'https://www.harpersbazaar.co.kr/resources/online/online_image/2025/10/24/5faaeb51-4c6f-46b7-b4c8-e89a27318903.png', '캐주얼 데일리용 후드티', NOW()),
+                                                                                                                                                      (1, 2, '오버사이즈 후드티', 'HOODIE-002', 45000, 30, 0,'ACTIVE', 'https://cafe24img.poxo.com/massnoun/web/product/big/202111/cc3c896bef814bcf59855c1cdf74da6d.jpg', '데일리 오버핏 후드티', NOW()),
+                                                                                                                                                      (1, 2, '레트로 기계식 키보드', 'KEYBOARD-002', 38000, 40, 2,'ACTIVE', 'https://coolenjoy.net/data/editor/2310/627756db3d74209960e24fee0f1ffdf276266049.jpg', '레트로한 기계식 키보드', NOW()),
                                                                                                                                                       (1, 3, '베이직 양말 세트', 'SOCKS-001', 12000, 200,5, 'ACTIVE', 'https://picsum.photos/seed/5/200', '사계절용 기본 양말 5켤레', NOW()),
                                                                                                                                                       (1, 4, '윈드브레이커', 'JACKET-001', 55000, 20, 14,'ACTIVE', 'https://picsum.photos/seed/6/200', '가벼운 바람막이 자켓', NOW()),
                                                                                                                                                       (1, 4, '경량 다운 패딩', 'PADDING-001', 89000, 15,10, 'ACTIVE', 'https://picsum.photos/seed/7/200', '겨울용 가벼운 패딩 자켓', NOW()),
