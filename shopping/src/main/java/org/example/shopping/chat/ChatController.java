@@ -2,6 +2,7 @@ package org.example.shopping.chat;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping.users.User;
 import org.example.shopping.users.enums.RoleType;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,9 +22,10 @@ public class ChatController {
 
 
     // 내 채팅방 조회
-    @GetMapping("/chatRoom/me")
+    @GetMapping("/owner/chatRoom/me")
     public String findMyChatRoom(HttpSession session, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+
         ChatResponse.ChatRoomDTO myChatRoom = chatService.findMyChatRoom(sessionUser.getId());
 
         String myRole = sessionUser.getRole().getRole().toString();

@@ -10,14 +10,5 @@ import java.util.Optional;
 
 
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
-   Optional<CartItem> findByCart_IdAndId(Long cartId, Long cartItemId);
-
    List<CartItem> findByCartId(Long cartId);
-
-   @Modifying
-   @Query("DELETE FROM CartItem c WHERE c.cart.id = :cartId AND c.isChecked = true")
-   void deleteByCartIdAndIsChecked(@Param("cartId") Long cartId);
-
-   @Query("SELECT c FROM CartItem c WHERE c.cart.id = :cartId AND c.isChecked = true")
-   List<CartItem> findByCartIdAndIsChecked(@Param("cartId") Long cartId);
 }

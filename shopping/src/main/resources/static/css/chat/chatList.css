@@ -16,7 +16,6 @@
     margin-bottom: 1.5rem;
 }
 
-/* 채팅방 리스트 그리드 */
 .chat-list {
     display: grid;
     gap: 1.25rem;
@@ -27,7 +26,6 @@
     width: 100%;
 }
 
-/* 채팅방 카드 버튼 */
 .chat-list button {
     width: 100%;
     background: #ffffff;
@@ -43,26 +41,22 @@
     font-family: inherit;
 }
 
-/* 호버 효과 */
 .chat-list button:hover {
     border-color: #c0c0c0;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
 }
 
-/* 클릭 효과 */
 .chat-list button:active {
     transform: translateY(0);
 }
 
-/* 포커스 효과 */
 .chat-list button:focus {
     outline: none;
     border-color: #b0b0b0;
     box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
-/* 카드 헤더 */
 .chat-header {
     padding: 10px 15px;
     background: #2b3a47;
@@ -96,7 +90,6 @@
     flex: 1;
 }
 
-/* 상담중 배지 */
 .chat-list-badge {
     margin-left: auto;
     background: transparent;
@@ -136,7 +129,6 @@
     }
 }
 
-/* 카드 바디 */
 .chat-body {
     padding: 15px;
     background: #ffffff;
@@ -189,5 +181,3 @@
         padding: 1rem 1.25rem;
     }
 }
-
-/* 다크모드 제거 - 항상 밝은 테마 유지 */

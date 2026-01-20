@@ -23,7 +23,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         }
 
         if (!sessionUser.isAdmin()) {
-            throw new Exception403("입점자 권한이 없어요");
+            throw new Exception403("관리자 권한이 없어요");
         }
 
         return true;

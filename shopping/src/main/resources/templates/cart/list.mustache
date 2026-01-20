@@ -64,7 +64,7 @@
                                     <div class="quantity">
                                         <button class="quantityBtn" onclick="updateOption({{id}}, -1)"><i
                                                 class="fa-solid fa-minus"></i></button>
-                                        <span class="item-quantity" data-cart-item-id="{{id}}">{{quantity}}개</span>
+                                        <span class="item-quantity" data-cart-item-id="{{id}}" data-quantity="{{quantity}}">{{quantity}}개</span>
                                         <button class="quantityBtn" onclick="updateOption({{id}}, 1)"><i
                                                 class="fa-solid fa-plus"></i></button>
                                     </div>
@@ -221,7 +221,6 @@
                 .then(res => res.json())
                 .then(data => {
                     document.querySelector(`.item-quantity[data-cart-item-id="${cartItemId}"]`).textContent = data.quantity.toLocaleString() + "개";
-
                     document.querySelector(`[data-total-price="${cartItemId}"]`).textContent = data.totalPrice.toLocaleString() + "원";
                     document.getElementById("productFinalPrice").textContent = data.amount.toLocaleString() + "원";
                     document.getElementById("finalPrice").textContent = data.amount.toLocaleString() + "원";
@@ -231,7 +230,6 @@
                     alert('오류가 발생했습니다.');
                 });
     }
-
 
     updateSelectAllCheckbox();
 
