@@ -5,15 +5,15 @@
                 {{categoryName}}
             </a>
 
-            {{#children}}
                 <ul class="nav-child-list">
-                    <li class="nav-child-item">
-                        <a href="/category/{{id}}" class="nav-child-link">
-                            {{categoryName}}
-                        </a>
-                    </li>
+                    {{#children}}
+                        <li class="nav-child-item">
+                            <a href="/category/{{id}}" class="nav-child-link">
+                                {{categoryName}}
+                            </a>
+                        </li>
+                    {{/children}}
                 </ul>
-            {{/children}}
         </li>
     {{/categories}}
 </ul>

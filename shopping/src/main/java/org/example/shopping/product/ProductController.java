@@ -31,7 +31,9 @@ public class ProductController {
     @GetMapping("/")
     public String home(Model model) {
         List<ProductResponse.MainCardDTO> products = productService.findAllForMain();
+        List<CategoryResponse.ListDTO> categoryList = categoryService.findAll();
         model.addAttribute("products", products);
+        model.addAttribute("category", categoryList);
         return "layout/index";
     }
 

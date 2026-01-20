@@ -14,6 +14,7 @@ public class CategoryResponse {
         private String categoryName;
         private int depth;
         private Long displayOrder;
+        private String imageUrl;
         private String parentName;
         private String createdAt;
 
@@ -22,7 +23,7 @@ public class CategoryResponse {
             this.categoryName = category.getCategoryName();
             this.depth = category.getDepth();
             this.displayOrder = (category.getDisplayOrder() != null) ? category.getDisplayOrder() : 0;
-
+            this.imageUrl =  category.getImageUrl();
             if (category.getParent() != null) {
                 this.parentName = category.getParent().getCategoryName();
             }
