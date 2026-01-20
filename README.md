@@ -1,7 +1,5 @@
 # devshop-proj
 
-아래의 내용들은 초안입니다.
-
 # 개발자 용품 쇼핑몰 시스템
 
 ## 프로젝트 개요
@@ -45,17 +43,22 @@
 - **결제**: Toss Payments API
 - **소셜 로그인**: 카카오 OAuth 2.0
 - **주소 검색**: 주소 API (Juso API)
+- **양방향 실시간 통신**: WebSocket API + STOMP
+- **스마트 에디터**: toast API
+- **이메일 인증**: Google SMTP
 
 ### Development Tools
 - **IDE**: IntelliJ IDEA
 - **Version Control**: Git
 - **Database Console**: H2 Console (개발 환경)
+- **DBMS**: MySql
 
 ## 주요 기능
 
 ### 1. 사용자 관리
 - 회원가입 및 로그인/로그아웃
 - 카카오 소셜 로그인 연동
+- Google SMTP 활용 이메일 인증
 - 회원정보 조회 및 수정
 - 아이디 중복 체크
 - 주소 검색 API 연동
@@ -67,8 +70,8 @@
 - 상품 이미지 업로드 및 관리
 - 상품 상태 관리 (ACTIVE, SOLD_OUT 등)
 - 카테고리별 상품 조회
-- 상태별 상품 필터링
 - 상품 상세 정보 조회
+- 상품별 매출 통계
 
 ### 3. 카테고리 관리
 - 계층형 카테고리 구조 (상위/하위 카테고리)
@@ -90,8 +93,6 @@
 - 주문 목록 조회
 - 주문 상세 조회
 - 주문 검색 기능 (키워드 기반)
-- 배송 정보 관리
-- 재고 차감 로직
 
 ### 6. 결제 시스템
 - Toss Payments API 연동
@@ -100,25 +101,30 @@
 - 결제 실패 처리
 - 환불 처리
 - PaymentGateway 패턴 적용 (확장성 고려)
+- 재고 차감 로직
 
 ### 7. 리뷰 시스템
 - 리뷰 작성, 조회, 수정, 삭제
 - 리뷰 이미지 업로드 및 삭제
 - 상품별 리뷰 목록 조회
 - 내 리뷰 목록 조회
-- 리뷰 평점 관리
+- 상품별 리뷰 평점 통계
 
-### 8. 판매자 관리
-- 판매자 회원가입 및 승인 시스템
+### 8. 판매자 기능
+- 판매자 회원가입
 - 판매자 대시보드 (상품 통계)
 - 판매자 정보 수정
 - 판매자 상태 관리 (승인대기/승인/정지)
+- 판매자 - 관리자 간 1:1 채팅 기능
 
 ### 9. 관리자 기능
 - 사용자 목록 조회 및 관리
 - 판매자 승인/거부/정지 처리
-- 카테고리 관리
+- 판매자 상태 관리
+- 카테고리 작성, 조회, 수정, 삭제
 - 최근 가입 사용자 조회
+- 전체 상품에 대한 매출 통계 조회
+- 관리자 - 판매자 간 1:1 채팅 기능
 
 ## 프로젝트 구조
 
@@ -143,6 +149,7 @@ shopping/
 │   │   │       ├── payment/           # 결제
 │   │   │       │   ├── dto/           # 결제 DTO
 │   │   │       │   ├── error/         # 결제 예외 처리
+│   │   │       │   ├── log/           # 결제 History 처리
 │   │   │       │   ├── paymentEnum/   # 결제 관련 Enum
 │   │   │       │   └── service/      # 결제 서비스 (PaymentGateway 패턴)
 │   │   │       ├── product/           # 상품 관리
@@ -177,6 +184,14 @@ shopping/
 프로젝트 루트에 `application-secret.yml` 파일을 생성하고 다음 설정을 추가하세요:
 
 ```yaml
+oauth:
+  kakao:
+    client-id: your_kakao_client_key
+    client-secret: your_kakao_secret_client_key
+
+tenco:
+  key: your_tenco_key
+
 payment:
   toss:
     client-key: your_toss_client_key
@@ -186,6 +201,16 @@ payment:
 address:
   juso:
     key: your_juso_api_key
+
+database:
+	username: your_db_username
+	password: your_db_password
+
+file:
+  upload-patch: C:/shopImages/
+
+mail:
+  password: your_google_smtp_mail_passowrd
 ```
 
 ### 데이터베이스 설정
@@ -261,7 +286,6 @@ java -jar build/libs/shopping-0.0.1-SNAPSHOT.jar
 | GET | `/user/join` | 회원가입 화면 | 비로그인 | |
 | POST | `/user/join` | 회원가입 처리 | 비로그인 | |
 | GET | `/kakao` | 카카오 로그인 콜백 | 비로그인 | |
-| GET | `/username-check` | 아이디 중복 체크 | 비로그인 | |
 
 ### 사용자 정보
 
@@ -295,6 +319,9 @@ java -jar build/libs/shopping-0.0.1-SNAPSHOT.jar
 | POST | `/admin/categories/parent-save` | 상위 카테고리 등록 처리 | 관리자 | 수정 요망: POST `/admin/categories` (body에 type 구분) |
 | GET | `/admin/categories/list` | 카테고리 목록 조회 | 관리자 | 수정 요망: GET `/admin/categories` (/list 제거) |
 | GET | `/categories/nav` | 카테고리 네비게이션 | 비로그인 | |
+| GET | `/admin/categories/{id}/edit` | 카테고리 수정 화면 | 관리자 | |
+| POST | `/admin/categories/{id}/edit` | 카테고리 수정 | 관리자 | |
+| POST | `/admin/categories/{id}/delete` | 카테고리 삭제 | 관리자 | |
 
 ### 장바구니
 
@@ -315,6 +342,7 @@ java -jar build/libs/shopping-0.0.1-SNAPSHOT.jar
 | GET | `/review/{productId}/save` | 리뷰 작성 화면 | 로그인 필요 | |
 | POST | `/review/{productId}/save` | 리뷰 작성 처리 | 로그인 필요 | |
 | GET | `/products/{productId}/review` | 상품별 리뷰 목록 조회 | 비로그인 | |
+| GET | `/products/{productId}/statistics` | 상품별 리뷰 통계 조회 | 비로그인 | |
 | GET | `/review/list` | 내 리뷰 목록 조회 | 로그인 필요 | |
 | GET | `/review/{reviewId}` | 리뷰 상세 조회 | 로그인 필요 | |
 | GET | `/review/{reviewId}/update` | 리뷰 수정 화면 | 로그인 필요 | |
@@ -335,7 +363,7 @@ java -jar build/libs/shopping-0.0.1-SNAPSHOT.jar
 |------------|-----|------|------|------|
 | GET | `/payment` | 결제 화면 | 로그인 필요 | |
 | POST | `/payment/cart/{cartId}` | 결제 생성 (Mock) | 로그인 필요 | |
-| GET | `/payment/cart/{cartId}/approve` | 결제 승인 처리 | 로그인 필요 | 수정 요망: POST `/payment/cart/{cartId}/approve` (GET → POST) |
+| GET | `/payment/cart/{cartId}/approve` | 결제 승인 처리 | 로그인 필요 | 수정 요망: POST `/payment/cart/{cartId}/approve` (GET → POST) => 수정 시 로직 흐름 꼬임 |
 | GET | `/payment/cart/{cartId}/fail` | 결제 실패 화면 | 로그인 필요 | |
 | POST | `/payment/{id}/refund` | 환불 처리 | 로그인 필요 | |
 
@@ -350,6 +378,10 @@ java -jar build/libs/shopping-0.0.1-SNAPSHOT.jar
 | POST | `/admin/owner/{ownerId}/approve` | 판매자 승인 | 관리자 | 수정 요망: PATCH `/admin/owners/{ownerId}` (body에 status 변경) |
 | POST | `/admin/owner/{ownerId}/suspension` | 판매자 정지 | 관리자 | 수정 요망: PATCH `/admin/owners/{ownerId}` (body에 status 변경) |
 | GET | `/admin/owner/{ownerId}/detail` | 판매자 상세 조회 | 관리자 | |
+| GET | `/admin/chat/list` | 채팅방 목록 조회 | 관리자 | |
+| GET | `/admin/chat/{chatRoomId}` | 특정한 채팅방 입장 | 관리자 | |
+| GET | `/admin/statistics` | 통합 매출 통계 화면 | 관리자 | |
+
 
 ### 판매자
 
@@ -361,6 +393,8 @@ java -jar build/libs/shopping-0.0.1-SNAPSHOT.jar
 | GET | `/owner/update` | 판매자 정보 수정 화면 | 판매자 | 수정 요망: GET `/owner/me` |
 | POST | `/owner/update` | 판매자 정보 수정 처리 | 판매자 | 수정 요망: PUT `/owner/me` 또는 PATCH `/owner/me` |
 | GET | `/owner/dashboard` | 판매자 대시보드 | 판매자 | |
+| GET | `/owner/chatRoom/me` | 판매자 채팅 생성 | 판매자 | |
+| POST | `/chatRoom/delete` | 1:1 채팅방 삭제 | 판매자 | |
 
 ### 기타
 
@@ -368,6 +402,8 @@ java -jar build/libs/shopping-0.0.1-SNAPSHOT.jar
 |------------|-----|------|------|------|
 | GET | `/popup/juso` | 주소 검색 팝업 | 비로그인 | |
 | POST | `/popup/juso` | 주소 검색 처리 | 비로그인 | |
+| POST | `user/email/send` | 인증 이메일 발송 처리 | 비로그인 | |
+| POST | `user/email/verify` | 인증 번호 검증 처리 | 비로그인 | |
 | GET | `/test` | 테스트 페이지 | 비로그인 | |
 | POST | `/api/upload/editor-image` | 이미지 업로드 (에디터용) | 로그인 필요 | |
 
@@ -467,48 +503,29 @@ CREATE DATABASE shopping CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 - PaymentGateway 패턴을 통한 확장 가능한 아키텍처 설계
 
 
+## 향후 개선 사항
+
+- JWT 기반 인증 방식 도입 
+- 관리자 대시보드 고도화    
+- 상품 검색 및 필터링    
+- 결제 시스템 고도화     
+- 테스트 코드 작성
+- Naver 로그인 도입
+- 
+
+---
+
+## 한 줄 요약
+
+> **Spring Boot와 Mustache를 활용한
+> 권한 기반 개발자 용품 쇼핑몰 웹 애플리케이션**
 
 
 
-
-
-```
-1. class명 container 사용 시 레이아웃에 규격 맞출 경우 사용 가능 
-	-> 레이아웃 설정 이외의 화면 구현 시 다른 class 명 사용
-	-> ex) 현재 이렇게 사용 중인 page: join-form | login-form
-
-
-2. 헤더 푸터 붙히기
-	-> nav bar 필요한 사람은 
-<div class="header-wrapper has-nav">
-    <div class="container">
-        {{> layout/header }}
-        {{> layout/nav }}
-    </div>
-</div>
-
-	-> nav bar 필요없는 사람은
-<div class="header-wrapper">
-    <div class="container">
-        {{> layout/header }}
-    </div>
-</div>
-
-3. style 파일은 static/css 폴더안에 생성
-
-4. style 파일은 mustache 파일과 1:1 매칭
-	-> product-detail.mustache = product-detail.css
-
-5. 프론트 관련 모르는건 @안미향 문의
-```
 
 ---
 
 <div align="center">
-
-# 🛒 개발자 용품 쇼핑몰 시스템
-
-### Developers’ Equipment Shopping Mall
 
 <br/>
 
@@ -523,45 +540,6 @@ CREATE DATABASE shopping CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 ---
 
-## 📌 프로젝트 소개
-
-| 항목      | 내용                              |
-| ------- | ------------------------------- |
-| 프로젝트명   | 개발자 용품 쇼핑몰 시스템                  |
-| 프로젝트 설명 | 개발자가 개발에 필요한 용품을 구매할 수 있는 웹 쇼핑몰 |
-| 주요 특징   | 권한 기반 접근 제어, 파일 업로드, 결제 시스템     |
-| 아키텍처    | Spring Boot 기반 MVC              |
-| 템플릿 엔진  | Mustache                        |
-
----
-
-## 🛠️ 기술 스택
-
-### 📦 Backend
-
-| 구분        | 기술              |
-| --------- | --------------- |
-| Language  | Java            |
-| Framework | Spring Boot     |
-| ORM       | Spring Data JPA |
-| Database  | MySQL           |
-
-### 🎨 Frontend
-
-| 구분              | 기술         |
-| --------------- | ---------- |
-| Template Engine | Mustache   |
-| Styling         | CSS        |
-| Script          | JavaScript |
-
-### ⚙️ Tools
-
-| 구분              | 도구           |
-| --------------- | ------------ |
-| Version Control | Git / GitHub |
-| Build Tool      | Gradle       |
-
----
 
 <h3 align="center">🏅 Stats</h3>
 
@@ -628,100 +606,10 @@ CREATE DATABASE shopping CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 </tr>
 </table>
 
----
-
-## ✨ 주요 기능
-
-| 기능         | 설명                       |
-| ---------- | ------------------------ |
-| 회원가입 / 로그인 | 사용자 인증 및 세션 관리           |
-| 상품 관리      | 상품 등록, 수정, 삭제 (Owner 권한) |
-| 장바구니       | 상품 추가, 수량 변경, 삭제         |
-| 결제 시스템     | 주문 및 결제 처리               |
-| 리뷰 시스템     | 리뷰 작성 및 이미지 첨부           |
-| 권한 관리      | 역할 기반 접근 제어              |
 
 ---
 
-## 👥 사용자 역할 및 권한
 
-| 역할        | 권한               |
-| --------- | ---------------- |
-| **User**  | 상품 구매, 결제, 리뷰 작성 |
-| **Owner** | 상품 등록 및 관리       |
-| **Admin** | 사용자 관리, Owner 승인 |
-
----
-
-## 🗂️ 프로젝트 구조
-
-```text
-📦 project
- ┣ 📂 controller
- ┣ 📂 service
- ┣ 📂 repository
- ┣ 📂 domain
- ┣ 📂 dto
- ┣ 📂 config
- ┣ 📂 util
- ┗ 📂 resources
-    ┣ 📂 templates (Mustache)
-    ┣ 📂 static
-    ┗ 📂 application.yml
-```
-
----
-
-## 🖼️ 파일 관리 시스템
-
-| 항목     | 설명                  |
-| ------ | ------------------- |
-| 업로드 대상 | 상품 이미지, 리뷰 이미지      |
-| 저장 정보  | 원본명, 저장명, 파일 크기, 타입 |
-| 연관 관계  | 상품 / 리뷰와 파일 매핑      |
-| 관리 방식  | DB + 파일 시스템         |
-
----
-
-## 🔐 인증 및 권한 처리
-
-| 항목    | 내용             |
-| ----- | -------------- |
-| 인증 방식 | 세션 기반 인증       |
-| 권한 제어 | Role 기반 접근 제어  |
-| 검증 위치 | Service 계층     |
-| 예외 처리 | 권한 미충족 시 예외 발생 |
-
----
-
-## 📈 프로젝트를 통해 얻은 경험
-
-| 내용                    |
-| --------------------- |
-| Spring Boot MVC 구조 설계 |
-| JPA 연관관계 및 ERD 설계     |
-| 권한 분리 및 인증/인가 처리      |
-| 파일 업로드 및 관리 시스템 구현    |
-| 쇼핑몰 핵심 기능 구현 경험       |
-
----
-
-## 🚀 향후 개선 사항
-
-| 개선 항목           |
-| --------------- |
-| JWT 기반 인증 방식 도입 |
-| 관리자 대시보드 고도화    |
-| 상품 검색 및 필터링     |
-| 결제 시스템 고도화      |
-| 테스트 코드 작성       |
-
----
-
-## 📌 한 줄 요약
-
-> **Spring Boot와 Mustache를 활용한
-> 권한 기반 개발자 용품 쇼핑몰 웹 애플리케이션**
 
 
 
