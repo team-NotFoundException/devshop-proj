@@ -177,7 +177,7 @@ public class ProductService {
 
 
     public List<ProductResponse.MainCardDTO> findAllForMain() {
-        return productRepository.findByStatusOrderByCreatedAtDesc(ProductStatus.ACTIVE)
+        return productRepository.findByStatusWithCategoryOrderByCreatedAtDesc(ProductStatus.ACTIVE)
                 .stream()
                 .map(ProductResponse.MainCardDTO::new)
                 .toList();
@@ -198,6 +198,11 @@ public class ProductService {
 
         Product product = productRepository.findByIdWithCategory(id)
                 .orElseThrow(() -> new Exception404("상품을 찾을 수 없습니다"));
+
+        log.info("=== 상품 조회 디버깅 ===");
+        log.info("상품 ID: {}", product.getId());
+        log.info("상품명: {}", product.getProductName());
+        log.info("카테고리: {}", product.getCategory() != null ? product.getCategory().getCategoryName() : "NULL");
 
         return new ProductResponse.UserDetailDTO(product);
     }
@@ -226,4 +231,38 @@ public class ProductService {
                 .toList();
     }
 
+    // ProductService.java 파일 끝에 다음 메서드들을 추가하세요
+
+    // ==================== ADMIN 영역 ====================
+
+    /**
+     * 관리자 - 전체 상품 목록 조회
+     */
+    public List<ProductResponse.AdminListDTO> findAllForAdmin() {
+        return productRepository.findAllWithCategoryAndOwner()
+                .stream()
+                .map(ProductResponse.AdminListDTO::new)
+                .toList();
+    }
+
+    /**
+     * 관리자 - 상품명 검색
+     */
+    public List<ProductResponse.AdminListDTO> searchByProductName(String keyword) {
+        return productRepository.searchByProductNameWithCategoryAndOwner(keyword)
+                .stream()
+                .map(ProductResponse.AdminListDTO::new)
+                .toList();
+    }
+
+    /**
+     * 관리자 - 상품 상세 조회
+     */
+    public ProductResponse.AdminDetailDTO findByIdForAdmin(Long id) {
+        Product product = productRepository.findByIdWithCategoryAndOwner(id)
+                .orElseThrow(() -> new Exception404("상품을 찾을 수 없습니다"));
+
+        return new ProductResponse.AdminDetailDTO(product);
+    }
 }
+

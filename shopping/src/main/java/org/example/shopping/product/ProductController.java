@@ -12,10 +12,7 @@ import org.example.shopping.users.owner.Owner;
 import org.example.shopping.users.owner.OwnerRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -140,7 +137,6 @@ public class ProductController {
         return "redirect:/owner/products/" + id;
     }
 
-
     @PostMapping("/owner/products/{id}/delete")
     public String delete(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
         getOwnerUser(session);
@@ -157,6 +153,44 @@ public class ProductController {
         return "product/detail";
     }
 
+    // ==================== ADMIN 영역 ====================
+
+    @GetMapping("/admin/products")
+    public String adminList(Model model, HttpSession session) {
+        validateAdmin(session);
+        List<ProductResponse.AdminListDTO> products = productService.findAllForAdmin();
+        model.addAttribute("products", products);
+        model.addAttribute("keyword", "");
+        return "admin/product-list";
+    }
+
+
+    @GetMapping("/admin/products/search")
+    public String adminSearch(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            Model model,
+            HttpSession session
+    ) {
+        validateAdmin(session);
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return "redirect:/admin/products";
+        }
+
+        List<ProductResponse.AdminListDTO> products = productService.searchByProductName(keyword);
+        model.addAttribute("products", products);
+        model.addAttribute("keyword", keyword);
+        return "admin/product-list";
+    }
+
+    @GetMapping("/admin/products/{id}")
+    public String adminDetail(@PathVariable Long id, Model model, HttpSession session) {
+        validateAdmin(session);
+        ProductResponse.AdminDetailDTO product = productService.findByIdForAdmin(id);
+        model.addAttribute("product", product);
+        return "admin/product-detail";
+    }
+
     // ==================== 공통 메서드 ====================
 
     private User getOwnerUser(HttpSession session) {
@@ -165,5 +199,12 @@ public class ProductController {
             throw new Exception403("판매자만 접근할 수 있습니다");
         }
         return sessionUser;
+    }
+
+    private void validateAdmin(HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null || !sessionUser.isAdmin()) {
+            throw new Exception403("관리자만 접근할 수 있습니다");
+        }
     }
 }

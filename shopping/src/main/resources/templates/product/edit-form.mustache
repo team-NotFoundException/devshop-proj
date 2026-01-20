@@ -45,24 +45,31 @@
                     </div>
 
 
-                    {{#product.thumbnailUrl}}
-                        <div class="current-thumbnail mb-2">
-                            <p class="text-muted small">현재 썸네일:</p>
-                            <!-- getThumbnailDisplayUrl() 메서드 사용 -->
-                            <img src="{{product.thumbnailDisplayUrl}}" alt="현재 썸네일"
-                                 style="max-width: 200px; border-radius: 8px;">
-                        </div>
-                        <!-- 기존 썸네일 URL을 hidden으로 유지 (DB 저장용 원본) -->
-                        <input type="hidden" name="existingThumbnail" value="{{product.thumbnailUrl}}">
-                    {{/product.thumbnailUrl}}
-                    <input type="file" name="thumbnail" class="form-control" accept="image/*" id="thumbnailInput" required>
-                        <small class="text-muted">새 이미지를 선택하면 기존 썸네일이 교체됩니다. 선택하지 않으면 기존 썸네일이 유지됩니다.</small>
+                    <!-- 썸네일 섹션만 수정 -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">썸네일</label>
 
+                        {{#product.thumbnailUrl}}
+                            <div class="current-thumbnail mb-2">
+                                <p class="text-muted small">현재 썸네일:</p>
+                                <img src="/images/{{product.thumbnailUrl}}"
+                                     alt="현재 썸네일"
+                                     style="max-width: 200px; border-radius: 8px;"
+                                     onerror="this.onerror=null; this.src='{{product.thumbnailUrl}}';">
+                            </div>
+                            <!-- 기존 썸네일 URL을 hidden으로 유지 -->
+                            <input type="hidden" name="existingThumbnail" value="{{product.thumbnailUrl}}">
+                        {{/product.thumbnailUrl}}
 
+                        <input type="file" name="thumbnail" class="form-control" accept="image/*" id="thumbnailInput" required>
+                        <small class="text-muted">새 이미지를 선택하면 기존 썸네일이 교체됩니다.</small>
+
+                        <!-- 썸네일 미리보기 -->
                         <div id="thumbnailPreview" class="mt-2" style="display: none;">
                             <p class="text-muted small">새 썸네일 미리보기:</p>
                             <img id="previewImage" style="max-width: 200px; border-radius: 8px;">
                         </div>
+                    </div>
 
 
 

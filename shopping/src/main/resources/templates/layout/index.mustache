@@ -22,63 +22,17 @@
             <span class="carousel-control-next-icon"></span>
         </button>
     </div>
-
     <div class="row row-cols-2 row-cols-md-4 g-4 mt-4">
+{{#products}}
         <div class="col">
-            <a href="category/1" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="/img/keyboard.jpg" alt="keybaord">
-                <div class="card-body">키보드</div>
+            <a href="/category/{{categoryId}}" class="card h-100 border-0 text-center">
+                <img class="card-img-top rounded-3" src="{{thumbnailUrl}}" alt="keybaord">
+                <div class="card-body">{{name}}</div>
             </a>
         </div>
+{{/products}}
 
-        <div class="col">
-            <a href="category/1" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="/img/palmrest.jpg" alt="palmrest">
-                <div class="card-body">손목받침대</div>
-            </a>
-        </div>
 
-        <div class="col">
-            <a href="category/1" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="/img/hoodie.jpg" alt="hoodie">
-                <div class="card-body">옷</div>
-            </a>
-        </div>
-
-        <div class="col">
-            <a href="category/1" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="/img/mug.jpg" alt="mug">
-                <div class="card-body">머그컵</div>
-            </a>
-        </div>
-
-        <div class="col">
-            <a href="category/1" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="/img/earbuds.jpg" alt="earbuds">
-                <div class="card-body">무선 헤드폰</div>
-            </a>
-        </div>
-
-        <div class="col">
-            <a href="category/1" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="/img/book.jpg" alt="book">
-                <div class="card-body">책</div>
-            </a>
-        </div>
-
-        <div class="col">
-            <a href="category/1" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="/img/slipper.png" alt="slipper">
-                <div class="card-body">슬리퍼</div>
-            </a>
-        </div>
-
-        <div class="col">
-            <a href="category/1" class="card h-100 border-0 text-center">
-                <img class="card-img-top rounded-3" src="/img/seasonOff.png" alt="seasonOff">
-                <div class="card-body">시즌오프</div>
-            </a>
-        </div>
     </div>
     {{> product/card }}
 </main>
