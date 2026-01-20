@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping.cartItem.CartItem;
-import org.example.shopping.cartItem.CartItemRepository;
 import org.example.shopping.product.Product;
 import org.example.shopping.product.ProductRepository;
 import org.example.shopping.product.productEnum.ProductStatus;

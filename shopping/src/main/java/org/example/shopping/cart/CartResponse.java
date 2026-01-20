@@ -23,7 +23,6 @@ public class CartResponse {
     @Data
     public static class AmountDTO {
         private Long amount;
-
         public AmountDTO(Long amount) {
             this.amount = amount;
         }

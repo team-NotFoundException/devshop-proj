@@ -68,27 +68,6 @@ public class Product {
         this.createdAt = createdAt;
     }
 
-//    @Builder
-//    public Product(
-//            String productName,
-//            String productCode,
-//            Long price,
-//            int stockQuantity,
-//            String description,
-//            String thumbnailUrl,
-//            ProductStatus status,
-//            Category category
-//    ) {
-//        this.productName = productName;
-//        this.productCode = productCode;
-//        this.price = price;
-//        this.stockQuantity = stockQuantity;
-//        this.description = description;
-//        this.thumbnailUrl = thumbnailUrl;
-//        this.status = ProductStatus.ACTIVE;
-//        this.category = category;
-//    }
-
     // 상품 수정
     public void update(ProductRequest.UpdateDTO dto, Category category) {
         dto.validate();

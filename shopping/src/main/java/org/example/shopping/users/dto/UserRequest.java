@@ -1,11 +1,9 @@
 package org.example.shopping.users.dto;
 
-import jakarta.persistence.Embedded;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.example.shopping._core.utils.ValidationGroups;
-import org.example.shopping._core.utils.ValidationUtils;
 import org.example.shopping.users.User;
 import org.example.shopping.users.enums.Gender;
 import org.example.shopping.users.user.Address;

@@ -9,11 +9,4 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
-
-    Optional<Payment> findByUserId(Long userId);
-
-    @Query("SELECT p FROM Payment p where p.user.id = :id")
-    List<Payment> findInfoUserId(@Param("id") Long userId);
-
-
 }

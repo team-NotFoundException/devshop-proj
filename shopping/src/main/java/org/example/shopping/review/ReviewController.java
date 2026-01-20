@@ -2,7 +2,6 @@ package org.example.shopping.review;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.errors.exception.Exception401;
 import org.example.shopping._core.utils.ValidationGroups;
 import org.example.shopping.product.ProductService;
 import org.example.shopping.users.User;
@@ -20,10 +19,8 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final ProductService productService;
 
     // 리뷰 저장 화면 요청 (로그인 필요)
-    // http://localhost:8080/review/save
     @GetMapping("/review/{productId}/save")
     public String saveForm(@PathVariable Long productId, Model model,
                            HttpSession session
@@ -66,7 +63,6 @@ public class ReviewController {
 
 
     // 내 리뷰 목록 조회
-    // http://localhost:8080/review/list
     @GetMapping("/review/list")
     public String findAll(Model model, HttpSession session) {
 
@@ -78,7 +74,6 @@ public class ReviewController {
     }
 
     // 리뷰 상세 조회
-    // http://localhost:8080/review/1
     @GetMapping("/review/{reviewId}")
     public String findById(@PathVariable Long reviewId, Model model, HttpSession session) {
 
@@ -97,7 +92,6 @@ public class ReviewController {
     }
 
     // 리뷰 수정 화면 요청 (로그인 필요)
-    // http://localhost:8080/review/1/update
     @GetMapping("/review/{reviewId}/update")
     public String updateForm(@PathVariable Long reviewId, Model model, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -109,7 +103,6 @@ public class ReviewController {
     }
 
     // 리뷰 수정 (로그인 필요)
-    // http://localhost:8080/review/1/update
     @PostMapping("/review/{reviewId}/update")
     public String updateProc(
             @PathVariable Long reviewId,

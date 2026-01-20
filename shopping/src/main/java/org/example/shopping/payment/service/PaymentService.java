@@ -21,7 +21,6 @@ import org.example.shopping.payment.error.ErrorCode;
 import org.example.shopping.payment.log.Field;
 import org.example.shopping.payment.log.History;
 import org.example.shopping.payment.log.HistoryRepository;
-import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
 import org.example.shopping.payment.paymentEnum.RefundStatus;
 import org.example.shopping.payment.service.gateway.PaymentGateway;
@@ -50,7 +49,6 @@ public class PaymentService {
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
     private final OrderService orderService;
-    private final OrderRepository orderRepository;
     private final HistoryRepository historyRepository;
     private final ProductRepository productRepository;
     private final MailService mailService;

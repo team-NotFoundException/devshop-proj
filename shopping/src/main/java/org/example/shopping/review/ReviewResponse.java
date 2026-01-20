@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.example.shopping._core.utils.MyDateUtil;
 
 import java.util.List;
-import java.util.Stack;
 import java.util.stream.IntStream;
 
 public class ReviewResponse {
@@ -56,22 +55,6 @@ public class ReviewResponse {
 
         private Long productId;
         private String productName;
-
-        /** 상품 상세페이지 리뷰용 */
-//        public ListDTO(Review review) {
-////            this.productId = orderItem.getProduct().getId();
-////            this.productName = orderItem.getProduct().getProductName();
-//            this.id = review.getId();
-//            this.content = review.getContent();
-//
-//            if (review.getUser() != null) {
-//                this.username = review.getUser().getUsername();
-//            }
-//
-//            if (review.getCreatedAt() != null) {
-//                this.createdAt = MyDateUtil.toDateString(review.getCreatedAt());
-//            }
-//        }
 
         /** 마이페이지 리뷰용 */
         public ListDTO(Review review) {

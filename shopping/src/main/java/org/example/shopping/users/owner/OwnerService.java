@@ -4,14 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
-import org.example.shopping._core.utils.ValidationGroups;
-import org.example.shopping.product.Product;
 import org.example.shopping.product.ProductRepository;
 import org.example.shopping.product.ProductResponse;
 import org.example.shopping.product.ProductService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserRequest;
-import org.example.shopping.users.dto.UserResponse;
 import org.example.shopping.users.enums.OwnerStatus;
 import org.example.shopping.users.enums.RoleType;
 import org.example.shopping.users.owner.dto.OwnerRequest;
@@ -22,10 +19,8 @@ import org.example.shopping.users.user.UserRoleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +32,6 @@ public class OwnerService {
     private final UserRoleRepository userRoleRepository;
     private final OwnerRepository ownerRepository;
     private final ProductRepository productRepository;
-    private final ProductService productService;
 
     public User login(UserRequest.@Valid LoginDTO loginDTO) {
         User userEntity = userRepository

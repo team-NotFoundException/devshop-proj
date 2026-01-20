@@ -2,7 +2,6 @@ package org.example.shopping.chat;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.errors.exception.Exception403;
 import org.example.shopping.users.User;
 import org.example.shopping.users.enums.RoleType;
 import org.springframework.messaging.handler.annotation.MessageMapping;

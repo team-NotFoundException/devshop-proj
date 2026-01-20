@@ -3,19 +3,19 @@ package org.example.shopping.users.admin;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping._core.errors.exception.Exception500;
 import org.example.shopping.payment.log.HistoryResponse;
 import org.example.shopping.payment.log.HistoryService;
 import org.example.shopping.users.User;
 import org.example.shopping.users.dto.UserResponse;
-import org.example.shopping.users.enums.RoleType;
 import org.example.shopping.users.owner.OwnerService;
 import org.example.shopping.users.owner.dto.OwnerResponse;
 import org.example.shopping.users.user.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 

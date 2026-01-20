@@ -25,7 +25,6 @@ public class ImageUploadController {
 
         log.info("Starting editor image upload process");
 
-        // image 또는 file 파라미터 중 하나 사용
         MultipartFile uploadFile = (image != null) ? image : file;
 
         if (uploadFile == null || uploadFile.isEmpty()) {
@@ -34,19 +33,16 @@ public class ImageUploadController {
                     .body(Map.of("error", "파일이 없습니다."));
         }
 
-        // 파일 정보 로깅 (Debug 레벨 활용)
         log.debug("Received file - Name: {}, Size: {} bytes, Type: {}",
                 uploadFile.getOriginalFilename(), uploadFile.getSize(), uploadFile.getContentType());
 
         try {
-            // 1. 이미지 파일 검증
             if (!FileUtil.isImageFile(uploadFile)) {
                 log.warn("Upload failed: File [{}] is not a valid image type", uploadFile.getOriginalFilename());
                 return ResponseEntity.badRequest()
                         .body(Map.of("error", "이미지 파일만 업로드 가능합니다."));
             }
 
-            // 2. 파일 저장
             String savedFileName = FileUtil.saveFile(uploadFile);
 
             if (savedFileName == null) {
@@ -55,7 +51,6 @@ public class ImageUploadController {
                         .body(Map.of("error", "파일 저장에 실패했습니다."));
             }
 
-            // 3. 응답 데이터 생성
             Map<String, String> response = new HashMap<>();
             response.put("fileName", savedFileName);
             response.put("url", "/images/" + savedFileName);

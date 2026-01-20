@@ -32,10 +32,6 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "order_item_id")
-//    private OrderItem orderItem;
-
     @Lob
     @JdbcTypeCode(SqlTypes.LONGVARCHAR)
     private String content;
