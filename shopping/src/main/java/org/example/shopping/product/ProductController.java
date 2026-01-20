@@ -161,7 +161,7 @@ public class ProductController {
         List<ProductResponse.AdminListDTO> products = productService.findAllForAdmin();
         model.addAttribute("products", products);
         model.addAttribute("keyword", "");
-        return "admin/product-list";
+        return "user/admin/product-list";
     }
 
 
@@ -174,13 +174,13 @@ public class ProductController {
         validateAdmin(session);
 
         if (keyword == null || keyword.trim().isEmpty()) {
-            return "redirect:/admin/products";
+            return "redirect:user/admin/products";
         }
 
         List<ProductResponse.AdminListDTO> products = productService.searchByProductName(keyword);
         model.addAttribute("products", products);
         model.addAttribute("keyword", keyword);
-        return "admin/product-list";
+        return "user/admin/product-list";
     }
 
     @GetMapping("/admin/products/{id}")
@@ -188,7 +188,7 @@ public class ProductController {
         validateAdmin(session);
         ProductResponse.AdminDetailDTO product = productService.findByIdForAdmin(id);
         model.addAttribute("product", product);
-        return "admin/product-detail";
+        return "user/admin/product-detail";
     }
 
     // ==================== 공통 메서드 ====================
