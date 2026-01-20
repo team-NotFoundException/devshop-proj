@@ -563,17 +563,6 @@ CREATE DATABASE shopping CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 <tr>
   <td align="center">
-    <a href="https://github.com/untilthe-end" target="_blank">
-      <img src="https://avatars.githubusercontent.com/u/156649739?v=4" width="100" border-radius="50%"/><br/>
-      untilthe-end
-    </a>
-  </td>
-  <td><img src="https://github-readme-stats.vercel.app/api?username=untilthe-end&custom_title=untilthe-end's%20Github%20Stat&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
-  <td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=untilthe-end&layout=compact&bg_color=180,ffffff,&title_color=000000&text_color=000000" width="100%"/></td>
-</tr>
-
-<tr>
-  <td align="center">
     <a href="https://github.com/ehdgn" target="_blank">
       <img src="https://avatars.githubusercontent.com/u/181971909?v=4" width="100" border-radius="50%"/><br/>
       ehdgn
