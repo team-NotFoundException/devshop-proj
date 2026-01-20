@@ -40,7 +40,6 @@ public class PaymentResponse {
         this.quantity = payment.getQuantity();
         this.method = payment.getMethod();
         this.status = payment.getStatus();
-        this.productId = payment.getProductId();
         this.productCode = payment.getProductCode();
         this.productName = payment.getProductName();
         this.createdAt = String.valueOf(payment.getCreatedAt());

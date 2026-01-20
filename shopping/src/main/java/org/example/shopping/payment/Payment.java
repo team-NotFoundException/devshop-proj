@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.shopping._core.utils.BaseTimeEntity;
 import org.example.shopping.payment.paymentEnum.PaymentMethod;
 import org.example.shopping.payment.paymentEnum.PaymentStatus;
+import org.example.shopping.product.Product;
 import org.example.shopping.users.User;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,15 +23,18 @@ public class Payment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private String orderId;
 
     private String paymentKey;
 
-    private Long productId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    private Product product;
+//    private Long productId;
 
     private Long amount;
 

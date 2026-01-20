@@ -131,7 +131,7 @@ public class PaymentService {
                     .paymentKey("MOCK-" + UUID.randomUUID())
                     .amount(item.getTotalPrice())
                     .quantity(item.getQuantity())
-                    .productId(item.getProduct().getId())
+                    .product(item.getProduct())
                     .method(createDTO.getMethod())
                     .status(PaymentStatus.SUCCESS)
                     .productCode(item.getProduct().getProductCode())
@@ -141,7 +141,7 @@ public class PaymentService {
             Payment save = paymentRepository.save(payment);
             order.addPayment(payment);
             paymentHistory(save, sessionUser, null, save.getStatus().name(), Field.STATUS, null);
-            decreaseQuantity(save.getProductId(), save.getQuantity());
+            decreaseQuantity(save.getProduct().getId(), save.getQuantity());
 
         }
         mailService.sendPayInfo(sessionUser, order.getId());
@@ -169,7 +169,7 @@ public class PaymentService {
                     .amount(item.getTotalPrice())
                     .quantity(item.getQuantity())
                     .method(createDTO.getMethod())
-                    .productId(item.getProduct().getId())
+                    .product(item.getProduct())
                     .status(paymentResult.isSuccess() ? PaymentStatus.SUCCESS : PaymentStatus.FAILED)
                     .productCode(item.getProduct().getProductCode())
                     .productName(item.getProduct().getProductName())
@@ -183,7 +183,7 @@ public class PaymentService {
             Payment save = paymentRepository.save(payment);
             paymentHistory(save, sessionUser, null, save.getStatus().name(), Field.STATUS, null);
 
-            decreaseQuantity(save.getProductId(), save.getQuantity());
+            decreaseQuantity(save.getProduct().getId(), save.getQuantity());
             order.addPayment(payment);
         }
 
@@ -256,7 +256,7 @@ public class PaymentService {
             historyRepository.delete(history);
         }
 
-        increaseQuantity(save.getProductId(), save.getQuantity());
+        increaseQuantity(save.getProduct().getId(), save.getQuantity());
 
         return new PaymentResponse.SingleRefundDTO(refund);
     }
@@ -286,7 +286,7 @@ public class PaymentService {
                 .field(field)
                 .old_value(old_value)
                 .new_value(new_value)
-                .productId(payment.getProductId())
+                .productId(payment.getProduct().getId())
                 .productCode(payment.getProductCode())
                 .productName(payment.getProductName())
                 .amount(payment.getAmount())
