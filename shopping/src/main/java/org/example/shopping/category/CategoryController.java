@@ -7,6 +7,7 @@ import org.example.shopping.users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,16 +27,18 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/categories/child-save")
-    public String childSave(CategoryRequest.SaveChildDTO childDTO, HttpSession session) {
+    public String childSave(CategoryRequest.SaveChildDTO childDTO, HttpSession session,
+                            @RequestParam("imageUrl") MultipartFile imageUrl) {
         validateAdmin(session);
-        categoryService.childSave(childDTO);
+        categoryService.childSave(childDTO, imageUrl);
         return "redirect:/admin/categories/list";
     }
 
     @PostMapping("/admin/categories/parent-save")
-    public String parentSave(CategoryRequest.SaveParentDTO parentDTO, HttpSession session) {
+    public String parentSave(CategoryRequest.SaveParentDTO parentDTO, HttpSession session,
+                             @RequestParam("imageUrl") MultipartFile imageUrl) {
         validateAdmin(session);
-        categoryService.parentSave(parentDTO);
+        categoryService.parentSave(parentDTO, imageUrl);
         return "redirect:/admin/categories/list";
     }
 

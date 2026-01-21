@@ -19,11 +19,12 @@ public class CategoryRequest {
 
         private Long parentId;
 
-        public Category toEntity(Category parentEntity) {
+        public Category toEntity(Category parentEntity,String savedFileName) {
             return Category.builder()
                     .categoryName(this.categoryName)
                     .depth(parentEntity.getDepth() + 1)
                     .displayOrder(this.displayOrder)
+                    .imageUrl(savedFileName)
                     .parent(parentEntity)
                     .build();
         }
@@ -40,9 +41,10 @@ public class CategoryRequest {
         @Min(value = 0, message = "0보다 커야합니다.")
         private Long displayOrder;
 
-        public Category toEntity() {
+        public Category toEntity(String savedFileName) {
             return Category.builder()
                     .categoryName(this.categoryName)
+                    .imageUrl(savedFileName)
                     .depth(this.depth = 1)
                     .displayOrder(this.displayOrder)
                     .build();
