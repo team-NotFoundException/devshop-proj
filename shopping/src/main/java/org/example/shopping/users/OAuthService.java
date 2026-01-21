@@ -2,6 +2,7 @@ package org.example.shopping.users;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping._core.infra.client.KakaoOAuthClient;
+import org.example.shopping.cart.CartService;
 import org.example.shopping.users.dto.UserResponse;
 import org.example.shopping.users.user.UserService;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class OAuthService {
     private final KakaoOAuthClient kakaoOAuthClient;
     private final UserService userService;
+    private final CartService cartService;
 
     public User loginWithKakao(String code) {
         String accessToken = kakaoOAuthClient.getAccessToken(code);
@@ -19,7 +21,9 @@ public class OAuthService {
 
         String username = kakaoProfile.getProperties().getNickname() + "_" + kakaoProfile.getId();
 
-        return userService.findOrCreateKakaoUser(username, kakaoProfile);
+        User user = userService.findOrCreateKakaoUser(username, kakaoProfile);
+        cartService.createCart(user);
+        return user;
     }
 
     public void loginWithGoogle(String code) {
