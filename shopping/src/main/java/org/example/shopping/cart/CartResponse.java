@@ -8,17 +8,55 @@ import java.util.List;
 
 public class CartResponse {
 
+    private static String getImagePath(String thumbnailUrl) {
+        if (thumbnailUrl == null || thumbnailUrl.isEmpty()) {
+            return "/img/no-image.png";
+        }
+
+        if (thumbnailUrl.startsWith("http://") || thumbnailUrl.startsWith("https://")) {
+            return thumbnailUrl;
+        }
+
+        return "/images/" + thumbnailUrl;
+    }
+
     @Data
     public static class CartDTO {
         private Long id;
         private String amount;
-        private List<CartItem> cartItems;
+        private List<CartItemDTO> cartItems;
 
         public CartDTO(Cart cart) {
             this.id = cart.getId();
             Long amount = cart.getAmount() == null ? 0 : cart.getAmount();
             this.amount = MoneyUtils.format(amount);
-            this.cartItems = cart.getCartItems();
+            this.cartItems = cart.getCartItems().stream()
+                    .map(cartItem -> {
+                        CartItemDTO dto = new CartItemDTO(cartItem);
+                        return dto;
+                    })
+                    .toList();
+        }
+    }
+
+    @Data
+    public static class CartItemDTO {
+        private Long id;
+        private Boolean isChecked;
+        private String thumbnailUrl;
+        private String productName;
+        private String productCode;
+        private Integer quantity;
+        private String totalPrice;
+
+        public CartItemDTO(CartItem cartItem) {
+            this.id = cartItem.getId();
+            this.isChecked = cartItem.getIsChecked();
+            this.thumbnailUrl = getImagePath(cartItem.getProduct().getThumbnailUrl());
+            this.productName = cartItem.getProduct().getProductName();
+            this.productCode = cartItem.getProduct().getProductCode();
+            this.quantity = cartItem.getQuantity();
+            this.totalPrice = MoneyUtils.format(cartItem.getTotalPrice());
         }
     }
 
