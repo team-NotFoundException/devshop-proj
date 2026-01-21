@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <form action="/admin/categories/parent-save" method="post" class="category-form">
+                <form action="/admin/categories/parent-save" method="post" class="category-form" enctype="multipart/form-data">
                     <div class="form-group">
                         <label class="form-label">
                             <i class="bi bi-tag"></i>
@@ -50,6 +50,11 @@
                         <small class="form-hint">숫자가 작을수록 먼저 표시됩니다</small>
                     </div>
 
+                    <div class="card-body">
+                        <label class="form-label fw-bold">썸네일</label>
+                        <input type="file" name="imageUrl" accept="image/*" required>
+                    </div>
+
                     <button type="submit" class="btn-submit parent">
                         <i class="bi bi-plus-circle"></i>
                         대분류 추가
@@ -69,7 +74,7 @@
                     </div>
                 </div>
 
-                <form action="/admin/categories/child-save" method="post" class="category-form">
+                <form action="/admin/categories/child-save" method="post" class="category-form" enctype="multipart/form-data">
                     <div class="form-group">
                         <label class="form-label">
                             <i class="bi bi-folder"></i>
@@ -106,6 +111,11 @@
                                value="1"
                                min="1">
                         <small class="form-hint">숫자가 작을수록 먼저 표시됩니다</small>
+                    </div>
+
+                    <div class="card-body">
+                        <label class="form-label fw-bold">썸네일</label>
+                        <input type="file" name="imageUrl" accept="image/*" required>
                     </div>
 
                     <button type="submit" class="btn-submit child">

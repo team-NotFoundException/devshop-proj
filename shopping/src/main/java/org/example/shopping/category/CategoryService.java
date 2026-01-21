@@ -1,13 +1,18 @@
 package org.example.shopping.category;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.shopping._core.errors.exception.Exception400;
 import org.example.shopping._core.errors.exception.Exception404;
+import org.example.shopping._core.errors.exception.Exception500;
+import org.example.shopping._core.utils.FileUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -68,21 +73,58 @@ public class CategoryService {
      * 카테고리 등록
      */
     @Transactional
-    public void parentSave(CategoryRequest.SaveParentDTO parentDTO) {
-        Category parent = parentDTO.toEntity();
+    public void parentSave(CategoryRequest.SaveParentDTO parentDTO, MultipartFile imageUrl) {
+
+        String savedFileName = null;
+        if(imageUrl != null && !imageUrl.isEmpty())
+        {
+            if (!FileUtil.isImageFile(imageUrl)) {
+                throw new Exception400("이미지 파일만 업로드 가능합니다.");
+            }
+            try {
+                savedFileName = FileUtil.saveFile(imageUrl);
+                if (savedFileName == null) {
+                    log.warn("파일 저장 결과가 null입니다. 파일이 비어있거나 이미지가 아닙니다.");
+                } else {
+                    log.info("파일 저장 완료: {}", savedFileName);
+                }
+            } catch (Exception e) {
+                log.error("파일 저장 실패: {}", e.getMessage());
+                throw new Exception500("썸네일 저장 실패");
+            }
+        }
+        Category parent = parentDTO.toEntity(savedFileName);
         categoryRepository.save(parent);
     }
 
     @Transactional
-    public void childSave(CategoryRequest.SaveChildDTO childDTO) {
+    public void childSave(CategoryRequest.SaveChildDTO childDTO, MultipartFile imageUrl) {
         Category parents = categoryRepository.findById(childDTO.getParentId())
                 .orElseThrow(() -> new Exception404("부모 카테고리를 찾을 수 없어요"));
 
         if (parents.getDepth() != 1) {
             throw new Exception400("대분류 카테고리 안에만 하위카테고리를 추가 가능함");
         }
+        String savedFileName = null;
+        if(imageUrl != null && !imageUrl.isEmpty())
+        {
+            if (!FileUtil.isImageFile(imageUrl)) {
+                throw new Exception400("이미지 파일만 업로드 가능합니다.");
+            }
+            try {
+                savedFileName = FileUtil.saveFile(imageUrl);
+                if (savedFileName == null) {
+                    log.warn("파일 저장 결과가 null입니다. 파일이 비어있거나 이미지가 아닙니다.");
+                } else {
+                    log.info("파일 저장 완료: {}", savedFileName);
+                }
+            } catch (Exception e) {
+                log.error("파일 저장 실패: {}", e.getMessage());
+                throw new Exception500("썸네일 저장 실패");
+            }
+        }
 
-        Category child = childDTO.toEntity(parents);
+        Category child = childDTO.toEntity(parents, savedFileName);
         categoryRepository.save(child);
 
     }

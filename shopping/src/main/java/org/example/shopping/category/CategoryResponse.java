@@ -7,6 +7,21 @@ import java.util.List;
 
 public class CategoryResponse {
 
+    private static String getImagePath(String thumbnailUrl) {
+        if (thumbnailUrl == null || thumbnailUrl.isEmpty()) {
+            return "/img/no-image.png";
+        }
+
+        if (thumbnailUrl.startsWith("http://") || thumbnailUrl.startsWith("https://")) {
+            return thumbnailUrl;
+        }
+        if(thumbnailUrl.startsWith("/img/")){
+            return thumbnailUrl;
+        }
+
+        return "/images/" + thumbnailUrl;
+    }
+
     @Data
     @NoArgsConstructor
     public static class ListDTO {
@@ -23,7 +38,7 @@ public class CategoryResponse {
             this.categoryName = category.getCategoryName();
             this.depth = category.getDepth();
             this.displayOrder = (category.getDisplayOrder() != null) ? category.getDisplayOrder() : 0;
-            this.imageUrl =  category.getImageUrl();
+            this.imageUrl = getImagePath(category.getImageUrl());
             if (category.getParent() != null) {
                 this.parentName = category.getParent().getCategoryName();
             }
