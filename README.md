@@ -21,6 +21,8 @@
 - **사용자**: 간편한 상품 조회, 장바구니 관리, 안전한 결제 경험 제공
 - **판매자**: 상품 등록 및 관리, 판매 통계 확인을 통한 효율적인 판매 관리
 - **관리자**: 사용자 관리, 판매자 승인, 카테고리 관리를 통한 플랫폼 운영
+<img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/19256b10-4012-48eb-9780-c2fe73038298" />
+
 
 ## 기술 스택
 
@@ -53,17 +55,32 @@
 - **Database Console**: H2 Console (개발 환경)
 - **DBMS**: MySql
 
+
+<img width="1920" height="1080" alt="11" src="https://github.com/user-attachments/assets/931d438c-c3f7-4743-9d7f-649b8b68be63" />
+
+
+
 ## 주요 기능
 
 ### 1. 사용자 관리
 - 회원가입 및 로그인/로그아웃
 - 카카오 소셜 로그인 연동
+<img width="1920" height="1080" alt="17" src="https://github.com/user-attachments/assets/d804b033-d168-46d0-bec9-34a55284b02d" />
+
 - Google SMTP 활용 이메일 인증
+<img width="1920" height="1080" alt="15" src="https://github.com/user-attachments/assets/5fcd3b9f-5737-4136-b927-35fcf463bf02" />
+
 - 회원정보 조회 및 수정
+<img width="1920" height="1080" alt="25" src="https://github.com/user-attachments/assets/eb6df5c0-abe9-484c-b2c6-b59a9434335e" />
+
 - 아이디 중복 체크
 - 주소 검색 API 연동
+<img width="1920" height="1080" alt="16" src="https://github.com/user-attachments/assets/69e352b1-7a8d-475b-aacd-5aa4865ab75c" />
+
 - 비밀번호 암호화 (BCrypt)
 - 권한 기반 접근 제어 (USER, OWNER, ADMIN)
+<img width="1282" height="1346" alt="Interceptor" src="https://github.com/user-attachments/assets/0351baff-2908-45a7-af6f-41bf1af4ba8a" />
+
 
 ### 2. 상품 관리
 - 상품 등록, 조회, 수정, 삭제 (판매자 권한)
