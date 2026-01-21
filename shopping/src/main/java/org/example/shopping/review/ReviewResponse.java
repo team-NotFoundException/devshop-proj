@@ -9,6 +9,12 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class ReviewResponse {
+    private static String getImagePath(String thumbnailUrl) {
+        if (thumbnailUrl == null || thumbnailUrl.isEmpty()) {
+            return "/img/no-image.png";
+        }
+        return "/images/" + thumbnailUrl;
+    }
 
     @Data
     @AllArgsConstructor
@@ -34,7 +40,7 @@ public class ReviewResponse {
             this.id = review.getId();
             this.username = review.getUser().getUsername();
             this.rating = review.getRating();
-            this.reviewImage = review.getReviewImage();
+            this.reviewImage = getImagePath(review.getReviewImage());
             this.content = review.getContent();
         }
 
