@@ -1,7 +1,10 @@
 package org.example.shopping.users;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping._core.errors.exception.Exception404;
 import org.example.shopping._core.infra.client.KakaoOAuthClient;
+import org.example.shopping.cart.Cart;
+import org.example.shopping.cart.CartRepository;
 import org.example.shopping.cart.CartService;
 import org.example.shopping.users.dto.UserResponse;
 import org.example.shopping.users.user.UserService;
@@ -13,6 +16,7 @@ public class OAuthService {
     private final KakaoOAuthClient kakaoOAuthClient;
     private final UserService userService;
     private final CartService cartService;
+    private final CartRepository cartRepository;
 
     public User loginWithKakao(String code) {
         String accessToken = kakaoOAuthClient.getAccessToken(code);
@@ -22,7 +26,11 @@ public class OAuthService {
         String username = kakaoProfile.getProperties().getNickname() + "_" + kakaoProfile.getId();
 
         User user = userService.findOrCreateKakaoUser(username, kakaoProfile);
-        cartService.createCart(user);
+
+        if(cartRepository.findByUserId(user.getId()).isEmpty()){
+            cartService.createCart(user);
+        }
+
         return user;
     }
 
